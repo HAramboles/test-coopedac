@@ -135,6 +135,7 @@ test.describe('Pruebas con el Registro de Tasa', async () => {
           expect(selectMoney).toBe('')
         };
         
+        // Condicion si se va a agregar o no una nueva tasa del dia
         if (scenarie.FECHA_DIA_AUTO === 'S' && scenarie.ID_MONEDA_DEFECTO === 'US') {
           // Click input[role="spinbutton"]
           await page.locator('input[role="spinbutton"]').click();
@@ -147,7 +148,20 @@ test.describe('Pruebas con el Registro de Tasa', async () => {
 
           // Click button:has-text("Aceptar")
           await page.locator('button:has-text("Aceptar")').click();
-        } else if (page.locator(`text=${formatDate(new Date())}`) && page.locator(`text=${scenarie.ID_MONEDA_DEFECTO === 'US'}`)) {
+
+          // Mensajes que se mostraran si se registro la tasa correctamente o no
+          const mensajeExito = page.locator('text=Moneda historial almacenado exitosamente.');
+          const mensajeError = page.locator('text=Ya existe un registro con esta moneda');
+
+          if (await mensajeExito.isVisible()) { // Si no una tasa registrada y se registro correctamente la tasa
+            // Cerrar el mensaje
+            await page.locator('[aria-label="close"]').click();
+          } else if (await mensajeError.isVisible()) { // Si ya hay una tasa registrada y no se registro la tasa
+            // Cerrar el mensaje
+            await page.locator('[aria-label="close"]').click();
+          };
+
+        } else if (scenarie.FECHA_DIA_AUTO === 'N' || scenarie.FECHA_DIA_AUTO === '' && scenarie.ID_MONEDA_DEFECTO === 'US') {
           test.skip();
         } else if (scenarie.ID_MONEDA_DEFECTO === 'RD' || scenarie.ID_MONEDA_DEFECTO === '') {
           test.skip();
