@@ -11,7 +11,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Pruebas
 
-test.describe('Editar una cuenta de Ahorros para probar el componente de la Firma', () => {
+test.describe('Editar una Cuenta de Ahorros', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -64,10 +64,13 @@ test.describe('Editar una cuenta de Ahorros para probar el componente de la Firm
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
     });
 
-    test('Editar una Cuenta de Ahorros - Datos Generales', async () => {
-        // Buscar la cedula de la cuenta de la persona a editar
+    test('Dirigirse al primer paso de la edicion de cuentas de ahorros', async () => {
+        // Cedula de la cuenta de la persona a editar
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        await expect(page.locator(`${cedula}`)).toBeVisible();
+        // await expect(page.locator(`${cedula}`)).toBeVisible();
+
+        // Buscar al socio a editar
+        await page.locator('#form_search').fill(`${cedula}`);
 
         // Click al boton de editar cuenta
         const botonConfirmarTransferencia = page.getByRole('row', {name: `${cedula}`}).getByRole('button', {name: 'edit'});
@@ -77,6 +80,44 @@ test.describe('Editar una cuenta de Ahorros para probar el componente de la Firm
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=1/);
 
+        // El titulo de editar cuenta debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
+    });
+
+    test('Probar el boton de Cancelar', async () => {
+        // Recargar la pagina
+        await page.reload();
+
+        // Boton de Cancelar
+        const botonCancelar = page.locator('button:has-text("Cancelar")');
+        await expect(botonCancelar).toBeVisible();
+        await botonCancelar.click();
+
+        // Modal de confirmacion
+        await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
+        // Click en Aceptar
+        await page.locator('text=Aceptar').click();
+
+        // Debe redirigirse al listado de las cuentas de ahorros
+        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+    });
+
+    test('Editar Cuenta de Ahorros - Datos Generales', async () => {
+        // Cedula de la cuenta de la persona a editar
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        // await expect(page.locator(`${cedula}`)).toBeVisible();
+
+        // Click al boton de editar cuenta
+        const botonConfirmarTransferencia = page.getByRole('row', {name: `${cedula}`}).getByRole('button', {name: 'edit'});
+        await expect(botonConfirmarTransferencia).toBeVisible();
+        await botonConfirmarTransferencia.click();
+
+        // La URL debe cambiar
+        await expect(page).toHaveURL(/\/?step=1/);
+
+        // El titulo de editar cuenta debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
+
         // El documento de identidad debe ser la cedula guardada en el state
         await expect(page.locator(`text=${cedula}`)).toBeVisible();
 
@@ -84,9 +125,9 @@ test.describe('Editar una cuenta de Ahorros para probar el componente de la Firm
         const campoDescripcion = page.locator('#AHORROS NORMALES_DESCRIPCION');
         await expect(campoDescripcion).toBeVisible();
         await campoDescripcion.clear();
-        await campoDescripcion.fill('CUENTA DE AHORROS');
+        await campoDescripcion.fill('CUENTA AHORRATIVA');
 
-        // El tipo de captacion debe ser Ahorros Normales
+        // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
         // await 
 
         // La categoria debe ser Socio Ahorrante

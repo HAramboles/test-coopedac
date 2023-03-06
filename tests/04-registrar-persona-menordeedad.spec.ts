@@ -329,7 +329,7 @@ test.describe('Pruebas con el Registro de una Persona Fisica - Menor de edad', a
         await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
 
         // Buscar un relacionado del menor, debe ser un padre, madre o un tutor
-        // Usar la cedula de la persona creada
+        // Usar la cedula de la persona fisica creada
         // Cedula de la persona almacenada en el state
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
 

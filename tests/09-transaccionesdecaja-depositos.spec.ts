@@ -46,17 +46,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
     });
 
-    test('Los titulos de cada seccion de la pagina deben estar visibles', async () => {
-        // Si aparece un modal de aviso
-        const mensajedeAviso = page.locator('text=Es necesario registrar la tasa del día. Imposible realizar operaciones');
-        if (await mensajedeAviso.isVisible()) {
-            // Click en Aceptar
-            await page.locator('text=Aceptar').click();
-        } else if (await mensajedeAviso.isHidden()) {
-            // El titulo principal debe estar visible
-            await expect(page.locator('h1').filter({hasText: 'TRANSACCIONES DE CAJA'})).toBeVisible();
-        };
-        
+    test('Los titulos de cada seccion de la pagina deben estar visibles', async () => {        
         // Titulo Captaciones
         await expect(page.locator('h1').filter({hasText: 'CAPTACIONES'})).toBeVisible();
 

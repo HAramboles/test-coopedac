@@ -103,11 +103,9 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         // Cedula de la persona almacenada en el state
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
 
-        // await campoTitular?.fill(`${cedula}`);
-        await campoTitular.fill('16392446865')
+        await campoTitular?.fill(`${cedula}`);
         // Seleccionar la opcion que aparece
-        // await page.locator(`text=${cedula}`).click();
-        await page.locator('text=16392446865').click();
+        await page.locator(`text=${cedula}`).click();
 
         // Subir la imagen de la firma
         const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser

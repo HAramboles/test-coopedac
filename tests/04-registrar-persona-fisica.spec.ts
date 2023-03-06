@@ -52,12 +52,12 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
     });
 
     // Funcion con el boton de continuar, que se repite en cada seccion del registro
-    const guardarContinuar = async () => {
+    /*const guardarContinuar = async () => {
         // continuar
         const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
         // presionar el boton
         await botonContinuar.click();
-    };
+    };*/
 
     test('Hacer click al boton de Registrar Persona', async () => {
         // Boton de Socios
@@ -103,6 +103,18 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         // Input de la cedula. Cada cedula debe ser unica
         const campoCedula = page.locator('#person_DOCUMENTO_IDENTIDAD');
         await campoCedula?.fill(cedula);
+
+        // Colocar el cursor al principio de la cedula y borrarla presionando la tecla Delete
+        /* En comentario mientras se resuelven los errores
+        await campoCedula.press('ArrowLeft');
+        for (let i = 0; i < (`${cedula}` + 2).length; i++) { // +2 por los guiones que se le colocan a la cedula
+            await campoCedula.press('ArrowLeft');
+        };
+        await campoCedula.press('Delete');
+
+        // Volver a ingresar la cedula
+        await campoCedula?.fill(`${cedula}`);
+        */
         
         // Input del pasaporte. Cada pasporte debe ser unico
         const campoPasaporte = page.locator('#person_NO_PASAPORTE');
@@ -174,7 +186,9 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await page.locator('text=SOCIO AHORRANTE').click();
 
         // Hacer click en el boton de guardar y continuar
-        guardarContinuar();
+        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
+        // presionar el boton
+        await botonContinuar.click();
     });
 
     test('Registrar a la persona - Informacion de ingresos', async () => {
@@ -201,9 +215,16 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         const campoEmailEmpresa = page.locator('#person_EMAIL_EMPRESA');
         await campoEmailEmpresa?.fill('empresaejemplo@hotmail.com');
 
+        // Numeros a digitar para la prueba del input
+        //const numeroTelefonoEmpresa = '123456789012345678901'; 
         // Input del telefono de la empresa
         const campoTelefonoEmpresa = page.locator('#person_TELEFONO_EMPRESA');
-        await campoTelefonoEmpresa?.fill('8096592235');
+        //await campoTelefonoEmpresa?.fill(`${numeroTelefonoEmpresa}`);
+        // Probar que los numeros no se borran luego de digitar 21 numeros
+        //await campoTelefonoEmpresa.getByText(`${numeroTelefonoEmpresa}`).isVisible();
+        // Borrar el numero y volver a digitarlo
+        //await campoTelefonoEmpresa.clear();
+        await campoTelefonoEmpresa?.fill('8092653022');
 
         // Input de la direccion de la empresa
         const campoDireccionEmpresa = page.locator('#person_DIRECCION_EMPRESA');
@@ -252,7 +273,9 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await campoJustificacionIngresos?.fill('Ingresos recibidos por herencia familiar');
 
         // Hacer click en el boton de guardar y continuar
-        guardarContinuar();
+        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
+        // presionar el boton
+        await botonContinuar.click();
     });
 
     test('Registrar a la persona - Informacion adicional de ingresos', async () => {
@@ -271,7 +294,9 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await campoProposito?.fill('Para uso personal');
 
         // Hacer click en el boton de guardar y continuar
-        guardarContinuar();
+        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
+        // presionar el boton
+        await botonContinuar.click();
     });
 
     test('Ir a la seccion de los Peps, para luego probar el boton de anterior', async () => {
@@ -311,7 +336,9 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await expect(campoProposito).toBeVisible();
 
         // Hacer click en el boton de guardar y continuar
-        guardarContinuar();
+        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
+        // presionar el boton
+        await botonContinuar.click();
     });
     
     test('Registrar a la persona - Persona expuesta politicamente (Peps)', async () => {
@@ -354,7 +381,9 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await expect(page.locator('text=REGISTRAR PERSONA EXPUESTA POLÍTICAMENTE')).not.toBeVisible();
         
         // Hacer click en el boton de guardar y continuar
-        guardarContinuar();
+        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
+        // presionar el boton
+        await botonContinuar.click();
     });
 
     test('Registrar a la persona - Direcciones', async () => {
@@ -462,7 +491,9 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
 
         // Hacer click en el boton de guardar y continuar
-        guardarContinuar();
+        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
+        // presionar el boton
+        await botonContinuar.click();
     });
 
     test('Registrar a la persona - Relacionados', async () => {
@@ -505,7 +536,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await page.evaluate((nombrePersona) => window.localStorage.setItem('nombrePersona', nombrePersona), nombrePersona);
         await page.evaluate((apellidoPersona) => window.localStorage.setItem('apellidoPersona', apellidoPersona), apellidoPersona);
 
-        // Guardar nuevamente el Storage con la cedula creada
+        // Guardar nuevamente el Storage con la cedula, el nombre y el apellido de la persona
         await context.storageState({path: 'state.json'});
 
         // Cerrar la pagina

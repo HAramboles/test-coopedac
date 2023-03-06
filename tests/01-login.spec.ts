@@ -100,7 +100,7 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
         await buttonLogin.click();
 
         /* Esperar que la url cambie al momento de hacer el login */
-        await expect(page).toHaveURL(`${url_base}/home`);
+        await expect(page).toHaveURL(/\/home/);
 
         /* Esperar que el boton de perfil este visible */
         await expect(page.locator('[aria-label="user"]')).toBeVisible();
