@@ -94,7 +94,7 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16/create?step=1`);
 
         // El titulo de Registrar Cuenta debe estar visible
-        await expect(page.locator('text=REGISTRAR CUENTA')).toBeVisible();
+        await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
     });
 
     test('Llenar los campos del primer paso del registro de cuenta de ahorros', async () => {
@@ -106,6 +106,9 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         await campoTitular?.fill(`${cedula}`);
         // Seleccionar la opcion que aparece
         await page.locator(`text=${cedula}`).click();
+
+        // El tipo de captacion debe ser Ahorros
+        await expect(page.locator('#AHORROS NORMALES_ID_TIPO_CAPTACION').filter({hasText: 'Ahorros'})).toBeVisible();
 
         // Subir la imagen de la firma
         const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser

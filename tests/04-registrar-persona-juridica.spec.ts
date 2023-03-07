@@ -121,6 +121,7 @@ test.describe('Pruebas con el Registro de Persona Juridica', async () => {
         // Actividad Economica
         const actividadEconomica = page.locator("(//input[@id='legalPerson_ID_ACTIVIDAD_ECONOMICA'])[2]");
         await actividadEconomica.click();
+        await actividadEconomica.fill('Agricultura, ganadería, ');
         // Seleccionar una actividad economica
         await page.locator('text=AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA').click();
 
@@ -132,7 +133,7 @@ test.describe('Pruebas con el Registro de Persona Juridica', async () => {
         await inputEjecutivo.click();
         await inputEjecutivo.fill('lega');
         // Seleccionar la opcion legal
-        await page.locator('text=LEGAL').last().click();
+        await page.getByText('LEGAL', {exact: true}).click();
 
         // Categoria Solicitada
         const categoriaSolicitada = page.locator('#legalPerson_ID_CATEGORIA_SOLICITADA');
@@ -319,7 +320,9 @@ test.describe('Pruebas con el Registro de Persona Juridica', async () => {
         await page.getByText('JEFE INMEDIATO', {exact: true}).click();
 
         // Actividad Economica
-        await page.locator('#relatedRecord_ID_ACTIVIDAD_ECONOMICA').nth(1).click();
+        const actividadEconomicaRelacionado = page.locator('#relatedRecord_ID_ACTIVIDAD_ECONOMICA').nth(1); 
+        await actividadEconomicaRelacionado.click();
+        await actividadEconomicaRelacionado.fill('Agricultura, ganadería, ');
         // Elegir una opcion
         await page.locator('text=AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA').click();
 

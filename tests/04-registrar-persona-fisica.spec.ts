@@ -27,8 +27,8 @@ const aleatorios = `${generarNumerosAleatorios()}`;
 
 // Cedula, nombre y apellidos de la persona
 const cedula = aleatorios;
-const nombrePersona = 'EMMA MARIA';
-const apellidoPersona = 'DE LA CRUZ DIAZ';
+const nombrePersona = 'JANNET';
+const apellidoPersona = 'DE LOS SANTOS';
 
 /* Pruebas */
 
@@ -52,12 +52,12 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
     });
 
     // Funcion con el boton de continuar, que se repite en cada seccion del registro
-    /*const guardarContinuar = async () => {
+    const guardarContinuar = async () => {
         // continuar
         const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
         // presionar el boton
         await botonContinuar.click();
-    };*/
+    };
 
     test('Hacer click al boton de Registrar Persona', async () => {
         // Boton de Socios
@@ -186,9 +186,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await page.locator('text=SOCIO AHORRANTE').click();
 
         // Hacer click en el boton de guardar y continuar
-        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
-        // presionar el boton
-        await botonContinuar.click();
+        guardarContinuar();
     });
 
     test('Registrar a la persona - Informacion de ingresos', async () => {
@@ -273,9 +271,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await campoJustificacionIngresos?.fill('Ingresos recibidos por herencia familiar');
 
         // Hacer click en el boton de guardar y continuar
-        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
-        // presionar el boton
-        await botonContinuar.click();
+        guardarContinuar();
     });
 
     test('Registrar a la persona - Informacion adicional de ingresos', async () => {
@@ -336,9 +332,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await expect(campoProposito).toBeVisible();
 
         // Hacer click en el boton de guardar y continuar
-        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
-        // presionar el boton
-        await botonContinuar.click();
+        guardarContinuar();
     });
     
     test('Registrar a la persona - Persona expuesta politicamente (Peps)', async () => {
@@ -381,9 +375,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await expect(page.locator('text=REGISTRAR PERSONA EXPUESTA POLÍTICAMENTE')).not.toBeVisible();
         
         // Hacer click en el boton de guardar y continuar
-        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
-        // presionar el boton
-        await botonContinuar.click();
+        guardarContinuar();
     });
 
     test('Registrar a la persona - Direcciones', async () => {
@@ -491,9 +483,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
 
         // Hacer click en el boton de guardar y continuar
-        const botonContinuar = page.locator('button:has-text("Guardar y continuar")');
-        // presionar el boton
-        await botonContinuar.click();
+        guardarContinuar();
     });
 
     test('Registrar a la persona - Relacionados', async () => {

@@ -67,7 +67,6 @@ test.describe('Editar una Cuenta de Ahorros', () => {
     test('Dirigirse al primer paso de la edicion de cuentas de ahorros', async () => {
         // Cedula de la cuenta de la persona a editar
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        // await expect(page.locator(`${cedula}`)).toBeVisible();
 
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);
@@ -105,7 +104,6 @@ test.describe('Editar una Cuenta de Ahorros', () => {
     test('Editar Cuenta de Ahorros - Datos Generales', async () => {
         // Cedula de la cuenta de la persona a editar
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        // await expect(page.locator(`${cedula}`)).toBeVisible();
 
         // Click al boton de editar cuenta
         const botonConfirmarTransferencia = page.getByRole('row', {name: `${cedula}`}).getByRole('button', {name: 'edit'});
@@ -128,7 +126,7 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         await campoDescripcion.fill('CUENTA AHORRATIVA');
 
         // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
-        // await 
+        await expect(page.locator('#AHORROS NORMALES_DESCTIPOCAPTACION').filter({hasText: 'AHORROS NORMALES'})).toBeVisible();
 
         // La categoria debe ser Socio Ahorrante
         await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
@@ -151,8 +149,14 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=2/);
 
+        // El titulo de firmantes debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
+
         // El boton de Agregar Firmante debe estar visible
         await expect(page.locator('text=Agregar Firmante')).toBeVisible();
+
+        // Por lo menos debe estar la firma del titular
+        await expect(page.locator('text=TITULAR')).toBeVisible();
 
         // Click al boton de Continuar
         const botonContinuar = page.locator('button:has-text("Continuar")');

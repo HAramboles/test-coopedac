@@ -61,16 +61,24 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
 
     test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {
         // El titulo de registrar cuenta deb estar visible
-        await expect(page.locator('h1').filter({hasText: 'REGISTRAR CUENTA'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
+
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Ingresar el titular
         const campoTitular = page.locator('#select-search');
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-         
         await campoTitular?.fill(`${cedula}`);
         // Click a la opcion que coincide con lo buscado
         await page.locator(`text=${cedula}`).click();
+
+        // El nombre y el apellido de la persona deben aparecer como un titulo
+        await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
+
+        // El tipo de captacion debe ser Aportaciones
+        await expect(page.locator('#APORTACIONES_ID_TIPO_CAPTACION').filter({hasText: 'Aportaciones'})).toBeVisible();
 
         // Seleccionar una categoria
         const campoCategoria = page.locator('#APORTACIONES_ID_CATEGORIA_SOCIO');
@@ -85,6 +93,9 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
     test('Registrar Cuenta de Aportaciones - Contacto de Firmante o Persona', async () => {
         // El titulo de firmantes debe estar visible
         await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
+
+        // Se debe mostrar la fima del titular por defecto
+        await expect(page.locator('text=TITULAR')).toBeVisible();
 
         // El tipo de firma requerida debe estar visible
         await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();
@@ -108,6 +119,15 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         await expect(page.locator('text=¿Desea crear una cuenta de ahorro para este socio?')).toBeVisible();
         // Click en Cancelar, ya que hay un test exclusivamente para la creacion de cuenta de ahorro
         await page.locator('text=Cancelar').click();
+
+        // Debe redirigirse al listado de las cuentas de aportaciones
+        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+
+        // Cedula de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
+        // Debe estar visible la cuenta de aportacion de la persona creada
+        await expect(page.getByRole('row', {name: `${cedula}`})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de todas las pruebas

@@ -41,6 +41,14 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
     });
 
+    test('Confirmar que la cuenta ya se creo y esta en el lista de las cuentas de aportaciones', async () => {
+        // Cedula de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
+        // Debe estar visible la cuenta de aportacion de la persona creada
+        await expect(page.getByRole('row', {name: `${cedula}`})).toBeVisible();
+    });
+
     test('Click al boton de Nueva Cuenta', async () => {
         // Boton de Nueva Cuenta
         const botonNuevaCuenta = page.locator('text=Nueva Cuenta');
@@ -53,7 +61,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
 
     test('Debe de salir un modal avisando que el titular ya tiene una cuenta de aportaciones', async () => {
         // El titulo de registrar cuenta deb estar visible
-        await expect(page.locator('h1').filter({hasText: 'REGISTRAR CUENTA'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
 
         // Ingresar el titular
         const campoTitular = page.locator('#select-search');
@@ -77,7 +85,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
 
         // Debe regresar atras y la URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
-      });
+    });
 
     test.afterAll(async () => { // Despues de todas las pruebas
         // Cerrar la page
