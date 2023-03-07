@@ -27,8 +27,8 @@ const aleatorios = `${generarNumerosAleatorios()}`;
 
 // Cedula, nombre y apellidos de la persona
 const cedula = aleatorios;
-const nombrePersona = 'JANNET';
-const apellidoPersona = 'DE LOS SANTOS';
+const nombrePersona = 'JUANA DEL CARMEN';
+const apellidoPersona = 'LOPEZ SANCHEZ';
 
 /* Pruebas */
 

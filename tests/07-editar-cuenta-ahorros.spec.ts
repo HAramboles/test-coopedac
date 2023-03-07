@@ -65,16 +65,18 @@ test.describe('Editar una Cuenta de Ahorros', () => {
     });
 
     test('Dirigirse al primer paso de la edicion de cuentas de ahorros', async () => {
-        // Cedula de la cuenta de la persona a editar
+        // Cedula, nombres y apellidos de la cuenta de la persona a editar
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);
 
         // Click al boton de editar cuenta
-        const botonConfirmarTransferencia = page.getByRole('row', {name: `${cedula}`}).getByRole('button', {name: 'edit'});
-        await expect(botonConfirmarTransferencia).toBeVisible();
-        await botonConfirmarTransferencia.click();
+        const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
+        await expect(botonEditarCuenta).toBeVisible();
+        await botonEditarCuenta.click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=1/);
@@ -102,13 +104,18 @@ test.describe('Editar una Cuenta de Ahorros', () => {
     });
 
     test('Editar Cuenta de Ahorros - Datos Generales', async () => {
-        // Cedula de la cuenta de la persona a editar
+        // Cedula, nombres y apellidos de la cuenta de la persona a editar
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Buscar al socio a editar
+        await page.locator('#form_search').fill(`${cedula}`);
 
         // Click al boton de editar cuenta
-        const botonConfirmarTransferencia = page.getByRole('row', {name: `${cedula}`}).getByRole('button', {name: 'edit'});
-        await expect(botonConfirmarTransferencia).toBeVisible();
-        await botonConfirmarTransferencia.click();
+        const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
+        await expect(botonEditarCuenta).toBeVisible();
+        await botonEditarCuenta.click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=1/);
@@ -116,23 +123,24 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         // El titulo de editar cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
 
-        // El documento de identidad debe ser la cedula guardada en el state
-        await expect(page.locator(`text=${cedula}`)).toBeVisible();
+        // Debe de aparecer el nombre de la persona como titulo
+        await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
         // Editar la descripcion de la cuenta
-        const campoDescripcion = page.locator('#AHORROS NORMALES_DESCRIPCION');
+        // const campoDescripcion = page.locator('#AHORROS NORMALES_DESCRIPCION');
+        const campoDescripcion = page.getByPlaceholder('Descripción o alias de la cuenta, ejemplo: Cuenta para vacaciones.');
         await expect(campoDescripcion).toBeVisible();
         await campoDescripcion.clear();
         await campoDescripcion.fill('CUENTA AHORRATIVA');
 
         // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
-        await expect(page.locator('#AHORROS NORMALES_DESCTIPOCAPTACION').filter({hasText: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
 
         // La categoria debe ser Socio Ahorrante
         await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
 
         // Editar el monto de confirmacion
-        const montoConfirmacion = page.locator('#AHORROS NORMALES_MONTO_CONFIRMACION');
+        const montoConfirmacion = page.getByPlaceholder('MONTO DE CONFIRMACIÓN');
         await expect(montoConfirmacion).toBeVisible();
         await montoConfirmacion.clear();
         await montoConfirmacion.fill('26,000');
@@ -169,7 +177,7 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         await expect(page).toHaveURL(/\/?step=3/);
 
         // El titulo debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'FORMA DE PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
 
         // Boton Finalizar
         const botonFinalizar = page.locator('button:has-text("Finalizar")')

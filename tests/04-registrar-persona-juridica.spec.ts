@@ -31,11 +31,11 @@ const cedulaPersonaJuridica = aleatorios;
 const cedulaPersonaJuridicaRelacionado = aleatorios2;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'Plantaciones y Ganados SA';
+const nombreJuridica = 'Ganaderos y Asoc.';
 
 // Nombre del relacionado
-const nombreRelacionado = 'LUIS ALBERTO';
-const apellidoRelacionado = 'GOMEZ';
+const nombreRelacionado = 'ALBERTO JOSE';
+const apellidoRelacionado = 'MARTINEZ';
 
 // Pruebas
 

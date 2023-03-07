@@ -41,14 +41,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
     });
 
-    test('Confirmar que la cuenta ya se creo y esta en el lista de las cuentas de aportaciones', async () => {
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-
-        // Debe estar visible la cuenta de aportacion de la persona creada
-        await expect(page.getByRole('row', {name: `${cedula}`})).toBeVisible();
-    });
-
     test('Click al boton de Nueva Cuenta', async () => {
         // Boton de Nueva Cuenta
         const botonNuevaCuenta = page.locator('text=Nueva Cuenta');

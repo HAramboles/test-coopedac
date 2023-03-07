@@ -336,6 +336,7 @@ test.describe('Pruebas con el Registro de una Persona Fisica - Menor de edad', a
         const campoBuscarRelacionado = page.getByRole('combobox');
         await campoBuscarRelacionado?.fill(`${cedula}`);
         // Click a la opcion que coincide con lo buscado
+        await expect(page.locator(`text=${cedula}`)).toBeVisible();
         await page.locator(`text=${cedula}`).click();
 
         // Debe de aparecer un modal

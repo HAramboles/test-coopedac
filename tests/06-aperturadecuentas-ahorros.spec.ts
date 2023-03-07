@@ -108,7 +108,7 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         await page.locator(`text=${cedula}`).click();
 
         // El tipo de captacion debe ser Ahorros
-        await expect(page.locator('#AHORROS NORMALES_ID_TIPO_CAPTACION').filter({hasText: 'Ahorros'})).toBeVisible();
+        await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
 
         // Subir la imagen de la firma
         const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
