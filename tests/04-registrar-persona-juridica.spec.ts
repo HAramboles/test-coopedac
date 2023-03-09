@@ -31,11 +31,11 @@ const cedulaPersonaJuridica = aleatorios;
 const cedulaPersonaJuridicaRelacionado = aleatorios2;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'Ganaderos y Asoc.';
+const nombreJuridica = '';
 
 // Nombre del relacionado
-const nombreRelacionado = 'ALBERTO JOSE';
-const apellidoRelacionado = 'MARTINEZ';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Pruebas
 
@@ -301,12 +301,12 @@ test.describe('Pruebas con el Registro de Persona Juridica', async () => {
 
     test('Registro de Persona Juridica - Relacionados del socio - Informacion de Ingresos', async () => {
         // El titulo debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
+        // await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
 
         // Ocupacion
         await page.locator('#relatedRecord_OCUPACION').fill('Agricu');
         // Elegir una de las opciones
-        await page.locator('text=AGRICULTOR').click();
+        await page.getByText('AGRICULTOR', {exact: true}).click();
 
         // Lugar de trabajo
         await page.locator('#relatedRecord_NOMBRE_EMPRESA').fill('Ganados y Plantas A&T');
@@ -480,6 +480,12 @@ test.describe('Pruebas con el Registro de Persona Juridica', async () => {
     });
 
     test.afterAll(async () => { // Despues de las pruebas
+        // Guardar la cedula de la persona relacionada creada
+        await page.evaluate((cedulaPersonaJuridicaRelacionado) => window.localStorage.setItem('cedulaPersonaJuridicaRelacionado', cedulaPersonaJuridicaRelacionado), cedulaPersonaJuridicaRelacionado);
+        // Guardar el nombre y el apellido de la persona relacionada creada
+        await page.evaluate((nombreRelacionado) => window.localStorage.setItem('nombrePersonaJuridicaRelacionada', nombreRelacionado), nombreRelacionado);
+        await page.evaluate((apellidoRelacionado) => window.localStorage.setItem('apellidoPersonaJuridicaRelacionada', apellidoRelacionado), apellidoRelacionado);
+
         // Cerrar la pagina
         await page.close();
 

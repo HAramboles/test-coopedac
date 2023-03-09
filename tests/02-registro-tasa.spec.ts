@@ -153,7 +153,7 @@ test.describe('Pruebas con el Registro de Tasa', async () => {
           const mensajeExito = page.locator('text=Moneda historial almacenado exitosamente.');
           const mensajeError = page.locator('text=Ya existe un registro con esta moneda');
 
-          if (await mensajeExito.isVisible()) { // Si no una tasa registrada y se registro correctamente la tasa
+          if (await mensajeExito.isVisible()) { // Si no hay una tasa registrada y se registro correctamente la tasa
             // Cerrar el mensaje
             await page.locator('[aria-label="close"]').click();
           } else if (await mensajeError.isVisible()) { // Si ya hay una tasa registrada y no se registro la tasa

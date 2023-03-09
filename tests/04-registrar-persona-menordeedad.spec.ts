@@ -27,8 +27,8 @@ const aleatorios = `${generarNumerosAleatorios()}`;
 
 // Cedulas
 const cedulaMenor = aleatorios;
-const nombreMenor = 'KEVIN ENMANUEL';
-const apellidoMenor = 'DE LA CRUZ';
+const nombreMenor = '';
+const apellidoMenor = '';
 
 // Pruebas
 
@@ -332,12 +332,14 @@ test.describe('Pruebas con el Registro de una Persona Fisica - Menor de edad', a
         // Usar la cedula de la persona fisica creada
         // Cedula de la persona almacenada en el state
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         const campoBuscarRelacionado = page.getByRole('combobox');
+        await campoBuscarRelacionado.click();
         await campoBuscarRelacionado?.fill(`${cedula}`);
         // Click a la opcion que coincide con lo buscado
-        await expect(page.locator(`text=${cedula}`)).toBeVisible();
-        await page.locator(`text=${cedula}`).click();
+        await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Debe de aparecer un modal
         await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();

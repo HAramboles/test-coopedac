@@ -157,6 +157,9 @@ test.describe('Test con Solicitud Transferencia Interbancaria', async () => {
   });
 
   test('Llenar los campos necesarios para la Confirmacion de la Transferencia Interbancaria', async () => {
+    // El titulo principal dbe estar visible
+    await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIA INTERBANCARIA'})).toBeVisible();
+    
     // Seleccionar un Banco de Origen
     const campoBancoOrigen = page.locator('#form_ID_BANCO');
     await campoBancoOrigen.click();
@@ -166,7 +169,7 @@ test.describe('Test con Solicitud Transferencia Interbancaria', async () => {
     // Ingresar un codigo de referencia
     const campoNoReferencia = page.locator('#form_REFERENCIA');
     await expect(campoNoReferencia).toBeVisible();
-    await campoNoReferencia?.fill('987654321'); // El no. de Referencia debe tener un limite de 20 caracteres
+    await campoNoReferencia?.fill('987654321'); 
 
     // Activar los impuestos
     await page.locator('text=Impuestos').click();
@@ -176,7 +179,7 @@ test.describe('Test con Solicitud Transferencia Interbancaria', async () => {
     await botonGuardar.click();
 
     // Debe de aparecer un modal confirmando que la operacion fue exitosa
-    await expect(page.locator('text=Operación Exitosa')).toBeVisible();
+    await expect(page.locator('text=Transferencia aplicada exitosamente.')).toBeVisible();
     // Click a aceptar
     await page.locator('text=Aceptar').click();
 

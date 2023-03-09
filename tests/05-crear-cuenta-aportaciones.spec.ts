@@ -122,9 +122,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
 
         // Debe redirigirse al listado de las cuentas de aportaciones
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
-
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
     });
 
     test.afterAll(async () => { // Despues de todas las pruebas
