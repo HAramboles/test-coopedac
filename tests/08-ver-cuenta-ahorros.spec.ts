@@ -130,8 +130,7 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         // Debe de aparecer el nombre de la persona como titulo
         await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
-        // Editar la descripcion de la cuenta
-        // const campoDescripcion = page.locator('#AHORROS NORMALES_DESCRIPCION');
+        // Descripcion de la cuenta
         const campoDescripcion = page.getByPlaceholder('Descripción o alias de la cuenta, ejemplo: Cuenta para vacaciones.');
         await expect(campoDescripcion).toBeVisible();
 
@@ -164,6 +163,9 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
 
         // Por lo menos debe estar la firma del titular
         await expect(page.locator('text=TITULAR')).toBeVisible();
+
+        // Debe tener una firma condicional
+        await expect(page.locator('text=(O) FIRMA CONDICIONAL')).toBeVisible();
 
         // Click al boton de Siguiente
         Siguiente();

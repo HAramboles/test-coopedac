@@ -99,6 +99,15 @@ test.describe('Test con Solicitud Transferencia Interbancaria', async () => {
     // Seleccionar Alaver
     await page.locator('text=ALAVER').click();
 
+    // Nombres y apellidos de la persona
+    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+    // Titular / Apoderado
+    await page.locator('#form_TITULAR_APODERADO').click();
+    // Seleccionar al titular
+    await page.getByRole('option', {name: `${nombre} ${apellido}`}).click();
+
     // Agregar un comentario (Opcional)
     const campoComentario = page.locator('#form_COMENTARIO');
     await expect(campoComentario).toBeVisible();

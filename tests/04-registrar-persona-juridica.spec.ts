@@ -1,4 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { aleatorios } from './utils/cedulas';
+import { aleatorios2 } from './utils/cedulas';
 
 // Variables Globales
 let browser: Browser;
@@ -7,24 +9,6 @@ let page: Page
 
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
-
-// Funcion para generar numeros de aleatorios para la cedula
-const generarNumerosAleatorios = () => { 
-    const aleatorios:number[] = []; // Iniciar con un array vacio
-    // Generar 11 numeros
-    for (let i = 0; i < 11; i++) { 
-        let random = Math.random(); // Crear una variable que almacene la funcion random
-        random = random * 9 + 1; // Los numeros generados tienen que ser dentro de un rango,
-        // y se le debe sumar 1 para que tambien cuente el ultimo numero. 
-        random = Math.trunc(random); // Funcion para redondear los numeros
-        aleatorios[i] = random; // Cada elemento del array va a ser un numero random 
-    };
-    return (aleatorios.join('')); // Retornar la lista / .join('') para unir los elementos, se eliminan las comas
-};
-
-// Almacenar los numeros generados en una constante
-const aleatorios = `${generarNumerosAleatorios()}`;
-const aleatorios2 = `${generarNumerosAleatorios()}`;
 
 // Cedulas
 const cedulaPersonaJuridica = aleatorios;
@@ -301,7 +285,7 @@ test.describe('Pruebas con el Registro de Persona Juridica', async () => {
 
     test('Registro de Persona Juridica - Relacionados del socio - Informacion de Ingresos', async () => {
         // El titulo debe estar visible
-        // await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
 
         // Ocupacion
         await page.locator('#relatedRecord_OCUPACION').fill('Agricu');
@@ -485,6 +469,9 @@ test.describe('Pruebas con el Registro de Persona Juridica', async () => {
         // Guardar el nombre y el apellido de la persona relacionada creada
         await page.evaluate((nombreRelacionado) => window.localStorage.setItem('nombrePersonaJuridicaRelacionada', nombreRelacionado), nombreRelacionado);
         await page.evaluate((apellidoRelacionado) => window.localStorage.setItem('apellidoPersonaJuridicaRelacionada', apellidoRelacionado), apellidoRelacionado);
+
+        // Guardar nuevamente el Storage con la cedula, el nombre y el apellido de la persona relacionada
+        await context.storageState({path: 'state.json'});
 
         // Cerrar la pagina
         await page.close();

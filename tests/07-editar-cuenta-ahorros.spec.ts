@@ -185,10 +185,10 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         await buscador.click();
         await buscador.fill(`${cedulaFirmante}`);
         // Sleccionar el socio
-        await page.locator(`text=${cedulaFirmante}`).click();
+        await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
 
         // Debe salir otro modal para llenar la informacion de la firmante
-        await expect(page.locator('h1').filter({hasText: 'FIRMANTE: ...'})).toBeVisible();
+        await expect(page.locator('text=FIRMANTE:')).toBeVisible();
 
         // Tipo firmante
         await page.locator('#form_TIPO_FIRMANTE').click();
@@ -196,7 +196,7 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         await page.locator('text=CO-PROPIETARIO').click();
 
         // Tipo firma
-        await page.locator('text=#form_CONDICION').click();
+        await page.locator('#form_CONDICION').click();
         // Seleccionar un tipo de firma
         await page.locator('text=(O) FIRMA CONDICIONAL').click();
 
