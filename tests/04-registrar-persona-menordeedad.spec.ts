@@ -11,8 +11,8 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedulas
 const cedulaMenor = aleatorios;
-const nombreMenor = '';
-const apellidoMenor = '';
+const nombreMenor = 'JHEAN CARLOS';
+const apellidoMenor = 'ROSARIO';
 
 // Pruebas
 

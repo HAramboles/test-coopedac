@@ -15,11 +15,11 @@ const cedulaPersonaJuridica = aleatorios;
 const cedulaPersonaJuridicaRelacionado = aleatorios2;
 
 // Nombre de la persona juridica
-const nombreJuridica = '';
+const nombreJuridica = 'JESUSandNATURE';
 
 // Nombre del relacionado
-const nombreRelacionado = '';
-const apellidoRelacionado = '';
+const nombreRelacionado = 'SEBASTIAN JESUS';
+const apellidoRelacionado = 'CARABALLO';
 
 // Pruebas
 

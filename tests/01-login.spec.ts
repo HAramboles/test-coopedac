@@ -58,14 +58,6 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
         await expect(page.locator('button:has-text("Iniciar Sesión")')).toBeVisible(); /* Boton de Login */
     });
 
-    test('Debe de redigirse al login si el usuario cambia la url', async () => {
-        /* Esperar a que el usuario cambie la url manualmente */
-        await page.goto(`${url_base}/home`);
-
-        /* Esperar que la url contenga la url correcta, que en este caso es la url_base mas el login */
-        await expect(page).toHaveURL(/\/login/);
-    });
-
     test('Debe de dar error al ingresar un usuario y una contraseña incorrectos', async () => {
         /* Ingresar un usuario y una contraseña */
         /* ? = si la variable esta undefined, para ahorrarse el tener que hacer un if */
@@ -88,6 +80,14 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
         if(page.locator('text=Aceptar')) {
             await page.locator('text=Aceptar').click();
         };
+    });
+
+    test('Debe de redigirse al login si el usuario cambia la url', async () => {
+        /* Esperar a que el usuario cambie la url manualmente */
+        await page.goto(`${url_base}/home`);
+
+        /* Esperar que la url contenga la url correcta, que en este caso es la url_base mas el login */
+        await expect(page).toHaveURL(/\/login/);
     });
 
     test('El login debe ser exitoso y se debe de mandar al usuario a la pagina de inicio', async () => {
