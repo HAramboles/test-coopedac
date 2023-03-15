@@ -15,15 +15,15 @@ const cedulaPersonaJuridica = aleatorios;
 const cedulaPersonaJuridicaRelacionado = aleatorios2;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'JESUSandNATURE';
+const nombreJuridica = '';
 
 // Nombre del relacionado
-const nombreRelacionado = 'SEBASTIAN JESUS';
-const apellidoRelacionado = 'CARABALLO';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Pruebas
 
-test.describe('Pruebas con el Registro de Persona Juridica', async () => {
+test.describe('Pruebas con el Registro de Persona Juridica', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({

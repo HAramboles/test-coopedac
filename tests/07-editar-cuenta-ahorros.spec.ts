@@ -130,7 +130,6 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
         // Editar la descripcion de la cuenta
-        // const campoDescripcion = page.locator('#AHORROS NORMALES_DESCRIPCION');
         const campoDescripcion = page.getByPlaceholder('Descripción o alias de la cuenta, ejemplo: Cuenta para vacaciones.');
         await expect(campoDescripcion).toBeVisible();
         await campoDescripcion.clear();

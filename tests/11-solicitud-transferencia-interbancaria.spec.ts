@@ -10,7 +10,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Pruebas
 
-test.describe('Test con Solicitud Transferencia Interbancaria', async () => {
+test.describe('Test con Solicitud Transferencia Interbancaria', () => {
   test.beforeAll(async () => {
     browser = await chromium.launch({
       headless: true,

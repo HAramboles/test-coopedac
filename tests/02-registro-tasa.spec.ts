@@ -56,7 +56,7 @@ test.describe.configure({mode: 'parallel'});
 
 test.describe('Pruebas con el Registro de Tasa', async () => {
   for (const scenarie of testScenaries) {
-    test.describe(`Test cuando el escenario es: ${Object.values(scenarie).toString()}`, async () => {
+    test.describe(`Test cuando el escenario es: ${Object.values(scenarie).toString()}`, () => {
       test.beforeAll(async () => {
         browser = await chromium.launch({
           headless: true,

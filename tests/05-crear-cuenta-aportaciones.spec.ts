@@ -118,7 +118,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // Debe de aparecer un modal
         await expect(page.locator('text=¿Desea crear una cuenta de ahorro para este socio?')).toBeVisible();
         // Click en Cancelar, ya que hay un test exclusivamente para la creacion de cuenta de ahorro
-        await page.locator('text=Cancelar').click();
+        await page.getByRole('dialog').getByRole('button', {name: 'stop Cancelar'}).click();
 
         // Debe redirigirse al listado de las cuentas de aportaciones
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);

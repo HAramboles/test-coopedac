@@ -11,12 +11,12 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedulas
 const cedulaMenor = aleatorios;
-const nombreMenor = 'JHEAN CARLOS';
-const apellidoMenor = 'ROSARIO';
+const nombreMenor = '';
+const apellidoMenor = '';
 
 // Pruebas
 
-test.describe('Pruebas con el Registro de una Persona Fisica - Menor de edad', async () => {
+test.describe('Pruebas con el Registro de una Persona Fisica - Menor de edad', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
