@@ -14,7 +14,7 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 
 // Pruebas
 
-test.describe('Editar una Cuenta de Ahorros', () => {
+test.describe('Rrpote Poder a Terceros', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -129,33 +129,21 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         // Debe de aparecer el nombre de la persona como titulo
         await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
-        // Editar la descripcion de la cuenta
-        const campoDescripcion = page.getByPlaceholder('Descripción o alias de la cuenta, ejemplo: Cuenta para vacaciones.');
-        await expect(campoDescripcion).toBeVisible();
-        await campoDescripcion.clear();
-        await campoDescripcion.fill('CUENTA AHORRATIVA');
-
         // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
         await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
 
         // La categoria debe ser Socio Ahorrante
         await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
 
-        // Editar el monto de confirmacion
-        const montoConfirmacion = page.getByPlaceholder('MONTO DE CONFIRMACIÓN');
-        await expect(montoConfirmacion).toBeVisible();
-        await montoConfirmacion.clear();
-        await montoConfirmacion.fill('26,000');
-
         // El componente de firma debe estar visible y debe ser unico
         await expect(page.locator('(//div[@class="ant-upload-list-item-container"])')).toBeVisible();
 
-        // Click al boton de Actualizar
-        const botonActualizar = page.locator('button:has-text("Actualizar")');
-        await botonActualizar.click();
+        // Click al boton de Omitir
+        const botonOmitir = page.locator('button:has-text("Omitir")');
+        await botonOmitir.click();
     });
 
-    test('Editar una Cuenta de Ahorros - Contacto de Firmante o Persona - Agregar un Firmante', async () => {
+    test('Editar una Cuenta de Ahorros - Contacto de Firmante o Persona - Ver Reporte Poder a Terceros', async () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=2/);
 
@@ -168,77 +156,50 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         // El boton de Agregar Firmante debe estar visible
         const AgregarFirmante = page.locator('text=Agregar Firmante');
         await expect(AgregarFirmante).toBeVisible();
-        // Click al boton
-        await AgregarFirmante.click();
-
-        // Debe salir el modal para buscar un firmante
-        await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
 
         // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
         const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
         const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
-        // Bucar un socio
-        const buscador = page.locator('#select-search');
-        await buscador.click();
-        await buscador.fill(`${cedulaFirmante}`);
-        // Seleccionar el socio
-        await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
+        // Boton de imprimir reporte
+        // await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
+        await page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`}).locator('[data-icon="printer"]').click();
 
-        // Debe salir otro modal para llenar la informacion de la firmante
-        await expect(page.locator('text=FIRMANTE:')).toBeVisible();
+        // Debe salir un modal con la opcion de seleccionar un testigo
+        await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
 
-        // Tipo firmante
-        await page.locator('#form_TIPO_FIRMANTE').click();
-        // Seleccionar un tipo de firmante
-        await page.locator('text=CO-PROPIETARIO').click();
+        // Seleccionar un testigo
+        await page.locator('#form_ID_TESTIGO').click();
+        // Seleccionar un testigo, la primera opcion que aparezca
+        await page.getByRole('option').nth(0).click();
 
-        // Tipo firma
-        await page.locator('#form_CONDICION').click();
-        // Seleccionar un tipo de firma
-        await page.locator('text=(O) FIRMA CONDICIONAL').click();
-
-        // Subir la imagen de la firma
-        const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
-        await page.getByText('Cargar ').click(); 
-        const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
-        await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
-
-        // Boton de Aceptar
-        const botonAceptar = page.locator('text=Aceptar');
+        // Boton de Imprimir
+        const botonImprimir = page.getByRole('button', {name: 'check Imprimir'});
         // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
             // Click al boton de Aceptar
-            await expect(botonAceptar).toBeVisible(),
-            await botonAceptar.click()
+            await expect(botonImprimir).toBeVisible(),
+            await botonImprimir.click()
         ]);
-      
+
         // La pagina abierta con el reporte se cierra
         await newPage.close();
 
         // Click al boton de Continuar
-        const botonContinuar = page.locator('button:has-text("Continuar")');
-        await expect(botonContinuar).toBeVisible();
-        await botonContinuar.click();
-    });
+        const botonCancelar = page.locator('button:has-text("Cancelar")');
+        await expect(botonCancelar).toBeVisible();
+        await botonCancelar.click();
 
-    test('Editar una Cuenta de Ahorros - Metodo de Interes', async () => {
-        // La URL debe cambiar
-        await expect(page).toHaveURL(/\/?step=3/);
+        // Click en Aceptar
+        const botonAceptar = page.locator('text=Aceptar');
+        await expect(botonAceptar).toBeVisible();
+        await botonAceptar.click();
 
-        // El titulo debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
-
-        // Boton Finalizar
-        const botonFinalizar = page.locator('button:has-text("Finalizar")')
-        await expect(botonFinalizar).toBeVisible();
-        await botonFinalizar.click();
-
-        // Debe regresar a la pagina de inicio de las Cuentas de Ahorros
+        // Debe regresar al listado de las cuentas
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
     });
+
 
     test.afterAll(async () => { // Despues de las pruebas
         // Cerrar la page

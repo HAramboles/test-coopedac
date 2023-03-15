@@ -289,6 +289,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByPlaceholder('VALOR TASADO').fill('RD$ 6,3000');
 
         // Agregar atributos a la garantia
+        
 
         // Click en guardar
         await page.getByRole('button', { name: 'save Guardar' }).click();
