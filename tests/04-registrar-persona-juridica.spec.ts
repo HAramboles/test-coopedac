@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { aleatorios } from './utils/cedulas';
-import { aleatorios2 } from './utils/cedulas';
+import { numerosAleatorios2 } from './utils/cedulas';
+import { numerosAleatorios3 } from './utils/cedulas';
 
 // Variables Globales
 let browser: Browser;
@@ -11,11 +11,11 @@ let page: Page
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedulas
-const cedulaPersonaJuridica = aleatorios;
-const cedulaPersonaJuridicaRelacionado = aleatorios2;
+const cedulaPersonaJuridica = numerosAleatorios2;
+const cedulaPersonaJuridicaRelacionado = numerosAleatorios3;
 
 // Nombre de la persona juridica
-const nombreJuridica = '';
+const nombreJuridica = 'GanaderiaLaEsperanza';
 
 // Nombre del relacionado
 const nombreRelacionado = '';

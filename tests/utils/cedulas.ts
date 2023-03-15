@@ -12,5 +12,7 @@ const generarNumerosAleatorios = () => {
     return (aleatorios.join('')); // Retornar la lista / .join('') para unir los elementos, se eliminan las comas
 };
 
-export const aleatorios = generarNumerosAleatorios(); 
-export const aleatorios2 = generarNumerosAleatorios(); 
+export const numerosAleatorios = generarNumerosAleatorios(); // Cedula para la persona fisica
+export const numerosAleatorios2 = generarNumerosAleatorios(); // Cedula para la persona juridica
+export const numerosAleatorios3 = generarNumerosAleatorios(); // Cedula para el relacionado de la persona juridica
+export const numerosAleatorios4 = generarNumerosAleatorios(); // Cedula para el menor de edad

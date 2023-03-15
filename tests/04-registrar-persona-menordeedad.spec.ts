@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { aleatorios } from './utils/cedulas';
+import { numerosAleatorios4 } from './utils/cedulas';
 
 // Vaiable globales 
 let browser: Browser;
@@ -10,7 +10,7 @@ let page: Page;
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedulas
-const cedulaMenor = aleatorios;
+const cedulaMenor = numerosAleatorios4;
 const nombreMenor = '';
 const apellidoMenor = '';
 

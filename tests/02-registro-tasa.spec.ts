@@ -99,7 +99,7 @@ test.describe('Pruebas con el Registro de Tasa', async () => {
         await page.goto(`${url_base}`);
       });
 
-      test('Ir a la opcion de Registrar Persona', async () => {
+      test('Ir a la opcion de Registrar Tasa', async () => {
         // Click text=CONFIGURACION
         await page.locator('text=CONFIGURACION').click();
         // Click text=MONEDAS, CALCULOS

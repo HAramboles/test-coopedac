@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { aleatorios } from './utils/cedulas';
+import { numerosAleatorios } from './utils/cedulas';
 
 // Variables globales
 let browser: Browser;
@@ -10,7 +10,7 @@ let page: Page;
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedula, nombre y apellidos de la persona
-const cedula = aleatorios;
+const cedula = numerosAleatorios;
 const nombrePersona = '';
 const apellidoPersona = '';
 
@@ -103,7 +103,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         // Input del pasaporte. Cada pasporte debe ser unico
         const campoPasaporte = page.locator('#person_NO_PASAPORTE');
         await campoPasaporte.click();
-        await campoPasaporte.fill(`AB${aleatorios}`); /* El pasaporte solo permite 8 numeros, 
+        await campoPasaporte.fill(`AB${numerosAleatorios}`); /* El pasaporte solo permite 8 numeros, 
         por lo que aunque la funcion genere 11 numeros, solo se colocaran 8 numeros, 
         ademas de que es una buena forma de probar que el input funciona correctamente. */
         
