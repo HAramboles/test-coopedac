@@ -175,8 +175,22 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.locator('#loan_form_MONTO').fill('50000');
 
         // Tasa
-        await page.getByLabel('Tasa').click();
-        await page.getByLabel('Tasa').fill('10');
+        const campoTasa = page.getByLabel('Tasa');
+        await campoTasa.click();
+        await campoTasa.clear();
+
+        // Colocar una tasa por encima de lo permitido que es de 90%
+        await campoTasa.fill('100');
+        // Clickear fuera del campo
+        await page.getByLabel('Plazo').click();
+        
+        // Debe salir un modal
+        await expect(page.locator('text=Tasa Máxima para esta oferta es: 99.00')).toBeVisible();
+        // Click en Aceptar
+        await page.locator('text=Aceptar').click();
+
+        // Ingresar una Tasa Correcta
+        await campoTasa.fill('10');
 
         // Plazo
         await page.getByPlaceholder('CANTIDAD').click();
@@ -187,7 +201,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Cambiar el tipo de cuota
         await page.getByText('INSOLUTO').click();
-        await page.getByText('NIVELADA').click();
+        // await page.getByText('NIVELADA').click();
+        await page.getByText('ABOSLUTA').click();
 
         // Finalidad
         await page.getByLabel('Finalidad').click();
@@ -215,7 +230,27 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.locator('#VALOR').fill('50');
 
         // Guardar los cargos
-        await page.getByRole('button', { name: 'Guardar Cargos' }).click();
+        await page.getByRole('button', {name: 'Guardar Cargos'}).click();
+    });
+
+    test('Probar el boton de Anterior', async () => {
+        // Click al boton de Anterior
+        await page.getByRole('button', {name: 'Anterior'}).click();
+
+        // La URL debe ser la anterior
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
+
+        // El titulo principal debe estar visible
+        await expect(page.getByRole('heading', {name: 'Generales del Crédito'})).toBeVisible();
+
+        // Click en actualizar y continuar
+        GuardaryContinuar();
+
+        // La URL debe cambiar
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
+
+        // El titulo principal debe estar visible
+        await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();
@@ -286,10 +321,34 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Valor tasado
         await page.getByPlaceholder('VALOR TASADO').click();
-        await page.getByPlaceholder('VALOR TASADO').fill('RD$ 6,3000');
+        await page.getByPlaceholder('VALOR TASADO').fill('RD$ 63000');
 
         // Agregar atributos a la garantia
-        
+
+        // Matricula
+        await page.getByRole('row', {name: 'MATRICULA'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
+        const matriculaValor = page.getByPlaceholder('VALOR ATRIBUTO');
+        await matriculaValor.fill('1550');
+
+        // Superficie
+        await page.getByRole('row', {name: 'SUPERFICIE_'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
+        const superficieValor = page.getByPlaceholder('VALOR ATRIBUTO');
+        await superficieValor.fill('Terreno');
+
+        // Libro
+        await page.getByRole('row', {name: 'LIBRO'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
+        const libroValor = page.getByPlaceholder('VALOR ATRIBUTO');
+        await libroValor.fill('2847');
+
+        // Folio
+        await page.getByRole('row', {name: 'FOLIO'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
+        const folioValor = page.getByPlaceholder('VALOR ATRIBUTO');
+        await folioValor.fill('3604');
+
+        // Ubicacion
+        await page.getByRole('row', {name: 'UBICACIÓN'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
+        const ubicacionValor = page.getByPlaceholder('VALOR ATRIBUTO');
+        await ubicacionValor.fill('La Vega');
 
         // Click en guardar
         await page.getByRole('button', { name: 'save Guardar' }).click();
@@ -388,10 +447,28 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} edit file-search delete`}).getByRole('button', {name: 'edit'}).click();
-        // await page.getByRole('row', {name: 'JULIA RAQUEL BEATO'}).getByRole('button', {name: 'edit'}).click();
 
+        // Ir a la seccion de datos prestamos para revisar que la tasa este calculada y se muestre
+        await page.getByRole('button', { name: '2 Datos Préstamos' }).click();
+        // La tasa debe estar visible
+        const tasa = page.locator('#loan_form_CUOTA');
+        await expect(tasa).toHaveAttribute('value', '1,458.33');
+        
         // Ir a la ultima seccion 
         await page.getByRole('button', { name: '9 Documentos' }).click();
+
+        // Los documentos deben estar visibles
+        await expect(page.getByRole('row', { name: '4 CARTA DE TRABAJO upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+
+        await expect(page.getByRole('row', { name: '3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+
+        await expect(page.getByRole('row', { name: '14 INFORME DEL SUBGERENTE DE NEGOCIOS upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+
+        await expect(page.getByRole('row', { name: '13 INSTANCIA DE CREDITO LLENA Y FIRMADA upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+        
+        await expect(page.getByRole('row', { name: '10 TABLA AMORTIZACION upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+
+        await expect(page.getByRole('row', { name: '1 CEDULA DEUDOR upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
 
         // Cambiar el estado de la solicitud
         await page.getByRole('button', { name: 'ellipsis' }).click();
@@ -428,7 +505,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
-        // await page.getByRole('row', {name: 'JULIA RAQUEL BEATO'}).getByRole('button', {name: 'edit'}).click();
 
         // La url debe de tener que la solicitud esta en proceso
         await expect(page).toHaveURL(/\/en_proceso_analisis/);
@@ -441,16 +517,11 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // El nombre de la persona debe estar visible en un titulo
         await expect(page.getByRole('heading', {name: `${nombre} ${apellido}`})).toBeVisible();
-        // await expect(page.getByRole('heading', {name: 'JULIA RAQUEL BEATO'})).toBeVisible();
 
         // Agregar un comentario
-        /*
-        await page.getByRole('button', {name: 'edit'}).click();
         const campoComentario = page.getByPlaceholder('Comentario');
-        await campoComentario.fill('');
-        await campoComentario.fill('COMENTARIO 2');
-        await page.getByRole('button', {name: 'save'}).click();
-        */
+        await campoComentario.fill('Credito Aprobado');
+        await page.getByRole('button', {name: 'Guardar'}).click();
 
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', { name: 'ellipsis' }).click();
@@ -485,7 +556,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
-        // await page.getByRole('row', {name: 'JULIA RAQUEL BEATO'}).getByRole('button', {name: 'edit'}).click();
 
         // La url debe de tener que la solicitud esta en proceso
         await expect(page).toHaveURL(/\/aprobado/);
@@ -493,10 +563,11 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Dirigirse a la ultima seccion
         await page.getByRole('button', {name: '10 Desembolso'}).click();
 
-        // Cuenta de desembolso
-        await page.locator('#form_ID_CUENTA_DESEMBOLSO').click();
-        // Elegir una cuenta de ahorros
-        await page.locator('test=AHORROS NORMALES').click();
+        // Click al boton de Imprimir Solicitud
+        const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
+        await expect(botonImprimirContrato).toBeVisible();
+        await botonImprimirContrato.click();
+
 
         // Desembolsar la solicitud
         await page.getByRole('button', {name: 'Desembolsar'}).click();

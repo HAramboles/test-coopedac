@@ -15,7 +15,7 @@ const cedulaPersonaJuridica = numerosAleatorios2;
 const cedulaPersonaJuridicaRelacionado = numerosAleatorios3;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'GanaderiaLaEsperanza';
+const nombreJuridica = '';
 
 // Nombre del relacionado
 const nombreRelacionado = '';
