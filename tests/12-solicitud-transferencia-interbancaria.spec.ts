@@ -111,7 +111,7 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
     // Agregar un comentario (Opcional)
     const campoComentario = page.locator('#form_COMENTARIO');
     await expect(campoComentario).toBeVisible();
-    await campoComentario?.fill('Prueba de transferencia bancaria');
+    await campoComentario?.fill('Transferencia Bancaria');
 
     // Boton de Aceptar
     const botonAceptar = page.locator('button:has-text("Aceptar")');

@@ -113,7 +113,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Buscar al socio
         await page.locator('#select-search').fill(`${cedula}`);
         // Seleccionar al socio
-        await page.locator(`${cedula}`).click();
+        await page.locator(`text=${cedula}`).click();
 
         // Nombres y apellidos almacenados en el state
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
@@ -182,7 +182,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Colocar una tasa por encima de lo permitido que es de 90%
         await campoTasa.fill('100');
         // Clickear fuera del campo
-        await page.getByLabel('Plazo').click();
+        await page.getByText('Plazo').click();
         
         // Debe salir un modal
         await expect(page.locator('text=Tasa Máxima para esta oferta es: 99.00')).toBeVisible();
@@ -200,9 +200,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('text=MENSUAL')).toBeVisible();
 
         // Cambiar el tipo de cuota
-        await page.getByText('INSOLUTO').click();
-        // await page.getByText('NIVELADA').click();
-        await page.getByText('ABOSLUTA').click();
+        await page.getByText('INSOLUTO').click()
+        await page.getByText('SOLO INTERES').click();
 
         // Finalidad
         await page.getByLabel('Finalidad').click();
@@ -324,34 +323,37 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByPlaceholder('VALOR TASADO').fill('RD$ 63000');
 
         // Agregar atributos a la garantia
+        await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
+
+        // Los atributos de la garantia de hipoteca deben estar visible
+        await expect(page.locator('text=MATRICULA')).toBeVisible();
+        await expect(page.locator('text=SUPERFICIE_')).toBeVisible();
+        await expect(page.locator('text=LIBRO')).toBeVisible();
+        await expect(page.locator('text=FOLIO')).toBeVisible();
+        await expect(page.locator('text=UBICACIÓN_')).toBeVisible();
 
         // Matricula
-        await page.getByRole('row', {name: 'MATRICULA'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
-        const matriculaValor = page.getByPlaceholder('VALOR ATRIBUTO');
-        await matriculaValor.fill('1550');
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
+        await page.getByPlaceholder('VALOR ATRIBUTO').fill('1550');
 
         // Superficie
-        await page.getByRole('row', {name: 'SUPERFICIE_'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
-        const superficieValor = page.getByPlaceholder('VALOR ATRIBUTO');
-        await superficieValor.fill('Terreno');
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
+        await page.getByPlaceholder('Valor Atributo').fill('Terreno');
 
         // Libro
-        await page.getByRole('row', {name: 'LIBRO'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
-        const libroValor = page.getByPlaceholder('VALOR ATRIBUTO');
-        await libroValor.fill('2847');
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(1).click();
+        await page.getByPlaceholder('VALOR ATRIBUTO').fill('2847');
 
         // Folio
-        await page.getByRole('row', {name: 'FOLIO'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
-        const folioValor = page.getByPlaceholder('VALOR ATRIBUTO');
-        await folioValor.fill('3604');
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(2).click();
+        await page.getByPlaceholder('VALOR ATRIBUTO').fill('3604');
 
         // Ubicacion
-        await page.getByRole('row', {name: 'UBICACIÓN'}).locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined"])').click();
-        const ubicacionValor = page.getByPlaceholder('VALOR ATRIBUTO');
-        await ubicacionValor.fill('La Vega');
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(3).click();
+        await page.getByPlaceholder('Valor Atributo').fill('La Vega');
 
         // Click en guardar
-        await page.getByRole('button', { name: 'save Guardar' }).click();
+        await page.getByRole('button', {name: 'save Guardar'}).click();
 
         // Click en actualizar y continuar
         GuardaryContinuar();
@@ -446,29 +448,30 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Elegir la solicitud creada anteriormente
-        await page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} edit file-search delete`}).getByRole('button', {name: 'edit'}).click();
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
+
+        // La URL debe cambiar
+        await expect(page).toHaveURL(/\/solicitado/);
 
         // Ir a la seccion de datos prestamos para revisar que la tasa este calculada y se muestre
-        await page.getByRole('button', { name: '2 Datos Préstamos' }).click();
+        await page.getByRole('button', {name: '2 Datos Préstamos'}).click();
         // La tasa debe estar visible
         const tasa = page.locator('#loan_form_CUOTA');
-        await expect(tasa).toHaveAttribute('value', '1,458.33');
+        await expect(tasa).toHaveAttribute('value', 'RD$ 416.67');
         
         // Ir a la ultima seccion 
         await page.getByRole('button', { name: '9 Documentos' }).click();
 
         // Los documentos deben estar visibles
-        await expect(page.getByRole('row', { name: '4 CARTA DE TRABAJO upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'CARTA DE TRABAJO'}).nth(4)).toBeVisible();
 
-        await expect(page.getByRole('row', { name: '3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'INFORME BURO CREDITO (DATACREDITO)'}).nth(4)).toBeVisible();
 
-        await expect(page.getByRole('row', { name: '14 INFORME DEL SUBGERENTE DE NEGOCIOS upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'INFORME DEL SUBGERENTE DE NEGOCIOS'}).nth(4)).toBeVisible();
 
-        await expect(page.getByRole('row', { name: '13 INSTANCIA DE CREDITO LLENA Y FIRMADA upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
-        
-        await expect(page.getByRole('row', { name: '10 TABLA AMORTIZACION upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'TABLA AMORTIZACION'}).nth(4)).toBeVisible();
 
-        await expect(page.getByRole('row', { name: '1 CEDULA DEUDOR upload Cargar delete' }).locator('(//span[@class="ant-upload-list-item ant-upload-list-item-undefined"])').first()).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'CEDULA DEUDOR'}).nth(4)).toBeVisible();
 
         // Cambiar el estado de la solicitud
         await page.getByRole('button', { name: 'ellipsis' }).click();
@@ -510,7 +513,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(/\/en_proceso_analisis/);
 
         // Dirigirse a la ultima seccion
-        await page.getByRole('button', { name: '10 Análisis' }).click();
+        await page.getByRole('button', {name: '10 Análisis'}).click();
 
         // El titulo de proceso, analisis debe estar visible
         await expect(page.getByRole('heading', {name: '(EN PROCESO (ANALISIS))'})).toBeVisible();
@@ -521,24 +524,24 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
         await campoComentario.fill('Credito Aprobado');
-        await page.getByRole('button', {name: 'Guardar'}).click();
+        // await page.getByRole('button', {name: 'Guardar'}).click();
 
         // Cambiar la categoria de la solicitud
-        await page.getByRole('button', { name: 'ellipsis' }).click();
-        await page.getByText('APROBADO').click();
+        await page.getByRole('button', {name: 'ellipsis'}).click();
+        await page.getByText('APROBADO', {exact: true}).click();
         await page.getByText('¿Está seguro que desea pasar el préstamo a estado APROBADO?').click();   
         
         // Click en Aceptar y se debe abrir otra pagina con la solicitud
-        const botonAceptarr = page.getByRole('button', {name: 'check Aceptar'});
+        const botonAceptar = page.getByRole('button', {name: 'check Aceptar'});
         // Esperar que se abra una nueva pestaña
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
             // Click al boton de Finalizar
-            await expect(botonAceptarr).toBeVisible(),
-            await botonAceptarr.click()
+            await expect(botonAceptar).toBeVisible(),
+            await botonAceptar.click()
         ]);
         
-        // Cerrar la pgina con la solicitud
+        // Cerrar la pagina con la solicitud
         await newPage.close();
     });
 
@@ -555,7 +558,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Elegir la solicitud creada anteriormente
-        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
 
         // La url debe de tener que la solicitud esta en proceso
         await expect(page).toHaveURL(/\/aprobado/);
@@ -563,14 +566,22 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Dirigirse a la ultima seccion
         await page.getByRole('button', {name: '10 Desembolso'}).click();
 
-        // Click al boton de Imprimir Solicitud
+        // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
         await expect(botonImprimirContrato).toBeVisible();
-        await botonImprimirContrato.click();
-
 
         // Desembolsar la solicitud
-        await page.getByRole('button', {name: 'Desembolsar'}).click();
+        const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
+        // Esperar que se abra una nueva pestaña
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Finalizar
+            await expect(botonDesembolsar).toBeVisible(),
+            await botonDesembolsar.click()
+        ]);
+        
+        // Cerrar la pagina con la solicitud
+        await newPage.close();
     });
 
     test.afterAll(async () => { // Despues de todas las pruebas

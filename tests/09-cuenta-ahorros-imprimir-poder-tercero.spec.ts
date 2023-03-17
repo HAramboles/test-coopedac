@@ -14,7 +14,7 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 
 // Pruebas
 
-test.describe('Rrpote Poder a Terceros', () => {
+test.describe('Reporte Poder a Terceros', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({

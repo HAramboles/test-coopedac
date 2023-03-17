@@ -1,7 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosAleatorios4 } from './utils/cedulas';
 
-// Vaiable globales 
+// Vaiables globales 
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
@@ -9,7 +9,7 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Cedulas
+// Cedula, nombre y apellido del menor
 const cedulaMenor = numerosAleatorios4;
 const nombreMenor = '';
 const apellidoMenor = '';
