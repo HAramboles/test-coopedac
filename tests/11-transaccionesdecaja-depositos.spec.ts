@@ -184,7 +184,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await expect(newPage.locator('h1').filter({hasText: 'ACTUALIZAR LIBRETA'})).toBeVisible();
 
         // El boton de imprimir debe estar visible
-        await expect(newPage.locator('text=Imprimir')).toBeVisible();
+        await expect(newPage.getByRole('button', {name: 'printer Imprimir'})).toBeVisible();
 
         // Titulo de vista previa
         await expect(newPage.locator('text=VISTA PREVIA')).toBeVisible();

@@ -162,7 +162,6 @@ test.describe('Reporte Poder a Terceros', () => {
         const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
         // Boton de imprimir reporte
-        // await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
         await page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`}).locator('[data-icon="printer"]').click();
 
         // Debe salir un modal con la opcion de seleccionar un testigo
@@ -186,7 +185,7 @@ test.describe('Reporte Poder a Terceros', () => {
         // La pagina abierta con el reporte se cierra
         await newPage.close();
 
-        // Click al boton de Continuar
+        // Click al boton de Cancelar
         const botonCancelar = page.locator('button:has-text("Cancelar")');
         await expect(botonCancelar).toBeVisible();
         await botonCancelar.click();

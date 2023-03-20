@@ -140,6 +140,58 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         // Boton de Agregar Firmantes debe estar visible
         const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
         await expect(botonAgregarFirmantes).toBeVisible();
+        // Click al boton
+        await botonAgregarFirmantes.click();
+
+        // Agregar un firmante, debe salir un modal
+        await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
+
+        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+        // Bucar un socio
+        const buscador = page.locator('#select-search');
+        await buscador.click();
+        await buscador.fill(`${cedulaFirmante}`);
+        // Seleccionar el socio
+        await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
+
+        // Debe salir otro modal para llenar la informacion de la firmante
+        await expect(page.locator('text=FIRMANTE:')).toBeVisible();
+
+        // Tipo firmante
+        await page.locator('#form_TIPO_FIRMANTE').click();
+        // Seleccionar un tipo de firmante
+        await page.locator('text=CO-PROPIETARIO').click();
+
+        // Tipo firma
+        await page.locator('#form_CONDICION').click();
+        // Seleccionar un tipo de firma
+        await page.locator('text=(O) FIRMA CONDICIONAL').click();
+
+        // Subir la imagen de la firma
+        const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
+        await page.getByText('Cargar ').click(); 
+        const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
+        await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
+
+        // Boton de Aceptar
+        const botonAceptar = page.locator('text=Aceptar');
+        // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(botonAceptar).toBeVisible(),
+            await botonAceptar.click()
+        ]);
+      
+        // La pagina abierta con el reporte se cierra
+        await newPage.close();
+
+        // El firmante agregado se debe mostrar
+        await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Click al boton de Continuar
         Continuar();

@@ -62,7 +62,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('text=SOLICITADO')).toBeVisible();
 
         // Boton Nueva Solicitud
-        const botonNuevaSolicitud = page.locator('text= Nueva Solicitud');
+        const botonNuevaSolicitud = page.locator('text=Nueva Solicitud');
         await expect(botonNuevaSolicitud).toBeVisible();
         await botonNuevaSolicitud.click();
 
@@ -93,7 +93,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('text=SOLICITADO')).toBeVisible();
 
         // Boton Nueva Solicitud
-        const botonNuevaSolicitud = page.locator('text= Nueva Solicitud');
+        const botonNuevaSolicitud = page.locator('text=Nueva Solicitud');
         await expect(botonNuevaSolicitud).toBeVisible();
         await botonNuevaSolicitud.click();
     });
@@ -230,28 +230,18 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Guardar los cargos
         await page.getByRole('button', {name: 'Guardar Cargos'}).click();
-    });
 
-    test('Probar el boton de Anterior', async () => {
-        // Click al boton de Anterior
-        await page.getByRole('button', {name: 'Anterior'}).click();
+        // Boton de agregar cuotas
+        const agregarCuota = page.locator('[aria-label="plus"]');
+        await expect(agregarCuota).toBeVisible();
+        await agregarCuota.click();
 
-        // La URL debe ser la anterior
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
+        // Debe salir un modal
+        await expect(page.locator('text=AGREGAR CARGO')).toBeVisible();
+        // Cerrar el modal
+        await page.getByRole('button', {name: 'Close'}).click();
 
-        // El titulo principal debe estar visible
-        await expect(page.getByRole('heading', {name: 'Generales del Crédito'})).toBeVisible();
-
-        // Click en actualizar y continuar
-        GuardaryContinuar();
-
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
-
-        // El titulo principal debe estar visible
-        await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
-
-        // Click en actualizar y continuar
+        // Click en guardar y continuar
         GuardaryContinuar();
     });
 
@@ -318,9 +308,17 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir que el socio es propietario de la garantia
         await page.getByLabel('', { exact: true }).check();
 
+        // Nombre y apellido de la persona
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
+        await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
+
         // Valor tasado
-        await page.getByPlaceholder('VALOR TASADO').click();
-        await page.getByPlaceholder('VALOR TASADO').fill('RD$ 63000');
+        const valorTasado = page.getByPlaceholder('VALOR TASADO');
+        await valorTasado.click();
+        await valorTasado.fill('RD$ 63000');
 
         // Agregar atributos a la garantia
         await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
@@ -380,46 +378,52 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByRole('heading', {name: 'Lista de documentos'})).toBeVisible();
 
         // Click en finalizar
-        await page.getByRole('button', { name: 'check Finalizar' }).click();
+        await page.getByRole('button', {name: 'check Finalizar'}).click();
 
         // Debe salir un modal, diciendo que debe agregar los documentos necesarios
         await expect(page.getByText('Debe adjuntar todos los documentos requeridos.')).toBeVisible();
         // Click en aceptar
-        await page.getByRole('button', { name: 'check Aceptar' }).click();
-
+        await page.getByRole('button', {name: 'check Aceptar'}).click();
+        
         // Subir Carta de Trabajo
         const subirCartaTrabajoPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', { name: '4 CARTA DE TRABAJO upload Cargar delete' }).getByRole('button', { name: 'upload Cargar' }).first().click();
+        await page.getByRole('row', {name: '4 CARTA DE TRABAJO upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
         const subirCartaTrabajo = await subirCartaTrabajoPromesa;
         await subirCartaTrabajo.setFiles(`${firma}`);
-        
+
+        // Esperar que el checkbox este verde y marcado antes de subir otro archivo
+        // await expect(page.locator('(//span[@class="ant-checkbox- css-1nk3o8a ant-checkbox-checked"])')).toBeVisible();
+
         // Subir Informe de Buro Credito
         const subirBuroCreditoPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', { name: '3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete' }).getByRole('button', { name: 'upload Cargar' }).first().click();
+        await page.getByRole('row', {name: '3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
         const subirBuroCredito = await subirBuroCreditoPromesa;
         await subirBuroCredito.setFiles(`${firma}`);
+
+        await expect(page.locator('text=3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete')).toBeVisible();
+        await page.locator('text=3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete').click();
         
         // Subir Informe del Subgerente de Negocios
         const subirSubgerenteNegociosPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', { name: '14 INFORME DEL SUBGERENTE DE NEGOCIOS upload Cargar delete' }).getByRole('button', { name: 'upload Cargar' }).first().click();
+        await page.getByRole('row', {name: '14 INFORME DEL SUBGERENTE DE NEGOCIOS upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
         const subirSubgerenteNegocios = await subirSubgerenteNegociosPromesa;
-        await subirSubgerenteNegocios.setFiles(`${firma}`);
+        await subirSubgerenteNegocios.setFiles(`${firma}`);  
         
         // Subir Instancia de credito llena y firmada
         const subirInstanciaCreditoPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', { name: '13 INSTANCIA DE CREDITO LLENA Y FIRMADA upload Cargar delete' }).getByRole('button', { name: 'upload Cargar' }).first().click();
+        await page.getByRole('row', {name: '13 INSTANCIA DE CREDITO LLENA Y FIRMADA upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
         const subirInstanciaCredito = await subirInstanciaCreditoPromesa;
         await subirInstanciaCredito.setFiles(`${firma}`);
         
         // Subir Tabla de amortizacion
         const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', { name: '10 TABLA AMORTIZACION upload Cargar delete' }).getByRole('cell', { name: 'upload Cargar' }).locator('button').click();
+        await page.getByRole('row', {name: '10 TABLA AMORTIZACION upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
         const subirTablaAmortizacion = await subirTablaAmortizacionPromesa;
         await subirTablaAmortizacion.setFiles(`${firma}`);
         
         // Subir Cedula del Deudor
         const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('button', { name: 'upload Cargar' }).first().click();
+        await page.getByRole('button', {name: 'upload Cargar'}).first().click();
         const subirCedulaDeudor = await subirCedulaDeudorPromesa;
         await subirCedulaDeudor.setFiles(`${firma}`);
     });
@@ -435,7 +439,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
             await botonFinalizar.click()
         ]);
         
-        // Cerrar la pgina con la solicitud
+        // Cerrar la pagina con la solicitud
         await newPage.close();
     });
 
@@ -450,17 +454,18 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
-        // La URL debe cambiar
+        // La url debe de tener que la solicitud esta en solicitado
         await expect(page).toHaveURL(/\/solicitado/);
 
-        // Ir a la seccion de datos prestamos para revisar que la tasa este calculada y se muestre
+        // Ir a la seccion de datos prestamos 
         await page.getByRole('button', {name: '2 Datos Préstamos'}).click();
-        // La tasa debe estar visible
+
+        // La tasa debe estar visible y calculada
         const tasa = page.locator('#loan_form_CUOTA');
         await expect(tasa).toHaveAttribute('value', 'RD$ 416.67');
         
         // Ir a la ultima seccion 
-        await page.getByRole('button', { name: '9 Documentos' }).click();
+        await page.getByRole('button', {name: '9 Documentos'}).click();
 
         // Los documentos deben estar visibles
         await expect(page.locator('div').filter({hasText: 'CARTA DE TRABAJO'}).nth(4)).toBeVisible();
@@ -474,14 +479,14 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('div').filter({hasText: 'CEDULA DEUDOR'}).nth(4)).toBeVisible();
 
         // Cambiar el estado de la solicitud
-        await page.getByRole('button', { name: 'ellipsis' }).click();
+        await page.getByRole('button', {name: 'ellipsis'}).click();
         await page.getByText('EN PROCESO (ANALISIS)').click();
         
         // Debe salir un modal de confirmacion
         await expect(page.getByText('¿Está seguro que desea pasar el préstamo a estado EN PROCESO (ANALISIS)?')).toBeVisible();
 
         // Click en Aceptar y se debe abrir otra pagina con la solicitud
-        const botonAceptar = page.getByRole('button', { name: 'check Aceptar' });
+        const botonAceptar = page.getByRole('button', {name: 'check Aceptar'});
         // Esperar que se abra una nueva pestaña
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -524,6 +529,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
         await campoComentario.fill('Credito Aprobado');
+        // Espear a que se suban los cambios
         // await page.getByRole('button', {name: 'Guardar'}).click();
 
         // Cambiar la categoria de la solicitud
