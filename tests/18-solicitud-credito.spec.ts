@@ -17,7 +17,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false,
+            headless: true,
         });
 
         // Crear el context
