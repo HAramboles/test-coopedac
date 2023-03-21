@@ -110,7 +110,10 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
         /* Guardar las cookies y el sesionStorage */
         await context.storageState({path: 'state.json'});
 
-        /* Cerrar el context, el browser y guardar el video */
+        /* Cerrar la page */
+        await page.close();
+
+        /* Cerrar el context */
         await context.close();
     });
 });

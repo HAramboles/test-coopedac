@@ -17,7 +17,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true,
+            headless: false,
         });
 
         // Crear el context
@@ -391,8 +391,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         const subirCartaTrabajo = await subirCartaTrabajoPromesa;
         await subirCartaTrabajo.setFiles(`${firma}`);
 
-        // Esperar que el checkbox este verde y marcado antes de subir otro archivo
-        // await expect(page.locator('(//span[@class="ant-checkbox- css-1nk3o8a ant-checkbox-checked"])')).toBeVisible();
+        // Esperar que la Carta de Trabajo se haya subido
+        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])')).toBeVisible();
 
         // Subir Informe de Buro Credito
         const subirBuroCreditoPromesa = page.waitForEvent('filechooser');
@@ -400,32 +400,44 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         const subirBuroCredito = await subirBuroCreditoPromesa;
         await subirBuroCredito.setFiles(`${firma}`);
 
-        await expect(page.locator('text=3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete')).toBeVisible();
-        await page.locator('text=3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete').click();
+        // Esperar que el Buro Credito se haya subido
+        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(1)).toBeVisible();
         
         // Subir Informe del Subgerente de Negocios
         const subirSubgerenteNegociosPromesa = page.waitForEvent('filechooser');
         await page.getByRole('row', {name: '14 INFORME DEL SUBGERENTE DE NEGOCIOS upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
         const subirSubgerenteNegocios = await subirSubgerenteNegociosPromesa;
         await subirSubgerenteNegocios.setFiles(`${firma}`);  
+
+        // Esperar que el Informe del Subgerente de Negocios se haya subido
+        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(2)).toBeVisible();
         
         // Subir Instancia de credito llena y firmada
         const subirInstanciaCreditoPromesa = page.waitForEvent('filechooser');
         await page.getByRole('row', {name: '13 INSTANCIA DE CREDITO LLENA Y FIRMADA upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
         const subirInstanciaCredito = await subirInstanciaCreditoPromesa;
         await subirInstanciaCredito.setFiles(`${firma}`);
+
+        // Esperar que la Instancia de Credito se haya subido
+        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(3)).toBeVisible();
         
         // Subir Tabla de amortizacion
         const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');
         await page.getByRole('row', {name: '10 TABLA AMORTIZACION upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
         const subirTablaAmortizacion = await subirTablaAmortizacionPromesa;
         await subirTablaAmortizacion.setFiles(`${firma}`);
+
+        // Esperar que la Tabla de Amortizacion se haya subido
+        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(4)).toBeVisible();
         
         // Subir Cedula del Deudor
         const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');
         await page.getByRole('button', {name: 'upload Cargar'}).first().click();
         const subirCedulaDeudor = await subirCedulaDeudorPromesa;
         await subirCedulaDeudor.setFiles(`${firma}`);
+
+        // Esperar que la Cedula se haya subido
+        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(5)).toBeVisible();
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
@@ -553,10 +565,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
     test('Desembolsar la solicitud', async () => {
         // La url debe regresar a las solicitudes solicitadas
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
 
         // Cambiar el estado de las solicitudes de Solicitado a Aprobado
-        await page.locator('text=SOLICITADO').click();
+        await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
 
         // Nombres y apellidos almacenados en el state
