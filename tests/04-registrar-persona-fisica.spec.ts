@@ -11,8 +11,8 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedula, nombre y apellidos de la persona
 const cedula = numerosAleatorios;
-const nombrePersona = '';
-const apellidoPersona = '';
+const nombrePersona = 'IRIS MIRABAL';
+const apellidoPersona = 'CORCINO PONCIO';
 
 /* Pruebas */
 

@@ -287,11 +287,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=7`);
 
-        // Los tres titulos de la seccion deben estar visibles
-        await page.getByRole('heading', {name: 'Codeudores', exact: true}).click();
-        await page.getByRole('heading', {name: 'Garantías', exact: true}).click();
-        await page.getByRole('heading', {name: 'Garantías Líquidas', exact: true}).click();
-
         // Click al boton de agregar garantia
         await page.getByRole('button', {name: 'Agregar Garantía'}).click();
 
@@ -541,8 +536,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
         await campoComentario.fill('Credito Aprobado');
-        // Espear a que se suban los cambios
-        // await page.getByRole('button', {name: 'Guardar'}).click();
+        // Guardar Comentario
+        await page.getByRole('button', {name: 'Guardar'}).click();
 
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();

@@ -169,7 +169,7 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         const AgregarFirmante = page.locator('text=Agregar Firmante');
         await expect(AgregarFirmante).toBeVisible();
         
-        // Debe estar la firmal del co-propietario
+        // Debe estar la firma del co-propietario
         await expect(page.locator('text=CO-PROPIETARIO')).toBeVisible();
 
         // Click al boton de Continuar

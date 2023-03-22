@@ -13,7 +13,7 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 
 // Pruebas
 
-test.describe('', () => {
+test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros Pagaderas', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -254,7 +254,7 @@ test.describe('', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=3`);
 
         // El titulo principal debe estar visible
-        await expect(page.locator('text=FORMA DE PAGO DE INTERES O EXCEDENTES')).toBeVisible();
+        await expect(page.locator('text=FORMA DE PAGO DE INTERESES O EXCEDENTES')).toBeVisible();
 
         // Nombre y apellido de la persona almacenados en el state
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));

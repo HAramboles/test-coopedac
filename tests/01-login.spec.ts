@@ -33,13 +33,8 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
             headless: true,
         });
 
-        /* Crear un context para la creacion de videos */
-        context = await browser.newContext({
-            /*recordVideo: {
-                dir: 'videos/01-login/',
-                size: {width: 1280, height: 720}
-            }*/
-        });
+        /* Crear un context */
+        context = await browser.newContext();
 
         /* Crear una nueva page usando el context */
         page = await context.newPage();
@@ -56,6 +51,14 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
         await expect(page.locator('#form_username')).toBeVisible(); /* Campo de usuario */
         await expect(page.locator('#form_password')).toBeVisible(); /* Campo de contraseña */
         await expect(page.locator('button:has-text("Iniciar Sesión")')).toBeVisible(); /* Boton de Login */
+    });
+
+    test('Debe de redigirse al login si el usuario cambia la url', async () => {
+        /* Esperar a que el usuario cambie la url manualmente */
+        await page.goto(`${url_base}/home`);
+
+        /* Esperar que la url contenga la url correcta, que en este caso es la url_base mas el login */
+        await expect(page).toHaveURL(/\/login/);
     });
 
     test('Debe de dar error al ingresar un usuario y una contraseña incorrectos', async () => {
@@ -82,14 +85,6 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
         };
     });
 
-    test('Debe de redigirse al login si el usuario cambia la url', async () => {
-        /* Esperar a que el usuario cambie la url manualmente */
-        await page.goto(`${url_base}/home`);
-
-        /* Esperar que la url contenga la url correcta, que en este caso es la url_base mas el login */
-        await expect(page).toHaveURL(/\/login/);
-    });
-
     test('El login debe ser exitoso y se debe de mandar al usuario a la pagina de inicio', async () => {
         /* Ingresar un usuario y una contraseña correctos */
         await usernameCampo?.fill(`${userCorrecto}`);
@@ -100,7 +95,7 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
         await buttonLogin.click();
 
         /* Esperar que la url cambie al momento de hacer el login */
-        await expect(page).toHaveURL(/\/home/);
+        await expect(page).toHaveURL(`${url_base}/home`);
 
         /* Esperar que el boton de perfil este visible */
         await expect(page.locator('[aria-label="user"]')).toBeVisible();
@@ -110,10 +105,10 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
         /* Guardar las cookies y el sesionStorage */
         await context.storageState({path: 'state.json'});
 
-        /* Cerrar la page */
+        // Cerrar la page
         await page.close();
 
-        /* Cerrar el context */
+        /* Cerrar el context, el browser y guardar el video */
         await context.close();
     });
 });
