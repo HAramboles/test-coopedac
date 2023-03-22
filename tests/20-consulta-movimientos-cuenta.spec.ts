@@ -128,7 +128,7 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         await expect(page.locator('h1').filter({hasText: 'BALANCE FINAL :'})).toBeVisible();
         // La cantidad debe ser la misma ingresada en cuenta de certificados
         await expect(page.locator('h1').filter({hasText: '50,600.00'})).toBeVisible();
-        */
+        */ 
 
         // Imprimir los movimientos
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
