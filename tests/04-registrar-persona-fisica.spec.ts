@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { numerosAleatorios } from './utils/cedulas';
+import { numerosAleatorios } from './utils/cedulasypasaporte';
+import { numerosPasaporte } from './utils/cedulasypasaporte';
 
 // Variables globales
 let browser: Browser;
@@ -9,10 +10,11 @@ let page: Page;
 /* URL de la pagina */
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Cedula, nombre y apellidos de la persona
+// Cedula, pasaporte, nombre y apellidos de la persona
 const cedula = numerosAleatorios;
-const nombrePersona = 'IRIS MIRABAL';
-const apellidoPersona = 'CORCINO PONCIO';
+const pasaporte = numerosPasaporte;
+const nombrePersona = 'JIMENA';
+const apellidoPersona = 'JIMENEZ';
 
 /* Pruebas */
 
@@ -43,7 +45,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await botonContinuar.click();
     };
 
-    test('Hacer click al boton de Registrar Persona', async () => {
+    test('Ir a la opcion de Registrar Persona', async () => {
         // Boton de Socios
         await page.locator('text=SOCIOS').click();
 
@@ -100,12 +102,10 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await campoCedula?.fill(`${cedula}`);
         */
         
-        // Input del pasaporte. Cada pasporte debe ser unico
+        // Input del pasaporte. Cada pasaporte debe ser unico
         const campoPasaporte = page.locator('#person_NO_PASAPORTE');
         await campoPasaporte.click();
-        await campoPasaporte.fill(`AB${numerosAleatorios}`); /* El pasaporte solo permite 8 numeros, 
-        por lo que aunque la funcion genere 11 numeros, solo se colocaran 8 numeros, 
-        ademas de que es una buena forma de probar que el input funciona correctamente. */
+        await campoPasaporte.fill(pasaporte); 
         
         // Input del nombre
         const campoNombre = page.locator('#person_NOMBRES');
@@ -121,7 +121,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
 
         // Seleccionar la nacionalidad
         await page.locator('#person_NACIONALIDAD')?.fill('DOMINICANA');
-        // nth = Hacer click a la primera opcion, que debe de coincidir con lo escrito
+        // nth(0) = Hacer click a la primera opcion, que debe de coincidir con lo escrito
         await page.locator('text=DOMINICANA').nth(0).click();
 
         // Input de la fecha de nacimiento

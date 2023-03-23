@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { numerosAleatorios4 } from './utils/cedulas';
+import { numerosAleatorios4 } from './utils/cedulasypasaporte';
 
 // Vaiables globales 
 let browser: Browser;
@@ -11,8 +11,8 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedula, nombre y apellido del menor
 const cedulaMenor = numerosAleatorios4;
-const nombreMenor = 'JOAQUIN';
-const apellidoMenor = 'CORCINO PONCIO';
+const nombreMenor = '';
+const apellidoMenor = '';
 
 // Pruebas
 

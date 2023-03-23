@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { numerosAleatorios2 } from './utils/cedulas';
-import { numerosAleatorios3 } from './utils/cedulas';
+import { numerosAleatorios2 } from './utils/cedulasypasaporte';
+import { numerosAleatorios3 } from './utils/cedulasypasaporte';
 
 // Variables Globales
 let browser: Browser;
@@ -18,8 +18,8 @@ const cedulaPersonaJuridicaRelacionado = numerosAleatorios3;
 const nombreJuridica = 'CultivoSagradoS';
 
 // Nombre del relacionado
-const nombreRelacionado = 'JORDAN';
-const apellidoRelacionado = 'ESTEVEZ';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Pruebas
 
