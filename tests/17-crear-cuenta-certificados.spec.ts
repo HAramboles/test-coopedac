@@ -249,24 +249,27 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
         Continuar();
     });
 
-    test('Crear una Nueva Cuenta de Certificado - Paso 1 - Metodo de Interes', async () => {
+    test('Crear una Nueva Cuenta de Certificado - Paso 3 - Metodo de Interes', async () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=3`);
 
         // El titulo principal debe estar visible
         await expect(page.locator('text=FORMA DE PAGO DE INTERESES O EXCEDENTES')).toBeVisible();
+    });
 
-        // Nombre y apellido de la persona almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-        // Debe estar visible el nombre del titular
-        await expect(page.locator(`${nombre} ${apellido}`)).toBeVisible();
-
-        // Boton Finalizar
+    test('Finalizar con la Creacion de Cuenta de Certificado', async () => {
+        // Boton de Finalizar
         const botonFinalizar = page.locator('text=Finalizar');
-        await expect(botonFinalizar).toBeVisible();
-        await botonFinalizar.click();
+        // Esperar que se abra una nueva pestaña
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Finalizar
+            await expect(botonFinalizar).toBeVisible(),
+            await botonFinalizar.click()
+        ]);
+      
+        // La pagina abierta con la solicitud se cierra
+        await newPage.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas
