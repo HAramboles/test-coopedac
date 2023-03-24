@@ -30,7 +30,7 @@ test.describe('Pruebas con el Login de BPSTEC', () => {
     test.beforeAll(async () => { /* Antes de las pruebas */
         /* Crear el browser, en este caso el chromiun, con la propiedad headless. Se ejecuta en segundo plano */
         browser = await chromium.launch({
-            headless: true,
+            headless: false,
         });
 
         /* Crear un context */

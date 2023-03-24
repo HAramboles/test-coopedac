@@ -14,7 +14,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     test.beforeAll(async () => {
         /* Crear el browser, con la propiedad headless */
         browser = await chromium.launch({
-          headless: true
+          headless: false,
         });
 
         /* Crear un context con el storageState donde esta guardado el token de la sesion */
@@ -69,11 +69,10 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await expect(buscarSocio).toBeVisible();
 
         // Cedula de la persona almacenada en el state
-        // const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
 
         // Ingresar la cedula del socio
-        // await buscarSocio.fill(`${cedula}`);
-        await buscarSocio.fill('LUISA DEL CARMEN RAMIREZ VELOZ');
+        await buscarSocio.fill(`${cedula}`);
         // Seleccionar la cuenta de aportaciones del socio  
         await page.locator('text=APORTACIONES').click();
     });

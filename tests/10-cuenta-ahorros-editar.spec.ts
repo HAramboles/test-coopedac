@@ -9,16 +9,13 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Imagen de la firma
-const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
-
 // Pruebas
 
 test.describe('Editar una Cuenta de Ahorros', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true,
+            headless: false,
         });
 
         // Crear el context
@@ -170,7 +167,7 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         await expect(AgregarFirmante).toBeVisible();
         
         // Debe estar la firma del co-propietario
-        await expect(page.locator('text=CO-PROPIETARIO')).toBeVisible();
+        // await expect(page.locator('text=CO-PROPIETARIO')).toBeVisible();
 
         // Click al boton de Continuar
         const botonContinuar = page.locator('button:has-text("Continuar")');

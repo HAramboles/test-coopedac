@@ -15,7 +15,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true,
+            headless: false,
         });
 
         // Crear el context
@@ -45,18 +45,18 @@ test.describe('Prueba con el Estado de Cuenta', () => {
     });
 
     test('Buscar un socio', async () => {
+        // El titulo principal debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTA DEL CLIENTE'})).toBeVisible();
+
         // Cedula, nombre y apellido de la persona almacenada en el state
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Buscar un socio
-        await page.locator('#select-search').fill(`${cedula}`);
+        await page.locator('#form').getByRole('combobox').fill(`${cedula}`);
         // Click al spcio buscado
-        await page.locator(`text=${cedula}`).click();
-
-        // El nombre y el apellido de la persona debe estar visible
-        await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
+        await page.locator(`text=${nombre} ${apellido}`).click();
     });
 
     test('Cambiar los Estados de los productos', async () => {
@@ -217,10 +217,10 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await page.locator('text=ESTADO CUENTA PRESTAMOS').click();
 
         // Debe mostrar un mensaje 
-        await expect(page.locator('text=Precione ACEPTAR para generar el reporte')).toBeVisible();
+        await expect(page.getByText('Presione ACEPTAR para generar el reporte')).toBeVisible();
 
         // Boton Aceptar
-        const botonAceptar = page.locator('text=Aceptar');
+        const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -239,7 +239,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         // Elegir un reporte
         await page.locator('text=ESTADO DEL CLIENTE').click();
 
-        // Debe mostrar un mensaje 
+        // Fecha de Corte
         const fechaCorte = page.locator('#form_rp_fecha');
         await expect(fechaCorte).toBeVisible();
 
@@ -247,7 +247,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await fechaCorte.fill(`${formatDate(new Date())}`);
 
         // Boton Aceptar
-        const botonAceptar = page.locator('text=Aceptar');
+        const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -257,6 +257,47 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         ]); 
 
         // Cerrar la pagina
+        await newPage.close();
+    });
+
+    test('Imprimir Reporte Estado de Cuentas', async () => {
+        // Click para elegir un reporte
+        await page.locator('#form_REPORTE').click();
+        // Elegir un reporte
+        await page.getByRole('option', {name: 'ESTADO DE CUENTAS'}).click();
+
+        // Fecha Inicial
+        const fechaInicial = page.locator('#form_rp_fecha_inicio');
+        await expect(fechaInicial).toBeVisible();
+
+        // Restarle un dia a la fecha actual
+        const dia = new Date();
+        dia.setDate(dia.getDate() - 1);
+        /* setDate = cambiar el dia del mes. getDate = Devuelve un numero del mes entre 1 y 31 
+        A la fecha actual se cambia el dia del mes por el dia devuelto por getDate menos 1 */
+        const diaAnterior = formatDate(dia);
+
+        // Ingresar la fecha Inicial
+        await fechaInicial.fill(`${diaAnterior}`);
+
+        // Fecha Final 
+        const fechaFinal = page.locator('#form_rp_fecha_final');
+        await expect(fechaFinal).toBeVisible();
+
+        // Ingresar la fecha Final
+        await fechaFinal.fill(`${formatDate(new Date())}`);
+
+        // Boton Aceptar
+        const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+        // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(botonAceptar).toBeVisible(),
+            await botonAceptar.click()
+        ]); 
+
+        // Cerrar la pagina con los movimientos de la cuenta
         await newPage.close();
     });
 

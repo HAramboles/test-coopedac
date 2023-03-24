@@ -17,7 +17,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true,
+            headless: false,
         });
 
         // Crear el context
@@ -168,7 +168,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByLabel('Grupo').click();
         await page.getByLabel('Grupo').fill('sin gara');
         // Elegir grupo sin garantia
-        await page.getByRole('option', { name: 'SIN GARANTIA' }).click();
+        await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
         // Monto
         await page.locator('#loan_form_MONTO').click();
@@ -220,9 +220,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
 
-        // El titulo principal debe estar visible
-        await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
-
         // Colocar una cantidad para los cargos
         const cargos = page.locator('(//td[@class="ant-table-cell montoPorcentajeSolicitud"])');
         await cargos.click();
@@ -231,7 +228,14 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Guardar los cargos
         await page.getByRole('button', {name: 'Guardar Cargos'}).click();
 
-        // Boton de agregar cuotas
+        // Cerrar los dos mensajes que aparecen
+        await page.locator('[aria-label="close"]').first().click();
+        await page.locator('[aria-label="close"]').last().click();
+
+        // El titulo principal debe estar visible
+        await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
+    
+        // Boton de agregar cuotas 
         const agregarCuota = page.locator('[aria-label="plus"]');
         await expect(agregarCuota).toBeVisible();
         await agregarCuota.click();
@@ -301,7 +305,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByText('HIPOTECA', {exact: true}).click();
 
         // Elegir que el socio es propietario de la garantia
-        await page.getByLabel('', { exact: true }).check();
+        await page.getByLabel('', {exact: true}).check();
 
         // Nombre y apellido de la persona
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));

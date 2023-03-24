@@ -18,7 +18,7 @@ test.describe('Reporte Poder a Terceros', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true,
+            headless: false,
         });
 
         // Crear el context

@@ -14,7 +14,7 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true,
+            headless: false,
         });
 
         // Crear el context
@@ -93,6 +93,9 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
         await expect(campoMonto).toBeVisible();
         await campoMonto.fill('100');
+
+        // Agregar un comentario
+        await page.locator('#form_COMENTARIO').fill('Retiro de 100 pesos a la cuenta de Ahorros');
 
         // Boton Agregar
         await page.locator('text=Agregar').click();

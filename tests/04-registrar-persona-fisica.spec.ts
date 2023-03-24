@@ -22,7 +22,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
     test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
         /* Crear el browser, con la propiedad headless */
         browser = await chromium.launch({
-            headless: true
+            headless: false
         });
 
         /* Crear un context con el storageState donde esta guardado el token de la sesion */

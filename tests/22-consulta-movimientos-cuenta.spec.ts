@@ -14,7 +14,7 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true
+            headless: false,
         });
 
         // Crear el context
@@ -69,7 +69,7 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         // Balance final de todos los movimientos
         await expect(page.locator('h1').filter({hasText: 'BALANCE FINAL :'})).toBeVisible();
         // La cantidad debe ser la misma ingresada en cuenta de certificados
-        // await expect(page.locator('h1').filter({hasText: '250.00'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: '50.00'})).toBeVisible();
 
         // Imprimir los movimientos
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
@@ -107,28 +107,11 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         // El titulo de movimientos de la cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
         
-        /*
-        // Fila del deposito
-        await expect(page.getByRole('cell', {name: 'DEPOSITO'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: '1,000.00'}).first()).toBeVisible();
+        // El deposito realizado anteriormente debe mostrarse   
+        await expect(page.getByText('Deposito de 1000 pesos a la cuenta de Ahorros')).toBeVisible();
 
-        // Fila del retiro
-        await expect(page.getByRole('cell', {name: 'RETIRO'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: '100.00'})).toBeVisible();
-
-        // Fila de la nota de debito
-        await expect(page.getByRole('cell', {name: 'NOTA DE DEBITO CTE'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: '250.00'})).toBeVisible();
-
-        // Fila del desembolso del prestamo
-        await expect(page.getByRole('cell', {name: 'DESEMBOLSO PRESTAMO', exact: true})).toBeVisible();
-        await expect(page.getByRole('cell', {name: '49,950.00'})).toBeVisible();      
-
-        // Balance final de todos los movimientos
-        await expect(page.locator('h1').filter({hasText: 'BALANCE FINAL :'})).toBeVisible();
-        // La cantidad debe ser la misma ingresada en cuenta de certificados
-        await expect(page.locator('h1').filter({hasText: '50,600.00'})).toBeVisible();
-        */ 
+        // El retiro realizado anteriormnete debe mostrarse
+        await expect(page.getByText('Retiro de 100 pesos a la cuenta de Ahorros')).toBeVisible();
 
         // Imprimir los movimientos
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});

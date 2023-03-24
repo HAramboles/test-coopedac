@@ -59,7 +59,7 @@ test.describe('Pruebas con el Registro de Tasa', async () => {
     test.describe(`Test cuando el escenario es: ${Object.values(scenarie).toString()}`, () => {
       test.beforeAll(async () => {
         browser = await chromium.launch({
-          headless: true,
+          headless: false,
         });
 
         // Create a new context with the saved storage state.

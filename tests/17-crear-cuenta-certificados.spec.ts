@@ -17,7 +17,7 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true
+            headless: false,
         });
 
         // Crear el context
@@ -66,8 +66,6 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
 
         // No debe permitir crear una cuenta sin elegir el tipo de certificado y debe salir un mensaje
         await expect(page.locator('text=No ha seleccionado un tipo de captación.')).toBeVisible();
-        // Cerrar el mensaje
-        // await page.locator('[data-icon="close"]').click(); 
     });
 
     test('Elegir un tipo de certificado', async () => {

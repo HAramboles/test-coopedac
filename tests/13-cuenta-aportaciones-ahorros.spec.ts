@@ -15,7 +15,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser, con la propiedad headless
         browser = await chromium.launch({
-            headless: true
+            headless: false
         });
 
         // Crear el context
@@ -113,7 +113,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
 
         // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedula'));
         const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 

@@ -14,7 +14,7 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         /* Crear el browser, con la propiedad headless */
         browser = await chromium.launch({
-            headless: true
+            headless: false
         });
 
         /* Crear un context con el storageState donde esta guardado el token de la sesion */
@@ -137,6 +137,9 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         // Regresar a la seccion de firmantes
         await page.getByRole('tab').filter({hasText: 'Firmantes'}).click();
 
+        // Cerrar uno de los mensajes que aparecen
+        await page.locator('[aria-label="close"]').first().click();
+
         // Boton de Agregar Firmantes debe estar visible
         const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
         await expect(botonAgregarFirmantes).toBeVisible();
@@ -176,6 +179,9 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         await page.getByText('Cargar ').click(); 
         const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
         await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
+
+        // Esperar que la firma se suba y se muestre
+        await expect(page.locator('(//div[@class="ant-upload-list ant-upload-list-picture-card"])')).toBeVisible();
 
         // Boton de Aceptar
         const botonAceptar = page.locator('text=Aceptar');

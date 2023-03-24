@@ -17,7 +17,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true
+            headless: false,
         });
 
         // Crear el context
@@ -101,7 +101,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=2`);
 
         // El titulo debe estar presente
-        await expect(page.locator('text=FIRMANTES')).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
 
         // Boton de Agregar Firmantes debe estar visible
         const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
@@ -183,7 +183,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
         // El titulo de Ahorros debe estar visible
         await expect(page.locator('h1').filter({hasText: 'APORTACIONES PREFERENTES'})).toBeVisible();
     });
-
 
     test.afterAll(async () => { // Despues de las pruebas
         // Cerra la page

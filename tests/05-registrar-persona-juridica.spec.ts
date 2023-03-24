@@ -27,7 +27,7 @@ test.describe('Pruebas con el Registro de Persona Juridica', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true,
+            headless: false,
         });
 
         // Crear el context

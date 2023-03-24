@@ -12,7 +12,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser, con la propiedad headless
         browser = await chromium.launch({
-            headless: true
+            headless: false
         });
 
         // Crear el context

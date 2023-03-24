@@ -20,7 +20,7 @@ test.describe('Pruebas con el Registro de una Persona Fisica - Menor de edad', (
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true,
+            headless: false,
         });
 
         // Crear el context

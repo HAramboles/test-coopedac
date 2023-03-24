@@ -31,7 +31,7 @@ test.describe('Activar Caja - Pruebas con los diferentes parametros', () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: true
+                    headless: false
                 });
 
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */
@@ -44,7 +44,6 @@ test.describe('Activar Caja - Pruebas con los diferentes parametros', () => {
 
                 //
                 await page.route(/\/caja/, async (route) => {
-                // await page.route('**/caja/data[0]/', async (route) => {
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
