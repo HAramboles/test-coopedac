@@ -465,7 +465,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
-        // La url debe de tener que la solicitud esta en solicitado
+        // La url debe de tener que la solicitud esta en estado solicitado
         await expect(page).toHaveURL(/\/solicitado/);
 
         // Ir a la seccion de datos prestamos 
@@ -525,7 +525,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
-        // La url debe de tener que la solicitud esta en proceso
+        // La url debe de tener que la solicitud esta en estado en proceso
         await expect(page).toHaveURL(/\/en_proceso_analisis/);
 
         // Dirigirse a la ultima seccion

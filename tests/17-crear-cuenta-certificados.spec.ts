@@ -197,6 +197,10 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
         // La firma del titular debe estar visible
         await expect(page.locator('text=TITULAR')).toBeVisible();
 
+        // Cerrar los mensajes que se muestran
+        await page.locator('[aria-label="close"]').first().click();
+        await page.locator('[aria-label="close"]').last().click();
+
         // Agregar firmante
         const botonAgregarFirmante = page.getByRole('button', {name: 'Agregar Firmante'});
         await expect(botonAgregarFirmante).toBeVisible();

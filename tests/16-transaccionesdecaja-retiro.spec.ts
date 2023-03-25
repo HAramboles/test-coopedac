@@ -89,6 +89,23 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     });
 
     test('Datos del Retiro de la Cuenta de Ahorro', async () => {
+        // Se deben mostrar el titular y el co-propietario
+        await expect(page.locator('text=FIRMANTES')).toBeVisible();
+        await expect(page.locator('text=CO-PROPIETARIO')).toBeVisible();
+        await expect(page.locator('text=TITULAR')).toBeVisible();
+        
+        // El titulo de las firmas debe estar visible
+        await expect(page.locator('text=FIRMAS AUTORIZADAS')).toBeVisible();
+
+        // La firma del titular debe estar visible
+        await expect(page.locator('(//div[@class="ant-image css-1nk3o8a"])')).toBeVisible();
+        
+        // Click en siguiente
+        await page.getByRole('button', {name: 'Siguiente'}).click();
+
+        // La firma del co-propietario debe estar visible
+        await expect(page.locator('(//div[@class="ant-image css-1nk3o8a"])')).toBeVisible();
+
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
         await expect(campoMonto).toBeVisible();

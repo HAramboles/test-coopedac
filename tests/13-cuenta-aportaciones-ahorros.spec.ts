@@ -144,7 +144,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
 
         // El nombre del firmante agregado debe estar visible
-        await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Boton de Continuar
         Continuar();

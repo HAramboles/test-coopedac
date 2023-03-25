@@ -103,6 +103,10 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
         // El titulo debe estar presente
         await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
 
+        // Cerrar los mensajes que se muestran
+        await page.locator('[aria-label="close"]').first().click();
+        await page.locator('[aria-label="close"]').last().click();
+
         // Boton de Agregar Firmantes debe estar visible
         const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
         await expect(botonAgregarFirmantes).toBeVisible();
@@ -149,7 +153,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
         await botonAceptar.click();
 
         // Debe esatr visible el firmante agregado
-        await expect(page.locator(`${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Click en continuar
         Continuar();
