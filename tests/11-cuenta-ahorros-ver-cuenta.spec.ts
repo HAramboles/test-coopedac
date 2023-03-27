@@ -164,8 +164,8 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         // Por lo menos debe estar la firma del titular
         await expect(page.locator('text=TITULAR')).toBeVisible();
 
-        // Debe tener una firma condicional, creada en el test anterior
-        // await expect(page.locator('text=(O) FIRMA CONDICIONAL')).toBeVisible();
+        // Debe tener una firma condicional
+        await expect(page.locator('text=(O) FIRMA CONDICIONAL')).toBeVisible();
 
         // Click al boton de Siguiente
         Siguiente();

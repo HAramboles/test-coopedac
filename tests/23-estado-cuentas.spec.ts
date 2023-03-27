@@ -91,7 +91,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await expect(page.getByRole('row', {name: 'FINANCIEROS PAGADERAS'})).toBeVisible();
 
         // Cuenta de Aportaciones Preferentes
-        // await expect(page.getByRole('row', {name: 'APORTACIONES PREFERENTES'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'APORTACIONES PREFERENTES'})).toBeVisible();
 
         // Credito Hipotecario
         // await expect(page.locator('text=CRÉDITO HIPOTECARIO')).toBeVisible();
@@ -174,7 +174,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         // Cerrar la pagina
         await newPage.close();
     });
-/*
+
     test('Ver los movimientos de la cuenta de Aportaciones Preferentes', async () => {
         // Boton de ver movimientos
         const verMovimientos = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'}).locator('[data-icon="export"]');
@@ -192,13 +192,10 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         // El titulo de movimienos de cuenta debe estar visible
         await expect(newPage.locator('h1').filter({hasText: 'MOVIMIENTOS DE CUENTAS'})).toBeVisible();
 
-        // Los movimientos deben ser de la cuenta de aportaciones
-        await expect(newPage.locator('text=APORTACIONES PREFERENTES').first()).toBeVisible();
-
         // Cerrar la pagina
         await newPage.close();
     });
-*/
+
     test('Imprimir Reporte Estado Cuenta Prestamos', async () => {
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});

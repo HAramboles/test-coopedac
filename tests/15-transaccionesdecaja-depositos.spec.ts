@@ -183,6 +183,14 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
         await expect(iconoAlerta).not.toBeVisible();
 
+        // Iconos check verdes
+        const iconoVerde1 = page.getByRole('img', {name: 'check-circle'}).first();
+        const iconoVerde2 = page.getByRole('img', {name: 'check-circle'}).last();
+
+        // Los dos checks verdes deben salir al hacer bien la distribucion
+        await expect(iconoVerde1).toBeVisible();
+        await expect(iconoVerde2).toBeVisible();
+
         // Hacer click al boton de Aceptar
         const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
 

@@ -92,19 +92,27 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         // Se deben mostrar el titular y el co-propietario
         await expect(page.locator('text=FIRMANTES')).toBeVisible();
         await expect(page.locator('text=CO-PROPIETARIO')).toBeVisible();
-        await expect(page.locator('text=TITULAR')).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'TITULAR'})).toBeVisible();
         
         // El titulo de las firmas debe estar visible
-        await expect(page.locator('text=FIRMAS AUTORIZADAS')).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Firmas Autorizadas'})).toBeVisible();
+
+        // Nombre y apellido del titular
+        const nombreTitular = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellidoTitular = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Nombre y apellido del co-propietario
+        const nombreCopropietario = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoCopropietario= await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
         // La firma del titular debe estar visible
-        await expect(page.locator('(//div[@class="ant-image css-1nk3o8a"])')).toBeVisible();
+        await expect(page.getByTitle(`${nombreTitular} ${apellidoTitular}`).nth(1)).toBeVisible();
         
         // Click en siguiente
         await page.getByRole('button', {name: 'Siguiente'}).click();
 
         // La firma del co-propietario debe estar visible
-        await expect(page.locator('(//div[@class="ant-image css-1nk3o8a"])')).toBeVisible();
+        await expect(page.getByTitle(`${nombreCopropietario} ${apellidoCopropietario}`).first()).toBeVisible();
 
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');

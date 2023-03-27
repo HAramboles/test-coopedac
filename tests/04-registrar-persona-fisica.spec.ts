@@ -13,8 +13,8 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Cedula, pasaporte, nombre y apellidos de la persona
 const cedula = numerosAleatorios;
 const pasaporte = numerosPasaporte;
-const nombrePersona = 'MARIBEL';
-const apellidoPersona = 'CONCEPCION';
+const nombrePersona = '';
+const apellidoPersona = '';
 
 /* Pruebas */
 

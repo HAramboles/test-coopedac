@@ -78,7 +78,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
         const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
 
         // Buscar un socio
-        await page.locator('#select-search').fill(`${cedula}`);
+        await page.locator('#select-search').first().fill(`${cedula}`);
         // Click al socio
         await page.locator(`text=${cedula}`).click();
 
@@ -91,6 +91,35 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
 
         // Ingresar un monto inicial
         await page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA').fill('1500');
+
+        // El monto disponible en aportaciones debe estar visible
+        await expect(page.getByText('Monto disponible en aportacines es: 3,000.00')).toBeVisible();
+
+        // Monto maximo de apertura
+        const montoMaximo = page.getByText('Monto máximo de apertura: 9,000.00');
+        // Debe estar visible
+        await expect(montoMaximo).toBeVisible();
+
+        // El titulo de cuentas a debitar debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'CUENTAS Y MONTOS A DEBITAR'})).toBeVisible();
+
+        // Buscar una cuenta de la persona
+        const campoBuscarCuenta = page.locator('#select-search').last();
+        await campoBuscarCuenta.click();
+        // Elegir la cuenta de ahorros
+        await page.locator('text=AHORROS NORMALES').click();
+
+        // El monto maximo de apertura no debe cambiar
+        await expect(montoMaximo).toBeVisible();
+
+        // Boton Agregar la cuenta
+        const botonAgregar = page.getByRole('button', {name: 'plus Agregar'});
+        await expect(botonAgregar).toBeVisible();
+        // Click al boton 
+        await botonAgregar.click();
+
+        // El monto por defecto es el monto de apertura, clickear en otro lugar para que se guarde el monto
+        await page.locator('text=TOTALES').click();
 
         // Click en continuar
         Continuar();
