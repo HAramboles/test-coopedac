@@ -9,6 +9,8 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
+
 // Pruebas
 
 test.describe('Editar una Cuenta de Ahorros', () => {
@@ -168,6 +170,123 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         
         // Debe estar la firma del co-propietario
         await expect(page.locator('text=CO-PROPIETARIO')).toBeVisible();
+    });
+
+    test('Editar una Cuenta de Ahorros - Eliminar un Firmante', async () => {
+        // Nombre y apellido del firmante
+        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+        // Nombre del firmante
+        await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
+        
+        // Eliminar la firma
+        const eliminarFirma =  page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`}).getByRole('button', {name: 'delete'});
+        // Debe estar visible
+        await expect(eliminarFirma).toBeVisible();
+        // Click al boton
+        await eliminarFirma.click();
+
+        // Debe salir un mensaje de confirmacion
+        await expect(page.locator('text=¿Está seguro de eliminar el registro?')).toBeVisible();
+        // Click en Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // Debe aparecer un modal para seleccionar el testigo de la eliminacion del firmante
+        await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
+
+        // Seleccionar un testigo
+        await page.locator('#form_ID_TESTIGO').click();
+        // Seleccionar un testigo, la primera opcion que aparezca
+        await page.getByRole('option').nth(0).click();
+
+        // Boton de Imprimir
+        const botonImprimir = page.getByRole('button', {name: 'check Imprimir'});
+        // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(botonImprimir).toBeVisible(),
+            await botonImprimir.click()
+        ]);
+
+        // La pagina abierta con el reporte se cierra
+        await newPage.close();
+
+        // El firmante no debe mostrarse luego de la eliminacion del mismo
+        await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).not.toBeVisible();
+    });
+
+    test('Editar una Cuenta de Ahorros - Agregar un Firmante', async () => {
+        // Boton de Agregar Firmantes debe estar visible
+        const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
+        await expect(botonAgregarFirmantes).toBeVisible();
+        // Click al boton
+        await botonAgregarFirmantes.click();
+
+        // Agregar un firmante, debe salir un modal
+        await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
+
+        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+        // Bucar un socio
+        const buscador = page.locator('#select-search');
+        await buscador.click();
+        await buscador.fill(`${cedulaFirmante}`);
+        // Seleccionar el socio
+        await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
+
+        // Debe salir otro modal para llenar la informacion de la firmante
+        await expect(page.locator('text=FIRMANTE:')).toBeVisible();
+
+        // Tipo firmante
+        await page.locator('#form_TIPO_FIRMANTE').click();
+        // Seleccionar un tipo de firmante
+        await page.locator('text=CO-PROPIETARIO').click();
+
+        // Tipo firma
+        await page.locator('#form_CONDICION').click();
+        // Seleccionar un tipo de firma
+        await page.locator('text=(O) FIRMA CONDICIONAL').click();
+
+        // Subir la imagen de la firma
+        const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
+        await page.getByText('Cargar ').click(); 
+        const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
+        await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
+
+        // Esperar que la firma se suba y se muestre
+        await expect(page.locator('(//div[@class="ant-upload-list ant-upload-list-picture-card"])')).toBeVisible();
+        
+        // Click en Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // Debe aparecer un modal para seleccionar el testigo de la eliminacion del firmante
+        await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
+
+        // Seleccionar un testigo
+        await page.locator('#form_ID_TESTIGO').click();
+        // Seleccionar un testigo, la primera opcion que aparezca
+        await page.getByRole('option').nth(0).click();
+
+        // Boton de Aceptar
+        const botonAceptar = page.locator('text=Aceptar');
+        // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(botonAceptar).toBeVisible(),
+            await botonAceptar.click()
+        ]);
+      
+        // La pagina abierta con el reporte se cierra
+        await newPage.close();
+
+        // El firmante agregado se debe mostrar
+        await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Click al boton de Continuar
         const botonContinuar = page.locator('button:has-text("Continuar")');

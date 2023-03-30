@@ -183,6 +183,17 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         // Esperar que la firma se suba y se muestre
         await expect(page.locator('(//div[@class="ant-upload-list ant-upload-list-picture-card"])')).toBeVisible();
 
+        // Click en Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // Debe aparecer un modal para seleccionar el testigo de la eliminacion del firmante
+        await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
+
+        // Seleccionar un testigo
+        await page.locator('#form_ID_TESTIGO').click();
+        // Seleccionar un testigo, la primera opcion que aparezca
+        await page.getByRole('option').nth(0).click();
+
         // Boton de Aceptar
         const botonAceptar = page.locator('text=Aceptar');
         // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
@@ -207,16 +218,8 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         // La URL debe de cambiar
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16/create?step=3`);
         
-        // Si aparece un modal con un mensaje, click en aceptar y continuar con el siguiente paso
-        const modal = page.locator('text=No se encontró el contrato para el tipo de cuenta seleccionado');
-        if (await modal.isVisible()){ 
-            // Click en aceptar
-            const botonAceptar = page.locator('text=Aceptar');
-            await expect(botonAceptar).toBeVisible();
-            await botonAceptar.click();
-        } else if (await modal.isHidden()) {
-            await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
-        };
+        // El titulo debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
     });
 
     test('Finalizar con el registro de cuenta de ahorro', async () => {

@@ -1,6 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { numerosAleatorios2 } from './utils/cedulasypasaporte';
-import { numerosAleatorios3 } from './utils/cedulasypasaporte';
+import { numerosAleatorios2, numerosAleatorios3, numerosAleatorios5 } from './utils/cedulasypasaporte';
 
 // Variables Globales
 let browser: Browser;
@@ -14,8 +13,11 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 const cedulaPersonaJuridica = numerosAleatorios2;
 const cedulaPersonaJuridicaRelacionado = numerosAleatorios3;
 
+// Registro Mercantil
+const registroMercantil = numerosAleatorios5;
+
 // Nombre de la persona juridica
-const nombreJuridica = 'SACROTERRENOS S.R.L';
+const nombreJuridica = '';
 
 // Nombre del relacionado
 const nombreRelacionado = '';
@@ -102,12 +104,24 @@ test.describe('Pruebas con el Registro de Persona Juridica', () => {
         // Seleccionar un tipo de organizacion
         await page.locator('text=ÚNICO DUEÑO').click();
 
+        // Registro Mercantil
+        const campoRegistroMercantil = page.locator('#legalPerson_REGISTRO_MERCANTIL');
+        await campoRegistroMercantil.fill(`${registroMercantil}`);
+
+        // Fecha de Vencimiento
+        const fechaVencimiento = page.locator('#legalPerson_FECHA_VENC_REG_MERCANTIL');
+        await fechaVencimiento.fill('25/09/2030');
+
         // Actividad Economica
         const actividadEconomica = page.locator("(//input[@id='legalPerson_ID_ACTIVIDAD_ECONOMICA'])[2]");
         await actividadEconomica.click();
         await actividadEconomica.fill('Agricultura, ganadería, ');
         // Seleccionar una actividad economica
         await page.locator('text=AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA').click();
+
+        // Fecha de fundacion
+        const fechaFundacion = page.locator('#legalPerson_FECHA_NAC');
+        await fechaFundacion.fill('20/10/2005');
 
         // Cantidad de empleados
         await page.locator('#legalPerson_CANT_COLABORADORES').fill('56');

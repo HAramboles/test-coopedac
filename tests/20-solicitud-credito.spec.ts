@@ -203,6 +203,11 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByText('INSOLUTO').click()
         await page.getByText('SOLO INTERES').click();
 
+        // Agregar una cuenta del socio para desembolsar
+        await page.locator('#loan_form_ID_CUENTA_DESEMBOLSO').click();
+        // Seleccionar la cuenta de ahorros
+        await page.getByText('AHORROS NORMALES').click();
+
         // Finalidad
         await page.getByLabel('Finalidad').click();
         // Elegir propiedad o vivienda
@@ -491,6 +496,9 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Cambiar el estado de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();
+        // Debe estar visible el estado nulo
+        await expect(page.getByText('NULO')).toBeVisible();
+        // Cambiar el estado a En Proceso
         await page.getByText('EN PROCESO (ANALISIS)').click();
         
         // Debe salir un modal de confirmacion
@@ -545,6 +553,92 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();
+        // Debe estar visible el estado de rechazado
+        await page.getByText('RECHAZADO', {exact: true}).click();
+        // Debe estar visible el estado de solicitado
+        await page.getByText('SOLICITADO', {exact: true}).click();
+        // Cmabiar el estado a Aprobado
+        await page.getByText('APROBADO', {exact: true}).click();
+        await page.getByText('¿Está seguro que desea pasar el préstamo a estado APROBADO?').click();   
+        
+        // Click en Aceptar y se debe abrir otra pagina con la solicitud
+        const botonAceptar = page.getByRole('button', {name: 'check Aceptar'});
+        // Esperar que se abra una nueva pestaña
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Finalizar
+            await expect(botonAceptar).toBeVisible(),
+            await botonAceptar.click()
+        ]);
+        
+        // Cerrar la pagina con la solicitud
+        await newPage.close();
+    });
+
+    test('Cambiar de estado la solicitud de Aprobado a En Proceso y viceversa', async () => {
+        // La url debe regresar a las solicitudes en proceso
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
+        
+        // Cambiar el estado de las solicitudes de En Proceso a Aprobado
+        await page.locator('text=EN PROCESO (ANALISIS)').click();
+        await page.locator('text=APROBADO').click();
+
+        // Nombres y apellidos almacenados en el state
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Elegir la solicitud creada anteriormente
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
+
+        // La url debe de tener que la solicitud esta en proceso
+        await expect(page).toHaveURL(/\/aprobado/);
+
+        // Dirigirse a la ultima seccion
+        await page.getByRole('button', {name: '10 Desembolso'}).click();
+
+        // Cambiar la categoria de la solicitud
+        await page.getByRole('button', {name: 'ellipsis'}).click();
+        // Debe estar visible el estado de solicitado
+        await page.getByText('SOLICITADO', {exact: true}).click();
+        // Cmabiar el estado a Aprobado
+        await page.getByText('EN PROCESO (ANALISIS)', {exact: true}).click();
+        await page.getByText('¿Está seguro que desea pasar el préstamo a estado EN PROCESO (ANALISIS)?').click();  
+        
+        // La url debe regresar a las solicitudes aprobado
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=aprobado`);
+
+        // Cambiar el estado de las solicitudes de Aprobado a En Proceso
+        await page.locator('text=APROBADO').click();
+        await page.locator('text=EN PROCESO (ANALISIS)').click();
+
+        // La url debe cambiar a las solicitudes en proceso
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
+
+        // Elegir la solicitud 
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
+
+        // La url debe de tener que la solicitud esta en estado en proceso
+        await expect(page).toHaveURL(/\/en_proceso_analisis/);
+
+        // Dirigirse a la ultima seccion
+        await page.getByRole('button', {name: '10 Análisis'}).click();
+
+        // El titulo de proceso, analisis debe estar visible
+        await expect(page.getByRole('heading', {name: '(EN PROCESO (ANALISIS))'})).toBeVisible();
+
+        // El nombre de la persona debe estar visible en un titulo
+        await expect(page.getByRole('heading', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+        // El comentario anterior debe estar visible
+        await expect(page.getByText('Credito Aprobado')).toBeVisible();
+
+        // Cambiar la categoria de la solicitud
+        await page.getByRole('button', {name: 'ellipsis'}).click();
+        // Debe estar visible el estado de rechazado
+        await page.getByText('RECHAZADO', {exact: true}).click();
+        // Debe estar visible el estado de solicitado
+        await page.getByText('SOLICITADO', {exact: true}).click();
+        // Cmabiar el estado a Aprobado
         await page.getByText('APROBADO', {exact: true}).click();
         await page.getByText('¿Está seguro que desea pasar el préstamo a estado APROBADO?').click();   
         
@@ -563,10 +657,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Desembolsar la solicitud', async () => {
-        // La url debe regresar a las solicitudes solicitadas
+        // La url debe regresar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
 
-        // Cambiar el estado de las solicitudes de Solicitado a Aprobado
+        // Cambiar el estado de las solicitudes de En Proceso a Aprobado
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
 
@@ -582,6 +676,13 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Dirigirse a la ultima seccion
         await page.getByRole('button', {name: '10 Desembolso'}).click();
+
+        // Boton de cambiar estado de solicitud
+        await page.getByRole('button', {name: 'ellipsis'}).click();
+        // Debe estar visible el estado de rechazado
+        await expect(page.getByText('EN PROCESO (ANALISIS)', {exact: true})).toBeVisible();
+        // Debe estar visible el estado de solicitado
+        await expect(page.getByText('SOLICITADO', {exact: true})).toBeVisible();  
 
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
