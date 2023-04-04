@@ -7,7 +7,7 @@ let context: BrowserContext;
 let page: Page;
 
 /* URL de la pagina */
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
+const url_base = process.env.REACT_APP_WEB_SERVICE_API; 
 
 // Parametros de la caja
 interface CajaParametros {

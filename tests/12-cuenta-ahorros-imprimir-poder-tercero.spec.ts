@@ -185,8 +185,12 @@ test.describe('Reporte Poder a Terceros', () => {
         // La pagina abierta con el reporte se cierra
         await newPage.close();
 
+        // Confirmar que se regreso a la pagina anterior
+        await expect(page).toHaveURL(/\/?step=2/);
+        await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
+
         // Click al boton de Cancelar
-        const botonCancelar = page.locator('button:has-text("Cancelar")');
+        const botonCancelar = page.getByRole('button', {name: 'stop Cancelar'});
         await expect(botonCancelar).toBeVisible();
         await botonCancelar.click();
 

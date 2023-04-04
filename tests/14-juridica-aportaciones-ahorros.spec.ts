@@ -38,6 +38,16 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
       await botonContinuar.click();
     };
 
+    // Cedula, nombre, apellido de la perosna juridica almacenada en el stata
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+    // Cedula, nombre, apellido del relacionado de la perosna juridica alamacenada en el state
+    const cedulaFirmante = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
     test('Ir a Apertura de cuenta de aportaciones', async () => {
         // Captaciones
         await page.locator('text=CAPTACIONES').click();
@@ -66,11 +76,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // El titulo de registrar cuenta deb estar visible
         await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
 
-        // Cedula, nombre y apellido de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
         // Ingresar el titular
         const campoTitular = page.locator('#select-search');
         await campoTitular?.fill(`${cedula}`);
@@ -87,7 +92,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         const campoCategoria = page.locator('#APORTACIONES_ID_CATEGORIA_SOCIO');
         await campoCategoria.click();
         // Elegir la categoria de socio ahorrante
-        await page.locator('text=SOCIO AHORRANTE').click();
+        await page.locator('text=SOCIO EMPRESARIAL').click();
 
         // Boton de Continuar
         Continuar();
@@ -111,11 +116,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
 
         // Agregar un firmante, debe salir un modal
         await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
-
-        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Bucar un socio
         const buscador = page.locator('#select-search');
@@ -179,10 +179,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // Titulo de editar cuenta, ya que se crea automaticamente
         await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
 
-        // Nombres y apellidos de la persona guardados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
         // La cuenta debe ser la del socio
         await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
@@ -196,7 +192,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
 
         // La categoria debe ser Socio Ahorrante
-        await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
+        await expect(page.locator('text=SOCIO EMPRESARIAL')).toBeVisible();
 
         // Editar el monto de confirmacion
         const montoConfirmacion = page.getByPlaceholder('MONTO DE CONFIRMACIÓN');
@@ -228,11 +224,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
 
         // Agregar un firmante, debe salir un modal
         await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
-
-        // Cedula, nombre y apellido de la persona almacenada en el state
-        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Bucar un socio
         const buscador = page.locator('#select-search');

@@ -11,6 +11,19 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
+interface AportacionePreferentesParametros {
+    REQUIERE_FIRMA_TITULAR: 'N' | 'S'
+}
+
+const EscenariosPruebas: AportacionePreferentesParametros[] = [
+    {
+        REQUIERE_FIRMA_TITULAR: 'S'
+    },
+    {
+        REQUIERE_FIRMA_TITULAR: 'N'
+    }
+]
+
 // Pruebas
 
 test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', () => {

@@ -91,7 +91,6 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await campoCedula?.fill(cedula);
 
         // Colocar el cursor al principio de la cedula y borrarla presionando la tecla Delete
-        /* En comentario mientras se resuelven los errores
         await campoCedula.press('ArrowLeft');
         for (let i = 0; i < (`${cedula}` + 2).length; i++) { // +2 por los guiones que se le colocan a la cedula
             await campoCedula.press('ArrowLeft');
@@ -100,7 +99,6 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
 
         // Volver a ingresar la cedula
         await campoCedula?.fill(`${cedula}`);
-        */
         
         // Input del pasaporte. Cada pasaporte debe ser unico
         const campoPasaporte = page.locator('#person_NO_PASAPORTE');
@@ -198,15 +196,17 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await campoEmailEmpresa?.fill('empresaejemplo@hotmail.com');
 
         // Numeros a digitar para la prueba del input
-        //const numeroTelefonoEmpresa = '123456789012345678901'; 
+        const numeroTelefonoEmpresa = '123456789012345678901'; 
         // Input del telefono de la empresa
         const campoTelefonoEmpresa = page.locator('#person_TELEFONO_EMPRESA');
-        //await campoTelefonoEmpresa?.fill(`${numeroTelefonoEmpresa}`);
-        // Probar que los numeros no se borran luego de digitar 21 numeros
-        //await campoTelefonoEmpresa.getByText(`${numeroTelefonoEmpresa}`).isVisible();
+        await campoTelefonoEmpresa?.fill(`${numeroTelefonoEmpresa}`);
+        // Probar que haya un limite de 13 caracteres, y que estos no se borren
+        await campoTelefonoEmpresa.getByText(`${numeroTelefonoEmpresa}`).isVisible();
         // Borrar el numero y volver a digitarlo
-        //await campoTelefonoEmpresa.clear();
+        await campoTelefonoEmpresa.clear();
         await campoTelefonoEmpresa?.fill('8092653022');
+        // Verificar que el numero digitado tenga el parentesis
+        await expect(campoTelefonoEmpresa).toHaveValue('(809)');
 
         // Input de la direccion de la empresa
         const campoDireccionEmpresa = page.locator('#person_DIRECCION_EMPRESA');

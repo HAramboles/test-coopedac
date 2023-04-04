@@ -94,7 +94,12 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await expect(page.getByRole('row', {name: 'APORTACIONES PREFERENTES'})).toBeVisible();
 
         // Credito Hipotecario
-        // await expect(page.locator('text=CRÉDITO HIPOTECARIO')).toBeVisible();
+        await expect(page.locator('text=CRÉDITO HIPOTECARIO')).toBeVisible();
+    });
+
+    test('No se deben mostrar los creditos aprobados', async () => {
+        // No deben estar los creditos aprobados
+        await expect(page.locator('text=APROBADO')).not.toBeVisible();
     });
 
     test('Ver los movimientos de la cuenta de Aportaciones', async () => {
