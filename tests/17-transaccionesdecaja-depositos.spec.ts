@@ -29,6 +29,9 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await page.goto(`${url_base}`);
     });
 
+    // Cedula de la persona almacenada en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+
     test('Ir a la opcion de Transacciones de Caja', async () => {
         // Tesoreria
         await page.locator('text=TESORERIA').click();
@@ -67,9 +70,6 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         // Input para buscar el socio
         const buscarSocio = page.locator('#select-search');
         await expect(buscarSocio).toBeVisible();
-
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
 
         // Ingresar la cedula del socio
         await buscarSocio.fill(`${cedula}`);

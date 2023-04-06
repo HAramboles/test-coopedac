@@ -35,7 +35,12 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         const botonSiguiente = page.locator('button:has-text("Siguiente")');
         // presionar el boton
         await botonSiguiente.click();
-      };
+    };
+
+    // Cedula, nombres y apellidos almacenados en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
     test('Ir a la opcion de Cuentas de Ahorros', async () => {
         // Captaciones
@@ -72,11 +77,6 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
     });
 
     test('Buscar la cuenta de la persona', async () => {
-        // Cedula, nombres y apellidos almacenados en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Buscar al socio
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -108,11 +108,6 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
     });
 
     test('Ver cuenta - Datos Generales', async () => {
-        // Cedula, nombres y apellidos de la cuenta de la persona a editar
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);
 

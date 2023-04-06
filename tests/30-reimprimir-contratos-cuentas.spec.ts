@@ -29,6 +29,10 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
         await page.goto(`${url_base}`);
     });
 
+    // Nombre y apellido de la persona
+    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
     test('Ir a la opcion de Reimprimir Contratos de Cuentas', async () => {
         // Captaciones
         await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -46,10 +50,6 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
     test('Buscar un socio', async () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REIMPRESIÓN CONTRATOS'})).toBeVisible();
-
-        // Nombre y apellido de la persona
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Ingresar la cedula del socio
         await page.locator('#form_search').fill(`${nombre} ${apellido}`);

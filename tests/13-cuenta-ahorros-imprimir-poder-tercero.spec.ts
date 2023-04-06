@@ -33,6 +33,16 @@ test.describe('Reporte Poder a Terceros', () => {
         await page.goto(`${url_base}`);
     });
 
+    // Cedula, nombres y apellidos de la cuenta de la persona a editar
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+
     test('Ir a la opcion de Apertura de cuentas -> Ahorros', async () => {
         // Boton de Captaciones
         await page.locator('text=CAPTACIONES').click();
@@ -68,11 +78,6 @@ test.describe('Reporte Poder a Terceros', () => {
     });
 
     test('Dirigirse al primer paso de la edicion de cuentas de ahorros', async () => {
-        // Cedula, nombres y apellidos de la cuenta de la persona a editar
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -107,11 +112,6 @@ test.describe('Reporte Poder a Terceros', () => {
     });
 
     test('Editar Cuenta de Ahorros - Datos Generales', async () => {
-        // Cedula, nombres y apellidos de la cuenta de la persona a editar
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -156,10 +156,6 @@ test.describe('Reporte Poder a Terceros', () => {
         // El boton de Agregar Firmante debe estar visible
         const AgregarFirmante = page.locator('text=Agregar Firmante');
         await expect(AgregarFirmante).toBeVisible();
-
-        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
         // Boton de imprimir reporte
         await page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`}).locator('[data-icon="printer"]').click();

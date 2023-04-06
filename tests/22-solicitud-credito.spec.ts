@@ -40,6 +40,11 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await botonGuardaryContinuar.click();
     };
 
+    // Cedula, nombre y apellidos de la persona almacenada en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
     test('Navegar a la opcion de Solicitud de Credito', async () => {
         // Negocios
         await page.locator('text=NEGOCIOS').click();
@@ -107,17 +112,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByRole('heading', { name: 'Datos del Solicitante' })).toBeVisible();
         await expect(page.getByRole('heading', { name: 'Lugar de Trabajo Solicitante' })).toBeVisible();
 
-        // Cedula almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-
         // Buscar al socio
         await page.locator('#select-search').fill(`${cedula}`);
         // Seleccionar al socio
         await page.locator(`text=${cedula}`).click();
-
-        // Nombres y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // El nombre de la persona debe estar visible
         await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
@@ -312,10 +310,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir que el socio es propietario de la garantia
         await page.getByLabel('', {exact: true}).check();
 
-        // Nombre y apellido de la persona
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
         await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
 
@@ -463,10 +457,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
-        // Nombres y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
@@ -526,10 +516,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=EN PROCESO (ANALISIS)').click();
 
-        // Nombres y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
@@ -582,10 +568,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Cambiar el estado de las solicitudes de En Proceso a Aprobado
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
-
-        // Nombres y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
@@ -663,10 +645,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Cambiar el estado de las solicitudes de En Proceso a Aprobado
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
-
-        // Nombres y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();

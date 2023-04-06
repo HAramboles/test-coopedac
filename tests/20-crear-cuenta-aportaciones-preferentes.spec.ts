@@ -12,16 +12,58 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
 interface AportacionePreferentesParametros {
-    REQUIERE_FIRMA_TITULAR: 'N' | 'S'
+    REQUIERE_FIRMA_TITULAR: 'N' | 'S' | ''
+    PERMITE_DEPOSITO_INICIAL: 'S' | 'N' | ''
+    TIPOS_CUENTAS_DEBITAR: '16,17,18,19' | '1' | ''
+
 }
 
 const EscenariosPruebas: AportacionePreferentesParametros[] = [
     {
-        REQUIERE_FIRMA_TITULAR: 'S'
+        REQUIERE_FIRMA_TITULAR: 'S',
+        PERMITE_DEPOSITO_INICIAL: 'S',
+        TIPOS_CUENTAS_DEBITAR: '16,17,18,19'
     },
     {
-        REQUIERE_FIRMA_TITULAR: 'N'
-    }
+        REQUIERE_FIRMA_TITULAR: 'S',
+        PERMITE_DEPOSITO_INICIAL: 'N',
+        TIPOS_CUENTAS_DEBITAR: '16,17,18,19'
+    },
+    {
+        REQUIERE_FIRMA_TITULAR: 'S',
+        PERMITE_DEPOSITO_INICIAL: '',
+        TIPOS_CUENTAS_DEBITAR: '16,17,18,19'
+    },
+    {
+        REQUIERE_FIRMA_TITULAR: 'S',
+        PERMITE_DEPOSITO_INICIAL: 'S',
+        TIPOS_CUENTAS_DEBITAR: '1'
+    },
+    {
+        REQUIERE_FIRMA_TITULAR: 'S',
+        PERMITE_DEPOSITO_INICIAL: 'N',
+        TIPOS_CUENTAS_DEBITAR: '1'
+    },
+    {
+        REQUIERE_FIRMA_TITULAR: 'S',
+        PERMITE_DEPOSITO_INICIAL: '',
+        TIPOS_CUENTAS_DEBITAR: '1'
+    },
+    {
+        REQUIERE_FIRMA_TITULAR: 'S',
+        PERMITE_DEPOSITO_INICIAL: 'S',
+        TIPOS_CUENTAS_DEBITAR: ''
+    },
+    {
+        REQUIERE_FIRMA_TITULAR: 'S',
+        PERMITE_DEPOSITO_INICIAL: 'N',
+        TIPOS_CUENTAS_DEBITAR: ''
+    },
+    {
+        REQUIERE_FIRMA_TITULAR: 'S',
+        PERMITE_DEPOSITO_INICIAL: '',
+        TIPOS_CUENTAS_DEBITAR: ''
+    },
 ]
 
 // Pruebas
@@ -52,6 +94,14 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
         // presionar el boton
         await botonContinuar.click();
     };
+
+    // Cedula de la persona almacenada en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+
+    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+    const cedulaFirmante = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
     test('Ir a la opcion de Aportaciones Preferentes', async () => {
         // Captaciones
@@ -87,9 +137,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
         // El titulo de la seccion debe estar visible
         await expect(page.locator('text=Datos Generales')).toBeVisible();
 
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-
         // Buscar un socio
         await page.locator('#select-search').first().fill(`${cedula}`);
         // Click al socio
@@ -112,6 +159,12 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
         const montoMaximo = page.getByText('Monto máximo de apertura: 9,000.00');
         // Debe estar visible
         await expect(montoMaximo).toBeVisible();
+
+        // Subir la imagen de la firma
+        const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
+        await page.getByText('Cargar ').click(); 
+        const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
+        await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
 
         // El titulo de cuentas a debitar debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CUENTAS Y MONTOS A DEBITAR'})).toBeVisible();
@@ -157,11 +210,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
 
         // Agregar un firmante, debe salir un modal
         await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
-
-        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
         // Bucar un socio
         const buscador = page.locator('#select-search');

@@ -29,6 +29,10 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         await page.goto(`${url_base}`);
     });
 
+    // Nombre y apellidos almacenados en el state
+    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
     test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {
         // Captaciones
         await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -46,10 +50,6 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS CUENTA'})).toBeVisible();
-
-        // Nombre y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Buscar un socio
         const buscador = page.locator('#select-search');
@@ -90,10 +90,6 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         const buscador = page.locator('#select-search');
         // await buscador.click();
         await page.locator('.ant-select-clear > .anticon > svg').first().click();
-
-        // Nombre y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Ingresar un socio
         await buscador.fill(`${nombre} ${apellido}`);

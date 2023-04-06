@@ -28,6 +28,9 @@ test.describe('No permitir una Transferencia Interbancaria si la cuenta de Ahorr
         await page.goto(`${url_base}`);
     
     });
+
+    // Cedula de la persona almacenada en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
     
     test('Ir a la opcion de Solicitud Transferencia Interbancaria', async () => {
         // Captaciones
@@ -53,9 +56,6 @@ test.describe('No permitir una Transferencia Interbancaria si la cuenta de Ahorr
         // Ingresar un socio
         const campoSocio = page.locator('#select-search');
         await expect(campoSocio).toBeVisible();
-    
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
     
         await campoSocio?.fill(`${cedula}`);
         // Elegir la opcion con el socio buscado

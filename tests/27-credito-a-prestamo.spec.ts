@@ -29,6 +29,10 @@ test.describe('', () => {
         await page.goto(`${url_base}`);
     });
 
+    // Nombre y apellido de la persona
+    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
     test('Ir a la opcion de Credito a Prestamos', async () => {
         // Negocios
         await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -47,23 +51,15 @@ test.describe('', () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CRÉDITO A PRÉSTAMOS'})).toBeVisible();
 
-        // Nombre y apellido de la persona
-        //const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        //const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Buscar al socio
         await page.locator('#select-search').fill('MARIBELL REINOSO');
         // Seleccionar a la persona
-        await page.locator('text=MARIBELL REINOSO').click();
+        await page.locator(`text=${nombre} ${apellido}`).click();
     });
 
     test('Llenar los datos necesarios para el credito al prestamo', async () => {
-        // Nombre y apellido de la persona
-        //const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        //const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // El nombre de la persona debe estar visible
-        await expect(page.locator('text=MARIBELL REINOSO')).toBeVisible();
+        await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
 
         // El prestamo debe estar visible
         const prestamo = page.locator('#form_PRESTAMOS');

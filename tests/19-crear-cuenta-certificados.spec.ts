@@ -38,7 +38,15 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
         const botonContinuar = page.locator('button:has-text("Continuar")');
         // presionar el boton
         await botonContinuar.click();
-        };
+    };
+
+    // Cedula de la persona almacenada en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+
+    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+    const cedulaFirmante = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
     test('Ir a la opcion de Certificados', async () => {
         // Captaciones
@@ -100,8 +108,6 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
 
         // Titular
         const campoTitular = page.locator('#select-search').first();
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
 
         await campoTitular?.fill(`${cedula}`);
         // Seleccionar la opcion que aparece
@@ -209,11 +215,6 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
 
         // Debe salir un modal
         await expect(page.locator('text=SELECCIONAR FIRMANTE')).toBeVisible();
-
-        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
         // Bucar un socio
         const buscador = page.locator('#select-search');

@@ -27,6 +27,9 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         await page.goto(`${url_base}`);
     });
 
+    // Cedula de la persona almacenada en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+
     test('Ir a Apertura de cuenta de aportaciones', async () => {
         // Captaciones
         await page.locator('text=CAPTACIONES').click();
@@ -57,8 +60,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
 
         // Ingresar el titular
         const campoTitular = page.locator('#select-search');
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
 
         await campoTitular?.fill(`${cedula}`);
         // Click a la opcion que coincide con lo buscado

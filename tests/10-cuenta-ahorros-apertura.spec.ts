@@ -37,6 +37,15 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         await botonContinuar.click();
     };
 
+    // Cedula de la persona almacenada en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+
+    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+    const cedulaFirmante = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+
     test('Ir a la opcion de Apertura de cuentas -> Ahorros', async () => {
         // Boton de Captaciones
         await page.locator('text=CAPTACIONES').click();
@@ -100,8 +109,6 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
     test('Llenar los campos del primer paso del registro de cuenta de ahorros', async () => {
         // Titular
         const campoTitular = page.locator('#select-search');
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
 
         await campoTitular?.fill(`${cedula}`);
         // Seleccionar la opcion que aparece
@@ -148,11 +155,6 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
 
         // Agregar un firmante, debe salir un modal
         await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
-
-        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
         // Bucar un socio
         const buscador = page.locator('#select-search');

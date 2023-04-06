@@ -42,7 +42,7 @@ test.describe('Activar Caja - Pruebas con los diferentes parametros', () => {
                 /* Crear una nueva page usando el context */
                 page = await context.newPage();
 
-                //
+                // Eventos para la request caja
                 await page.route(/\/caja/, async (route) => {
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());

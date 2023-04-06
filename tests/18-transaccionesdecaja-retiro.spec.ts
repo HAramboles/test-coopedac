@@ -29,6 +29,15 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         await page.goto(`${url_base}`);
     });
 
+    // Cedula, nombre y apellido de la persona almacenada en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+    const nombreTitular = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+    const apellidoTitular = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+    // Nombre y apellido del co-propietario
+    const nombreCopropietario = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+    const apellidoCopropietario = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
     test('Ir a la opcion de Transacciones de Caja', async () => {
         // Tesoreria
         await page.locator('text=TESORERIA').click();
@@ -68,9 +77,6 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         const buscarSocio = page.locator('#select-search');
         await expect(buscarSocio).toBeVisible();
 
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-
         // Ingresar la cedula del socio
         await buscarSocio.fill(`${cedula}`);
         // Seleccionar la cuenta de ahorros normales del socio
@@ -96,14 +102,6 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         
         // El titulo de las firmas debe estar visible
         await expect(page.getByRole('heading', {name: 'Firmas Autorizadas'})).toBeVisible();
-
-        // Nombre y apellido del titular
-        const nombreTitular = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellidoTitular = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-        // Nombre y apellido del co-propietario
-        const nombreCopropietario = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        const apellidoCopropietario= await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
         // La firma del titular debe estar visible
         await expect(page.getByTitle(`${nombreTitular} ${apellidoTitular}`).nth(1)).toBeVisible();

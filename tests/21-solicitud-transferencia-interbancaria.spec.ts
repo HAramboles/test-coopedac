@@ -28,6 +28,11 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
         await page.goto(`${url_base}`);
     
     });
+
+    // Cedula, nombre y apellido de la persona almacenada en el state
+    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     
     test('Ir a la opcion de Solicitud Transferencia Interbancaria', async () => {
         // Captaciones
@@ -53,9 +58,6 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
         // Ingresar un socio
         const campoSocio = page.locator('#select-search');
         await expect(campoSocio).toBeVisible();
-    
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
     
         await campoSocio?.fill(`${cedula}`);
         // Elegir la opcion con el socio buscado
@@ -98,10 +100,6 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
         await campoBancoDestino.click();
         // Seleccionar Alaver
         await page.locator('text=ALAVER').click();
-    
-        // Nombres y apellidos de la persona
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     
         // Titular / Apoderado
         await page.locator('#form_TITULAR_APODERADO').click();
