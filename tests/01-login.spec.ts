@@ -26,7 +26,7 @@ const passCorrecto = process.env.REACT_APP_WEB_SERVICE_API_PASS;
 
 /* Pruebas */
 
-test.describe('Pruebas con el Login de BPSTEC', () => {
+test.describe('Pruebas con el Login de Coopedac', () => {
     test.beforeAll(async () => { /* Antes de las pruebas */
         /* Crear el browser, en este caso el chromiun, con la propiedad headless. Se ejecuta en segundo plano */
         browser = await chromium.launch({

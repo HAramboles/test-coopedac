@@ -63,10 +63,6 @@ test.describe('Sesiones en Transito - Pruebas con los diferentes parametros', ()
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
             });
-
-            // Nombre y apellido de la persona alamcenado en el state
-            const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-            const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             
             test('Ir a la opcion de Sesiones en Transito', async () => {
                 // Tesoreria
@@ -87,6 +83,10 @@ test.describe('Sesiones en Transito - Pruebas con los diferentes parametros', ()
 
             test('Liberar una Sesion', async () => {                
                 if (escenario.ID_TIPO_SESION !== '') {
+                    // Nombre y apellido de la persona alamcenado en el state
+                    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
                     // El nombre de la persona debe estar visible
                     await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).toBeVisible();
 

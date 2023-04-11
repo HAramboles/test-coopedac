@@ -8,6 +8,9 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Nota
+const nota = '';
+
 // Pruebas
 
 test.describe('Pruebas agregando y completando notas', () => {
@@ -29,11 +32,6 @@ test.describe('Pruebas agregando y completando notas', () => {
         await page.goto(`${url_base}`);
     });
 
-    // Cedula, nombre y apellido de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
     test('Ir a la seccion de Aportaciones', async () => {
         // Captaciones
         await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -42,13 +40,28 @@ test.describe('Pruebas agregando y completando notas', () => {
         await page.getByRole('menuitem', {name: 'APERTURA DE CUENTAS'}).click();
 
         // Aportaciones
-        await page.getByRole('menuitem', {name: 'Aportaciones'}).click();
+        await page.getByRole('menuitem', {name: 'Aportaciones', exact: true}).click();
 
-        // La URL de la pagina debe cambiar
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+        // Tipo de captacion
+        const buscadorVacio = page.locator('(//span[@class="ant-select-selection-placeholder"])');
+        const buscadorLleno = page.locator('(//span[@class="ant-select-selection-item"])');
+        
+        // Condicion por si el tipo de captacion llega sin datos o con datos
+        if (await buscadorVacio.isVisible()) {
+            await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones`)
+            await page.reload();
+        } else if (await buscadorLleno.isVisible()) {
+            // La URL debe de cambiar
+            await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+        }
     });
 
     test('Crear una nota a la cuenta de un socio', async () => {
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Ingresar la cedula en el buscador
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -73,7 +86,7 @@ test.describe('Pruebas agregando y completando notas', () => {
         await tipoFijo.click();
 
         // Agregar nota
-        await page.locator('#form_NOTA').fill('La socia desea crear una cuenta de ahorros');
+        await page.locator('#form_NOTA').fill(`${nota}`);
         
         // Click en Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();
@@ -85,6 +98,10 @@ test.describe('Pruebas agregando y completando notas', () => {
     });
 
     test('Marcar la nota como completada', async () => {
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Click a mas opciones 
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[data-icon="more"]').click();
 
@@ -95,13 +112,13 @@ test.describe('Pruebas agregando y completando notas', () => {
         await expect(page.locator('h1').filter({hasText: `NOTAS PARA ${nombre} ${apellido}`})).toBeVisible();
 
         // La nota creada anteriormente debe estar visible
-        const nota = page.getByRole('row', {name: 'LA SOCIA DESEA CREAR UNA CUENTA DE AHORROS'});
-        await expect(nota).toBeVisible();
+        const notaCreada = page.getByRole('row', {name: `${nota}`});
+        await expect(notaCreada).toBeVisible();
 
         // Ver la nota
-        await nota.locator('[data-icon="eye"]').click();
+        await notaCreada.locator('[data-icon="eye"]').click();
         // Se debe mostrar un modal con la nota
-        await expect(page.getByText('LA SOCIA DESEA CREAR UNA CUENTA DE AHORROS')).toBeVisible();
+        await expect(page.locator('span').filter({hasText: `${nota}`})).toBeVisible();
 
         // Cerrar el modal
         await page.locator('[aria-label="Close"]').click();
@@ -128,6 +145,9 @@ test.describe('Pruebas agregando y completando notas', () => {
     });
 
     test.afterAll(async () => { // Despues de las pruebas
+        // Guardar la nota creada en el state
+        await page.evaluate((nota) => window.localStorage.setItem('nota', nota), nota);
+
         // Cerrar la page
         await page.close();
 

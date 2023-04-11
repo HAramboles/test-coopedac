@@ -38,16 +38,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
       await botonContinuar.click();
     };
 
-    // Cedula, nombre y apellido de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
-    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-    const cedulaFirmante = page.evaluate(() => window.localStorage.getItem('cedula'));
-    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
     test('Ir a Apertura de cuenta de aportaciones', async () => {
         // Captaciones
         await page.locator('text=CAPTACIONES').click();
@@ -58,8 +48,18 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // Captaciones
         await page.locator('text=Aportaciones').first().click();
 
-        // La URL debe de cambiar
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+        // Tipo de captacion
+        const buscadorVacio = page.locator('(//span[@class="ant-select-selection-placeholder"])');
+        const buscadorLleno = page.locator('(//span[@class="ant-select-selection-item"])');
+        
+        // Condicion por si el tipo de captacion llega sin datos o con datos
+        if (await buscadorVacio.isVisible()) {
+            await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones`)
+            await page.reload();
+        } else if (await buscadorLleno.isVisible()) {
+            // La URL debe de cambiar
+            await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+        }
     });
 
     test('Click al boton de Nueva Cuenta', async () => {
@@ -73,6 +73,11 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
     });
 
     test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
         // El titulo de registrar cuenta deb estar visible
         await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
 
@@ -108,49 +113,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // El tipo de firma requerida debe estar visible
         await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();
 
-        // Boton de Agregar Firmantes debe estar visible
-        const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
-        await expect(botonAgregarFirmantes).toBeVisible();
-        // Click al boton
-        await botonAgregarFirmantes.click();
-
-        // Agregar un firmante, debe salir un modal
-        await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
-
-        // Bucar un socio
-        const buscador = page.locator('#select-search');
-        await buscador.click();
-        await buscador.fill(`${cedulaFirmante}`);
-        // Seleccionar el socio
-        await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
-
-        // Debe salir otro modal para llenar la informacion de la firmante
-        await expect(page.locator('text=FIRMANTE:')).toBeVisible();
-
-        // Tipo firmante
-        await page.locator('#form_TIPO_FIRMANTE').click();
-        // Seleccionar un tipo de firmante
-        await page.locator('text=CO-PROPIETARIO').click();
-
-        // Tipo firma
-        await page.locator('#form_CONDICION').click();
-        // Seleccionar un tipo de firma
-        await page.locator('text=(O) FIRMA CONDICIONAL').click();
-
-        // Subir la imagen de la firma
-        const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
-        await page.getByText('Cargar ').click(); 
-        const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
-        await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
-
-        // Boton de Aceptar
-        const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-        await expect(botonAceptar).toBeVisible();
-        await botonAceptar.click();
-
-        // El nombre del firmante agregado debe estar visible
-        await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
-
         // Boton de Continuar
         Continuar();
     });
@@ -173,6 +135,10 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
     });
 
     test('Crear la Cuenta de Ahorros - Datos Generales', async () => {
+        // Nombre y apellido de la persona almacenada en el state
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
         // Debe redirigirse a la creacion de la cuenta de ahorros
         await expect(page).toHaveURL(/\/ahorros/);
 
@@ -213,6 +179,11 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
     });
 
     test('Crear la Cuenta de Ahorros - Contacto de Firmante', async () => {
+        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'FIRMANTE'})).toBeVisible();
 

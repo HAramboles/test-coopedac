@@ -28,11 +28,6 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
         await page.goto(`${url_base}`);
     
     });
-
-    // Cedula, nombre y apellido de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     
     test('Ir a la opcion de Solicitud Transferencia Interbancaria', async () => {
         // Captaciones
@@ -52,6 +47,11 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
     });
     
     test('Llenar la solicitud con los datos del solicitante', async () => {
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Titulo datos del solicitante debe estar visible
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOLICITANTE'})).toBeVisible();
     

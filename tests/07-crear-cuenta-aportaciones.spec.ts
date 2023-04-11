@@ -101,11 +101,6 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
               await botonContinuar.click();
             };
         
-            // Cedula, nombre y apellido de la persona almacenada en el state
-            const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-            const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-            const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-        
             test('Ir a Apertura de cuenta de aportaciones', async () => {
                 // Captaciones
                 await page.locator('text=CAPTACIONES').click();
@@ -115,9 +110,19 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
         
                 // Captaciones
                 await page.locator('text=Aportaciones').first().click();
-        
-                // La URL debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+
+                // Tipo de captacion
+                const buscadorVacio = page.locator('(//span[@class="ant-select-selection-placeholder"])');
+                const buscadorLleno = page.locator('(//span[@class="ant-select-selection-item"])');
+                
+                // Condicion por si el tipo de captacion llega sin datos o con datos
+                if (await buscadorVacio.isVisible()) {
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones`)
+                    await page.reload();
+                } else if (await buscadorLleno.isVisible()) {
+                    // La URL debe de cambiar
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+                }
             });
         
             test('Click al boton de Nueva Cuenta', async () => {
@@ -135,6 +140,11 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                 test.skip();
             } else if (escenario.PERMITE_DEPOSITO_INICIAL === 'N' && escenario.REQUIERE_FIRMA_TITULAR === 'N') {
                 test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {
+                    // Cedula, nombre y apellido de la persona almacenada en el state
+                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             

@@ -29,10 +29,6 @@ test.describe('', () => {
         await page.goto(`${url_base}`);
     });
 
-    // Nombre y apellido de la persona
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
     test('Ir a la opcion de Credito a Prestamos', async () => {
         // Negocios
         await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -48,6 +44,10 @@ test.describe('', () => {
     });
 
     test('Buscar un socio', async () => {
+        // Nombre y apellido de la persona
+        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CRÉDITO A PRÉSTAMOS'})).toBeVisible();
 
@@ -58,6 +58,10 @@ test.describe('', () => {
     });
 
     test('Llenar los datos necesarios para el credito al prestamo', async () => {
+        // Nombre y apellido de la persona
+        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // El nombre de la persona debe estar visible
         await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
 

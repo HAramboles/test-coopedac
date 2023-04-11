@@ -40,11 +40,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await botonGuardaryContinuar.click();
     };
 
-    // Cedula, nombre y apellidos de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
     test('Navegar a la opcion de Solicitud de Credito', async () => {
         // Negocios
         await page.locator('text=NEGOCIOS').click();
@@ -104,6 +99,11 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 1 - Datos del Solicitante', async () => {
+        // Cedula, nombre y apellidos de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=1`);
 
@@ -140,8 +140,117 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.locator('text=Aceptar').click();
     });
 
-    test('Paso 2 - Datos Prestamo', async () => {
+    /*
+    test('Paso 2 - Datos Prestamo - Extra - Probar control de Plazo', async () => {
         // La URL debe cambiar
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
+
+        // El titulo principal debe estar visible
+        await expect(page.getByRole('heading', {name: 'Generales del Crédito'})).toBeVisible();
+
+        // Tipo de credito
+        await page.getByLabel('Tipo Crédito').click();
+        // Click a credito de consumo
+        await page.getByText('CONSUMO').click();
+
+        // Tipo de garantia
+        await page.getByLabel('Tipo Garantía').click();
+        // Click en garantia ahorros
+        await page.getByText('AHORROS').click();
+
+        // Oferta
+        await page.getByLabel('Oferta').click();
+        // Elegir oferta madre
+        await page.getByText('MADRE').click();
+
+        // Ver rangos de la oferta
+        await page.locator('[data-icon="eye"]').click();
+
+        // Se debe mostrar un modal
+        await expect(page.locator('h1').filter({hasText: 'DETALLES DE RANGO'})).toBeVisible();
+
+        // Monto minimo y maximo
+        await expect(page.getByText('RD$ 20,000.00', {exact: true})).toBeVisible();
+        await expect(page.getByText('RD$ 1,000,000.00', {exact: true})).toBeVisible();
+
+        // Tasa minima, maxima y por defecto
+        await expect(page.getByText('9.00%', {exact: true})).toBeVisible();
+        await expect(page.getByText('13.00%', {exact: true})).toBeVisible();
+        await expect(page.getByText('12.00%', {exact: true})).toBeVisible();
+
+        // Plazo minimo y maximo
+        await expect(page.getByText('12', {exact: true})).toBeVisible();
+        await expect(page.getByText('36', {exact: true})).toBeVisible();    
+
+        // Click en Aceptar
+        const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+        await botonAceptar.click();
+
+        // Monto
+        await page.locator('#loan_form_MONTO').click();
+        // Colocar un monto por debajo del limite
+        await page.locator('#loan_form_MONTO').fill('60');
+        // Cick fuera del input
+        await page.locator('text=Monto').click();
+        // Debe aparecer un mensaje de error
+        await expect(page.locator('text=El monto digitado está fuera de los rangos de la oferta seleccionada.')).toBeVisible();
+
+        // Colocar un monto por encima del limite
+        await page.locator('#loan_form_MONTO').fill('2000000');
+        // Cick fuera del input
+        await page.locator('text=Monto').click();
+        // Debe aparecer un mensaje de error
+        await expect(page.locator('text=El monto digitado está fuera de los rangos de la oferta seleccionada.')).toBeVisible();
+
+        // Tasa
+        const campoTasa = page.getByLabel('Tasa');
+        await campoTasa.click();
+        // Borrar la tasa
+        await campoTasa.clear();
+
+        // Ingresar una tasa por debajo del limite
+        await campoTasa.fill('8');
+        // Clickear fuera del input
+        await page.locator('text=Monto').click();
+        
+        // Debe aparecer un modal con un mensaje de aviso
+        await expect(page.locator('text=Tasa Mínima para esta oferta es: 9.00')).toBeVisible();
+        // Click en Aceptar
+        await botonAceptar.click();
+
+        // Ingresar una tasa por encima del limite
+        await campoTasa.fill('15');
+        // Clickear fuera del input
+        await page.locator('text=Monto').click();
+        
+        // Debe aparecer un modal con un mensaje de aviso
+        await expect(page.locator('text=Tasa Máxima para esta oferta es: 13.00')).toBeVisible();
+        // Click en Aceptar
+        await botonAceptar.click();
+
+        // Plazo
+        await page.getByPlaceholder('CANTIDAD').click();
+
+        // Ingresar un plazo por debajo del limite
+        await page.getByPlaceholder('CANTIDAD').fill('5');
+
+        // Debe salir un modal de aviso
+        await expect(page.locator('text=Plazo Máximo para esta oferta es: 36 (MENSUAL).')).toBeVisible();
+        // Click en Aceptar
+        await botonAceptar.click();
+
+        // Ingresar un plazo por encima del limite
+        await page.getByPlaceholder('CANTIDAD').fill('40');
+
+        // Debe salir un modal de aviso
+        await expect(page.locator('text=Plazo Máximo para esta oferta es: 36 (MENSUAL).')).toBeVisible();
+        // Click en Aceptar
+        await botonAceptar.click();
+    });
+    */
+
+    test('Paso 2 - Datos Prestamo', async () => {
+        // La URL no debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
 
         // El titulo principal debe estar visible
@@ -291,6 +400,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 7 - Codeudores y Garantias', async () => {
+        // Nombre y apellidos de la persona almacenada en el state
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=7`);
 
@@ -454,6 +567,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar el estado de la Solicitud de Solicitado a En Proceso (Analisis)', async () => {
+        // Nombre y apellidos de la persona almacenada en el state
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
@@ -509,6 +626,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Aprobado', async () => {
+        // Nombre y apellidos de la persona almacenada en el state
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
@@ -562,6 +683,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar de estado la solicitud de Aprobado a En Proceso y viceversa', async () => {
+        // Nombre y apellidos de la persona almacenada en el state
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // La url debe regresar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
         
@@ -639,6 +764,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Desembolsar la solicitud', async () => {
+        // Nombre y apellidos de la persona almacenada en el state
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // La url debe regresar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
 

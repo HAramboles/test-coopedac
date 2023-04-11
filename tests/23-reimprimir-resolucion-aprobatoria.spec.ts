@@ -67,10 +67,6 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                 await page.goto(`${url_base}`);
             });
 
-            // Nombre y apellido de la persona almacenada en el state
-            // const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-            // const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
             test('Ir a la opcion de Reimprimir Resolucion Aprobatoria', async () => {
                 // Negocios
                 await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -105,14 +101,18 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                     // Skip al test
                     test.skip();
                 } else if ( escenario.ESTADO_DEFECTO === 'D') {
+                    // Nombre y apellido de la persona almacenada en el state
+                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
                     // El estado de las solicitudes deben estar en Aprobado
                     await expect(page.getByText('DESEMBOLSADO', {exact: true})).toBeVisible();
 
                     // Buscar un socio
-                    await page.locator('#form_search').fill('LUISA DEL CARMEN');
+                    await page.locator('#form_search').fill(`${nombre} ${apellido}`);
 
                     // Click al boton de reimprimir
-                    const botonImprimir = page.getByRole('row', {name: 'LUISA DEL CARMEN RAMIREZ VELOZ'}).locator('[aria-label="printer"]');
+                    const botonImprimir = page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[aria-label="printer"]');
                     // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
                     const [newPage] = await Promise.all([
                         context.waitForEvent('page'),

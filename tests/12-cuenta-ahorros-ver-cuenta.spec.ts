@@ -37,11 +37,6 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         await botonSiguiente.click();
     };
 
-    // Cedula, nombres y apellidos almacenados en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
     test('Ir a la opcion de Cuentas de Ahorros', async () => {
         // Captaciones
         await page.locator('text=CAPTACIONES').click();
@@ -69,14 +64,23 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         // Click al boton
         await botonCaptaciones.click();
 
-        // Seleccionar el tipo de captacion Ahorros Normales
-        await page.locator('text=AHORROS NORMALES').click();
+        if (await page.locator('#form_CLASE_TIPO_SELECIONADO_list').getByText('No hay datos').isVisible()) {
+            await page.reload();
+        } else if ( await page.locator('text=AHORROS NORMALES').isVisible()) {
+            // Seleccionar el tipo de captacion Ahorros Normales
+            await page.locator('text=AHORROS NORMALES').click();
+        }
 
         // La URL debe de cambiar al elegir el tipo de captacion
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
     });
 
     test('Buscar la cuenta de la persona', async () => {
+        // Cedula, nombres y apellidos almacenados en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Buscar al socio
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -108,6 +112,11 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
     });
 
     test('Ver cuenta - Datos Generales', async () => {
+        // Cedula, nombres y apellidos almacenados en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);
 

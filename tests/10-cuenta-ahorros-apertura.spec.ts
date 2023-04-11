@@ -37,15 +37,6 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         await botonContinuar.click();
     };
 
-    // Cedula de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-
-    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-    const cedulaFirmante = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
-
     test('Ir a la opcion de Apertura de cuentas -> Ahorros', async () => {
         // Boton de Captaciones
         await page.locator('text=CAPTACIONES').click();
@@ -86,8 +77,12 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         // Click al boton
         await botonCaptaciones.click();
 
-        // Seleccionar el tipo de captacion Ahorros Normales
-        await page.locator('text=AHORROS NORMALES').click();
+        if (await page.getByText('No hay datos').isVisible()) {
+            await page.reload();
+        } else if ( await page.locator('text=AHORROS NORMALES').isVisible()) {
+            // Seleccionar el tipo de captacion Ahorros Normales
+            await page.locator('text=AHORROS NORMALES').click();
+        }
 
         // La URL debe de cambiar al elegir el tipo de captacion
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
@@ -107,6 +102,9 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
     });
 
     test('Llenar los campos del primer paso del registro de cuenta de ahorros', async () => {
+        // Cedula de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
         // Titular
         const campoTitular = page.locator('#select-search');
 
@@ -128,6 +126,11 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
     });
 
     test('Contacto de Firmante o Persona', async () => { 
+        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
         // La URL debe de cambiar
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16/create?step=2`);
 

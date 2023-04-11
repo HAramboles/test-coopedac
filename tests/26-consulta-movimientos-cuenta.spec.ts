@@ -29,10 +29,6 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         await page.goto(`${url_base}`);
     });
 
-    // Nombre y apellidos almacenados en el state
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
     test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {
         // Captaciones
         await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -45,6 +41,10 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     });
 
     test('Buscar una cuenta de un socio', async () => {
+        // Nombre y apellidos almacenados en el state
+        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
@@ -86,6 +86,10 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     });
 
     test('Buscar otra cuenta del mismo usuario', async () => {
+        // Nombre y apellidos almacenados en el state
+        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Buscar un socio
         const buscador = page.locator('#select-search');
         // await buscador.click();

@@ -27,8 +27,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         await page.goto(`${url_base}`);
     });
 
-    // Cedula de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
 
     test('Ir a Apertura de cuenta de aportaciones', async () => {
         // Captaciones
@@ -40,8 +38,18 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // Captaciones
         await page.locator('text=Aportaciones').first().click();
 
-        // La URL debe de cambiar
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+        // Tipo de captacion
+        const buscadorVacio = page.locator('(//span[@class="ant-select-selection-placeholder"])');
+        const buscadorLleno = page.locator('(//span[@class="ant-select-selection-item"])');
+        
+        // Condicion por si el tipo de captacion llega sin datos o con datos
+        if (await buscadorVacio.isVisible()) {
+            await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones`)
+            await page.reload();
+        } else if (await buscadorLleno.isVisible()) {
+            // La URL debe de cambiar
+            await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+        }
     });
 
     test('Click al boton de Nueva Cuenta', async () => {
@@ -55,6 +63,9 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
     });
 
     test('Debe de salir un modal avisando que el titular ya tiene una cuenta de aportaciones', async () => {
+        // Cedula de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
         // El titulo de registrar cuenta deb estar visible
         await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
 

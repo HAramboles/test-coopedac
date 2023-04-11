@@ -29,9 +29,6 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await page.goto(`${url_base}`);
     });
 
-    // Cedula de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-
     test('Ir a la opcion de Transacciones de Caja', async () => {
         // Tesoreria
         await page.locator('text=TESORERIA').click();
@@ -67,6 +64,9 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     });
 
     test('Seleccionar un socio', async () => {
+        // Cedula de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
         // Input para buscar el socio
         const buscarSocio = page.locator('#select-search');
         await expect(buscarSocio).toBeVisible();
@@ -75,6 +75,23 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await buscarSocio.fill(`${cedula}`);
         // Seleccionar la cuenta de aportaciones del socio  
         await page.locator('text=APORTACIONES').click();
+    });
+
+    test('Debe salir un modal con la nota anteriormente creada', async () => {
+        // Nota alamacenada en el state
+        const nota = await page.evaluate(() => window.localStorage.getItem('nota'));
+        
+        // Titulo del modal
+        await expect(page.locator('h1').filter({hasText: 'NOTAS PARA ROBERTA NAZARIO'})).toBeVisible();
+
+        // La nota debe estar visible
+        await expect(page.locator('div').filter({hasText: `${nota}`})).toBeVisible();
+
+        // La nota debe estar como completada
+        await expect(page.locator('(//svg[@class="bi bi-check2-all"])')).toBeVisible();
+
+        // Cerrar el modal
+        await page.locator('[aria-label="close"]').click();
     });
 
     test('Boton de Deposito de la cuenta de Aportaciones', async () => {

@@ -29,15 +29,6 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         await page.goto(`${url_base}`);
     });
 
-    // Cedula, nombre y apellido de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-    const nombreTitular = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellidoTitular = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-    // Nombre y apellido del co-propietario
-    const nombreCopropietario = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-    const apellidoCopropietario = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
     test('Ir a la opcion de Transacciones de Caja', async () => {
         // Tesoreria
         await page.locator('text=TESORERIA').click();
@@ -73,6 +64,9 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     });
     
     test('Seleccionar un socio', async () => {
+        // Cedula de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
         // Input para buscar el socio
         const buscarSocio = page.locator('#select-search');
         await expect(buscarSocio).toBeVisible();
@@ -81,6 +75,23 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         await buscarSocio.fill(`${cedula}`);
         // Seleccionar la cuenta de ahorros normales del socio
         await page.locator('text=AHORROS NORMALES').click();
+    });
+
+    test('Debe salir un modal con la nota anteriormente creada', async () => {
+        // Nota alamacenada en el state
+        const nota = await page.evaluate(() => window.localStorage.getItem('nota'));
+        
+        // Titulo del modal
+        await expect(page.locator('h1').filter({hasText: 'NOTAS PARA ROBERTA NAZARIO'})).toBeVisible();
+
+        // La nota debe estar visible
+        await expect(page.locator('div').filter({hasText: `${nota}`})).toBeVisible();
+
+        // La nota debe estar como completada
+        await expect(page.locator('(//svg[@class="bi bi-check2-all"])')).toBeVisible();
+
+        // Cerrar el modal
+        await page.locator('[aria-label="close"]').click();
     });
 
     test('Boton de Retiro', async () => {
@@ -95,6 +106,14 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     });
 
     test('Datos del Retiro de la Cuenta de Ahorro', async () => {
+        // Nombre y apellido de la persona almacenada en el state
+        const nombreTitular = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellidoTitular = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Nombre y apellido del co-propietario
+        const nombreCopropietario = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoCopropietario = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
         // Se deben mostrar el titular y el co-propietario
         await expect(page.locator('text=FIRMANTES')).toBeVisible();
         await expect(page.locator('text=CO-PROPIETARIO')).toBeVisible();

@@ -29,10 +29,6 @@ test.describe('Prueba con la Reimpresion de la Solicitud de Credito', () => {
         await page.goto(`${url_base}`);
     });
 
-    // Nombre y apellidos de la persona almacenada en el state
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
     test('Ir a la opcion de Reimpresion de Solicitud de Credito', async () => {
         // Negocios
         await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -48,6 +44,10 @@ test.describe('Prueba con la Reimpresion de la Solicitud de Credito', () => {
     });
 
     test('Buscar un socio', async () => {
+        // Nombre y apellidos de la persona almacenada en el state
+        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Ingresar un socio
         const buscador = page.locator('#form_search');
         await buscador.fill(`${nombre} ${apellido}`);

@@ -95,14 +95,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
         await botonContinuar.click();
     };
 
-    // Cedula de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-
-    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-    const cedulaFirmante = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
     test('Ir a la opcion de Aportaciones Preferentes', async () => {
         // Captaciones
         await page.locator('text=CAPTACIONES').click();
@@ -128,6 +120,9 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
     });
 
     test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
+        // Cedula de la persona almacenada en el state
+        const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=1`);
 
@@ -192,6 +187,11 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones Preferentes', 
     });
 
     test('Crear cuenta de Aportaciones Preferentes - Paso 2 - Contacto de Firmante', async () => {
+        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+        const cedulaFirmante = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+        const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=2`);
 

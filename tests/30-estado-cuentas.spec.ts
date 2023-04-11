@@ -30,11 +30,6 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await page.goto(`${url_base}`);
     });
 
-    // Cedula, nombre y apellido de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
     test('Ir a la seccion de Estado de Cuentas', async () => {
         // Captaciones
         await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -50,6 +45,11 @@ test.describe('Prueba con el Estado de Cuenta', () => {
     });
 
     test('Buscar un socio', async () => {
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTA DEL CLIENTE'})).toBeVisible();
 

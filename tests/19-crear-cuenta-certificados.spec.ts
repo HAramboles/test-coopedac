@@ -40,14 +40,6 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
         await botonContinuar.click();
     };
 
-    // Cedula de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-
-    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-    const cedulaFirmante = page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
     test('Ir a la opcion de Certificados', async () => {
         // Captaciones
         await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -91,6 +83,9 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
     });
 
     test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {
+        // Cedula de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
         // Boton de nueva cuenta
         const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
         await expect(botonNuevaCuenta).toBeVisible();
@@ -194,6 +189,11 @@ test.describe('Pruebas con la Apertura de Cuenta de Certificados - Financieros P
     });
 
     test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {
+        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+        const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=2`);
 

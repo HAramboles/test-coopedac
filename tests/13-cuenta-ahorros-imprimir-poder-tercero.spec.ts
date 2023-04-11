@@ -9,8 +9,6 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Imagen de la firma
-const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
 // Pruebas
 
@@ -32,16 +30,6 @@ test.describe('Reporte Poder a Terceros', () => {
         // Ir a la URL
         await page.goto(`${url_base}`);
     });
-
-    // Cedula, nombres y apellidos de la cuenta de la persona a editar
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-    const nombreFirmante = page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-    const apellidoFirmante = page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
 
     test('Ir a la opcion de Apertura de cuentas -> Ahorros', async () => {
         // Boton de Captaciones
@@ -70,14 +58,23 @@ test.describe('Reporte Poder a Terceros', () => {
         // Click al boton
         await botonCaptaciones.click();
 
-        // Seleccionar el tipo de captacion Ahorros Normales
-        await page.locator('text=AHORROS NORMALES').click();
+        if (await page.locator('#form_CLASE_TIPO_SELECIONADO_list').getByText('No hay datos').isVisible()) {
+            await page.reload();
+        } else if ( await page.locator('text=AHORROS NORMALES').isVisible()) {
+            // Seleccionar el tipo de captacion Ahorros Normales
+            await page.locator('text=AHORROS NORMALES').click();
+        }
 
         // La URL debe de cambiar al elegir el tipo de captacion
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
     });
 
     test('Dirigirse al primer paso de la edicion de cuentas de ahorros', async () => {
+        // Cedula, nombres y apellidos de la cuenta de la persona a editar
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -111,7 +108,12 @@ test.describe('Reporte Poder a Terceros', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
     });
 
-    test('Editar Cuenta de Ahorros - Datos Generales', async () => {
+    test('Datos Generales de la Cuenta de Ahorros', async () => {
+        // Cedula, nombres y apellidos de la cuenta de la persona a editar
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -143,7 +145,11 @@ test.describe('Reporte Poder a Terceros', () => {
         await botonOmitir.click();
     });
 
-    test('Editar una Cuenta de Ahorros - Contacto de Firmante o Persona - Ver Reporte Poder a Terceros', async () => {
+    test('Cuenta de Ahorros - Contacto de Firmante o Persona - Ver Reporte Poder a Terceros', async () => {
+        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=2/);
 
@@ -184,6 +190,9 @@ test.describe('Reporte Poder a Terceros', () => {
         // Confirmar que se regreso a la pagina anterior
         await expect(page).toHaveURL(/\/?step=2/);
         await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
+
+        // Confirmar que el nombre del firmante este visible
+        await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Click al boton de Cancelar
         const botonCancelar = page.getByRole('button', {name: 'stop Cancelar'});

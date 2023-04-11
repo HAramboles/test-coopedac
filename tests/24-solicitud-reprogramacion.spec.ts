@@ -84,11 +84,6 @@ test.describe('Solicitud de Reprogramacion - Pruebas con los diferentes parametr
                 await page.goto(`${url_base}`);
             });
 
-            // Cedulas, nombre y apellido de la persona almacenada en el state
-            const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
-            const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-            const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
             test('Ir a la opcion de Solicitud de Reprogramacion', async () => {
                 // Negocios
                 await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -123,6 +118,11 @@ test.describe('Solicitud de Reprogramacion - Pruebas con los diferentes parametr
                 });
 
                 test('Buscar un socio y ediatr su solicitud', async () => {
+                    // Nombre y apellido de la persona almacenada en el state
+                    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+                    //
                     await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN DE PRÉSTAMOS'})).toBeVisible();
 
                     // Buscar a la persona
@@ -138,6 +138,11 @@ test.describe('Solicitud de Reprogramacion - Pruebas con los diferentes parametr
                 });
 
                 test('Cambiar los datos de la solicitud', async () => {
+                    // Cedula, nombre y apellido de la persona almacenada en el state
+                    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+                    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
                     // Datos del socio
                     await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
 
@@ -214,6 +219,11 @@ test.describe('Solicitud de Reprogramacion - Pruebas con los diferentes parametr
                 });
 
                 test('Confirmar la Solicitud de Reprogramacion', async () => {
+                    // Cedula, nombre y apellido de la persona almacenada en el state
+                    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
+                    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
                     // Ir a la seccion de Reprogramacion Creditos
                     await page.getByRole('menuitem', {name: 'Reprogramación Créditos'}).click();
 
@@ -258,6 +268,10 @@ test.describe('Solicitud de Reprogramacion - Pruebas con los diferentes parametr
                 });
 
                 test('Confirmar que la Solicitud de reprogramacion haya sido Aprobada', async () => {
+                    // Nombre y apellido de la persona almacenada en el state
+                    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
                     // Cambiar el estado de las solicitudes de Pendiente a Aprobado
                     await page.getByText('PENDIENTES', {exact: true}).click();
                     // Elegir el estado de aprobadas

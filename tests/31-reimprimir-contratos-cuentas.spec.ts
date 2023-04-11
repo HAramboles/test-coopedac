@@ -29,10 +29,6 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
         await page.goto(`${url_base}`);
     });
 
-    // Nombre y apellido de la persona
-    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
     test('Ir a la opcion de Reimprimir Contratos de Cuentas', async () => {
         // Captaciones
         await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -48,6 +44,10 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
     });
 
     test('Buscar un socio', async () => {
+        // Nombre y apellido de la persona
+        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REIMPRESIÓN CONTRATOS'})).toBeVisible();
 

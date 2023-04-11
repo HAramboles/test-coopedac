@@ -28,9 +28,6 @@ test.describe('No permitir una Transferencia Interbancaria si la cuenta de Ahorr
         await page.goto(`${url_base}`);
     
     });
-
-    // Cedula de la persona almacenada en el state
-    const cedula = page.evaluate(() => window.localStorage.getItem('cedula'));
     
     test('Ir a la opcion de Solicitud Transferencia Interbancaria', async () => {
         // Captaciones
@@ -50,6 +47,9 @@ test.describe('No permitir una Transferencia Interbancaria si la cuenta de Ahorr
     });
     
     test('El saldo disponible es negativo, por lo que no es posible hacer la transferencia', async () => {
+        // Cedula de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
         // Titulo datos del solicitante debe estar visible
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOLICITANTE'})).toBeVisible();
     
