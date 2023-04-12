@@ -59,9 +59,16 @@ test.describe('Editar una Cuenta de Ahorros', () => {
         // Click al boton
         await botonCaptaciones.click();
 
-        if (await page.locator('#form_CLASE_TIPO_SELECIONADO_list').getByText('No hay datos').isVisible()) {
+        // Constante con la opcion de ahorros normales
+        const tipoAhorros = page.locator('text=AHORROS NORMALES');
+
+        if (await tipoAhorros.isHidden()) {
+            // Recargar la pagina
             await page.reload();
-        } else if ( await page.locator('text=AHORROS NORMALES').isVisible()) {
+            // Seleccionar el tipo de captacion Ahorros Normales
+            await botonCaptaciones.click();
+            await page.locator('text=AHORROS NORMALES').click();
+        } else if (await tipoAhorros.isVisible()) {
             // Seleccionar el tipo de captacion Ahorros Normales
             await page.locator('text=AHORROS NORMALES').click();
         }
@@ -219,6 +226,9 @@ test.describe('Editar una Cuenta de Ahorros', () => {
 
         // El firmante no debe mostrarse luego de la eliminacion del mismo
         await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).not.toBeVisible();
+
+        // Cerrar uno de los mensajes
+        await page.locator('[aria-label="close"]').last().click();
     });
 
     test('Editar una Cuenta de Ahorros - Agregar un Firmante', async () => {

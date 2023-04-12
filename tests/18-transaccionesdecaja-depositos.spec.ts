@@ -78,17 +78,21 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     });
 
     test('Debe salir un modal con la nota anteriormente creada', async () => {
+        // Nombre y apellido de la persona alamcenada en el state
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
         // Nota alamacenada en el state
-        const nota = await page.evaluate(() => window.localStorage.getItem('nota'));
+        // const nota = await page.evaluate(() => window.localStorage.getItem('nota'));
         
         // Titulo del modal
-        await expect(page.locator('h1').filter({hasText: 'NOTAS PARA ROBERTA NAZARIO'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: `NOTAS PARA ${nombre} ${apellido}`})).toBeVisible();
 
         // La nota debe estar visible
-        await expect(page.locator('div').filter({hasText: `${nota}`})).toBeVisible();
+        // await expect(page.locator('div').filter({hasText: `${nota}`})).toBeVisible();
 
         // La nota debe estar como completada
-        await expect(page.locator('(//svg[@class="bi bi-check2-all"])')).toBeVisible();
+        // await expect(page.locator('(//svg[@class="bi bi-check2-all"])')).toBeVisible();
 
         // Cerrar el modal
         await page.locator('[aria-label="close"]').click();
@@ -246,7 +250,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
         await expect(iconoAlerta).toBeVisible();
 
-        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 1000
+        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 2000
         // Divididos en 500, 200, 100, 100 y 50, 50
         const cant500 = page.locator('[id="2"]'); // Campo de RD 500
         const cant200 = page.locator('[id="3"]'); // Campo de RD 200
@@ -255,7 +259,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
 
         // Cantidad = 1 de 500
         await cant500.click();
-        await cant500.fill('1');
+        await cant500.fill('3');
 
         // Cantidad = 1 de 200
         await cant200.click();

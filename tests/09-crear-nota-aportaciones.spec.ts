@@ -9,7 +9,7 @@ let page: Page;
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Nota
-const nota = '';
+const nota = 'Debito a Aportaciones y a Ahorros';
 
 // Pruebas
 
@@ -42,15 +42,15 @@ test.describe('Pruebas agregando y completando notas', () => {
         // Aportaciones
         await page.getByRole('menuitem', {name: 'Aportaciones', exact: true}).click();
 
-        // Tipo de captacion
-        const buscadorVacio = page.locator('(//span[@class="ant-select-selection-placeholder"])');
-        const buscadorLleno = page.locator('(//span[@class="ant-select-selection-item"])');
-        
+        // El titulo debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
+                
         // Condicion por si el tipo de captacion llega sin datos o con datos
-        if (await buscadorVacio.isVisible()) {
-            await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones`)
+        const tipoCaptacion = page.getByTitle('APORTACIONES', {exact: true});
+
+        if (await tipoCaptacion.isHidden()) {
             await page.reload();
-        } else if (await buscadorLleno.isVisible()) {
+        } else if (await tipoCaptacion.isVisible()) {
             // La URL debe de cambiar
             await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
         }
@@ -121,7 +121,7 @@ test.describe('Pruebas agregando y completando notas', () => {
         await expect(page.locator('span').filter({hasText: `${nota}`})).toBeVisible();
 
         // Cerrar el modal
-        await page.locator('[aria-label="Close"]').click();
+        await page.getByRole('dialog').filter({hasText: 'DEBITO A APORTACIONES Y A AHORROS'}).getByRole('button', {name: 'Close'}).click();
 
         // Marcar como completada la nota
         const completarNota = page.locator('[aria-label="check"]');
@@ -147,6 +147,9 @@ test.describe('Pruebas agregando y completando notas', () => {
     test.afterAll(async () => { // Despues de las pruebas
         // Guardar la nota creada en el state
         await page.evaluate((nota) => window.localStorage.setItem('nota', nota), nota);
+
+        // Guardar nuevamente el Storage con la nota creada
+        await context.storageState({path: 'state.json'});
 
         // Cerrar la page
         await page.close();

@@ -58,9 +58,16 @@ test.describe('Reporte Poder a Terceros', () => {
         // Click al boton
         await botonCaptaciones.click();
 
-        if (await page.locator('#form_CLASE_TIPO_SELECIONADO_list').getByText('No hay datos').isVisible()) {
+        // Constante con la opcion de ahorros normales
+        const tipoAhorros = page.locator('text=AHORROS NORMALES');
+
+        if (await tipoAhorros.isHidden()) {
+            // Recargar la pagina
             await page.reload();
-        } else if ( await page.locator('text=AHORROS NORMALES').isVisible()) {
+            // Seleccionar el tipo de captacion Ahorros Normales
+            await botonCaptaciones.click();
+            await page.locator('text=AHORROS NORMALES').click();
+        } else if (await tipoAhorros.isVisible()) {
             // Seleccionar el tipo de captacion Ahorros Normales
             await page.locator('text=AHORROS NORMALES').click();
         }
@@ -195,7 +202,7 @@ test.describe('Reporte Poder a Terceros', () => {
         await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Click al boton de Cancelar
-        const botonCancelar = page.getByRole('button', {name: 'stop Cancelar'});
+        const botonCancelar = page.locator('[id="AHORROS\ NORMALES"]').getByRole('button', {name: 'stop Cancelar'});
         await expect(botonCancelar).toBeVisible();
         await botonCancelar.click();
 

@@ -51,10 +51,7 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros`);
     });
 
-    test('Seleccionar un tipo de Captacion', async () => {
-        // El titulo debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
-
+    test('Seleccionar un tipo de captaciones', async () => {
         // El titulo de tipo de captaciones debe estar visible
         await expect(page.locator('h1').filter({hasText: 'TIPO DE CAPTACIONES'})).toBeVisible();
 
@@ -64,9 +61,16 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         // Click al boton
         await botonCaptaciones.click();
 
-        if (await page.locator('#form_CLASE_TIPO_SELECIONADO_list').getByText('No hay datos').isVisible()) {
+        // Constante con la opcion de ahorros normales
+        const tipoAhorros = page.locator('text=AHORROS NORMALES');
+
+        if (await tipoAhorros.isHidden()) {
+            // Recargar la pagina
             await page.reload();
-        } else if ( await page.locator('text=AHORROS NORMALES').isVisible()) {
+            // Seleccionar el tipo de captacion Ahorros Normales
+            await botonCaptaciones.click();
+            await page.locator('text=AHORROS NORMALES').click();
+        } else if (await tipoAhorros.isVisible()) {
             // Seleccionar el tipo de captacion Ahorros Normales
             await page.locator('text=AHORROS NORMALES').click();
         }

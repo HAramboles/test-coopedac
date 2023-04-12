@@ -77,9 +77,16 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
         // Click al boton
         await botonCaptaciones.click();
 
-        if (await page.getByText('No hay datos').isVisible()) {
+        // Constante con la opcion de ahorros normales
+        const tipoAhorros = page.locator('text=AHORROS NORMALES');
+
+        if (await tipoAhorros.isHidden()) {
+            // Recargar la pagina
             await page.reload();
-        } else if ( await page.locator('text=AHORROS NORMALES').isVisible()) {
+            // Seleccionar el tipo de captacion Ahorros Normales
+            await botonCaptaciones.click();
+            await page.locator('text=AHORROS NORMALES').click();
+        } else if (await tipoAhorros.isVisible()) {
             // Seleccionar el tipo de captacion Ahorros Normales
             await page.locator('text=AHORROS NORMALES').click();
         }

@@ -11,8 +11,8 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedula, nombre y apellido del menor
 const cedulaMenor = numerosAleatorios4;
-const nombreMenor = '';
-const apellidoMenor = '';
+const nombreMenor = 'HUGO';
+const apellidoMenor = 'GONZALEZ SOSA';
 
 // Pruebas
 
@@ -343,6 +343,16 @@ test.describe('Pruebas con el Registro de Persona Fisica - Menor de Edad', () =>
     });
 
     test.afterAll(async () => { // Despues de las pruebas
+        // Guardar la cedula del menor
+        await page.evaluate((cedulaMenor) => window.localStorage.setItem('cedulaMenor', cedulaMenor), cedulaMenor);
+
+        // Guardar el nombre y el apellido del menor
+        await page.evaluate((nombreMenor) => window.localStorage.setItem('nombreMenor', nombreMenor), nombreMenor);
+        await page.evaluate((apellidoMenor) => window.localStorage.setItem('apellidoMenor', apellidoMenor), apellidoMenor);
+
+        // Guardar nuevamente el Storage con la cedula, el nombre y el apellido del menor
+        await context.storageState({path: 'state.json'});
+
         // Cerrar la pagina
         await page.close();
 

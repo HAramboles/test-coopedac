@@ -581,14 +581,18 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(/\/solicitado/);
 
         // Ir a la seccion de datos prestamos 
-        await page.getByRole('button', {name: '2 Datos Préstamos'}).click();
+        const datosPrestamos = page.getByRole('button', {name: '2 Datos Préstamos'})
+        await expect(datosPrestamos).toBeVisible();
+        await datosPrestamos.click();
 
         // La tasa debe estar visible y calculada
         const tasa = page.locator('#loan_form_CUOTA');
         await expect(tasa).toHaveAttribute('value', 'RD$ 416.67');
         
         // Ir a la ultima seccion 
-        await page.getByRole('button', {name: '9 Documentos'}).click();
+        const seccionDocumentos = page.getByRole('button', {name: '9 Documentos'});
+        await expect(seccionDocumentos).toBeVisible();
+        await seccionDocumentos.click();
 
         // Los documentos deben estar visibles
         await expect(page.locator('div').filter({hasText: 'CARTA DE TRABAJO'}).nth(4)).toBeVisible();
@@ -644,7 +648,9 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(/\/en_proceso_analisis/);
 
         // Dirigirse a la ultima seccion
-        await page.getByRole('button', {name: '10 Análisis'}).click();
+        const seccionAnalisis = page.getByRole('button', {name: '10 Análisis'});
+        await expect(seccionAnalisis).toBeVisible();
+        await seccionAnalisis.click();
 
         // El titulo de proceso, analisis debe estar visible
         await expect(page.getByRole('heading', {name: '(EN PROCESO (ANALISIS))'})).toBeVisible();
@@ -661,9 +667,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();
         // Debe estar visible el estado de rechazado
-        await page.getByText('RECHAZADO', {exact: true}).click();
+        await expect(page.getByText('RECHAZADO', {exact: true})).toBeVisible();
         // Debe estar visible el estado de solicitado
-        await page.getByText('SOLICITADO', {exact: true}).click();
+        await expect(page.getByText('SOLICITADO', {exact: true})).toBeVisible();
+
         // Cmabiar el estado a Aprobado
         await page.getByText('APROBADO', {exact: true}).click();
         await page.getByText('¿Está seguro que desea pasar el préstamo a estado APROBADO?').click();   
@@ -701,7 +708,9 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(/\/aprobado/);
 
         // Dirigirse a la ultima seccion
-        await page.getByRole('button', {name: '10 Desembolso'}).click();
+        const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
+        await expect(seccionDesembolso).toBeVisible();
+        await seccionDesembolso.click();
 
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();
@@ -728,7 +737,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(/\/en_proceso_analisis/);
 
         // Dirigirse a la ultima seccion
-        await page.getByRole('button', {name: '10 Análisis'}).click();
+        await expect(seccionDesembolso).toBeVisible();
+        await seccionDesembolso.click();
 
         // El titulo de proceso, analisis debe estar visible
         await expect(page.getByRole('heading', {name: '(EN PROCESO (ANALISIS))'})).toBeVisible();
@@ -742,9 +752,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();
         // Debe estar visible el estado de rechazado
-        await page.getByText('RECHAZADO', {exact: true}).click();
+        await expect(page.getByText('RECHAZADO', {exact: true})).toBeVisible();
         // Debe estar visible el estado de solicitado
-        await page.getByText('SOLICITADO', {exact: true}).click();
+        await expect(page.getByText('SOLICITADO', {exact: true})).toBeVisible();
+
         // Cmabiar el estado a Aprobado
         await page.getByText('APROBADO', {exact: true}).click();
         await page.getByText('¿Está seguro que desea pasar el préstamo a estado APROBADO?').click();   
@@ -782,7 +793,9 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(/\/aprobado/);
 
         // Dirigirse a la ultima seccion
-        await page.getByRole('button', {name: '10 Desembolso'}).click();
+        const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
+        await expect(seccionDesembolso).toBeVisible();
+        await seccionDesembolso.click();
 
         // Boton de cambiar estado de solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();

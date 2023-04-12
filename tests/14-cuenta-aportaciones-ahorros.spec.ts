@@ -48,15 +48,15 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // Captaciones
         await page.locator('text=Aportaciones').first().click();
 
-        // Tipo de captacion
-        const buscadorVacio = page.locator('(//span[@class="ant-select-selection-placeholder"])');
-        const buscadorLleno = page.locator('(//span[@class="ant-select-selection-item"])');
+        // El titulo debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
         
         // Condicion por si el tipo de captacion llega sin datos o con datos
-        if (await buscadorVacio.isVisible()) {
-            await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones`)
+        const tipoCaptacion = page.getByTitle('APORTACIONES', {exact: true});
+
+        if (await tipoCaptacion.isHidden()) {
             await page.reload();
-        } else if (await buscadorLleno.isVisible()) {
+        } else if (await tipoCaptacion.isVisible()) {
             // La URL debe de cambiar
             await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
         }
