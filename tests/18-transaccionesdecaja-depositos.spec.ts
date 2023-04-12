@@ -113,10 +113,10 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
         await expect(campoMonto).toBeVisible();
-        await campoMonto.fill('1000');
+        await campoMonto.fill('2000');
 
         // Agregar un comentario
-        await page.locator('#form_COMENTARIO').fill('Deposito de 1000 pesos a la cuenta de Aportaciones');
+        await page.locator('#form_COMENTARIO').fill('Deposito de 2000 pesos a la cuenta de Aportaciones');
 
         // Boton Agregar
         await page.locator('text=Agregar').click();
@@ -146,10 +146,10 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
         await expect(campoMonto).toBeVisible();
-        await campoMonto.fill('1000');
+        await campoMonto.fill('2000');
 
         // Agregar un comentario
-        await page.locator('#form_COMENTARIO').fill('Deposito de 1000 pesos a la cuenta de Ahorros');
+        await page.locator('#form_COMENTARIO').fill('Deposito de 2000 pesos a la cuenta de Ahorros');
 
         // Boton Agregar
         await page.locator('text=Agregar').click();
@@ -187,7 +187,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
 
         // Cantidad = 1 de 500
         await cant500.click();
-        await cant500.fill('1');
+        await cant500.fill('3');
 
         // Cantidad = 1 de 200
         await cant200.click();

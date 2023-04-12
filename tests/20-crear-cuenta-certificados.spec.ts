@@ -152,7 +152,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con lso diferentes
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
 
                     // El boton de subir la firma debe estar visible
-                    await expect(page.getByText('Cargar ')).toBeVisible();
+                    await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).toBeVisible();
                     
                     // Skip al test
                     test.skip();
@@ -166,7 +166,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con lso diferentes
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
 
                     // El boton de subir la firma no debe estar visible
-                    await expect(page.getByText('Cargar ')).not.toBeVisible();
+                    await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).not.toBeVisible();
                     
                     // Skip al test
                     test.skip();
@@ -251,7 +251,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con lso diferentes
                     await page.locator('text=Cargar Autorización').click();
 
                     // El boton de subir la firma no debe estar visible
-                    await expect(page.getByText('Cargar ')).not.toBeVisible();
+                    await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).not.toBeVisible();
             
                     // El titulo de cuentas a debitar debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'CUENTAS Y MONTOS A DEBITAR'})).toBeVisible();
@@ -374,7 +374,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con lso diferentes
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=3`);
             
                     // El titulo principal debe estar visible
-                    await expect(page.locator('text=FORMA DE PAGO DE INTERESES O EXCEDENTES')).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'FORMA DE PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
                 });
             
                 test('Finalizar con la Creacion de Cuenta de Certificado', async () => {

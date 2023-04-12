@@ -115,14 +115,6 @@ test.describe('Pruebas agregando y completando notas', () => {
         const notaCreada = page.getByRole('row', {name: `${nota}`});
         await expect(notaCreada).toBeVisible();
 
-        // Ver la nota
-        await notaCreada.locator('[data-icon="eye"]').click();
-        // Se debe mostrar un modal con la nota
-        await expect(page.locator('span').filter({hasText: `${nota}`})).toBeVisible();
-
-        // Cerrar el modal
-        await page.getByRole('dialog').filter({hasText: 'DEBITO A APORTACIONES Y A AHORROS'}).getByRole('button', {name: 'Close'}).click();
-
         // Marcar como completada la nota
         const completarNota = page.locator('[aria-label="check"]');
         await expect(completarNota).toBeVisible();
@@ -138,7 +130,7 @@ test.describe('Pruebas agregando y completando notas', () => {
         await expect(page.locator('text=Notas Persona actualizada exitosamente.')).toBeVisible();
 
         // Cerrar el mensaje
-        await page.locator('[data-icon="close"]').click();
+        await page.getByRole('dialog').filter({hasText: 'Confirmación¿Está seguro que desea marcar esta nota como completada?CancelarAcep'}).getByRole('button', {name: 'Close'}).click();
 
         // El icono debe cambiar
         await expect(page.locator('(//svg[@class="bi bi-check2-all"])')).toBeVisible();

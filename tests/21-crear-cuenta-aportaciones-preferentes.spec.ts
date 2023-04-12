@@ -116,7 +116,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 await botonNuevaCuenta.click();
             });
 
-            if (escenario.REQUIERE_FIRMA_TITULAR === 'N' || '') {
+            if (escenario.REQUIERE_FIRMA_TITULAR === 'N') {
                 test('Test si el escenario, Requiere Firma Titular, es N o vacio', async () => {
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=1`);
@@ -125,7 +125,21 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES PREFERENTES'})).toBeVisible();
 
                     // El boton de subir la firma no debe estar visible
-                    await expect(page.getByText('Cargar ')).not.toBeVisible();
+                    await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).not.toBeVisible();
+                    
+                    // Skip al test
+                    test.skip();
+                });
+            } else if (escenario.REQUIERE_FIRMA_TITULAR === '') {
+                test('Test si el escenario, Requiere Firma Titular, es N o vacio', async () => {
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=1`);
+                
+                    // El titulo principal debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES PREFERENTES'})).toBeVisible();
+
+                    // El boton de subir la firma no debe estar visible
+                    await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).not.toBeVisible();
                     
                     // Skip al test
                     test.skip();
@@ -160,10 +174,10 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA').fill('1500');
             
                     // Monto disponible en aportaciones 
-                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA_help').filter({hasText: 'Monto disponible en aportaciones es: 1,000.00'})).toBeVisible();
+                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA_help').filter({hasText: 'Monto disponible en aportaciones es: 2,000.00'})).toBeVisible();
             
                     // Monto maximo de apertura
-                    const montoMaximo = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA_help').filter({hasText: 'Monto máximo de apertura: 3,000.00'});
+                    const montoMaximo = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA_help').filter({hasText: 'Monto máximo de apertura: 6,000.00'});
                     await expect(montoMaximo).toBeVisible();
             
                     // Subir la imagen de la firma
@@ -320,6 +334,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(page.locator('h1').filter({hasText: 'APORTACIONES PREFERENTES'})).toBeVisible();
                 });
             };
+            
         
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerra la page
