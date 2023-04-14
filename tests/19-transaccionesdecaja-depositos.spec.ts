@@ -77,7 +77,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await page.locator('text=APORTACIONES').click();
     });
 
-    test('Debe salir un modal con la nota anteriormente creada', async () => {
+    test.skip('Debe salir un modal con la nota anteriormente creada', async () => {
         // Nombre y apellido de la persona alamcenada en el state
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));

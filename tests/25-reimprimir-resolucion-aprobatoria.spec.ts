@@ -86,11 +86,15 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                 await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR RESOLUCIÓN APROBATORIA'})).toBeVisible();
 
                 if (escenario.ESTADO_DEFECTO === 'A') {
+                    // Nombre y apellido de la persona almacenada en el state
+                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
                     // El estado de las solicitudes deben estar en Aprobado
-                    await expect(page.getByText('APROBADO', {exact: true})).toBeVisible();
+                    await expect(page.locator('span').filter({hasText: 'APROBADO'})).toBeVisible();
 
                     // Buscar un socio
-                    await page.locator('#form_search').fill('LUISA DEL CARMEN');
+                    await page.locator('#form_search').fill(`${nombre} ${apellido}`);
 
                     // No se deben mostrar ningun resultado, porque el socio no tiene ninguna solicitud en aprobado
                     await expect(page.getByText('No hay datos')).toBeVisible();

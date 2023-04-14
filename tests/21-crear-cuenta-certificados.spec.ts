@@ -380,20 +380,24 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con lso diferentes
                 test('Finalizar con la Creacion de Cuenta de Certificado', async () => {
                     // Boton de Finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
-                    // Esperar que se abra una nueva pestaña
-                    const [newPage] = await Promise.all([
+                    // Esperar que se abra dos pestañas
+                    const [newPage, newPage2] = await Promise.all([
+                        context.waitForEvent('page'),
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
                         await expect(botonFinalizar).toBeVisible(),
                         await botonFinalizar.click()
                     ]);
                   
-                    // La pagina abierta con la solicitud se cierra
+                    // Cerrar las dos paginas abiertas
                     await newPage.close();
+                    await newPage2.close();
+
+                    // Debe regresar a la pagina de los certificados
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`)
                 });
             }
             
-        
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerrar la page
                 await page.close();

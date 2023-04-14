@@ -13,8 +13,8 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Cedula, pasaporte, nombre y apellidos de la persona
 const cedula = numerosAleatorios;
 const pasaporte = numerosPasaporte;
-const nombrePersona = 'NADIA';
-const apellidoPersona = 'ESCOBAR RUIZ';
+const nombrePersona = '';
+const apellidoPersona = '';
 
 /* Pruebas */
 
@@ -206,7 +206,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         await campoTelefonoEmpresa.clear();
         await campoTelefonoEmpresa?.fill('8092653022');
         // Verificar que el numero digitado tenga el parentesis
-        await expect(campoTelefonoEmpresa).toHaveValue('(809) 265-3022');
+        await expect(campoTelefonoEmpresa).toHaveValue('(809) 265 3022');
 
         // Input de la direccion de la empresa
         const campoDireccionEmpresa = page.locator('#person_DIRECCION_EMPRESA');

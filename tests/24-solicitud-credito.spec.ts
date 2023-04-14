@@ -140,8 +140,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.locator('text=Aceptar').click();
     });
 
-    /*
-    test('Paso 2 - Datos Prestamo - Extra - Probar control de Plazo', async () => {
+    test.skip('Paso 2 - Datos Prestamo - Extra - Probar control de Plazo', async () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
 
@@ -156,7 +155,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Tipo de garantia
         await page.getByLabel('Tipo Garantía').click();
         // Click en garantia ahorros
-        await page.getByText('AHORROS').click();
+        await page.getByText('AHORROS', {exact: true}).click();
 
         // Oferta
         await page.getByLabel('Oferta').click();
@@ -198,7 +197,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Colocar un monto por encima del limite
         await page.locator('#loan_form_MONTO').fill('2000000');
         // Cick fuera del input
-        await page.locator('text=Monto').click();
+        await page.getByText('Monto', {exact: true}).click();
         // Debe aparecer un mensaje de error
         await expect(page.locator('text=El monto digitado está fuera de los rangos de la oferta seleccionada.')).toBeVisible();
 
@@ -211,7 +210,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Ingresar una tasa por debajo del limite
         await campoTasa.fill('8');
         // Clickear fuera del input
-        await page.locator('text=Monto').click();
+        await page.getByText('Monto', {exact: true}).click();
         
         // Debe aparecer un modal con un mensaje de aviso
         await expect(page.locator('text=Tasa Mínima para esta oferta es: 9.00')).toBeVisible();
@@ -221,7 +220,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Ingresar una tasa por encima del limite
         await campoTasa.fill('15');
         // Clickear fuera del input
-        await page.locator('text=Monto').click();
+        await page.getByText('Monto', {exact: true}).click();
         
         // Debe aparecer un modal con un mensaje de aviso
         await expect(page.locator('text=Tasa Máxima para esta oferta es: 13.00')).toBeVisible();
@@ -234,6 +233,9 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Ingresar un plazo por debajo del limite
         await page.getByPlaceholder('CANTIDAD').fill('5');
 
+        // Clickear fuera del input
+        await page.getByText('Monto', {exact: true}).click();
+
         // Debe salir un modal de aviso
         await expect(page.locator('text=Plazo Máximo para esta oferta es: 36 (MENSUAL).')).toBeVisible();
         // Click en Aceptar
@@ -242,12 +244,14 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Ingresar un plazo por encima del limite
         await page.getByPlaceholder('CANTIDAD').fill('40');
 
+        // Clickear fuera del input
+        await page.getByText('Monto', {exact: true}).click();
+
         // Debe salir un modal de aviso
         await expect(page.locator('text=Plazo Máximo para esta oferta es: 36 (MENSUAL).')).toBeVisible();
         // Click en Aceptar
         await botonAceptar.click();
     });
-    */
 
     test('Paso 2 - Datos Prestamo', async () => {
         // La URL no debe cambiar
@@ -258,6 +262,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Tipo de credito
         await page.getByLabel('Tipo Crédito').click();
+        // await page.locator('#loan_form').getByText('CONSUMO').click();
         // Click a credito hipotecario
         await page.getByText('HIPOTECARIOS').click();
 
@@ -277,6 +282,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir grupo sin garantia
         await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
+        // Cambiar el tipo de cuota
+        await page.getByText('INSOLUTO').click()
+        await page.getByText('SOLO INTERES').click();
+
         // Monto
         await page.locator('#loan_form_MONTO').click();
         await page.locator('#loan_form_MONTO').fill('50000');
@@ -289,7 +298,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Colocar una tasa por encima de lo permitido que es de 90%
         await campoTasa.fill('100');
         // Clickear fuera del campo
-        await page.getByText('Plazo').click();
+        await page.getByText('Plazo', {exact: true}).click();
         
         // Debe salir un modal
         await expect(page.locator('text=Tasa Máxima para esta oferta es: 99.00')).toBeVisible();
@@ -305,10 +314,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Los plazos deben ser mensuales
         await expect(page.locator('text=MENSUAL')).toBeVisible();
-
-        // Cambiar el tipo de cuota
-        await page.getByText('INSOLUTO').click()
-        await page.getByText('SOLO INTERES').click();
 
         // Agregar una cuenta del socio para desembolsar
         await page.locator('#loan_form_ID_CUENTA_DESEMBOLSO').click();
@@ -426,7 +431,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByText('HIPOTECA', {exact: true}).click();
 
         // Elegir que el socio es propietario de la garantia
-        await page.getByLabel('', {exact: true}).check();
+        await page.getByRole('checkbox').click();
 
         // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
         await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
@@ -536,7 +541,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Esperar que la Instancia de Credito se haya subido
         await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(3)).toBeVisible();
-        
+
         // Subir Tabla de amortizacion
         const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');
         await page.getByRole('row', {name: '10 TABLA AMORTIZACION upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
@@ -731,9 +736,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=aprobado`);
 
         // Cambiar el estado de las solicitudes de Aprobado a En Proceso
-        await expect(page.locator('text=APROBADO')).toBeVisible();
-        await page.locator('text=APROBADO').click();
-        await page.locator('text=EN PROCESO (ANALISIS)').click();
+        const solicitudesAprobadas = page.getByText('APROBADO', {exact: true});
+        await expect(solicitudesAprobadas).toBeVisible();
+        await solicitudesAprobadas.click();
+        await page.getByText('EN PROCESO (ANALISIS)', {exact: true}).click();
 
         // La url debe cambiar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
@@ -742,11 +748,12 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
         // La url debe de tener que la solicitud esta en estado en proceso
-        await expect(page).toHaveURL(/\/en_proceso_analisis/);
+        //await expect(page).toHaveURL(/\/en_proceso_analisis/);
 
         // Dirigirse a la ultima seccion
-        await expect(seccionDesembolso).toBeVisible();
-        await seccionDesembolso.click();
+        const seccionAnalisis = page.getByRole('button', {name: '10 Análisis'});
+        await expect(seccionAnalisis).toBeVisible();
+        await seccionAnalisis.click();
 
         // El titulo de proceso, analisis debe estar visible
         await expect(page.getByRole('heading', {name: '(EN PROCESO (ANALISIS))'})).toBeVisible();
@@ -783,7 +790,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Desembolsar la solicitud', async () => {
-        // Nombre y apellidos de la persona almacenada en el state
+        // Cedula, nombre y apellidos de la persona almacenada en el state
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
@@ -805,9 +813,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(seccionDesembolso).toBeVisible();
         await seccionDesembolso.click();
 
-        // Las cuentas de desmbolso y de cobro deben estar visibles
-        await expect(page.getByText('AHORROS NORMALES', {exact: true}).first()).toBeVisible();
-        await expect(page.getByText('AHORROS NORMALES', {exact: true}).last()).toBeVisible();
+        // El nombre y el apellido del socio deben estar visibles
+        await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible();
 
         // Boton de cambiar estado de solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();

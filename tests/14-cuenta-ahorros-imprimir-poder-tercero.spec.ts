@@ -9,7 +9,6 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-
 // Pruebas
 
 test.describe('Reporte Poder a Terceros', () => {

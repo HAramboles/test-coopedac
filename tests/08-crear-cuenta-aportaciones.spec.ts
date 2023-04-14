@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 
 // Variables globales
 let browser: Browser;
