@@ -84,8 +84,11 @@ test.describe('Sesiones en Transito - Pruebas con los diferentes parametros', ()
             test('Liberar una Sesion', async () => {                
                 if (escenario.ID_TIPO_SESION !== '') {
                     // Nombre y apellido de la persona alamcenado en el state
-                    const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+                    // Buscar un socio
+                    await page.locator('#form_search').fill(`${nombre} ${apellido}`);
 
                     // El nombre de la persona debe estar visible
                     await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).toBeVisible();
@@ -98,7 +101,7 @@ test.describe('Sesiones en Transito - Pruebas con los diferentes parametros', ()
                     await liberarSesion.click();
             
                     // Debe salir un modal de confirmacion
-                    await expect(page.locator('text=¿Está seguro de que desea procedercon esta acción?')).toBeVisible();
+                    await expect(page.locator('text=¿Está seguro que desea proceder con esta acción?')).toBeVisible();
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
             

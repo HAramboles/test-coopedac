@@ -45,8 +45,8 @@ test.describe('Prueba con la Reimpresion de la Solicitud de Credito', () => {
 
     test('Buscar un socio', async () => {
         // Nombre y apellidos de la persona almacenada en el state
-        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Ingresar un socio
         const buscador = page.locator('#form_search');

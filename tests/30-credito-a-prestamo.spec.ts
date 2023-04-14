@@ -10,7 +10,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API
 
 // Pruebas
 
-test.describe('', () => {
+test.describe('Pruebas con la opcion de Credito a Prestamos', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -45,26 +45,19 @@ test.describe('', () => {
 
     test('Buscar un socio', async () => {
         // Nombre y apellido de la persona
-        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CRÉDITO A PRÉSTAMOS'})).toBeVisible();
 
         // Buscar al socio
-        await page.locator('#select-search').fill('MARIBELL REINOSO');
+        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
         // Seleccionar a la persona
         await page.locator(`text=${nombre} ${apellido}`).click();
     });
 
     test('Llenar los datos necesarios para el credito al prestamo', async () => {
-        // Nombre y apellido de la persona
-        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-        // El nombre de la persona debe estar visible
-        await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
-
         // El prestamo debe estar visible
         const prestamo = page.locator('#form_PRESTAMOS');
         await expect(prestamo).toHaveAttribute('value', 'CRÉDITO HIPOTECARIO');
@@ -78,19 +71,19 @@ test.describe('', () => {
 
         // Cuota
         const cuota = page.locator('#form_CUOTA');
-        await expect(cuota).toHaveAttribute('value', '$416.67');
+        await expect(cuota).toHaveValue('$ 416.67');
 
         // Deuda total
         const deudaTotal = page.locator('#form_DEUDA_CAPTITAL');
-        await expect(deudaTotal).toHaveAttribute('value', '$50,000');
+        await expect(deudaTotal).toHaveValue('$ 50,000');
 
         // Deuda al dia
         const deudaAlDia = page.locator('#form_DEUDA_AL_DIA');
-        await expect(deudaAlDia).toHaveAttribute('value', 'RD$50,000');
+        await expect(deudaAlDia).toHaveValue('RD$ 50,000');
 
         // Moneda
-        const moneda = page.locator('#form_ID_MONEDA');
-        await expect(moneda).toHaveAttribute('value', 'PESO');
+        // const moneda = page.locator('#form_ID_MONEDA');
+        await expect(page.locator('text=PESO')).toBeVisible();
 
         // Tasa de moneda
         await expect(page.locator('#form_TASA_MONEDA')).toBeVisible();
@@ -105,13 +98,16 @@ test.describe('', () => {
         await page.locator('#form_NOTA').fill('Pago por internet Banking de 12,000 para el prestamo');
 
         // Agregar un monto
-        await page.getByRole('cell', {name: 'RD$ 0.00 edit'}).getByText('RD$ 0.00').click();
-        await page.getByPlaceholder('ABONO').fill('RD$ 12000');
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').click();
+        await page.getByPlaceholder('MONTO NOTA').fill('RD$ 12000');
 
         // Los nombres de las etiquetas deben estar visibles
-        await expect(page.getByText('Concepto')).toBeVisible();
-        await expect(page.getByText('Monto a la fecha')).toBeVisible();
-        await expect(page.getByText('Monto nota')).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Concepto'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Monto a la fecha'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Monto nota'})).toBeVisible();
+
+        // Clickear fuera para que se agregue el monto
+        await page.locator('h1').filter({hasText: 'TOTAL'}).click();
 
         // El total debe ser el monto total a aplicar
         await expect(page.locator('h1').filter({hasText: 'TOTAL'})).toBeVisible();
@@ -133,7 +129,7 @@ test.describe('', () => {
         await newPage.close();
 
         // Se debe mostrar un mensaje 
-        await expect(page.locator('text=Nota aplicadaexitosamente')).toBeVisible();
+        await expect(page.locator('text=Nota aplicada exitosamente')).toBeVisible();
         // Click en Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();
     });

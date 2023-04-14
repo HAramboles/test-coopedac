@@ -45,8 +45,8 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
 
     test('Buscar un socio', async () => {
         // Nombre y apellido de la persona
-        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REIMPRESIÓN CONTRATOS'})).toBeVisible();
@@ -57,7 +57,7 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
 
     test('Todas las cuentas creadas anteriormente deben estar visibles', async () => {
         // Cuenta de Aportaciones
-        const cuentaAportaciones = page.getByRole('row', {name: 'APORTACIONES'});
+        const cuentaAportaciones = page.getByRole('row', {name: 'APORTACIONES'}).last();
         await expect(cuentaAportaciones).toBeVisible();
 
         // Generar contrato

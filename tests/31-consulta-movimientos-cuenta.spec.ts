@@ -42,8 +42,8 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
 
     test('Buscar una cuenta de un socio', async () => {
         // Nombre y apellidos almacenados en el state
-        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
@@ -87,8 +87,8 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
 
     test('Buscar otra cuenta del mismo usuario', async () => {
         // Nombre y apellidos almacenados en el state
-        const nombre = page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Buscar un socio
         const buscador = page.locator('#select-search');
@@ -108,7 +108,7 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
         
         // El deposito realizado anteriormente debe mostrarse   
-        await expect(page.getByText('Deposito de 1000 pesos a la cuenta de Ahorros')).toBeVisible();
+        await expect(page.getByText('Deposito de 2000 pesos a la cuenta de Ahorros')).toBeVisible();
 
         // El retiro realizado anteriormnete debe mostrarse
         await expect(page.getByText('Retiro de 100 pesos a la cuenta de Ahorros')).toBeVisible();
