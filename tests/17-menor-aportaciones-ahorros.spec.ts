@@ -132,6 +132,14 @@ test.describe('', async () => {
         // El tipo de firma requerida debe estar visible
         await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();
 
+        /*
+        // Click en Continuar sin colocar la firma de un tutor
+        Continuar();
+
+        // Debe salir un mensaje de que se debe agregar una firma
+        await expect(page.locator('text=Debe agregar como firmante al representante legal del socio.')).toBeVisible();
+        */
+
         // Colocar la firma del tutor del menor
 
         // Boton de Agregar Firmantes debe estar visible

@@ -17,11 +17,11 @@ const cedulaPersonaJuridicaRelacionado = numerosAleatorios3;
 const registroMercantil = numerosAleatorios5;
 
 // Nombre de la persona juridica
-const nombreJuridica = '';
+const nombreJuridica = 'AGROS BUSTAMANTE & ASOC';
 
 // Nombre del relacionado
-const nombreRelacionado = '';
-const apellidoRelacionado = '';
+const nombreRelacionado = 'LEOPOLDO';
+const apellidoRelacionado = 'BUSTAMANTE';
 
 // Pruebas
 

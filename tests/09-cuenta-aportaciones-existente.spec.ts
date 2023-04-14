@@ -8,7 +8,9 @@ let page: Page;
 /* URL de la pagina */
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
+// Pruebas
+
+test.describe('No permitir crear otra Cuenta de Aportaciones del mismo Socio', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser, con la propiedad headless
         browser = await chromium.launch({
@@ -26,7 +28,6 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // Ingresar a la url de la pagina
         await page.goto(`${url_base}`);
     });
-
 
     test('Ir a Apertura de cuenta de aportaciones', async () => {
         // Captaciones
