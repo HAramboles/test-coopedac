@@ -1,5 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { numerosAleatorios2, numerosAleatorios3, numerosAleatorios5 } from './utils/cedulasypasaporte';
+import { 
+    numerosCedulas2, numerosCedulas, numerosRegistroMercantil, numerosCorreo, numerosCelular, numerosTelefono
+} from './utils/cedulasypasaporte';
 
 // Variables Globales
 let browser: Browser;
@@ -10,18 +12,26 @@ let page: Page
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedulas
-const cedulaPersonaJuridica = numerosAleatorios2;
-const cedulaPersonaJuridicaRelacionado = numerosAleatorios3;
+const cedulaPersonaJuridica = numerosCedulas2;
+const cedulaPersonaJuridicaRelacionado = numerosCedulas;
 
 // Registro Mercantil
-const registroMercantil = numerosAleatorios5;
+const registroMercantil = numerosRegistroMercantil;
+
+// Correos de la persona fisica y del relacionado
+const correoJuridica = numerosCorreo;
+const correoRelacionado = numerosCorreo;
+
+// Numeros telefonicos
+const telefonoJuridica = numerosTelefono;
+const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = '';
+const nombreJuridica = 'BAYRON AGRICULTORES S.R.L';
 
 // Nombre del relacionado
-const nombreRelacionado = '';
-const apellidoRelacionado = '';
+const nombreRelacionado = 'BAYRON';
+const apellidoRelacionado = 'FUENTES TORRES';
 
 // Pruebas
 
@@ -207,7 +217,7 @@ test.describe('Pruebas con el Registro de Persona Juridica', () => {
         await page.getByText('OFICINA', {exact: true}).click();
 
         // Ingresar un numero de celular
-        await page.locator('#form_NUMERO').fill('8099652108');
+        await page.locator('#form_NUMERO').fill(`${telefonoJuridica}`);
 
         // Click al icono de guardar telefono
         await page.locator('button', { has: page.locator('span > svg[data-icon=save]')}).click();
@@ -228,7 +238,7 @@ test.describe('Pruebas con el Registro de Persona Juridica', () => {
         // Descripcion del email
         const campoNombreEmail = page.getByPlaceholder('USUARIO');
         await campoNombreEmail.click();
-        await campoNombreEmail?.fill('empresa');
+        await campoNombreEmail?.fill(`empresa${correoJuridica}`);
 
         // Seleccionar un dominio del email
         const campoDominioEmail = page.locator('#form_DOMAIN');
@@ -434,7 +444,7 @@ test.describe('Pruebas con el Registro de Persona Juridica', () => {
         await page.locator('text=CELULAR').first().click();
 
         // Ingresar un numero de celular
-        await page.locator('#form_NUMERO').fill('8298062703');
+        await page.locator('#form_NUMERO').fill(`${celularRelacionado}`);
 
         // Click al icono de guardar telefono
         await page.locator('button', { has: page.locator('span > svg[data-icon=save]')}).click();
@@ -455,7 +465,7 @@ test.describe('Pruebas con el Registro de Persona Juridica', () => {
         // Descripcion del email
         const campoNombreEmail = page.getByPlaceholder('USUARIO');
         await campoNombreEmail.click();
-        await campoNombreEmail?.fill('correo');
+        await campoNombreEmail?.fill(`${nombreRelacionado}${correoRelacionado}`);
 
         // Seleccionar un dominio del email
         const campoDominioEmail = page.locator('#form_DOMAIN');

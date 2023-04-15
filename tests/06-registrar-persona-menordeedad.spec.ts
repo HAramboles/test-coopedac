@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { numerosAleatorios4 } from './utils/cedulasypasaporte';
+import { numerosCedulas4, numerosTelefono } from './utils/cedulasypasaporte';
 
 // Vaiables globales 
 let browser: Browser;
@@ -9,10 +9,11 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Cedula, nombre y apellido del menor
-const cedulaMenor = numerosAleatorios4;
-const nombreMenor = '';
-const apellidoMenor = '';
+// Cedula, nombre, apellido y numero telefonico del menor
+const cedulaMenor = numerosCedulas4;
+const telefonoMenor = numerosTelefono;
+const nombreMenor = 'ADRIEN';
+const apellidoMenor = 'FLORES GOMEZ';
 
 // Pruebas
 
@@ -290,7 +291,7 @@ test.describe('Pruebas con el Registro de Persona Fisica - Menor de Edad', () =>
         // Input del numero
         const campoNumero = page.locator('#form_NUMERO');
         await campoNumero.click();
-        await campoNumero?.fill('8093622562');
+        await campoNumero?.fill(`${telefonoMenor}`);
 
         // Hacer click al icono de guardar telefono
         await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();

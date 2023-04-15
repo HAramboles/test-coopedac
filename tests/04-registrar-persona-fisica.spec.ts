@@ -1,6 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { numerosAleatorios } from './utils/cedulasypasaporte';
-import { numerosPasaporte } from './utils/cedulasypasaporte';
+import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
 
 // Variables globales
 let browser: Browser;
@@ -10,11 +9,14 @@ let page: Page;
 /* URL de la pagina */
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Cedula, pasaporte, nombre y apellidos de la persona
-const cedula = numerosAleatorios;
+// Cedula, pasaporte, nombre, apellidos, correo y celular de la persona
+const cedula = numerosCedulas;
 const pasaporte = numerosPasaporte;
-const nombrePersona = '';
-const apellidoPersona = '';
+const numerosparaCorreo = numerosCorreo;
+const celular = numerosCelular;
+
+const nombrePersona = 'MARGARITA';
+const apellidoPersona = 'FLORES GOMEZ';
 
 /* Pruebas */
 
@@ -434,7 +436,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         // Input del numero
         const campoNumero = page.locator('#form_NUMERO');
         await campoNumero.click();
-        await campoNumero?.fill('8263230457');
+        await campoNumero?.fill(`${celular}`);
 
         // Hacer click al icono de guardar telefono
         await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
@@ -455,7 +457,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         // Input de la descripcion del email
         const campoNombreEmail = page.getByPlaceholder('USUARIO');
         await campoNombreEmail.click();
-        await campoNombreEmail?.fill('correo');
+        await campoNombreEmail?.fill(`${nombrePersona}${numerosparaCorreo}`);
 
         // Seleccionar un dominio del email
         const campoDominioEmail = page.locator('#form_DOMAIN');
