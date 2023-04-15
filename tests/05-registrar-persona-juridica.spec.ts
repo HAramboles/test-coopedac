@@ -27,11 +27,11 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'BAYRON AGRICULTORES S.R.L';
+const nombreJuridica = '';
 
 // Nombre del relacionado
-const nombreRelacionado = 'BAYRON';
-const apellidoRelacionado = 'FUENTES TORRES';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Pruebas
 

@@ -12,8 +12,8 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Cedula, nombre, apellido y numero telefonico del menor
 const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
-const nombreMenor = 'ADRIEN';
-const apellidoMenor = 'FLORES GOMEZ';
+const nombreMenor = '';
+const apellidoMenor = '';
 
 // Pruebas
 

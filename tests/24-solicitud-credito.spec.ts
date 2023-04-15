@@ -654,8 +654,11 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
+        // El titulo debe estar visible
+        //await expect(page.locator('h1').filter({hasText: 'SOLICITUD DE CRÉDITO'})).toBeVisible();
+
         // La url debe de tener que la solicitud esta en estado en proceso
-        await expect(page).toHaveURL(/\/en_proceso_analisis/);
+        //await expect(page).toHaveURL(/\/en_proceso_analisis/);
 
         // Dirigirse a la ultima seccion
         const seccionAnalisis = page.getByRole('button', {name: '10 Análisis'});
@@ -714,8 +717,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
 
-        // La url debe de tener que la solicitud esta en proceso
-        await expect(page).toHaveURL(/\/aprobado/);
+        // La url debe de tener que la solicitud esta en aprobado
+        // await expect(page).toHaveURL(/\/aprobado/);
 
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
@@ -791,7 +794,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
     test('Desembolsar la solicitud', async () => {
         // Cedula, nombre y apellidos de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 

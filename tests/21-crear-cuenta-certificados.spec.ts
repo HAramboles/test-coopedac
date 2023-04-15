@@ -379,7 +379,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con lso diferentes
             
                 test('Finalizar con la Creacion de Cuenta de Certificado', async () => {
                     // Boton de Finalizar
-                    const botonFinalizar = page.locator('text=Finalizar');
+                    const botonFinalizar = page.locator('button:has-text("Finalizar")');
                     // Esperar que se abra dos pestañas
                     const [newPage, newPage2] = await Promise.all([
                         context.waitForEvent('page'),

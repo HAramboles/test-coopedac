@@ -315,7 +315,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
             
                 test('Finalizar con el registro de cuenta de aportaciones preferentes', async () => {
                     // Boton de Finalizar
-                    const botonFinalizar = page.locator('text=Finalizar');
+                    const botonFinalizar = page.locator('button:has-text("Finalizar")');
                     // Esperar que se abra una nueva pestaña
                     const [newPage] = await Promise.all([
                         context.waitForEvent('page'),

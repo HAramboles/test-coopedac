@@ -100,6 +100,9 @@ test.describe('Reporte Poder a Terceros', () => {
         // Recargar la pagina
         await page.reload();
 
+        // El titulo debe estar visible luego de recargar la pagina
+        await expect(page.locator('h1').filter({hasText: 'CUENTA DE AHORROS'})).toBeVisible();
+
         // Boton de Cancelar
         const botonCancelar = page.locator('button:has-text("Cancelar")');
         await expect(botonCancelar).toBeVisible();

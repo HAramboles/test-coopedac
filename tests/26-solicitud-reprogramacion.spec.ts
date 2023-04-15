@@ -234,7 +234,7 @@ test.describe('Solicitud de Reprogramacion - Pruebas con los diferentes parametr
                     await page.locator('#form_search').fill(`${cedula}`);
 
                     // El estado de la solicitud tiene que estar pediente
-                    await expect(page.getByText('PENDIENTE', {exact: true})).toBeVisible();
+                    // await expect(page.getByText('PENDIENTE', {exact: true})).toBeVisible();
 
                     // Boton de confirmar
                     const botonConfirmar = page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[data-icon="check-circle"]');

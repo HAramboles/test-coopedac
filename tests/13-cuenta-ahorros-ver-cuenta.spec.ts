@@ -101,6 +101,9 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         // Recargar la pagina
         await page.reload();
 
+        // El titulo debe estar visible luego de recargar la pagina
+        await expect(page.locator('h1').filter({hasText: 'CUENTA DE AHORROS'})).toBeVisible();
+
         // Boton de Cancelar
         const botonSalir = page.locator('button:has-text("Salir")');
         await expect(botonSalir).toBeVisible();
