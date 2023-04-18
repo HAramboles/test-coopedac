@@ -1,6 +1,11 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { 
-    numerosCedulas2, numerosCedulas, numerosRegistroMercantil, numerosCorreo, numerosCelular, numerosTelefono
+    numerosCedulas2, 
+    numerosCedulas3, 
+    numerosRegistroMercantil, 
+    numerosCorreo, 
+    numerosCelular, 
+    numerosTelefono
 } from './utils/cedulasypasaporte';
 
 // Variables Globales
@@ -13,7 +18,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedulas
 const cedulaPersonaJuridica = numerosCedulas2;
-const cedulaPersonaJuridicaRelacionado = numerosCedulas;
+const cedulaPersonaJuridicaRelacionado = numerosCedulas3;
 
 // Registro Mercantil
 const registroMercantil = numerosRegistroMercantil;
@@ -483,8 +488,20 @@ test.describe('Pruebas con el Registro de Persona Juridica', () => {
     test('Finalizar con el Registro de Persona Juridica', async () => {
         // Hacer click al boton de finalizar
         const botonFinalizar = page.locator('text=Finalizar');
-        await expect(botonFinalizar).toBeVisible();
-        await botonFinalizar.click();
+        // Esperar que se abran tres pestañas con los diferentes reportes
+        const [newPage, newPage2, newPage3] = await Promise.all([
+            context.waitForEvent('page'),
+            context.waitForEvent('page'),
+            context.waitForEvent('page'),
+            // Click al boton de Finalizar
+            await expect(botonFinalizar).toBeVisible(),
+            await botonFinalizar.click()
+        ]);
+      
+        // Cerrar las paginas con los reportes
+        await newPage.close();
+        await newPage2.close();
+        await newPage3.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

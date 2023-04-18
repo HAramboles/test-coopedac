@@ -108,9 +108,9 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=1`);
 
         // Deben estar visibles los tres titulos del primer paso
-        await expect(page.getByRole('heading', { name: 'Solicitante', exact: true })).toBeVisible();
-        await expect(page.getByRole('heading', { name: 'Datos del Solicitante' })).toBeVisible();
-        await expect(page.getByRole('heading', { name: 'Lugar de Trabajo Solicitante' })).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
 
         // Buscar al socio
         await page.locator('#select-search').fill(`${cedula}`);

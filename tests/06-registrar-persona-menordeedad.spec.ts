@@ -339,8 +339,20 @@ test.describe('Pruebas con el Registro de Persona Fisica - Menor de Edad', () =>
     test('Finalizar con el Registro del Menor de Edad', async () => {
         // Hacer click al boton de finalizar
         const botonFinalizar = page.locator('text=Finalizar');
-        await expect(botonFinalizar).toBeVisible();
-        await botonFinalizar.click();
+        // Esperar que se abran tres pestañas con los diferentes reportes
+        const [newPage, newPage2, newPage3] = await Promise.all([
+            context.waitForEvent('page'),
+            context.waitForEvent('page'),
+            context.waitForEvent('page'),
+            // Click al boton de Finalizar
+            await expect(botonFinalizar).toBeVisible(),
+            await botonFinalizar.click()
+        ]);
+      
+        // Cerrar las paginas con los reportes
+        await newPage.close();
+        await newPage2.close();
+        await newPage3.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

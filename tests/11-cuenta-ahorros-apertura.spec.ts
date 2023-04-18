@@ -236,7 +236,7 @@ test.describe('Pruebas la Apertura de cuentas de Ahorros', () => {
 
     test('Finalizar con el registro de cuenta de ahorro', async () => {
         // Boton de Finalizar
-        const botonFinalizar = page.locator('button:has-text("Finalizar")');
+        const botonFinalizar = page.getByRole('button', {name: 'Finalizar'});
         // Esperar que se abra una nueva pestaña
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),

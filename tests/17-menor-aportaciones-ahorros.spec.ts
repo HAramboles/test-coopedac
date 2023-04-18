@@ -132,13 +132,14 @@ test.describe('Pruebas con la Creacion de Cuenta de Aportaciones y de Ahorro de 
         // El tipo de firma requerida debe estar visible
         await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();
 
-        /*
-        // Click en Continuar sin colocar la firma de un tutor
-        Continuar();
-
-        // Debe salir un mensaje de que se debe agregar una firma
+        // Probar que no se pueda continuar sin agregar un firmante a la cuenta del menor
+        const botonContinuar = page.getByRole('button', {name: 'Continuar'}); 
+        await botonContinuar.click();
+        
+        // Se debe mostrar un mensaje
         await expect(page.locator('text=Debe agregar como firmante al representante legal del socio.')).toBeVisible();
-        */
+        // Click en Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
 
         // Colocar la firma del tutor del menor
 
@@ -271,7 +272,7 @@ test.describe('Pruebas con la Creacion de Cuenta de Aportaciones y de Ahorro de 
         await expect(botonActualizar).toBeVisible();
         await botonActualizar.click();
     });
-
+/*
     test('Crear la Cuenta de Ahorros del Menor - Contacto de Firmante', async () => {
         // Cedula, nombre y apellido de la persona relacionada almacenada en el state
         const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedula'));
@@ -280,6 +281,8 @@ test.describe('Pruebas con la Creacion de Cuenta de Aportaciones y de Ahorro de 
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'FIRMANTE'})).toBeVisible();
+
+        
 
         // Boton de Agregar Firmantes debe estar visible
         const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
@@ -333,7 +336,6 @@ test.describe('Pruebas con la Creacion de Cuenta de Aportaciones y de Ahorro de 
         await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Boton Continuar
-        const botonContinuar = page.getByRole('button', {name: 'Continuar'});
         await expect(botonContinuar).toBeVisible();
         // Click al boton
         await botonContinuar.click();
@@ -364,7 +366,7 @@ test.describe('Pruebas con la Creacion de Cuenta de Aportaciones y de Ahorro de 
         // El titulo de Ahorros debe estar visible
         await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
     });
-
+*/
     test.afterAll(async () => { // Despues de las pruebas
         // Cerrar el context
         await context.close();

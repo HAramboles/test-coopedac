@@ -200,7 +200,7 @@ test.describe('Solicitud de Reprogramacion - Pruebas con los diferentes parametr
 
                     // Boton de Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-                    // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
+                    // Esperar que se abra una nueva pestaña con el reporte de la reprogramacion
                     const [newPage] = await Promise.all([
                         context.waitForEvent('page'),
                         // Click al boton de Aceptar

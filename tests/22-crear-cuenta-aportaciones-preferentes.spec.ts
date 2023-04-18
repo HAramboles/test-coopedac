@@ -223,6 +223,9 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
             
+                    // Cerrar uno de los mensajes que se muestran
+                    await page.locator('[aria-label="close"]').last().click();
+
                     // Cambiar a la pestaña de Personas o Contactos
                     const seccionPersonaContactos = page.locator('text=Personas o Contactos');
                     await seccionPersonaContactos.click();

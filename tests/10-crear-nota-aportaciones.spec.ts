@@ -129,9 +129,6 @@ test.describe('Pruebas agregando y completando notas', () => {
         // Se debe mostrar un mensaje de confirmacion
         await expect(page.locator('text=Notas Persona actualizada exitosamente.')).toBeVisible();
 
-        // Cerrar el mensaje
-        await page.getByRole('dialog').filter({hasText: 'Confirmación¿Está seguro que desea marcar esta nota como completada?CancelarAceptar'}).getByRole('button', {name: 'Close'}).click();
-
         // El icono debe cambiar
         await expect(page.locator('(//svg[@class="bi bi-check2-all"])')).toBeVisible();
 
@@ -139,7 +136,7 @@ test.describe('Pruebas agregando y completando notas', () => {
         await page.locator('.ant-notification-notice-close').click();
 
         // Cerrar el modal de las notas
-        await page.getByRole('button', { name: 'Close' }).click();
+        await page.getByRole('button', {name: 'Close'}).click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas
