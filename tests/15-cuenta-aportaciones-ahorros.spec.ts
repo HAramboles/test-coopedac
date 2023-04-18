@@ -131,7 +131,7 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // Debe de aparecer un modal
         await expect(page.locator('text=¿Desea crear una cuenta de ahorro para este socio?')).toBeVisible();
         // Click en Aceptar para crearle una cuenat de Ahorros al socio
-        await page.getByRole('dialog').getByRole('button', {name: 'Aceptar'}).click();
+        await page.getByRole('dialog').getByRole('button', {name: 'Sí'}).click();
     });
 
     test('Crear la Cuenta de Ahorros - Datos Generales', async () => {

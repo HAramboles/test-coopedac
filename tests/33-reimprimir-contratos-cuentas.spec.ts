@@ -97,15 +97,17 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
         // Generar contrato
         const contratoAportacionesPreferentes = cuentaAportacionesPreferentes.locator('[data-icon="file-text"]');
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [pageAportacionesPreferentes] = await Promise.all([
+        const [pageAportacionesPreferentes, pageAportacionesPreferentes2] = await Promise.all([
+            context.waitForEvent('page'),
             context.waitForEvent('page'),
             // Click al boton de Aceptar
             await expect(contratoAportacionesPreferentes).toBeVisible(),
             await contratoAportacionesPreferentes.click()
         ]);
 
-        // Cerrar la pagina con el reporte
+        // Cerrar las dos paginas con los reportes
         await pageAportacionesPreferentes.close();
+        await pageAportacionesPreferentes2.close();
 
         // Cuenta de Certificados - Financieros Pagaderas
         const cuentaFinancierosPagaderas = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'});

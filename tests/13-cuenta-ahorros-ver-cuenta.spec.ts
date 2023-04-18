@@ -163,6 +163,14 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
     });
 
     test('Ver cuenta - Contacto de Firmante', async () => {
+        // Nombre y apellido del socio
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Nombre y apellido del firmante
+        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=2/);
 
@@ -172,8 +180,14 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         // El boton de Agregar Firmante debe estar visible
         await expect(page.locator('text=Agregar Firmante')).toBeVisible();
 
-        // Por lo menos debe estar la firma del titular
+        // Nombre del socio
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).toBeVisible();;
+
+        // Debe estar la firma del titular
         await expect(page.locator('text=TITULAR')).toBeVisible();
+
+        // Nombre del firmante
+        await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Debe tener una firma condicional
         await expect(page.locator('text=(O) FIRMA CONDICIONAL')).toBeVisible();
