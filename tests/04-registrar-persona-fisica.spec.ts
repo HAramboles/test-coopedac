@@ -66,7 +66,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
 
     test('Hacer click al boton de nueva persona', async () => {
         // Boton Nueva persona
-        const botonNuevaPersona = page.getByRole('button', {name: 'Nueva Persona'});
+        const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
         await expect(botonNuevaPersona).toBeVisible();
         await botonNuevaPersona.click();
 
