@@ -15,8 +15,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = '';
-const apellidoPersona = '';
+const nombrePersona = 'PAULA VALERIA';
+const apellidoPersona = 'MORALES LOPEZ';
 
 /* Pruebas */
 
@@ -102,7 +102,7 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         // Volver a ingresar la cedula
         await campoCedula?.fill(`${cedula}`);
         
-        // Input del pasaporte. Cada pasaporte debe ser unico
+        // Pasaporte erroneo
         const campoPasaporte = page.locator('#person_NO_PASAPORTE');
         await campoPasaporte.click();
         await campoPasaporte.fill(pasaporte); 

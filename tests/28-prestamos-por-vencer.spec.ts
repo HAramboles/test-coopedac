@@ -74,7 +74,7 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
         // Restarle un dia a la fecha actual
         const dia = new Date();
         dia.setDate(dia.getDate() - 2);
-        /* setDate = cambiar el dia del mes. getDate = Devuelve un numero del mes entre 1 y 31. 
+        /* setDate = cambiar el dia del mes. getDate = Devuelve un numero del dia del mes entre 1 y 31. 
         A la fecha actual se cambia el dia del mes por el dia devuelto por getDate menos 2 */
         const diaAnterior = formatDate(dia);
 

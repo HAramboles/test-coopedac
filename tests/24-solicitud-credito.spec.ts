@@ -254,6 +254,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 2 - Datos Prestamo', async () => {
+        test.slow();
+
         // La URL no debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
 
@@ -339,6 +341,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 3 - Cargos del prestamo', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
 
@@ -372,6 +376,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 4 - Deudas', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=4`);
 
@@ -386,6 +392,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 5 - Perfil Financiero', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=5`);
 
@@ -399,6 +407,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 6 - Representantes legales', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=6`);
 
@@ -410,6 +420,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 7 - Codeudores y Garantias', async () => {
+        test.slow();
+
         // Nombre y apellidos de la persona almacenada en el state
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
@@ -479,6 +491,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 8 - Referencias', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=8`);
 
@@ -492,6 +506,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 9 - Documentos', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=9`);
 
@@ -577,6 +593,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar el estado de la Solicitud de Solicitado a En Proceso (Analisis)', async () => {
+        test.slow();
+
         // Nombre y apellidos de la persona almacenada en el state
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
@@ -640,6 +658,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Aprobado', async () => {
+        test.slow();
+
         // Nombre y apellidos de la persona almacenada en el state
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
@@ -703,6 +723,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar de estado la solicitud de Aprobado a En Proceso y viceversa', async () => {
+        test.slow();
+
         // Nombre y apellidos de la persona almacenada en el state
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
@@ -793,6 +815,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Desembolsar la solicitud', async () => {
+        test.slow();
+        
         // Cedula, nombre y apellidos de la persona almacenada en el state
         const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));

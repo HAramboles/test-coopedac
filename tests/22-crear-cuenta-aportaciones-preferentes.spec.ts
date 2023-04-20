@@ -171,7 +171,13 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
             
                     // Ingresar un monto inicial
-                    await page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA').fill('1500');
+                    const montoInicial = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA');
+                    await montoInicial.fill('100');
+                    // Click fuera del input
+                    await page.getByText('Monto Inicial').click();
+
+                    // Debe de colocarse automaticamente el monto minimo de 1500
+                    await expect(montoInicial).toHaveValue('1500');
             
                     // Monto disponible en aportaciones 
                     await expect(page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA_help').filter({hasText: 'Monto disponible en aportaciones es: 2,000.00'})).toBeVisible();
