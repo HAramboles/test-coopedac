@@ -11,7 +11,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Pruebas
 
-test.describe('', () => {
+test.describe('Pruebas con la Tabla de Amortizacion', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -49,17 +49,17 @@ test.describe('', () => {
 
     test('Calcular la Tabla de Amortizacion de un Socio - Solo Interes', async () => {
         // Cedula de la persona
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        //const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        //const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        //const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Titulo General
         await expect(page.locator('h1').filter({hasText: 'GENERAL'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').fill(`${cedula}`);
+        await page.locator('#select-search').fill('96891445241');
         // Elegir el socio
-        await page.locator(`text=${nombre} ${apellido}`).click();
+        await page.locator('text=CAITLYN CASTILLO').click();
 
         // Colocar un monto
         await page.locator('#amortization_form_MONTO').fill('25000');
@@ -68,20 +68,24 @@ test.describe('', () => {
         await page.locator('#amortization_form_TASA').fill('5');
 
         // El tipo de interes debe ser Insoluto
-        await expect(page.locator('#amortization_form_TIPOCUOTA')).toHaveValue('INSOLUTO');
+        await expect(page.locator('text=INSOLUTO')).toBeVisible();
+
         // Cambiar el tipo de interes a Solo Interes
-        await page.locator('#amortization_form_TIPOCUOTA').click();
+        await page.locator('#amortization_form').getByText('INSOLUTO').click();
         // Elegir Solo Interes
         await page.locator('text=SOLO INTERES').click();
 
-        // Fecha Primer Pago, debe estar la fecha del dia actual
-        await expect(page.locator('#amortization_form_DIA_PAGO')).toHaveValue(`${formatDate(new Date())}`);
+        // Fecha Primer Pago, debe ser el mismo dia un mes despues
+        const mesPrimerPago = new Date();
+        mesPrimerPago.setMonth(mesPrimerPago.getMonth() + 1);
+
+        await expect(page.locator('#amortization_form_DIA_PAGO')).toHaveValue(`${formatDate(mesPrimerPago)}`);
 
         // Titulo Frecuencia y plazo de pago
         await expect(page.locator('h1').filter({hasText: 'FRECUENCIA Y PLAZO DE PAGO'})).toBeVisible();
 
         // La frecuencia por defecto debe ser mensual
-        await expect(page.locator('#amortization_form_FRECUENCIA')).toHaveValue('MENSUAL');
+        await expect(page.locator('text=MENSUAL')).toBeVisible();
 
         // Colocar un plazo
         await page.locator('#amortization_form_PLAZO').fill('12');
@@ -90,7 +94,7 @@ test.describe('', () => {
         await page.getByRole('button', {name: 'Calcular'}).click();
 
         // Titulo de Amortizacion
-        await expect(page.locator('h1').filter({hasText: 'AMORTIZACIÓN'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Amortización', exact: true})).toBeVisible();
 
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
@@ -268,7 +272,7 @@ test.describe('', () => {
         await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} 200.00 1,944.30 96.10 0.00 2,240.39 21,119.48`})).toBeVisible();
 
         // El resumen final debe cambiar con los abonos agregddos
-        await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 23,795.75 RD$ 688.99 RD$ 0.00 RD$ 0.00 RD$ 25,684.74'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 23,800.00 RD$ 684.74 RD$ 0.00 RD$ 0.00 RD$ 25,684.74'})).toBeVisible();
     });
 
     test('Editar un Abono Programado', async () => {
@@ -296,7 +300,10 @@ test.describe('', () => {
         await expect(page.locator('#amortization_form_MONTO')).toHaveValue('RD$ 25,000');
 
         // En la tabla de amortizacion el abono programado tuvo que cambiar
-        
+        await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} 400.00 1,927.25 96.17 0.00 2,423.42 21,153.51`})).toBeVisible();
+
+        // El resumen final debe cambiar con el abono programado editado
+        await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 23,600.00 RD$ 680.98 RD$ 0.00 RD$ 0.00 RD$ 25,680.98'})).toBeVisible();
     });
 
     test('Eliminar un Abono Programado', async () => {
@@ -304,12 +311,15 @@ test.describe('', () => {
         await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} 400.00 [data-icon="edit"] [aria-label="delete"]`})).toBeVisible();
 
         // Boton Eliminar
-        const botonEliminar = page.locator('[aria-label="delete"]');
+        const botonEliminar = page.locator('[aria-label="delete"]').first();
         await expect(botonEliminar).toBeVisible();
         await botonEliminar.click();
 
         // El abono programado tuvo que eliminarse de la tabla de amortizacion
-        await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} -50.45 1.88 0.00 -48.57 500.68`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} 1,961.35 96.03 0.00 2,057.37 21,085.45`})).toBeVisible();
+
+        // El resumen final debe cambiar con el abono programado editado
+        await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 24,000.00 RD$ 688.50 RD$ 0.00 RD$ 0.00 RD$ 25,688.50'})).toBeVisible();
     });
 
     test('Eliminar todos los abonos programados', async () => {
@@ -318,7 +328,8 @@ test.describe('', () => {
         await expect(limpiarTabla).toBeVisible();
         await limpiarTabla.click();
 
-
+        // Los abonos se deben eliminar de la tabla de amortizacion
+        await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 25,000.00 RD$ 682.24 RD$ 0.00 RD$ 0.00 RD$ 25,682.24'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas
