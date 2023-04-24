@@ -11,27 +11,27 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
-// Parametros de actividad_parametro
-interface CertificadosFinancierosPagaderas {
-    REQUIERE_FIRMA_TITULAR: 'N' | 'S' | ''
+// Parametros de relation
+interface EditarAhorrosParametros {
+    ID_OPERACION: '' | '1' | '30'
 };
 
-const EscenariosPruebas: CertificadosFinancierosPagaderas[] = [
+const EscenariosPrueba: EditarAhorrosParametros[] = [
     {
-        REQUIERE_FIRMA_TITULAR: ''
+        ID_OPERACION: ''
     },
     {
-        REQUIERE_FIRMA_TITULAR: 'S'
+        ID_OPERACION: '1'
     },
     {
-        REQUIERE_FIRMA_TITULAR: 'N'
+        ID_OPERACION: '30'
     }
-]
+];
 
 // Pruebas
 
-test.describe('Certificados - Financieros Pagaderas - Pruebas con lso diferentes parametros', async () => {
-    for (const escenario of EscenariosPruebas) {
+test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes parametros', async () => {
+    for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el es escenario es ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
@@ -47,21 +47,21 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con lso diferentes
                 // Crear una nueva page
                 page = await context.newPage();
 
-                // Eventos para la request de actividad_parametro
-                await page.route(/\/actividad_parametro/, async (route) => {
+                // Eventos para la request relation
+                await page.route(/\/relation/, async (route) => {
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
-                    // Constante con el body
+                    //Constante con el body
                     const body = await response.json();
                     // Condicion para cambiar los parametros del body
-                    if (Object.keys(body?.data).length > 1) {
-                        // Reemplazar el body de la response con los datos de los escenarios
-                        body.data = Object.assign(body.data, escenario);
+                    if (Object.keys(body?.data[33]).length > 1) {
+                        // Remplazar el body con la response con los datos de los escenarios
+                        body.data[33] = Object.assign(body.data[33], escenario);
                         route.fulfill({
                             response,
                             body: JSON.stringify(body),
-                        });
+                        })
                     } else {
                         route.continue();
                     };
@@ -143,35 +143,23 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con lso diferentes
                 await botonNuevaCuenta.click();
             });
 
-            if (escenario.REQUIERE_FIRMA_TITULAR === 'S') {
-                test('Test si el escenario, Requiere Firma Titular, es S ', async () => {
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=1`);
-                
-                    // El titulo principal debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
+            if (escenario.ID_OPERACION === '' || '1') {
+                // Test si el ID_OPERACION es diferente de 30
+                test('No debe permitir Crear una Nueva Cuenta', async () => {
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
 
-                    // El boton de subir la firma debe estar visible
-                    await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).toBeVisible();
-                    
+                    // Debe salir un mensaje
+                    await expect(page.locator('text=No tiene permisos para crear cuentas.')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.REQUIERE_FIRMA_TITULAR === '') {
-                test('Test si el escenario, Requiere Firma Titular, es vacio', async () => {
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=1`);
-                
-                    // El titulo principal debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
-
-                    // El boton de subir la firma no debe estar visible
-                    await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).not.toBeVisible();
-                    
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenario.REQUIERE_FIRMA_TITULAR === 'N') {
+            } else if (escenario.ID_OPERACION === '30') {
                 test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {
                     // Cedula de la persona almacenada en el state
                     const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));

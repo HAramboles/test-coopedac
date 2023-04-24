@@ -32,11 +32,11 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'ESPINOS GANADEROS S.R.L';
+const nombreJuridica = '';
 
 // Nombre del relacionado
-const nombreRelacionado = 'LUCAS MATEO';
-const apellidoRelacionado = 'ESPINOZA CASTILLO';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Pruebas
 

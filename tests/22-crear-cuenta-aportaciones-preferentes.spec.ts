@@ -11,27 +11,27 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
-// Parametros de actividad_parametro
-interface AportacionePreferentesParametros {
-    REQUIERE_FIRMA_TITULAR: 'N' | 'S' | ''
-}
+// Parametros de relation
+interface EditarAhorrosParametros {
+    ID_OPERACION: '' | '1' | '30'
+};
 
-const EscenariosPruebas: AportacionePreferentesParametros[] = [
+const EscenariosPrueba: EditarAhorrosParametros[] = [
     {
-        REQUIERE_FIRMA_TITULAR: 'N'
+        ID_OPERACION: ''
     },
     {
-        REQUIERE_FIRMA_TITULAR: ''
+        ID_OPERACION: '1'
     },
     {
-        REQUIERE_FIRMA_TITULAR: 'S'
+        ID_OPERACION: '30'
     }
-]
+];
 
 // Pruebas
 
 test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros', () => {
-    for (const escenario of EscenariosPruebas) {
+    for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
@@ -47,21 +47,21 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 // Crear una nueva page
                 page = await context.newPage();
 
-                // Eventos para la request actividad_parametro
-                await page.route(/\/actividad_parametro/, async (route) => {
+                // Eventos para la request relation
+                await page.route(/\/relation/, async (route) => {
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
-                    // Constante con el body
+                    //Constante con el body
                     const body = await response.json();
                     // Condicion para cambiar los parametros del body
-                    if (Object.keys(body?.data).length > 1) {
-                        // Reemplazar el body de la response con los datos de los escenarios
-                        body.data = Object.assign(body.data, escenario);
+                    if (Object.keys(body?.data[33]).length > 1) {
+                        // Remplazar el body con la response con los datos de los escenarios
+                        body.data[33] = Object.assign(body.data[33], escenario);
                         route.fulfill({
                             response,
                             body: JSON.stringify(body),
-                        });
+                        })
                     } else {
                         route.continue();
                     };
@@ -116,35 +116,23 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 await botonNuevaCuenta.click();
             });
 
-            if (escenario.REQUIERE_FIRMA_TITULAR === 'N') {
-                test('Test si el escenario, Requiere Firma Titular, es N o vacio', async () => {
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=1`);
-                
-                    // El titulo principal debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES PREFERENTES'})).toBeVisible();
+            if (escenario.ID_OPERACION === '' || '1') {
+                // Test si el ID_OPERACION es diferente de 30
+                test('No debe permitir Crear una Nueva Cuenta', async () => {
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
 
-                    // El boton de subir la firma no debe estar visible
-                    await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).not.toBeVisible();
-                    
+                    // Debe salir un mensaje
+                    await expect(page.locator('text=No tiene permisos para crear cuentas.')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.REQUIERE_FIRMA_TITULAR === '') {
-                test('Test si el escenario, Requiere Firma Titular, es N o vacio', async () => {
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=1`);
-                
-                    // El titulo principal debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES PREFERENTES'})).toBeVisible();
-
-                    // El boton de subir la firma no debe estar visible
-                    await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).not.toBeVisible();
-                    
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenario.REQUIERE_FIRMA_TITULAR === 'S') {
+            } else if (escenario.ID_OPERACION === '30') {
                 test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
                     // Cedula de la persona almacenada en el state
                     const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
@@ -172,12 +160,12 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
             
                     // Ingresar un monto inicial
                     const montoInicial = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA');
-                    await montoInicial.fill('100');
+                    await montoInicial.fill('1500');
                     // Click fuera del input
                     await page.getByText('Monto Inicial').click();
 
-                    // Debe de colocarse automaticamente el monto minimo de 1500
-                    await expect(montoInicial).toHaveValue('1500');
+                    // Plazo
+                    await page.locator('#APORTACIONES\\ PREFERENTES_PLAZO').fill('12');
             
                     // Monto disponible en aportaciones 
                     await expect(page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA_help').filter({hasText: 'Monto disponible en aportaciones es: 2,000.00'})).toBeVisible();
@@ -186,11 +174,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     const montoMaximo = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA_help').filter({hasText: 'Monto máximo de apertura: 6,000.00'});
                     await expect(montoMaximo).toBeVisible();
             
-                    // Subir la imagen de la firma
-                    const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
-                    await page.getByText('Cargar ').click(); 
-                    const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
-                    await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
+                    // La firma debe ser opcional, por lo que no se le agregara una firma a la cuenta
             
                     // El titulo de cuentas a debitar debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'CUENTAS Y MONTOS A DEBITAR'})).toBeVisible();

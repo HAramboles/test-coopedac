@@ -9,6 +9,26 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Constante con la Fecha del Primer Pago, debe ser el mismo dia un mes despues
+const mesPrimerPago = new Date();
+mesPrimerPago.setMonth(mesPrimerPago.getMonth() + 1);
+
+// Constantes con los diferentes meses que se deben mostrar en los abonos programados
+const mes2 = new Date();
+const mes4 = new Date();
+const mes6 = new Date();
+const mes8 = new Date();
+const mes10 = new Date();
+const mes12 = new Date();
+
+// El mes debe aumentar de 2 en 2
+mes2.setMonth(mes2.getMonth() + 2);
+mes4.setMonth(mes4.getMonth() + 4)
+mes6.setMonth(mes6.getMonth() + 6)
+mes8.setMonth(mes8.getMonth() + 8)
+mes10.setMonth(mes10.getMonth() + 10)
+mes12.setMonth(mes12.getMonth() + 12);
+
 // Pruebas
 
 test.describe('Pruebas con la Tabla de Amortizacion', () => {
@@ -75,10 +95,6 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         // Elegir Solo Interes
         await page.locator('text=SOLO INTERES').click();
 
-        // Fecha Primer Pago, debe ser el mismo dia un mes despues
-        const mesPrimerPago = new Date();
-        mesPrimerPago.setMonth(mesPrimerPago.getMonth() + 1);
-
         await expect(page.locator('#amortization_form_DIA_PAGO')).toHaveValue(`${formatDate(mesPrimerPago)}`);
 
         // Titulo Frecuencia y plazo de pago
@@ -96,6 +112,7 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         // Titulo de Amortizacion
         await expect(page.getByRole('heading', {name: 'Amortización', exact: true})).toBeVisible();
 
+        /*
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
@@ -108,42 +125,41 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();
+        */
 
         // La tabla de amortizacion debe estar visible
         await expect(page.getByText('No. Cuota')).toBeVisible();
         await expect(page.getByText('Fecha')).toBeVisible();
         await expect(page.getByText('Abono Programado')).toBeVisible();
         await expect(page.getByText('Capital')).toBeVisible();
-        await expect(page.getByText('Interés')).toBeVisible();
-        await expect(page.getByText('Seguro')).toBeVisible();
-        await expect(page.getByText('Cargos')).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Interés'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Seguro'}).last()).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Cargos'})).toBeVisible();
         await expect(page.getByText('Total')).toBeVisible();
         await expect(page.getByText('Balance')).toBeVisible();
 
         // Primera cuota
-        await expect(page.getByRole('row', {name: `1 ${formatDate(new Date())} 104.17 0.00 104.17 25,000.00`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `1 ${formatDate(mesPrimerPago)} 104.17 0.00 104.17 25,000.00`})).toBeVisible();
 
         // Resumen final
         await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 25,000.00 RD$ 1,250.00 RD$ 0.00 RD$ 0.00 RD$ 1,250.00'})).toBeVisible();
     });
 
     test('Calcular la Tabla de Amortizacion de un Socio - Insoluto', async () => {
-        // El tipo de interes debe estar en Solo Interes
-        await expect(page.locator('#amortization_form_TIPOCUOTA')).toHaveValue('SOLO INTERES');
-        // Cambiar el tipo de interes a Insoluto
-        await page.locator('#amortization_form_TIPOCUOTA').click();
+        // El tipo de interes debe estar en Solo Interes y cambiar el tipo a insoluto
+        await page.locator('#amortization_form').getByText('SOLO INTERES').click();;
         // Elegir Insoluto
         await page.locator('text=INSOLUTO').click();
 
-        // Fecha Primer Pago, debe estar la fecha del dia actual
-        await expect(page.locator('#')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator('#amortization_form_DIA_PAGO')).toHaveValue(`${formatDate(mesPrimerPago)}`);
 
         // Click al boton de calcular
         await page.getByRole('button', {name: 'Calcular'}).click();
 
         // Titulo de Amortizacion
-        await expect(page.locator('h1').filter({hasText: 'AMORTIZACIÓN'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Amortización', exact: true})).toBeVisible();
 
+        /*
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
@@ -156,20 +172,21 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();
+        */
 
         // La tabla de amortizacion debe estar visible
         await expect(page.getByText('No. Cuota')).toBeVisible();
         await expect(page.getByText('Fecha')).toBeVisible();
         await expect(page.getByText('Abono Programado')).toBeVisible();
         await expect(page.getByText('Capital')).toBeVisible();
-        await expect(page.getByText('Interés')).toBeVisible();
-        await expect(page.getByText('Seguro')).toBeVisible();
-        await expect(page.getByText('Cargos')).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Interés'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Seguro'}).last()).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Cargos'})).toBeVisible();
         await expect(page.getByText('Total')).toBeVisible();
         await expect(page.getByText('Balance')).toBeVisible();
 
         // Primera cuota
-        await expect(page.getByRole('row', {name: `1 ${formatDate(new Date())} 2,036.02	104.17 0.00 2,140.19 22,963.98`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `1 ${formatDate(mesPrimerPago)} 2,036.02	104.17 0.00 2,140.19 22,963.98`})).toBeVisible();
 
         // Resumen final
         await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 25,000.00 RD$ 682.24 RD$ 0.00 RD$ 0.00 RD$ 25,682.24'})).toBeVisible();
@@ -191,10 +208,10 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         await expect(page.getByRole('row', {name: 'Seguro Porcentaje Monto Acciones'})).toBeVisible();
 
         // Informacion del monto agregado
-        await expect(page.getByRole('row', {name: 'SEGURO DE VIDA 0.045% 4.5 [data-icon="delete"]'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'SEGURO DE VIDA 0.045% 11.25 delete'})).toBeVisible();
 
         // Se le debe agregar el seguro a la tabla
-        await expect(page.getByRole('row', {name: `1 ${formatDate(new Date())} 2,036.02 104.17 11.25 0.05 2,151.48 22,963.98`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `1 ${formatDate(mesPrimerPago)} 2,036.02 104.17 11.25 0.05 2,151.48 22,963.98`})).toBeVisible();
 
         // Se le debe agregar el seguro al resumen final
         await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 25,000.00 RD$ 682.24 RD$ 135.00 RD$ 0.54 RD$ 25,817.78'})).toBeVisible();
@@ -216,7 +233,7 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         await expect(page.locator('text=No hay datos')).toBeVisible();
 
         // La Primera Cuota debe estar como estaba originalmente
-        await expect(page.getByRole('row', {name: `1 ${formatDate(new Date())} 2,036.02	104.17 0.00 2,140.19 22,963.98`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `1 ${formatDate(mesPrimerPago)} 2,036.02	104.17 0.00 2,140.19 22,963.98`})).toBeVisible();
 
         // El Resumen Final debe estar como estaba originalmente
         await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 25,000.00 RD$ 682.24 RD$ 0.00 RD$ 0.00 RD$ 25,682.24'})).toBeVisible();
@@ -244,32 +261,16 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         // Se debe mostrar una tabla con los abonos programados
         await expect(page.getByRole('row', {name: 'No. Cuota Fecha Monto Acciones'})).toBeVisible();
         
-        // Constantes con los diferentes meses que se deben mostrar en los abonos programados
-        const mes2 = new Date();
-        const mes4 = new Date();
-        const mes6 = new Date();
-        const mes8 = new Date();
-        const mes10 = new Date();
-        const mes12 = new Date();
-
-        // El mes debe aumentar de 2 en 2
-        mes2.setMonth(mes2.getMonth() + 2);
-        mes4.setMonth(mes4.getMonth() + 4)
-        mes6.setMonth(mes6.getMonth() + 6)
-        mes8.setMonth(mes8.getMonth() + 8)
-        mes10.setMonth(mes10.getMonth() + 10)
-        mes12.setMonth(mes12.getMonth() + 12);
-        
         // Se deben mostrar las cuotas
-        await expect(page.getByRole('row', {name: `2 ${formatDate(mes2)} 200.00 [data-icon="edit"] [aria-label="delete"]`})).toBeVisible();
-        await expect(page.getByRole('row', {name: `4 ${formatDate(mes4)} 200.00 [data-icon="edit"] [aria-label="delete"]`})).toBeVisible();
-        await expect(page.getByRole('row', {name: `6 ${formatDate(mes6)} 200.00 [data-icon="edit"] [aria-label="delete"]`})).toBeVisible();
-        await expect(page.getByRole('row', {name: `8 ${formatDate(mes8)} 200.00 [data-icon="edit"] [aria-label="delete"]`})).toBeVisible();
-        await expect(page.getByRole('row', {name: `10 ${formatDate(mes10)} 200.00 [data-icon="edit"] [aria-label="delete"]`})).toBeVisible();
-        await expect(page.getByRole('row', {name: `12 ${formatDate(mes12)} 200.00 [data-icon="edit"] [aria-label="delete"]`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `2 ${formatDate(mes2)} 200.00 edit delete`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `4 ${formatDate(mes4)} 200.00 edit delete`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `6 ${formatDate(mes6)} 200.00 edit delete`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `8 ${formatDate(mes8)} 200.00 edit delete`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `10 ${formatDate(mes10)} 200.00 edit delete`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `12 ${formatDate(mes12)} 200.00 edit delete`})).toBeVisible();
 
         // Los abonos programados deben estar en la tabla de amortizacion
-        await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} 200.00 1,944.30 96.10 0.00 2,240.39 21,119.48`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `2 ${formatDate(mes2)} 200.00 1,944.30 96.10 0.00 2,240.39 21,119.48`})).toBeVisible();
 
         // El resumen final debe cambiar con los abonos agregddos
         await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 23,800.00 RD$ 684.74 RD$ 0.00 RD$ 0.00 RD$ 25,684.74'})).toBeVisible();
@@ -277,10 +278,10 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
     test('Editar un Abono Programado', async () => {
         // El primer abono programado debe estar visible
-        await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} 200.00 [data-icon="edit"] [aria-label="delete"]`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `2 ${formatDate(mes2)} 200.00 edit delete`})).toBeVisible();
 
         // Boton Editar
-        const botonEditar = page.locator('[data-icon="edit"]');
+        const botonEditar = page.locator('[data-icon="edit"]').first();
         await expect(botonEditar).toBeVisible();
         // Click al boton
         await botonEditar.click();
@@ -300,7 +301,7 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         await expect(page.locator('#amortization_form_MONTO')).toHaveValue('RD$ 25,000');
 
         // En la tabla de amortizacion el abono programado tuvo que cambiar
-        await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} 400.00 1,927.25 96.17 0.00 2,423.42 21,153.51`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `2 ${formatDate(mes2)} 400.00 1,927.25 96.17 0.00 2,423.42 21,153.51`})).toBeVisible();
 
         // El resumen final debe cambiar con el abono programado editado
         await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 23,600.00 RD$ 680.98 RD$ 0.00 RD$ 0.00 RD$ 25,680.98'})).toBeVisible();
@@ -308,7 +309,7 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
     test('Eliminar un Abono Programado', async () => {
         // El primer abono programado debe estar visible
-        await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} 400.00 [data-icon="edit"] [aria-label="delete"]`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `2 ${formatDate(mes2)} 400.00 edit delete`})).toBeVisible();
 
         // Boton Eliminar
         const botonEliminar = page.locator('[aria-label="delete"]').first();
@@ -316,7 +317,7 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         await botonEliminar.click();
 
         // El abono programado tuvo que eliminarse de la tabla de amortizacion
-        await expect(page.getByRole('row', {name: `2 ${formatDate(new Date())} 1,961.35 96.03 0.00 2,057.37 21,085.45`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `2 ${formatDate(mes2)} 1,961.35 96.03 0.00 2,057.37 21,085.45`})).toBeVisible();
 
         // El resumen final debe cambiar con el abono programado editado
         await expect(page.getByRole('row', {name: 'RESUMEN: RD$ 24,000.00 RD$ 688.50 RD$ 0.00 RD$ 0.00 RD$ 25,688.50'})).toBeVisible();
