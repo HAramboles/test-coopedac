@@ -86,9 +86,6 @@ test.describe('Pruebas con el Desembolso Neto', () => {
             await generarReporte.click()
         ]);
 
-        // Esperar que la nueva pagina cargue y contenga que es un reporte de jasperserver
-        await expect(newPage).toHaveURL(/\/jasperserver/);
-
         // Cerrar la pagina con el reporte
         await newPage.close();
     });

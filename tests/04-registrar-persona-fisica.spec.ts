@@ -457,7 +457,8 @@ test.describe('Pruebas con el Registro de Persona Fisica', () => {
         // Input de la descripcion del email
         const campoNombreEmail = page.getByPlaceholder('USUARIO');
         await campoNombreEmail.click();
-        await campoNombreEmail?.fill(`${nombrePersona}${numerosparaCorreo}`);
+        await campoNombreEmail?.fill(`${nombrePersona.split(' ').join('')}${numerosparaCorreo}`);
+        // Split = dividir el string en subcadenas, lo que lo convierte en un array y con el Join se quita el espacio en blanco
 
         // Seleccionar un dominio del email
         const campoDominioEmail = page.locator('#form_DOMAIN');

@@ -57,6 +57,7 @@ const generarNumerosparaCorreo = () => {
     for (let i = 0; i < 2; i++) { 
         let random = Math.random(); 
         random = random * 9 + 1; 
+        random = Math.trunc(random);
         aleatorios[i] = random; 
     };
     return (aleatorios.join('')); 

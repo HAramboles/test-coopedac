@@ -470,7 +470,7 @@ test.describe('Pruebas con el Registro de Persona Juridica', () => {
         // Descripcion del email
         const campoNombreEmail = page.getByPlaceholder('USUARIO');
         await campoNombreEmail.click();
-        await campoNombreEmail?.fill(`${nombreRelacionado}${correoRelacionado}`);
+        await campoNombreEmail?.fill(`${nombreRelacionado.split(' ').join('')}${correoRelacionado}`);
 
         // Seleccionar un dominio del email
         const campoDominioEmail = page.locator('#form_DOMAIN');
