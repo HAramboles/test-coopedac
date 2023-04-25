@@ -32,11 +32,11 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = '';
+const nombreJuridica = 'PRADES & PRADERAS S.R.L';
 
 // Nombre del relacionado
-const nombreRelacionado = '';
-const apellidoRelacionado = '';
+const nombreRelacionado = 'JUAN NICOLAS';
+const apellidoRelacionado = 'PRADES';
 
 // Pruebas
 

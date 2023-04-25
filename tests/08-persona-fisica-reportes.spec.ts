@@ -65,9 +65,9 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio', () =>
         await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
 
         // Seccion de direcciones y contactos
-        const direccionesConstantes = page.locator('text=Relacionados');
-        await expect(direccionesConstantes).toBeVisible();
-        await direccionesConstantes.click();
+        const relacionados = page.getByRole('button', {name: '6 Relacionados Agregar Relacionados'});
+        await expect(relacionados).toBeVisible();
+        await relacionados.click();
     });
 
     test('Imprimir Reporte de Admision', async () => {
@@ -118,7 +118,7 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio', () =>
         // Boton Cancelar
         const botonCancelar = page.getByRole('button', {name: 'Cancelar'});
         await expect(botonCancelar).toBeVisible();
-        await botonAnterior.click();
+        await botonCancelar.click();
 
         // Debe salir un modal de confirmacion
         await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();

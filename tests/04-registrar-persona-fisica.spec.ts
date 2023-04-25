@@ -15,8 +15,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = '';
-const apellidoPersona = '';
+const nombrePersona = 'MIA INES';
+const apellidoPersona = 'GARCIA LUPERON';
 
 /* Pruebas */
 

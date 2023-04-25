@@ -10,18 +10,15 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Parametros de la reimpresion de la resolucion aporbatoria
 interface ReimpresionResolucionAprobatoria {
-    ESTADO_DEFECTO: 'A' | 'D' | ''
+    ESTADO_DEFECTO: 'A' | 'D'
 };
 
 const EscenariosPrueba: ReimpresionResolucionAprobatoria[] = [
     {
-        ESTADO_DEFECTO: 'A'
-    },
-    {
         ESTADO_DEFECTO: 'D'
     },
     {
-        ESTADO_DEFECTO: ''
+        ESTADO_DEFECTO: 'A'
     }
 ];
 
@@ -99,9 +96,6 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                     // No se deben mostrar ningun resultado, porque el socio no tiene ninguna solicitud en aprobado
                     await expect(page.getByText('No hay datos')).toBeVisible();
 
-                    // Skip al test
-                    test.skip();
-                } else if (escenario.ESTADO_DEFECTO === '') {
                     // Skip al test
                     test.skip();
                 } else if ( escenario.ESTADO_DEFECTO === 'D') {

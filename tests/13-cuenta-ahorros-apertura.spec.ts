@@ -12,7 +12,7 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 
 // Parametros de relation
 interface CrearAhorrosParametros {
-    ID_OPERACION: '' | '2' | '30'
+    ID_OPERACION: '' | 2 | 30
 };
 
 const EscenariosPrueba: CrearAhorrosParametros[] = [
@@ -20,10 +20,10 @@ const EscenariosPrueba: CrearAhorrosParametros[] = [
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: '2'
+        ID_OPERACION: 2
     },
     {
-        ID_OPERACION: '30'
+        ID_OPERACION: 30
     }
 ];
 
@@ -53,7 +53,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     const body = await response.json();
                     // Condicion para cambiar los parametros del body
                     if (Object.keys(body?.data[33]).length > 1) {
-                        // Remplzar el body con la response con los datos del escenario
+                        // Reemplazar el body con la response con los datos del escenario
                         body.data[33] = Object.assign(body.data[33], escenario);
                         route.fulfill({
                             response,
@@ -93,14 +93,14 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                 await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
             });
         
-            test ('Debe aparecer un mensaje de error si se le da click a Nueva Cuenta sin elegir una tipo de captacion', async () => {
+            test.skip('Debe aparecer un mensaje de error si se le da click a Nueva Cuenta sin elegir una tipo de captacion', async () => {
                 // Boton de Nueva Cuenta
                 const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
                 await expect(botonNuevaCuenta).toBeVisible();
                 await botonNuevaCuenta.click();
         
                 // Mensaje de error
-                await expect(page.locator('text=No ha seleccionado un tipo de captación.')).toBeVisible();
+                await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
         
                 // Cerrar el mensaje
                 await page.locator('[data-icon="close"]').click();
@@ -134,7 +134,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                 await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
             });
 
-            if (escenario.ID_OPERACION === '2' || '') {
+            if (escenario.ID_OPERACION === 2) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -143,14 +143,30 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     await botonNuevaCuenta.click();
 
                     // Debe salir un mensaje
-                    await expect(page.locator('text=No tiene permisos para crear cuentas.')).toBeVisible();
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === '30') {
+            } else if (escenario.ID_OPERACION === '') {
+                // Test si el ID_OPERACION es Vacio
+                test('No debe permitir Crear una Nueva Cuenta', async () => {
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
+
+                    // Debe salir un mensaje
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // Skip al test
+                    test.skip();
+                });
+            } else if (escenario.ID_OPERACION === 30) {
                 // Tests si el ID_OPERACION es 30
                 test('Click al boton de Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta

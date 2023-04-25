@@ -4,7 +4,7 @@
 const generarCedulas = () => { 
     const aleatorios:number[] = []; // Iniciar con un array vacio
     // Generar 11 numeros
-    for (let i = 0; i < 12; i++) { 
+    for (let i = 0; i < 11; i++) { 
         let random = Math.random(); // Crear una variable que almacene la funcion random
         random = random * 9 + 1; // Los numeros generados tienen que ser dentro de un rango,
         // y se le debe sumar 1 para que tambien cuente el ultimo numero. 

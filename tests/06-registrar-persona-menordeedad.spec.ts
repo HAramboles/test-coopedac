@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { numerosCedulas4, numerosTelefono } from './utils/cedulasypasaporte';
+import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
 
 // Vaiables globales 
 let browser: Browser;
@@ -9,11 +9,12 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Cedula, nombre, apellido y numero telefonico del menor
+// Cedula, nombre, apellido, numero telefonico y correo del menor
 const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
-const nombreMenor = '';
-const apellidoMenor = '';
+const nombreMenor = 'ALEX JAVIER';
+const apellidoMenor = 'GARCIA LUPERON';
+const numerosParaCorreo = numerosCorreo;
 
 // Pruebas
 
@@ -295,15 +296,37 @@ test.describe('Pruebas con el Registro de Persona Fisica - Menor de Edad', () =>
 
         // Hacer click al icono de guardar telefono
         await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
+    });
 
-        // Click en continuar
-        await page.locator('text=Continuar').click();
+    test('Registro de Persona Fisica - Menor de edad - Email/Redes Sociales', async () => {
+        // El titulo de emails / redes sociales debe estar visible
+        await expect(page.locator('h1').filter({ hasText: 'EMAILS / REDES SOCIALES' })).toBeVisible();
 
-        // Debe salir un modal con una advertencia de que no se ha colocado un email
-        // No se le colocara un email al menor
-        await expect(page.locator('text=No registró una dirección de Email o Red social.')).toBeVisible();
-        // Click en Aceptar
-        await page.getByRole('button', {name: 'arrow-right Continuar'}).click();
+        // Boton agregar email/red social
+        const botonEmailRedSocial = page.locator('text=Agregar email/red social');
+        await expect(botonEmailRedSocial).toBeVisible();
+        await botonEmailRedSocial.click();
+
+        // Debe de aprecer un menu de opciones al hacer click al boton
+        await page.getByRole('menuitem', {name: 'EMAIL'}).getByText('EMAIL').click();
+
+        // Input de la descripcion del email
+        const campoNombreEmail = page.getByPlaceholder('USUARIO');
+        await campoNombreEmail.click();
+        await campoNombreEmail?.fill(`${nombreMenor.split(' ').join('')}${numerosParaCorreo}`);
+        // Split = dividir el string en subcadenas, lo que lo convierte en un array y con el Join se quita el espacio en blanco
+
+        // Seleccionar un dominio del email
+        const campoDominioEmail = page.locator('#form_DOMAIN');
+        await campoDominioEmail.click();
+        // Ingresar un dominio de email
+        await campoDominioEmail.fill('@GMAIL.COM');
+
+        // Hacer click al icono de guardar email
+        await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
+
+        // Hacer click en el boton de guardar y continuar
+        guardarContinuar();
     });
 
     test('Registro de Persona Fisica - Menor de Edad - Relacionados', async () => {
@@ -331,7 +354,7 @@ test.describe('Pruebas con el Registro de Persona Fisica - Menor de Edad', () =>
         await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
 
         // Seleccionar tipo de relacion
-        await page.locator('#rc_select_29').click();
+        await page.locator('#rc_select_30').click();
         await page.locator('text=MADRE').click();
         await page.locator('text="Aceptar"').click();
     });

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { numerosCorreo } from './utils/cedulasypasaporte';
+import { numerosCelular } from './utils/cedulasypasaporte';
 
 // Variables globales
 let browser: Browser;
@@ -9,12 +9,12 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Correo Menor
-const numerosParaCorreoMenor = numerosCorreo;
+// Celular del Menor
+const CelularMenor = numerosCelular;
 
 // Pruebas
 
-test.describe('Editar la Cuenta de un Menor - Agregarle un correo', () => {
+test.describe('Editar la Cuenta de un Menor - Agregar otro numero telefonico', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -83,35 +83,29 @@ test.describe('Editar la Cuenta de un Menor - Agregarle un correo', () => {
         await direccionesConstantes.click();
     });
 
-    test('Agregar un email al menor', async () => {
-        // Nombre del menor
-        const nombreMenor = await page.evaluate(() => window.localStorage.getItem('nombreMenor'));
+    test('Agregar otro numero telefonico para el menor', async () => {
+        // El titulo de telefonos debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'TELÉFONOS'})).toBeVisible();
 
-        // El titulo de emails / redes sociales debe estar visible
-        await expect(page.locator('h1').filter({ hasText: 'EMAILS / REDES SOCIALES' })).toBeVisible();
+        // Boton de agregar telefono
+        const botonAgregarTelefono = page.locator('text=Agregar teléfono');
+        await expect(botonAgregarTelefono).toBeVisible();
+        await botonAgregarTelefono.click();
 
-        // Boton agregar email/red social
-        const botonEmailRedSocial = page.locator('text=Agregar email/red social');
-        await expect(botonEmailRedSocial).toBeVisible();
-        await botonEmailRedSocial.click();
+        // Seleccionar el tipo de telefono
+        await page.locator('#form_VALOR').click();
+        await page.getByText('CELULAR').first().click(); 
 
-        // Debe de aprecer un menu de opciones al hacer click al boton
-        await page.getByRole('menuitem', {name: 'EMAIL'}).getByText('EMAIL').click();
+        // Input del numero
+        const campoNumero = page.locator('#form_NUMERO');
+        await campoNumero.click();
+        await campoNumero?.fill(`${CelularMenor}`);
 
-        // Input de la descripcion del email
-        const campoNombreEmail = page.getByPlaceholder('USUARIO');
-        await campoNombreEmail.click();
-        await campoNombreEmail?.fill(`correo${numerosParaCorreoMenor}`);
-        // Split = dividir el string en subcadenas, lo que lo convierte en un array y con el Join se quita el espacio en blanco
-
-        // Seleccionar un dominio del email
-        const campoDominioEmail = page.locator('#form_DOMAIN');
-        await campoDominioEmail.click();
-        // Ingresar un dominio de email
-        await campoDominioEmail.fill('@GMAIL.COM');
-
-        // Hacer click al icono de guardar email
+        // Hacer click al icono de guardar telefono
         await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
+
+        // Debe mostrarse un mensaje de que se agrego correctamente el numero
+        await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
 
         // Click en Actualizar y continuar
         actualizarContinuar();

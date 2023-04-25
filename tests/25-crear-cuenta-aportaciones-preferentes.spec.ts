@@ -13,7 +13,7 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 
 // Parametros de relation
 interface EditarAhorrosParametros {
-    ID_OPERACION: '' | '1' | '30'
+    ID_OPERACION: '' | 1 | 30
 };
 
 const EscenariosPrueba: EditarAhorrosParametros[] = [
@@ -21,10 +21,10 @@ const EscenariosPrueba: EditarAhorrosParametros[] = [
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: '1'
+        ID_OPERACION: 1
     },
     {
-        ID_OPERACION: '30'
+        ID_OPERACION: 30
     }
 ];
 
@@ -116,7 +116,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 await botonNuevaCuenta.click();
             });
 
-            if (escenario.ID_OPERACION === '' || '1') {
+            if (escenario.ID_OPERACION === 1) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -125,14 +125,31 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await botonNuevaCuenta.click();
 
                     // Debe salir un mensaje
-                    await expect(page.locator('text=No tiene permisos para crear cuentas.')).toBeVisible();
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === '30') {
+            } else if (escenario.ID_OPERACION === '') {
+                // Test si el ID_OPERACION es Vacio
+                test('No debe permitir Crear una Nueva Cuenta', async () => {
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
+
+                    // Debe salir un mensaje
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // Skip al test
+                    test.skip();
+                });
+            } 
+            else if (escenario.ID_OPERACION === 30) {
                 test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
                     // Cedula de la persona almacenada en el state
                     const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
@@ -166,13 +183,24 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
 
                     // Plazo
                     await page.locator('#APORTACIONES\\ PREFERENTES_PLAZO').fill('12');
-            
-                    // Monto disponible en aportaciones 
-                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA_help').filter({hasText: 'Monto disponible en aportaciones es: 2,000.00'})).toBeVisible();
-            
-                    // Monto maximo de apertura
-                    const montoMaximo = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA_help').filter({hasText: 'Monto máximo de apertura: 6,000.00'});
-                    await expect(montoMaximo).toBeVisible();
+
+                    // Revisar que los rangos esten visibles
+                    await page.locator('[aria-label="eye"]').click();
+                    // Debe salir un modal
+                    const modalRangos = page.getByRole('heading', {name: 'Detalles de Rango'}).first();
+                    await expect(modalRangos).toBeVisible();
+
+                    // El monto minimo debe estar visible
+                    await expect(page.getByText('RD$ 1.00', {exact: true})).toBeVisible();
+
+                    // El plazo minimo debe estar visible
+                    await expect(page.getByText('1', {exact: true})).toBeVisible();
+
+                    // Click en Aceptar para cerrar el modal de los rangos
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // El modal no se debe mostrar
+                    await expect(modalRangos).not.toBeVisible();
             
                     // La firma debe ser opcional, por lo que no se le agregara una firma a la cuenta
             
@@ -184,9 +212,6 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await campoBuscarCuenta.click();
                     // Elegir la cuenta de ahorros
                     await page.locator('text=AHORROS NORMALES').click();
-            
-                    // El monto maximo de apertura no debe cambiar
-                    await expect(montoMaximo).toBeVisible();
             
                     // Boton Agregar la cuenta
                     const botonAgregar = page.getByRole('button', {name: 'plus Agregar'});

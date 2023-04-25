@@ -9,19 +9,19 @@ let page: Page;
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Parametros de relation
-interface CrearAportacionesParametros {
-    ID_OPERACION: '' | '5' | '30'
+interface AportacionesExistentesParametros {
+    ID_OPERACION: '' | 5 | 30
 }
 
-const EscenariosPrueba: CrearAportacionesParametros[] = [
+const EscenariosPrueba: AportacionesExistentesParametros[] = [
     {
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: '5'
+        ID_OPERACION: 5
     },
     {
-        ID_OPERACION: '30'
+        ID_OPERACION: 30
     }
 ];
 
@@ -49,7 +49,7 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
-                    //Constante con el body
+                    // Constante con el body
                     const body = await response.json();
                     // Condicion para cambiar los parametros del body
                     if (Object.keys(body?.data[33]).length > 1) {
@@ -92,7 +92,7 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                 }
             });
 
-            if (escenario.ID_OPERACION === '' || '5') {
+            if (escenario.ID_OPERACION === 5) {
                 // Test si el ID_OPERACION es difernte de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -101,14 +101,30 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                     await botonNuevaCuenta.click();
 
                     // Debe salir un mensaje
-                    await expect(page.locator('text=No tiene permisos para crear cuentas.')).toBeVisible();
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === '30') {
+            } else if (escenario.ID_OPERACION === '') {
+                // Test si el ID_OPERACION es Vacio
+                test('No debe permitir Crear una Nueva Cuenta', async () => {
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
+
+                    // Debe salir un mensaje
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // Skip al test
+                    test.skip();
+                });
+            } else if (escenario.ID_OPERACION === 30) {
                 // Tests si el ID_OPERACION es 30
                 test('Click al boton de Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta

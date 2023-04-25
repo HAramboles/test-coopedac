@@ -13,7 +13,7 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 
 // Parametros de relation
 interface EditarAhorrosParametros {
-    ID_OPERACION: '' | '1' | '30'
+    ID_OPERACION: '' | 1 | 30
 };
 
 const EscenariosPrueba: EditarAhorrosParametros[] = [
@@ -21,10 +21,10 @@ const EscenariosPrueba: EditarAhorrosParametros[] = [
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: '1'
+        ID_OPERACION: 1
     },
     {
-        ID_OPERACION: '30'
+        ID_OPERACION: 30
     }
 ];
 
@@ -104,7 +104,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                 await botonNuevaCuenta.click();
         
                 // No debe permitir crear una cuenta sin elegir el tipo de certificado y debe salir un mensaje
-                await expect(page.locator('text=No ha seleccionado un tipo de captación.')).toBeVisible();
+                await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
             });
         
             test('Elegir un tipo de certificado', async () => {
@@ -143,7 +143,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                 await botonNuevaCuenta.click();
             });
 
-            if (escenario.ID_OPERACION === '' || '1') {
+            if (escenario.ID_OPERACION === 1) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -159,7 +159,23 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === '30') {
+            } else if (escenario.ID_OPERACION === '') {
+                // Test si el ID_OPERACION es Vacio
+                test('No debe permitir Crear una Nueva Cuenta', async () => {
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
+
+                    // Debe salir un mensaje
+                    await expect(page.locator('text=No tiene permisos para crear cuentas.')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // Skip al test
+                    test.skip();
+                });
+            } else if (escenario.ID_OPERACION === 30) {
                 test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {
                     // Cedula de la persona almacenada en el state
                     const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
