@@ -57,11 +57,11 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
 
     test('Todas las cuentas creadas anteriormente deben estar visibles', async () => {
         // Cuenta de Aportaciones
-        const cuentaAportaciones = page.getByRole('row', {name: 'APORTACIONES'}).last();
+        const cuentaAportaciones = page.getByRole('row', {name: 'APORTACIONES'}).first();
         await expect(cuentaAportaciones).toBeVisible();
 
         // Generar contrato
-        const contratoAportaciones = cuentaAportaciones.locator('[data-icon="file-text"]');
+        const contratoAportaciones = cuentaAportaciones.getByRole('button', {name: 'file-text'});
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [pageAportaciones] = await Promise.all([
             context.waitForEvent('page'),

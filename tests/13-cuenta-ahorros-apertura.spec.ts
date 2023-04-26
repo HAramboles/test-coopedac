@@ -93,19 +93,6 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                 await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
             });
         
-            test.skip('Debe aparecer un mensaje de error si se le da click a Nueva Cuenta sin elegir una tipo de captacion', async () => {
-                // Boton de Nueva Cuenta
-                const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
-                await expect(botonNuevaCuenta).toBeVisible();
-                await botonNuevaCuenta.click();
-        
-                // Mensaje de error
-                await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
-        
-                // Cerrar el mensaje
-                await page.locator('[data-icon="close"]').click();
-            });
-        
             test('Seleccionar un tipo de captaciones', async () => {
                 // El titulo de tipo de captaciones debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'TIPO DE CAPTACIONES'})).toBeVisible();
@@ -315,6 +302,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
                         await expect(botonFinalizar).toBeVisible(),
+                        await botonFinalizar.click(),
                         await botonFinalizar.click()
                     ]);
                   

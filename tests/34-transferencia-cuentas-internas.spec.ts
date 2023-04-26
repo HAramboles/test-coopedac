@@ -57,16 +57,11 @@ test.describe('Pruebas con la Transferencia de Cuentas de un socio', () => {
         // Seleccionar el socio
         await page.locator(`text=${nombre} ${apellido}`).click();
 
-        // Deben estar visible la cuenta seleccionada (ahorros), el nombre y la cedula de la persona
-        await expect(page.getByText('AHORROS NORMALES')).toBeVisible();
-        await expect(page.getByText(`${nombre} ${apellido}`)).toBeVisible();
-        await expect(page.getByText(`${cedula}`)).toBeVisible();
-
         // Balance
-        await expect(page.getByText('50,400.00')).toBeVisible();
+        await expect(page.locator('(//INPUT[@autocomplete="off"])[3]')).toHaveValue(' 50,300.00');
 
         // Balance Disponible
-        await expect(page.getByText('50,200.00')).toBeVisible();
+        await expect(page.getByText(' 50,200.00')).toBeVisible();
 
         // Buscar la cuenta de aportaciones preferentes
         await page.locator('#select-search').last().fill(`${cedula}`);

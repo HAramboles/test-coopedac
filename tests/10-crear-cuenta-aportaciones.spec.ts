@@ -47,7 +47,7 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
-                    //Constante con el body
+                    // Constante con el body
                     const body = await response.json();
                     // Condicion para cambiar los parametros del body
                     if (Object.keys(body?.data[33]).length > 1) {
@@ -201,7 +201,7 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                     // Debe de aparecer un modal
                     await expect(page.locator('text=¿Desea crear una cuenta de ahorro para este socio?')).toBeVisible();
                     // Click en Cancelar, ya que hay un test exclusivamente para la creacion de cuenta de ahorro
-                    await page.getByRole('dialog').getByRole('button', {name: 'stop Cancelar'}).click();
+                    await page.getByRole('dialog').getByRole('button', {name: 'No'}).click();
             
                     // Debe redirigirse al listado de las cuentas de aportaciones
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);

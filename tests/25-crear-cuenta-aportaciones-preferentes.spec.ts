@@ -100,20 +100,10 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 } else if (await tipoCaptacion.isVisible()) {
                     // La URL debe de cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
-                }
-            });
-        
-            test('Click al boton de Nueva Cuenta', async () => {
-                // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
-        
-                // El titulo debe estar presente
+
+                    // El titulo debe estar presente
                 await expect(page.locator('h1').filter({hasText: 'APORTACIONES PREFERENTES'})).toBeVisible();
-        
-                // Nueva Cuenta
-                const botonNuevaCuenta = page.getByRole('button', {name: 'Nueva Cuenta'});
-                await expect(botonNuevaCuenta).toBeVisible();
-                await botonNuevaCuenta.click();
+                }
             });
 
             if (escenario.ID_OPERACION === 1) {
@@ -153,6 +143,11 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
                     // Cedula de la persona almacenada en el state
                     const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
             
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=1`);
@@ -179,7 +174,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     const montoInicial = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA');
                     await montoInicial.fill('1500');
                     // Click fuera del input
-                    await page.getByText('Monto Inicial').click();
+                    await page.getByTitle('Titular').click();
 
                     // Plazo
                     await page.locator('#APORTACIONES\\ PREFERENTES_PLAZO').fill('12');
@@ -191,21 +186,21 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(modalRangos).toBeVisible();
 
                     // El monto minimo debe estar visible
-                    await expect(page.getByText('RD$ 1.00', {exact: true})).toBeVisible();
+                    await expect(page.getByText('RD$ 1.00').first()).toBeVisible();
 
                     // El plazo minimo debe estar visible
-                    await expect(page.getByText('1', {exact: true})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: '1', exact: true}).nth(1)).toBeVisible();
 
                     // Click en Aceptar para cerrar el modal de los rangos
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    await page.getByRole('button', {name: 'check Aceptar'}).nth(1).click();
 
                     // El modal no se debe mostrar
                     await expect(modalRangos).not.toBeVisible();
             
                     // La firma debe ser opcional, por lo que no se le agregara una firma a la cuenta
             
-                    // El titulo de cuentas a debitar debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'CUENTAS Y MONTOS A DEBITAR'})).toBeVisible();
+                    // El titulo de origen de inversion debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'ORIGEN DE INVERSIÓN'})).toBeVisible();
             
                     // Buscar una cuenta de la persona
                     const campoBuscarCuenta = page.locator('#select-search').last();
@@ -251,7 +246,8 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     // Regresar a la seccion de firmantes
                     await page.getByRole('tab').filter({hasText: 'Firmantes'}).click();
             
-                    // Cerrar uno de los mensajes que aparecen
+                    // Cerrar los mensajes que aparecen
+                    await page.locator('[aria-label="close"]').first().click();
                     await page.locator('[aria-label="close"]').first().click();
             
                     // Boton de Agregar Firmantes debe estar visible
@@ -310,6 +306,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                         context.waitForEvent('page'),
                         // Click al boton de Aceptar
                         await expect(botonAceptar).toBeVisible(),
+                        await botonAceptar.click(),
                         await botonAceptar.click()
                     ]);
                   

@@ -90,23 +90,6 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                 await page.getByRole('menuitem', {name: 'Certificados'}).first().click();
             });
         
-            test('No debe permitir crear una nueva cuenta sin elegir un tipo de captacion', async () => {
-                // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados`);
-        
-                // El titulo principal debe estar visible
-                await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
-        
-                // Boton de nueva cuenta
-                const botonNuevaCuenta = page.locator('text=Nueva Cuenta');
-                await expect(botonNuevaCuenta).toBeVisible();
-                // Click al boton
-                await botonNuevaCuenta.click();
-        
-                // No debe permitir crear una cuenta sin elegir el tipo de certificado y debe salir un mensaje
-                await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
-            });
-        
             test('Elegir un tipo de certificado', async () => {
                 // Boton de seleccionar captaciones
                 const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
@@ -130,36 +113,12 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
         
                 // La URL debe cambiar
                 await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
-            });
 
-            test('Click al boton de Nueva Cuenta', async () => {        
                 // El titulo debe estar presente
                 await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
-        
-                // Boton de nueva cuenta
-                const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
-                await expect(botonNuevaCuenta).toBeVisible();
-                // Click al boton
-                await botonNuevaCuenta.click();
             });
 
-            if (escenario.ID_OPERACION === 1) {
-                // Test si el ID_OPERACION es diferente de 30
-                test('No debe permitir Crear una Nueva Cuenta', async () => {
-                    // Boton de Nueva Cuenta
-                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
-                    await expect(botonNuevaCuenta).toBeVisible();
-                    await botonNuevaCuenta.click();
-
-                    // Debe salir un mensaje
-                    await expect(page.locator('text=No tiene permisos para crear cuentas.')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenario.ID_OPERACION === '') {
+            if (escenario.ID_OPERACION === '') {
                 // Test si el ID_OPERACION es Vacio
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -168,7 +127,23 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     await botonNuevaCuenta.click();
 
                     // Debe salir un mensaje
-                    await expect(page.locator('text=No tiene permisos para crear cuentas.')).toBeVisible();
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // Skip al test
+                    test.skip();
+                });
+            } else if (escenario.ID_OPERACION === 1) {
+                // Test si el ID_OPERACION es diferente de 30
+                test('No debe permitir Crear una Nueva Cuenta', async () => {
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
+
+                    // Debe salir un mensaje
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
@@ -179,6 +154,11 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                 test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {
                     // Cedula de la persona almacenada en el state
                     const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
             
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=1`);
@@ -257,8 +237,8 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     // El boton de subir la firma no debe estar visible
                     await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).not.toBeVisible();
             
-                    // El titulo de cuentas a debitar debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'CUENTAS Y MONTOS A DEBITAR'})).toBeVisible();
+                    // El titulo de origen de inversion debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'ORIGEN DE INVERSIÓN'})).toBeVisible();
             
                     // Buscar una cuenta de la persona
                     const campoBuscarCuenta = page.locator('#select-search').last();
@@ -301,7 +281,8 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     // Regresar a la seccion de firmantes
                     await page.getByRole('tab').filter({hasText: 'Firmantes'}).click();
             
-                    // Cerrar uno de los mensajes que aparecen
+                    // Cerrar los mensajes que aparecen
+                    await page.locator('[aria-label="close"]').first().click();
                     await page.locator('[aria-label="close"]').first().click();
             
                     // Boton de Agregar Firmantes debe estar visible

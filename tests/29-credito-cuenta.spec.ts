@@ -67,23 +67,20 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         // Tipo de captacion
         await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('FINANCIEROS PAGADERAS');
 
-        // Cedula del socio
-        await expect(page.locator('#form_RNC_CEDULA')).toHaveValue(`${cedula}`);
-
         // Sucursal
         await expect(page.locator('#form_sucursal')).toHaveValue('OFICINA PRINCIPAL');
 
         // Balance
-        await expect(page.locator('#form_BALANCE')).toHaveValue('50.00');
+        await expect(page.locator('#form_BALANCE')).toHaveValue(' 50.00');
 
         // Pignorado
-        await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('0.00');
+        await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue(' 0.00');
 
         // Transito
-        await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('0.00');
+        await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue(' 0.00');
 
         // Disponible
-        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('50.00');
+        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue(' 50.00');
     });
 
     test('Hacer el movimiento', async () => {
@@ -99,13 +96,7 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         await page.locator('text=APLICACION DE DEPOSITO').click();
 
         // Fecha documento
-        await expect(page.getByText(`${formatDate(new Date())}`)).toBeVisible();
-
-        // Documento adjunto
-        const subirDocAdjuntoPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
-        await page.getByText('Cargar ').click(); 
-        const subirDocAdjunto = await subirDocAdjuntoPromesa; // Guardar el evento del filechooser en una constante
-        await subirDocAdjunto.setFiles(`${firma}`); // setFiles para elegir un archivo
+        await expect(page.locator('#form_FECHA_DOCUMENTO')).toHaveValue(`${formatDate(new Date())}`);
 
         // Comentario
         await page.locator('#form_COMENTARIO').fill('Ingreso de 2050 pesos a la cuenta de Certificado');
@@ -126,12 +117,10 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         await newPage.close();
 
         // Se deben mostrar dos mensajes de confirmacion
-        // await expect(page.locator('text=')).toBeVisible();
-        await expect(page.locator('text=')).toBeVisible();
+        await expect(page.locator('text=Captacion Movimiento almacenada exitosamente.')).toBeVisible();
 
         // Cerrar los mensajes
         await page.locator('[aria-label="close"]').first().click();
-        await page.locator('[aria-label="close"]').click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

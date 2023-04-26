@@ -15,10 +15,10 @@ interface ReimpresionResolucionAprobatoria {
 
 const EscenariosPrueba: ReimpresionResolucionAprobatoria[] = [
     {
-        ESTADO_DEFECTO: 'D'
+        ESTADO_DEFECTO: 'A'
     },
     {
-        ESTADO_DEFECTO: 'A'
+        ESTADO_DEFECTO: 'D'
     }
 ];
 

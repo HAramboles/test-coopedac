@@ -9,7 +9,7 @@ let page: Page;
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Nota
-const nota = 'Debito a Aportaciones y a Ahorros';
+const nota = 'Deposito a Aportaciones y a Ahorros';
 
 // Pruebas
 
@@ -44,10 +44,12 @@ test.describe('Pruebas agregando y completando notas', () => {
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
-                
+
+        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+            
         // Condicion por si el tipo de captacion llega sin datos o con datos
         const tipoCaptacion = page.getByTitle('APORTACIONES', {exact: true});
-
+        
         if (await tipoCaptacion.isHidden()) {
             await page.reload();
         } else if (await tipoCaptacion.isVisible()) {
@@ -131,6 +133,8 @@ test.describe('Pruebas agregando y completando notas', () => {
 
         // El icono debe cambiar
         await expect(page.locator('(//svg[@class="ant-btn css-1nk3o8a ant-btn-link ant-btn-sm  "])')).toBeVisible();
+        // Icono de Nota Completada
+        // await expect(page.locator('(//DIV)[399]')).toBeVisible();
 
         // Cerrar el mensaje de confirmacion
         await page.locator('.ant-notification-notice-close').click();

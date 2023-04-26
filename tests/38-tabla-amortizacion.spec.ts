@@ -64,7 +64,7 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         await expect(page).toHaveURL(`${url_base}/tabla_amortizacion/01-3-4-2/`);
 
         // El titulo principal debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'TABLA DE AMORTIZACIÓN...'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'TABLA DE AMORTIZACIÓN'})).toBeVisible();
     });
 
     test('Calcular la Tabla de Amortizacion de un Socio - Solo Interes', async () => {

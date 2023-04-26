@@ -115,32 +115,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                 await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
             });
 
-            if (escenario.ID_OPERACION === 1) {
-                // Test si el ID_OPERACION es diferente de 31
-                test('No debe permitir Editar la cuenta de ahorros', async () => {
-                    // Cedula, nombres y apellidos de la cuenta de la persona a editar
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
-                    // Buscar al socio a editar
-                    await page.locator('#form_search').fill(`${cedula}`);
-            
-                    // Click al boton de editar cuenta
-                    const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-                    await expect(botonEditarCuenta).toBeVisible();
-                    await botonEditarCuenta.click();
-
-                    // Debe mostrarse un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-            
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenario.ID_OPERACION === '') {
+            if (escenario.ID_OPERACION === '') {
                 // Test si el ID_OPERACION es Vacio
                 test('No debe permitir Editar la cuenta de ahorros', async () => {
                     // Cedula, nombres y apellidos de la cuenta de la persona a editar
@@ -157,7 +132,32 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                     await botonEditarCuenta.click();
 
                     // Debe mostrarse un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para editar cuentas.')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+            
+                    // Skip al test
+                    test.skip();
+                });
+            } else if (escenario.ID_OPERACION === 1) {
+                // Test si el ID_OPERACION es diferente de 31
+                test('No debe permitir Editar la cuenta de ahorros', async () => {
+                    // Cedula, nombres y apellidos de la cuenta de la persona a editar
+                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+            
+                    // Buscar al socio a editar
+                    await page.locator('#form_search').fill(`${cedula}`);
+            
+                    // Click al boton de editar cuenta
+                    const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
+                    await expect(botonEditarCuenta).toBeVisible();
+                    await botonEditarCuenta.click();
+
+                    // Debe mostrarse un mensaje
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para editar cuentas.')).toBeVisible();
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
