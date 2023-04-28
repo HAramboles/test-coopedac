@@ -11,7 +11,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
-test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
+test.describe('Pruebas con la Apertura de Cuentas de Aportaciones de la Persona Juridica', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser, con la propiedad headless
         browser = await chromium.launch({
@@ -96,8 +96,8 @@ test.describe('Pruebas con la Apertura de Cuentas de Aportaciones', () => {
         // Seleccionar una categoria
         const campoCategoria = page.locator('#APORTACIONES_ID_CATEGORIA_SOCIO');
         await campoCategoria.click();
-        // Elegir la categoria de socio ahorrante
-        await page.locator('text=SOCIO EMPRESARIAL').click();
+        // Elegir la categoria de socio empresarial
+        await page.locator('text=SOCIO MICROEMPRESARIAL').click();
 
         // Boton de Continuar
         Continuar();

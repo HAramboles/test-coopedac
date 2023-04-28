@@ -55,9 +55,9 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
         await page.locator('#form_search').fill(`${nombre} ${apellido}`);
     });
 
-    test('Todas las cuentas creadas anteriormente deben estar visibles', async () => {
+    test('Reimprimir Contrato - Cuenta de Aportaciones', async () => {
         // Cuenta de Aportaciones
-        const cuentaAportaciones = page.getByRole('row', {name: 'APORTACIONES'}).first();
+        const cuentaAportaciones = page.getByRole('row', {name: 'APORTACIONES Activo file-text'});
         await expect(cuentaAportaciones).toBeVisible();
 
         // Generar contrato
@@ -72,7 +72,9 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
 
         // Cerrar la pagina con el reporte
         await pageAportaciones.close();
+    });
 
+    test('Reimprimir Contrato - Cuenta de Ahorros', async () => {
         // Cuenta de Ahorros
         const cuentaAhorros = page.getByRole('row', {name: 'AHORROS NORMALES'});
         await expect(cuentaAhorros).toBeVisible();
@@ -89,7 +91,9 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
 
         // Cerrar la pagina con el reporte
         await pageAhorros.close();
+    });
 
+    test('Reimprimir Contrato - Cuenta de Aportaciones Preferentes', async () => {
         // Cuenta de Aportaciones Preferentes
         const cuentaAportacionesPreferentes = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'});
         await expect(cuentaAportacionesPreferentes).toBeVisible();
@@ -108,7 +112,9 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
         // Cerrar las dos paginas con los reportes
         await pageAportacionesPreferentes.close();
         await pageAportacionesPreferentes2.close();
+    });
 
+    test('Reimprimir Contrato - Cuenta de Certificados - Financieros Pagaderas', async () => {
         // Cuenta de Certificados - Financieros Pagaderas
         const cuentaFinancierosPagaderas = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'});
         await expect(cuentaFinancierosPagaderas).toBeVisible();
@@ -125,6 +131,25 @@ test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => 
 
         // Cerrar la pagina con el reporte
         await pageFinancierosPagaderas.close();
+    });
+
+    test('Reimprimir Contrato - Prestamos', async () => {
+        // Prestamos
+        const cuentaPrestamos = page.getByRole('row', {name: 'PRESTAMOS'});
+        await expect(cuentaPrestamos).toBeVisible();
+
+        // Generar contrato
+        const contratoFinancierosPagaderas = cuentaPrestamos.locator('[data-icon="file-text"]');
+        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
+        const [pagePrestamos] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(contratoFinancierosPagaderas).toBeVisible(),
+            await contratoFinancierosPagaderas.click()
+        ]);
+
+        // Cerrar la pagina con el reporte
+        await pagePrestamos.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

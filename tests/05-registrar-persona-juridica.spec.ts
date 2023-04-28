@@ -23,20 +23,23 @@ const cedulaPersonaJuridicaRelacionado = numerosCedulas3;
 // Registro Mercantil
 const registroMercantil = numerosRegistroMercantil;
 
-// Correos de la persona fisica y del relacionado
+// Correos de la persona juridica y del relacionado
 const correoJuridica = numerosCorreo;
 const correoRelacionado = numerosCorreo;
+
+// Correo de la empresa
+const correoEmpresa = `empresa${correoJuridica}`;
 
 // Numeros telefonicos
 const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'PRADES & PRADERAS S.R.L';
+const nombreJuridica = '';
 
 // Nombre del relacionado
-const nombreRelacionado = 'JUAN NICOLAS';
-const apellidoRelacionado = 'PRADES';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -304,7 +307,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     // Descripcion del email
                     const campoNombreEmail = page.getByPlaceholder('USUARIO');
                     await campoNombreEmail.click();
-                    await campoNombreEmail?.fill(`empresa${correoJuridica}`);
+                    await campoNombreEmail?.fill(`${correoEmpresa}`);
             
                     // Seleccionar un dominio del email
                     const campoDominioEmail = page.locator('#form_DOMAIN');
@@ -383,7 +386,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await page.getByText('AGRICULTOR', {exact: true}).click();
             
                     // Lugar de trabajo
-                    await page.locator('#relatedRecord_NOMBRE_EMPRESA').fill('Ganados y Plantas A&T');
+                    await page.locator('#relatedRecord_NOMBRE_EMPRESA').fill(`${nombreJuridica}`);
             
                     // Tipo de empleo
                     await page.locator('text=Privado').click();
@@ -401,7 +404,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await page.locator('text=AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA').click();
             
                     // Fecha de ingreso
-                    await page.locator('#relatedRecord_FECHA_ENTRADA_EMPRESA').fill('10/06/2002');
+                    await page.locator('#relatedRecord_FECHA_ENTRADA_EMPRESA').fill('20/10/2005');
             
                     // Ingreso Promedio
                     await page.locator('#relatedRecord_INGRESO_PROMEDIO').fill('38000');
@@ -549,9 +552,8 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                 test('Finalizar con el Registro de Persona Juridica', async () => {
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
-                    // Esperar que se abran tres pestañas con los diferentes reportes
-                    const [newPage, newPage2, newPage3] = await Promise.all([
-                        context.waitForEvent('page'),
+                    // Esperar que se abran dos pestañas con los diferentes reportes
+                    const [newPage, newPage2] = await Promise.all([
                         context.waitForEvent('page'),
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
@@ -562,7 +564,6 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     // Cerrar las paginas con los reportes
                     await newPage.close();
                     await newPage2.close();
-                    await newPage3.close();
                 });
             };
         
@@ -571,7 +572,11 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                 await page.evaluate((cedulaPersonaJuridica) => window.localStorage.setItem('cedulaPersonaJuridica', cedulaPersonaJuridica), cedulaPersonaJuridica);
                 // Guardar el nombre de la persona juridica creada
                 await page.evaluate((nombreJuridica) => window.localStorage.setItem('nombreJuridica', nombreJuridica), nombreJuridica);
-        
+                // Guadar el telefono de la persona juridica
+                await page.evaluate((telefonoJuridica) => window.localStorage.setItem('telefonoJuridica', telefonoJuridica), telefonoJuridica);
+                // Guardar el correo de la persona juridica
+                await page.evaluate((correoEmpresa) => window.localStorage.setItem('correoEmpresa', correoEmpresa), correoEmpresa);
+                
                 // Guardar la cedula de la persona relacionada creada
                 await page.evaluate((cedulaPersonaJuridicaRelacionado) => window.localStorage.setItem('cedulaPersonaJuridicaRelacionado', cedulaPersonaJuridicaRelacionado), cedulaPersonaJuridicaRelacionado);
                 // Guardar el nombre y el apellido de la persona relacionada creada

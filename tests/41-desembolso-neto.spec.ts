@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate } from './utils/utils';
+import { formatDate, primerDiaMes } from './utils/utils';
 
 // Variabes globales
 let browser: Browser;
@@ -47,13 +47,9 @@ test.describe('Pruebas con el Desembolso Neto', () => {
     test('Imprimir el Reporte del Desembolso Neto', async () => {
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'DESEMBOLSO NETO'})).toBeVisible();
-
-        // Primer dia del mes actual
-        const diaActual = new Date();
-        const primerDiaMes = new Date(diaActual.getFullYear(), diaActual.getMonth(), 1);
         
         // Fecha Inicial
-        await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(primerDiaMes)}`);
+        await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${primerDiaMes}`);
 
         // Fecha Final
         await expect(page.locator('#form_FECHA_FINAL')).toHaveValue(`${formatDate(new Date())}`);
@@ -76,7 +72,7 @@ test.describe('Pruebas con el Desembolso Neto', () => {
         // Cartera Cobro
         await expect(page.locator('#form_ID_CARTERA')).toBeVisible();
 
-        /// Generar Reporte Desembolso Neto
+        // Generar Reporte Desembolso Neto
         const generarReporte = page.getByRole('button', {name: 'Generar Reporte'});
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [newPage] = await Promise.all([
@@ -112,11 +108,11 @@ test.describe('Pruebas con el Desembolso Neto', () => {
     });
 
     test('Probar los controles de la fecha - Fecha Inicial', async () => { 
-        // Sumarle un dia a la fecha actulal
+        // Sumarle un dia a la fecha actual
         const dia = new Date();
         dia.setDate(dia.getDate() + 1);
 
-        // Borrar la fech del input de fecha final
+        // Borrar la fecha del input de fecha final
         const fechaFinal = page.locator('#form_FECHA_INICIO');
         await fechaFinal.clear();
         // Coloacar una fecha mayor al de la fecha final

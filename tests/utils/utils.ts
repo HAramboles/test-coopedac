@@ -11,6 +11,11 @@ const formatDate = (inputDate: Date) => {
       .padStart(2, '0')}/${year}`;
 }
 
+// Primer dia del mes actual
+const diaActual = new Date();
+const primerDiaMes = formatDate(new Date(diaActual.getFullYear(), diaActual.getMonth(), 1));
+
 export {
   formatDate,
+  primerDiaMes
 }

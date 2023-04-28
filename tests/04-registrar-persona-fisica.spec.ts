@@ -15,8 +15,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = 'MIA INES';
-const apellidoPersona = 'GARCIA LUPERON';
+const nombrePersona = 'LISA ISABEL';
+const apellidoPersona = 'MARTINEZ CACERES';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -143,7 +143,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', ()
                     await botonPersonaFisica.click();
             
                     // El titulo de datos generales de la persona debe estar visible
-                    await expect(page.locator('h1').filter({ hasText: 'DATOS GENERALES' })).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
             
                     // La url debe de cambiar
                     await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=1`);
@@ -164,7 +164,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', ()
                     // Volver a ingresar la cedula
                     await campoCedula?.fill(`${cedula}`);
                     
-                    // Pasaporte erroneo
+                    // Pasaporte 
                     const campoPasaporte = page.locator('#person_NO_PASAPORTE');
                     await campoPasaporte.click();
                     await campoPasaporte.fill(pasaporte); 
@@ -255,7 +255,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', ()
                     // Seleccionar tipo de empleo
                     await page.locator('input[type="radio"]').first().check();
             
-                    // Input del emmail de la empresa
+                    // Input del email de la empresa
                     const campoEmailEmpresa = page.locator('#person_EMAIL_EMPRESA');
                     await campoEmailEmpresa?.fill('empresaejemplo@hotmail.com');
             
@@ -564,9 +564,8 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', ()
                 test('Finalizar con el Registro de Persona Fisica', async () => {
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
-                    // Esperar que se abran tres pestañas con los diferentes reportes
-                    const [newPage, newPage2, newPage3] = await Promise.all([
-                        context.waitForEvent('page'),
+                    // Esperar que se abran dos pestañas con los diferentes reportes
+                    const [newPage, newPage2] = await Promise.all([
                         context.waitForEvent('page'),
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
@@ -577,7 +576,6 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', ()
                     // Cerrar las paginas con los reportes
                     await newPage.close();
                     await newPage2.close();
-                    await newPage3.close();
                 });
             };
         

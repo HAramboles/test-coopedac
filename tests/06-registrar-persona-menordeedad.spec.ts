@@ -12,9 +12,10 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Cedula, nombre, apellido, numero telefonico y correo del menor
 const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
-const nombreMenor = 'ALEX JAVIER';
-const apellidoMenor = 'GARCIA LUPERON';
 const numerosParaCorreo = numerosCorreo;
+
+const nombreMenor = '';
+const apellidoMenor = '';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -424,8 +425,7 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
                     // Esperar que se abran tres pestañas con los diferentes reportes
-                    const [newPage, newPage2, newPage3] = await Promise.all([
-                        context.waitForEvent('page'),
+                    const [newPage, newPage2] = await Promise.all([
                         context.waitForEvent('page'),
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
@@ -436,7 +436,6 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                     // Cerrar las paginas con los reportes
                     await newPage.close();
                     await newPage2.close();
-                    await newPage3.close();
                 });
             };
         

@@ -21,7 +21,7 @@ const mes8 = new Date();
 const mes10 = new Date();
 const mes12 = new Date();
 
-// El mes debe aumentar de 2 en 2
+// El mes debe aumentar de 2 en 2 en los abonos programados
 mes2.setMonth(mes2.getMonth() + 2);
 mes4.setMonth(mes4.getMonth() + 4)
 mes6.setMonth(mes6.getMonth() + 6)
@@ -69,17 +69,17 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
     test('Calcular la Tabla de Amortizacion de un Socio - Solo Interes', async () => {
         // Cedula de la persona
-        //const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        //const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        //const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Titulo General
         await expect(page.locator('h1').filter({hasText: 'GENERAL'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').fill('96891445241');
+        await page.locator('#select-search').fill(`${cedula}`);
         // Elegir el socio
-        await page.locator('text=CAITLYN CASTILLO').click();
+        await page.getByText(`${nombre} ${apellido}`).click();
 
         // Colocar un monto
         await page.locator('#amortization_form_MONTO').fill('25000');
@@ -112,7 +112,6 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         // Titulo de Amortizacion
         await expect(page.getByRole('heading', {name: 'Amortización', exact: true})).toBeVisible();
 
-        /*
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
@@ -125,7 +124,6 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();
-        */
 
         // La tabla de amortizacion debe estar visible
         await expect(page.getByText('No. Cuota')).toBeVisible();
@@ -159,7 +157,6 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         // Titulo de Amortizacion
         await expect(page.getByRole('heading', {name: 'Amortización', exact: true})).toBeVisible();
 
-        /*
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
@@ -172,7 +169,6 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();
-        */
 
         // La tabla de amortizacion debe estar visible
         await expect(page.getByText('No. Cuota')).toBeVisible();

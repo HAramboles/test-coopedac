@@ -1,4 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { numerosPasaporte } from './utils/cedulasypasaporte';
 
 // Variables globales
 let browser: Browser;
@@ -7,6 +8,9 @@ let page: Page;
 
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
+
+// Celular del Menor
+const pasaporte = numerosPasaporte;
 
 // Paramtros Relation
 interface EditarPersonas {
@@ -27,7 +31,7 @@ const EscenariosPrueba: EditarPersonas[] = [
 
 // Pruebas
 
-test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Pruebas con los diferentes parametros', () => {
+test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferentes parametros', () => {
     for (const escenarios of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
@@ -68,6 +72,14 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 await page.goto(`${url_base}`);
             });
         
+            // Funcion con el boton de continuar, que se repite en cada seccion del registro
+            const actualizarContinuar = async () => {
+                // continuar
+                const botonContinuar = page.locator('button:has-text("Actualizar y continuar")');
+                // presionar el boton
+                await botonContinuar.click();
+            };
+        
             test('Ir a la opcion de Registro de Persona', async () => {
                 // Socios
                 await page.getByRole('menuitem', {name: 'SOCIOS'}).click();
@@ -81,17 +93,17 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 // La URL deba cambiar
                 await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
             });
+
+            test('Buscar la cuenta de la Persona a Editar', async () => {
+                // Cedula de la persona 
+                const cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
         
-            test('Buscar la cuenta del socio', async () => {
-                // Cedula, nombre y apellido del menor
-                const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        
-                // Buscar al menor
+                // Buscar a la persona
                 await page.locator('#form_search').fill(`${cedula}`);
             });
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
-            if (escenarios.ID_OPERACION == '') {
+            if (escenarios.ID_OPERACION === '') {
                 // Test cuando el ID_OPERACION sea Vacio
                 test('Mensaje de error al querer Editar la Cuante del Socio', async () => {
                     // Nombre y apellido de la persona
@@ -149,74 +161,118 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                     await expect(page).toHaveURL(/\/edit/);
                 });
 
-                test('Ir a la ultima opcion - Relacionados del socio', async () => {
-                    // El titulo de la primera seccion se debe cambiar
+                test('Agregar la informacion faltante del socio - Datos Generales', async () => {
+                    // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
-            
-                    // Seccion de direcciones y contactos
-                    const relacionados = page.getByRole('button', {name: '6 Relacionados Agregar Relacionados'});
-                    await expect(relacionados).toBeVisible();
-                    await relacionados.click();
+
+                    const campoPasaporte = page.locator('#person_NO_PASAPORTE');
+                    await campoPasaporte.click();
+                    await campoPasaporte.fill(pasaporte); 
+
+                    // Lugar de nacimiento
+                    const campoLugar = page.locator('#person_LUGAR_NAC');
+                    await campoLugar?.fill('La Vega');
+
+                    // Nivel academico
+                    const campoAcademico = page.locator('#person_ID_NIVEL_ACA');
+                    await campoAcademico?.fill('Universitario');
+                    // Hacer click a la opcion que aparece de nivel academico universitario
+                    await page.locator('text=UNIVERSITARIO').click();
+
+                    // Cantidad de dependientes
+                    const campoDependientes = page.locator('#person_CANT_DEPENDIENTES');
+                    await campoDependientes?.fill('0');
+
+                    // Ejecutivo
+                    const campoEjecutivo = page.locator('#person_ID_EJECUTIVO');
+                    await campoEjecutivo?.fill('Cliente');
+                    // Hacer click a la opcion de cliente inactivo
+                    await page.locator('text=CLIENTE INACTIVO').click();
+
+                    // Click al boton de no referido
+                    await page.locator('#person_NO_REFERIDO').click();
+
+                    // Categoria Solicitada
+                    const campoCategoria = page.locator('#person_ID_CATEGORIA_SOLICITADA');
+                    await campoCategoria?.fill('ahorra');
+                    // Seleccionar la opcion de socio ahorrante
+                    await page.locator('text=SOCIO AHORRANTE').click();
+
+                    // Click en Actualizar y continuar
+                    actualizarContinuar();
                 });
-            
-                test('Imprimir Reporte de Admision', async () => {
-                    // El titulo de relacionados del socio debe estar visible
-                    await expect(page.locator('h1').filter({ hasText: 'RELACIONADOS DEL SOCIO' })).toBeVisible();
-            
-                    // Boton Reporte de Admision
-                    const generarReporte = page.getByRole('button', {name: 'Admisión'});
-                    // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(generarReporte).toBeVisible(),
-                        await generarReporte.click()
-                    ]);
-            
-                    // Cerrar la pagina con el reporte
-                    await newPage.close();
+
+                test('Agregar la informacion faltante del socio - Informacion de Ingresos', async () => {
+                    // Correo y telefono de la persona juridica
+                    const correoEmpresa = await page.evaluate(() => window.localStorage.getItem('telefonoJuridica'));
+                    const telefonoEmpresa = await page.evaluate(() => window.localStorage.getItem('correoEmpresa'));
+
+                    // Email de la empresa
+                    const campoEmailEmpresa = page.locator('#person_EMAIL_EMPRESA');
+                    await campoEmailEmpresa?.fill(`${correoEmpresa}`);
+
+                    // Telefono de la empresa
+                    const campoTelefonoEmpresa = page.locator('#person_TELEFONO_EMPRESA');
+                    await campoTelefonoEmpresa?.fill(`${telefonoEmpresa}`);
+
+                    // Click en Actualizar y continuar
+                    actualizarContinuar();
                 });
+
+                test('Agregar la informacion faltante del socio - Informacion Adicional de Ingresos', async () => {
+                    // Colocar un origen para los recursos
+                    const campoOrigenRecursos = page.locator('#person_ORIGEN_RECURSOS');
+                    await campoOrigenRecursos?.fill('Trabajo');
             
-                test('Imprimir Reporte de Conozca a su Socio', async () => {
-                    // El titulo de relacionados del socio debe estar visible
-                    await expect(page.locator('h1').filter({ hasText: 'RELACIONADOS DEL SOCIO' })).toBeVisible();
-            
-                    // Boton Reporte de Conozca a su Socio
-                    const generarReporte = page.getByRole('button', {name: 'Conozca a su Socio'});
-                    // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(generarReporte).toBeVisible(),
-                        await generarReporte.click()
-                    ]);
-            
-                    // Cerrar la pagina con el reporte
-                    await newPage.close();
+                    // Colocar un proposito para los ingresos
+                    const campoProposito = page.locator('#person_PROPOSITO_TRANSACCION');
+                    await campoProposito?.fill('Para uso personal');
+
+                    // Click en Actualizar y continuar
+                    actualizarContinuar();
                 });
-            
-                test('Regresar a la pagina de los socios', async () => {
-                    // Boton Anterior
-                    const botonAnterior = page.getByRole('button', {name: 'Anterior'});
-                    await expect(botonAnterior).toBeVisible();
-                    await botonAnterior.click();
-            
-                    // Debe ir a la seccion anterior
+
+                test('Agregar la informacion faltante del socio - PEPS - Persona Expuesta Politicamente', async () => {
+                    // Titulo de la seccion
+                    await expect(page.locator('h1').filter({hasText: 'PERSONA EXPUESTA POLÍTICAMENTE'})).toBeVisible();
+
+                    // El PEP agregado debe estar visible
+                    await expect(page.getByRole('row', {name: '1 1 06/08/2022 06/08/2027 ACTIVO'})).toBeVisible();
+
+                    // Click en Actualizar y continuar
+                    actualizarContinuar();
+                });
+
+                test('Agregar la informacion faltante del socio - Direcciones - Email - Redes Sociales', async () => {
+                    // Los tres titulos deben estar visibles
                     await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
-            
-                    // Boton Cancelar
-                    const botonCancelar = page.getByRole('button', {name: 'Cancelar'});
-                    await expect(botonCancelar).toBeVisible();
-                    await botonCancelar.click();
-            
-                    // Debe salir un modal de confirmacion
-                    await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
-            
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-            
-                    // El titulo principal de la pagina debe esatr visible
-                    await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'TELÉFONOS'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'EMAILS / REDES SOCIALES'})).toBeVisible();
+
+                    // Click en Actualizar y continuar
+                    actualizarContinuar();
+                });
+
+                test('Agregar la informacion faltante del socio - Relacionados del Socio', async () => {
+                    // El titulo principal debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
+                });
+
+                test('Finalizar con la Edicion de la Persona Fisica', async () => {
+                    // Hacer click al boton de finalizar
+                    const botonFinalizar = page.locator('text=Finalizar');
+                    // Esperar que se abran dos pestañas con los diferentes reportes
+                    const [newPage, newPage2] = await Promise.all([
+                        context.waitForEvent('page'),
+                        context.waitForEvent('page'),
+                        // Click al boton de Finalizar
+                        await expect(botonFinalizar).toBeVisible(),
+                        await botonFinalizar.click()
+                    ]);
+                  
+                    // Cerrar las paginas con los reportes
+                    await newPage.close();
+                    await newPage2.close();
                 });
             };
         
@@ -230,4 +286,3 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
         });
     };
 });
-
