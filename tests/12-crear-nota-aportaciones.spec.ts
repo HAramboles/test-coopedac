@@ -32,29 +32,31 @@ test.describe('Pruebas agregando y completando notas', () => {
         await page.goto(`${url_base}`);
     });
 
-    test('Ir a la seccion de Aportaciones', async () => {
+    test('Ir a Apertura de cuenta de aportaciones', async () => {
         // Captaciones
-        await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
+        await page.locator('text=CAPTACIONES').click();
 
         // Apertura de cuentas
-        await page.getByRole('menuitem', {name: 'APERTURA DE CUENTAS'}).click();
+        await page.locator('text=APERTURA DE CUENTAS').click();
 
-        // Aportaciones
-        await page.getByRole('menuitem', {name: 'Aportaciones', exact: true}).click();
+        // Captaciones
+        await page.locator('text=Aportaciones').first().click();
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
-
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
-            
+        
         // Condicion por si el tipo de captacion llega sin datos o con datos
         const tipoCaptacion = page.getByTitle('APORTACIONES', {exact: true});
-        
+
         if (await tipoCaptacion.isHidden()) {
-            await page.reload();
+            // Si no llega el tipo de captacion, manualmente dirigise a la url de las aportaciones
+            await page.goto(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
         } else if (await tipoCaptacion.isVisible()) {
             // La URL debe de cambiar
             await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+
+            // El titulo debe estar visible
+            await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
         }
     });
 
@@ -131,10 +133,8 @@ test.describe('Pruebas agregando y completando notas', () => {
         // Se debe mostrar un mensaje de confirmacion
         await expect(page.locator('text=Notas Persona actualizada exitosamente.')).toBeVisible();
 
-        // El icono debe cambiar
-        await expect(page.locator('(//svg[@class="ant-btn css-1nk3o8a ant-btn-link ant-btn-sm  "])')).toBeVisible();
-        // Icono de Nota Completada
-        // await expect(page.locator('(//DIV)[399]')).toBeVisible();
+        // El icono debe cambiar al icono de Nota Completada
+        await expect(page.locator('(//DIV)[304]')).toBeVisible();
 
         // Cerrar el mensaje de confirmacion
         await page.locator('.ant-notification-notice-close').click();

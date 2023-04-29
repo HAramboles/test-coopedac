@@ -83,13 +83,13 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Nota alamacenada en el state
-        //const nota = await page.evaluate(() => window.localStorage.getItem('nota'));
+        const nota = await page.evaluate(() => window.localStorage.getItem('nota'));
         
         // Titulo del modal
         await expect(page.locator('h1').filter({hasText: `NOTAS PARA ${nombre} ${apellido}`})).toBeVisible();
 
         // La nota debe estar visible
-        //await expect(page.getByRole('cell', {name: `${nota}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nota}`})).toBeVisible();
 
         // La nota debe estar como completada
         //await expect(page.locator('.ant-space > div:nth-child(3) > div')).toBeVisible();

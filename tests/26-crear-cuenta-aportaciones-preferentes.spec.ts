@@ -96,13 +96,14 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 const tipoCaptacion = page.getByTitle('APORTACIONES PREFERENTES', {exact: true});
         
                 if (await tipoCaptacion.isHidden()) {
-                    await page.reload();
+                    // Si no llega el tipo de captacion, manualmente dirigise a la url de las aportaciones preferentes
+                    await page.goto(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/20`);
                 } else if (await tipoCaptacion.isVisible()) {
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/20`);
 
-                    // El titulo debe estar presente
-                await expect(page.locator('h1').filter({hasText: 'APORTACIONES PREFERENTES'})).toBeVisible();
+                    // El titulo debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'APORTACIONES PREFERENTES'})).toBeVisible();
                 }
             });
 

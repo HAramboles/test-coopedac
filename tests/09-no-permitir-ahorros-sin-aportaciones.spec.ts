@@ -10,7 +10,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Parametros de relation
 interface AhorrosSinAportaciones {
-    ID_OPERACION: '' | '10' | '30'
+    ID_OPERACION: '' | 10 | 30
 };
 
 const EscenariosPruebas: AhorrosSinAportaciones[] = [
@@ -18,10 +18,10 @@ const EscenariosPruebas: AhorrosSinAportaciones[] = [
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: '10'
+        ID_OPERACION: 10
     }, 
     {
-        ID_OPERACION: '30'
+        ID_OPERACION: 30
     }
 ];
 
@@ -99,11 +99,8 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
                 const tipoAhorros = page.locator('text=AHORROS NORMALES');
         
                 if (await tipoAhorros.isHidden()) {
-                    // Recargar la pagina
-                    await page.reload();
-                    // Seleccionar el tipo de captacion Ahorros Normales
-                    await botonCaptaciones.click();
-                    await page.locator('text=AHORROS NORMALES').click();
+                    // Si no llega el tipo de captacion, manualmente dirigise a la url de los ahorros normales
+                    await page.goto(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
                 } else if (await tipoAhorros.isVisible()) {
                     // Seleccionar el tipo de captacion Ahorros Normales
                     await page.locator('text=AHORROS NORMALES').click();
@@ -113,7 +110,23 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
                 await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
             });
 
-            if (escenario.ID_OPERACION === '' || '10') {
+            if (escenario.ID_OPERACION === '') {
+                // Test si el ID_OPERACION es Vacio
+                test('No debe permitir Crear una Nueva Cuenta', async () => {
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
+
+                    // Debe salir un mensaje
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // Skip al test
+                    test.skip();
+                });
+            }  else if (escenario.ID_OPERACION === 10) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -129,7 +142,7 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === '30') {
+            } else if (escenario.ID_OPERACION === 30) {
                 test('Click al boton de Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
@@ -164,6 +177,7 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
                 });
             };
+            
         
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerrar la page

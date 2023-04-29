@@ -101,13 +101,10 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                 const tipoCertificado = page.locator('text=FINANCIEROS PAGADERAS');
 
                 if (await tipoCertificado.isHidden()) {
-                    // Recargar la pagina
-                    await page.reload();
-                    // Seleccionar el tipo de captacion financieros pagaderas
-                    await botonCaptaciones.click();
-                    await page.locator('text=FINANCIEROS PAGADERAS').click();
+                    // Si no llega el tipo de captacion, manualmente dirigise a la url de los certificados financieros pagaderas
+                    await page.goto(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
                 } else if (await tipoCertificado.isVisible()) {
-                    // Seleccionar el tipo de captacion financieros pagaderas
+                    // Seleccionar el tipo de captacion Ahorros Normales
                     await page.locator('text=FINANCIEROS PAGADERAS').click();
                 }
         

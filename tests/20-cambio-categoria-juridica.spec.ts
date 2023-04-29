@@ -65,7 +65,7 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         await page.getByText(`${nombreEmpresa}`).click();
 
         // La categoria actual debe ser Microempresarial
-        await expect(page.getByText('MICROEMPRESARIAL')).toBeVisible();
+        await expect(page.locator('#form_DESC_CATEGORIA')).toHaveValue('SOCIO MICROEMPRESARIAL');
 
         // Via Cobro
         await page.locator('#form_VIA_COBRO').click();

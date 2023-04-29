@@ -85,7 +85,8 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                 const tipoCaptacion = page.getByTitle('APORTACIONES', {exact: true});
         
                 if (await tipoCaptacion.isHidden()) {
-                    await page.reload();
+                    // Si no llega el tipo de captacion, manualmente dirigise a la url de las aportacciones
+                    await page.goto(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
                 } else if (await tipoCaptacion.isVisible()) {
                     // La URL debe de cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);

@@ -65,11 +65,8 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         const tipoAhorros = page.locator('text=AHORROS NORMALES');
 
         if (await tipoAhorros.isHidden()) {
-            // Recargar la pagina
-            await page.reload();
-            // Seleccionar el tipo de captacion Ahorros Normales
-            await botonCaptaciones.click();
-            await page.locator('text=AHORROS NORMALES').click();
+            // Si no llega el tipo de captacion, manualmente dirigise a la url de los ahorros normales
+            await page.goto(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
         } else if (await tipoAhorros.isVisible()) {
             // Seleccionar el tipo de captacion Ahorros Normales
             await page.locator('text=AHORROS NORMALES').click();

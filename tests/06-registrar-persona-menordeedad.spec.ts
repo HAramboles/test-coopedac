@@ -14,8 +14,8 @@ const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 
-const nombreMenor = '';
-const apellidoMenor = '';
+const nombreMenor = 'ALVARO';
+const apellidoMenor = 'LUCERO GOMEZ';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -38,7 +38,7 @@ const EscenariosPrueba: CrearPersonas[] = [
 
 test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes parametros', () => {
     for (const escenarios of EscenariosPrueba) {
-        test.describe('Pruebas con el Registro de Persona Fisica - Menor de Edad', () => {
+        test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({

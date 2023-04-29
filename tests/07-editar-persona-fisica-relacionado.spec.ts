@@ -105,42 +105,28 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
             if (escenarios.ID_OPERACION === '') {
                 // Test cuando el ID_OPERACION sea Vacio
-                test('Mensaje de error al querer Editar la Cuante del Socio', async () => {
+                test('El boton de Editar no debe esatr visible', async () => {
                     // Nombre y apellido de la persona
                     const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
                     const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-                    await expect(botonEditarCuenta).toBeVisible();
-                    await botonEditarCuenta.click();
-
-                    // Debe mostrarse un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para editar cuentas.')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    await expect(botonEditarCuenta).not.toBeVisible();
 
                     // Skip al test
                     test.skip();
                 });
             } else if (escenarios.ID_OPERACION === 8) {
                 // Test cuando el ID_OPERACION sea diferente de 4
-                test('Mensaje de error al querer Editar la Cuante del Socio', async () => {
+                test('El boton de Editar no debe esatr visible', async () => {
                     // Nombre y apellido de la persona
                     const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
                     const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-                    await expect(botonEditarCuenta).toBeVisible();
-                    await botonEditarCuenta.click();
-
-                    // Debe mostrarse un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para editar cuentas.')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    await expect(botonEditarCuenta).not.toBeVisible();
 
                     // Skip al test
                     test.skip();
@@ -204,8 +190,8 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
 
                 test('Agregar la informacion faltante del socio - Informacion de Ingresos', async () => {
                     // Correo y telefono de la persona juridica
-                    const correoEmpresa = await page.evaluate(() => window.localStorage.getItem('telefonoJuridica'));
-                    const telefonoEmpresa = await page.evaluate(() => window.localStorage.getItem('correoEmpresa'));
+                    const correoEmpresa = await page.evaluate(() => window.localStorage.getItem('correoEmpresa'));
+                    const telefonoEmpresa = await page.evaluate(() => window.localStorage.getItem('telefonoJuridica'));
 
                     // Email de la empresa
                     const campoEmailEmpresa = page.locator('#person_EMAIL_EMPRESA');

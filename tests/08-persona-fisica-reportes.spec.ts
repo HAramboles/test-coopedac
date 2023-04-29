@@ -93,42 +93,28 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
             if (escenarios.ID_OPERACION == '') {
                 // Test cuando el ID_OPERACION sea Vacio
-                test('Mensaje de error al querer Editar la Cuante del Socio', async () => {
+                test('El boton de Editar no debe esatr visible', async () => {
                     // Nombre y apellido de la persona
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-                    await expect(botonEditarCuenta).toBeVisible();
-                    await botonEditarCuenta.click();
-
-                    // Debe mostrarse un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para editar cuentas.')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    await expect(botonEditarCuenta).not.toBeVisible();
 
                     // Skip al test
                     test.skip();
                 });
             } else if (escenarios.ID_OPERACION === 8) {
                 // Test cuando el ID_OPERACION sea diferente de 4
-                test('Mensaje de error al querer Editar la Cuante del Socio', async () => {
+                test('El boton de Editar no debe esatr visible', async () => {
                     // Nombre y apellido de la persona
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-                    await expect(botonEditarCuenta).toBeVisible();
-                    await botonEditarCuenta.click();
-
-                    // Debe mostrarse un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para editar cuentas.')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    await expect(botonEditarCuenta).not.toBeVisible();
 
                     // Skip al test
                     test.skip();
@@ -137,8 +123,8 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 // Tests cuando el ID_OPERACION sea igual a 4
                 test('Editar la Cuenta del Socio', async () => {
                     // Nombre y apellido de la persona
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});

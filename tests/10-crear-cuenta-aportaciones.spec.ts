@@ -11,7 +11,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Parametros de relation
 interface CrearAportacionesParametros {
     ID_OPERACION: '' | 10 | 30
-}
+};
 
 const EscenariosPrueba: CrearAportacionesParametros[] = [
     {
@@ -91,15 +91,19 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                 const tipoCaptacion = page.getByTitle('APORTACIONES', {exact: true});
         
                 if (await tipoCaptacion.isHidden()) {
-                    await page.reload();
+                    // Si no llega el tipo de captacion, manualmente dirigise a la url de las aportaciones
+                    await page.goto(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
                 } else if (await tipoCaptacion.isVisible()) {
                     // La URL debe de cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+
+                    // El titulo debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
                 }
             });
 
-            if (escenario.ID_OPERACION === 10) {
-                // Test si el ID_OPERACION es diferente de 30
+            if (escenario.ID_OPERACION === '') {
+                // Test si el ID_OPERACION es Vacio
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
@@ -114,8 +118,8 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === '') {
-                // Test si el ID_OPERACION es Vacio
+            } else if (escenario.ID_OPERACION === 10) {
+                // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
