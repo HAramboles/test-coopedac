@@ -88,7 +88,7 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                     const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                     // El estado de las solicitudes deben estar en Aprobado
-                    await expect(page.locator('span').filter({hasText: 'APROBADO'})).toBeVisible();
+                    await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="APROBADO"])')).toBeVisible();
 
                     // Buscar un socio
                     await page.locator('#form_search').fill(`${nombre} ${apellido}`);
@@ -104,7 +104,7 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                     const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                     // El estado de las solicitudes deben estar en Aprobado
-                    await expect(page.getByText('DESEMBOLSADO', {exact: true})).toBeVisible();
+                    await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="DESEMBOLSADO"])')).toBeVisible();
 
                     // Buscar un socio
                     await page.locator('#form_search').fill(`${nombre} ${apellido}`);

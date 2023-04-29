@@ -72,15 +72,11 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         // Elegir Debito a cuenta
         await page.getByText('DEBITO A CUENTA').click();
 
-        // Cuenta Cobro
-        await page.locator('#form_ID_CUENTA_COBRO').click();
-        // Elegir la cuenta de ahorros
-        await page.getByText('AHORROS NORMALES').click();
+        // En a cuenta de cobro se coloca automaticamente la cuenta de ahorros del socio
+        await expect(page.getByText('AHORROS NORMALES')).toBeVisible();
 
-        // Categoria Solicitada
-        await page.locator('form_ID_CATEGORIA_SOCIO').click();
-        // Elegir la categoria empresarial
-        await page.getByText('EMPRESARIAL').click();
+        // En la Categoria Solicitada se coloca automaticamente la categoria Empresarial 
+        await expect(page.getByText('SOCIO EMPRESARIAL')).toBeVisible();
 
         // Comentario
         await page.locator('#form_COMENTARIO').fill('CAMBIO DE SOCIO MICROEMPRESARIAL A SOCIO EMPRESARIAL');

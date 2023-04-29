@@ -32,7 +32,7 @@ const EscenariosPrueba: EditarAhorrosParametros[] = [
 
 test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
-        test.describe(`Test cuando el es escenario es ${Object.values(escenario).toString()}`, () => {
+        test.describe(`Test cuando el escenario es ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
@@ -106,13 +106,13 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                 } else if (await tipoCertificado.isVisible()) {
                     // Seleccionar el tipo de captacion Ahorros Normales
                     await page.locator('text=FINANCIEROS PAGADERAS').click();
-                }
-        
-                // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
 
-                // El titulo debe estar presente
-                await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
+
+                    // El titulo debe estar presente
+                    await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
+                };
             });
 
             if (escenario.ID_OPERACION === '') {

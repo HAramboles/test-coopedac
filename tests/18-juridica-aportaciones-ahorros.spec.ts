@@ -213,7 +213,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     // Tipo firmante
                     await page.locator('#form_TIPO_FIRMANTE').click();
                     // Seleccionar un tipo de firmante
-                    await page.locator('text=CO-PROPIETARIO').click();
+                    await page.locator('text=REPRESENTANTE').click();
             
                     // Tipo firma
                     await page.locator('#form_CONDICION').click();
@@ -357,7 +357,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     // Tipo firmante
                     await page.locator('#form_TIPO_FIRMANTE').click();
                     // Seleccionar un tipo de firmante
-                    await page.locator('text=CO-PROPIETARIO').click();
+                    await page.locator('text=REPRESENTANTE').click();
             
                     // Tipo firma
                     await page.locator('#form_CONDICION').click();

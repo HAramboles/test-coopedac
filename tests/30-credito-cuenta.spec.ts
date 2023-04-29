@@ -9,9 +9,6 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Documento Adjunto
-const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
-
 // Pruebas
 
 test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros Pagaderas', () => {

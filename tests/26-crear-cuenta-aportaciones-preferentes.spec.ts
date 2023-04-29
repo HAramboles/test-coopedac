@@ -97,10 +97,10 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
         
                 if (await tipoCaptacion.isHidden()) {
                     // Si no llega el tipo de captacion, manualmente dirigise a la url de las aportaciones preferentes
-                    await page.goto(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/20`);
+                    await page.goto(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
                 } else if (await tipoCaptacion.isVisible()) {
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/20`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
 
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'APORTACIONES PREFERENTES'})).toBeVisible();
@@ -307,7 +307,6 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                         context.waitForEvent('page'),
                         // Click al boton de Aceptar
                         await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click(),
                         await botonAceptar.click()
                     ]);
                   
@@ -337,6 +336,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
                         await expect(botonFinalizar).toBeVisible(),
+                        await botonFinalizar.click(),
                         await botonFinalizar.click()
                     ]);
                   
