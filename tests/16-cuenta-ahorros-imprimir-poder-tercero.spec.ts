@@ -194,9 +194,11 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
                     // El componente de firma debe estar visible y debe ser unico
                     await expect(page.locator('(//div[@class="ant-upload-list-item-container"])')).toBeVisible();
             
-                    // Click al boton de Omitir
-                    const botonOmitir = page.locator('button:has-text("Omitir")');
-                    await botonOmitir.click();
+                    // Opcion de Firmantes y Contactos
+                    const firmantesContactos = page.locator('text=Firmantes y Contactos');
+                    await expect(firmantesContactos).toBeVisible();
+                    // Click a la opcion
+                    await firmantesContactos.click();
                 });
             
                 test('Cuenta de Ahorros - Contacto de Firmante o Persona - Ver Reporte Poder a Terceros', async () => {

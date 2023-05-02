@@ -1,4 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { formatDate } from './utils/utils';
 
 // Variables globales
 let browser: Browser;
@@ -55,16 +56,16 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
 
     test('Buscar un socio y editar su solicitud', async () => {
         // Nombre y apellido de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        //const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        //const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN DE PRÉSTAMOS'})).toBeVisible();
 
         // Buscar a la persona
-        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        await page.locator('#select-search').fill('NADIA ESCOBAR RUIZ');
         // Seleccionar a la persona buscada
-        await page.locator(`text=${nombre} ${apellido}`).click();
+        await page.locator('text=NADIA ESCOBAR RUIZ').click();
 
         // Se debe mostrar el credito de la persona
         await expect(page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO edit eye'}).getByRole('cell', {name: 'CRÉDITO HIPOTECARIO'})).toBeVisible();
@@ -73,19 +74,22 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         await page.getByRole('cell', {name: 'edit eye'}).getByRole('button', {name: 'edit'}).click();
     });
 
-    test('Cambiar los datos de la solicitud', async () => {
+    test('Datos de la Solicitud', async () => {
         // Cedula, nombre y apellido de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        //const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        //const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Datos del socio
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
 
         // El nombre del socio debe estar visible
-        await expect(page.locator('#form_NOMBRE')).toHaveValue(`${nombre} ${apellido}`);
+        await expect(page.locator('#form_NOMBRE')).toHaveValue('NADIA ESCOBAR RUIZ');
 
         // Datos del credito
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL CRÉDITO'})).toBeVisible();
+
+        // Monto Desembolsado
+        await expect(page.locator('#form_DESEMBOLSADO')).toHaveValue('RD$ 50,000');
 
         // Tipo de garantia
         await expect(page.locator('#form_ID_CLASE_GARANTIA')).toHaveValue('HIPOTECARIAS');
@@ -98,10 +102,40 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
 
         // Grupo
         await expect(page.locator('#form_DESC_GRUPO')).toHaveValue('SIN GARANTIA');
+    });
 
+    test('Pruebas con Cambio de Fecha', async () => {
         // Cambios solicitados
         await expect(page.locator('h1').filter({hasText: 'CAMBIOS SOLICITADOS'})).toBeVisible();
 
+        // Cambio de Fecha
+        await page.getByLabel('CAMBIO DE FECHA').check();
+
+        // Tipo de cuota
+        const tipoCuota = page.locator('text=Cuota Original: RD$ 416.67');
+
+        // El tipo de cuota debe estar visible 
+        await expect(tipoCuota).toBeVisible();
+
+        // No debe permitir agregar otro cambio si ya este seleccionado el cambio de fecha
+        await page.getByLabel('CAMBIO DE PLAZO').click();
+        // Debe salir un mensaje de aviso
+        await expect(page.getByText('No es posible seleccionar más de una opción si tiene seleccionada la opción de cambio de fecha.')).toBeVisible();
+
+        // Cerrar el mensaje de aviso
+        await page.locator('[aria-label="close"]').last().click();
+
+        // Ingresar una fecha
+        await page.locator('#form_CAMB_FECHA').fill(`${formatDate(new Date())}`);
+
+        // Quitar el check de cambio de fecha
+        await page.getByLabel('CAMBIO DE FECHA', {exact: true}).uncheck();
+
+        // El tipo de cuota no debe estar visible
+        await expect(tipoCuota).not.toBeVisible();
+    });
+
+    test('Cambio de Plazo y de Tasa', async () => {
         // Cambios solicitados
 
         // Cambio de Plazo
@@ -124,8 +158,27 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         // Cambiar la tasa
         await campoCambioTasa.fill('15');
 
-        // Cambiar la cuota a la sugerida
-        await page.getByLabel('Cuota Sugerida:').click();
+        // Tipos de cuota
+        const cuotaOriginal = page.locator('text=Cuota Original: RD$ 416.67');
+        const CuotaSugerida = page.locator('text=Cuota Sugerida: RD$ 809.09');
+
+        // Cuota original debe estar visible
+        await expect(cuotaOriginal).toBeVisible();
+
+        // Click en algun lugar para que se realice el calculo
+        await page.getByText('Razones').click();
+
+        await expect(CuotaSugerida).toBeVisible();
+
+        expect(await page.isChecked('(//INPUT[@type="radio"])[2]')).toBeTruthy();
+
+        // Distribucion de cuenta
+        await expect(page.getByText('Siguiente Cuota')).toBeVisible();
+        await expect(page.getByText('Distribuido')).toBeVisible();
+        await expect(page.getByText('Ultima Cuota')).toBeVisible();
+
+        // Elegir Distribucion Siguiente Cuota
+        await page.getByLabel('Siguiente Cuota').check();
 
         // Razones
         await page.locator('#form_COMENTARIOS').fill('Necesita mas tiempo para los pagos');
