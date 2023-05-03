@@ -9,6 +9,9 @@ let page: Page
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Nombre de la presona juridica
+let nombreEmpresa: string | null;
+
 // Pruebas
 
 test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () => {
@@ -28,6 +31,9 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Nombre de la empresa
+        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombreJuridica'));
     });
 
     test('Ir a la seccion de Solicitar Cambio Categoria', async () => {
@@ -45,9 +51,6 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
     });
 
     test('Solicitar Cambio de Categoria', async () => {
-        // Nombre de la persona juridica
-        const nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombreJuridica'));
-
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'SOLICITAR CAMBIO DE CATEGORÍA'})).toBeVisible();
 
@@ -105,9 +108,6 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
     });
 
     test('Confirmar Cambio Categoria', async () => {
-        // Nombre de la empresa
-        const nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombreJuridica'));
-
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'AUTORIZACIÓN CAMBIO CATEGORÍA'})).toBeVisible();
 

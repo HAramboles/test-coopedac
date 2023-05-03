@@ -11,6 +11,16 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
+// Cedula, nombre y apellido del firmante
+let cedulaFirmante: string | null;
+let nombreFirmante: string | null;
+let apellidoFirmante: string | null;
+
 // Parametros de relation
 interface CrearAportacionesAhorrosFisicaParametros {
     ID_OPERACION: '' | 10 | 30
@@ -67,6 +77,16 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
         
                 // Ingresar a la url de la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+                // Cedula, nombre y apellido de la persona almacenada en el state
+                cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -149,12 +169,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1/create?step=1`);
                 });
             
-                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {
-                    // Cedula, nombre y apellido de la persona almacenada en el state
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-            
+                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {            
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             
@@ -212,10 +227,6 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                 });
             
                 test('Crear la Cuenta de Ahorros - Datos Generales', async () => {
-                    // Nombre y apellido de la persona almacenada en el state
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-            
                     // Debe redirigirse a la creacion de la cuenta de ahorros
                     await expect(page).toHaveURL(/\/ahorros/);
             
@@ -255,12 +266,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                     await botonActualizar.click();
                 });
             
-                test('Crear la Cuenta de Ahorros - Contacto de Firmante', async () => {
-                    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-                    const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
+                test('Crear la Cuenta de Ahorros - Contacto de Firmante', async () => {            
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTE'})).toBeVisible();
             

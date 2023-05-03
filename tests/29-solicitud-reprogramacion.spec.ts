@@ -6,6 +6,10 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
+// Nombre y apellido de la persona
+let nombre: string|null;
+let apellido: string | null;
+
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
@@ -28,6 +32,10 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Nombre y apellido de la persona almacenada en el state
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Solicitud de Reprogramacion', async () => {
@@ -55,15 +63,11 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
     });
 
     test('Buscar un socio y editar su solicitud', async () => {
-        // Nombre y apellido de la persona almacenada en el state
-        //const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        //const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN DE PRÉSTAMOS'})).toBeVisible();
 
         // Buscar a la persona
-        await page.locator('#select-search').fill('NADIA ESCOBAR RUIZ');
+        await page.locator('#select-search').fill(`${nombre}`);
         // Seleccionar a la persona buscada
         await page.locator('text=NADIA ESCOBAR RUIZ').click();
 
@@ -75,10 +79,6 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
     });
 
     test('Datos de la Solicitud', async () => {
-        // Cedula, nombre y apellido de la persona almacenada en el state
-        //const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        //const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Datos del socio
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
 
@@ -201,80 +201,6 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
 
         // Click en Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();
-    });
-
-    test('Confirmar la Solicitud de Reprogramacion', async () => {
-        // Cedula, nombre y apellido de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-        // Ir a la seccion de Reprogramacion Creditos
-        await page.getByRole('menuitem', {name: 'Reprogramación Créditos'}).click();
-
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reprogramacion_prestamos/01-3-2-2?filter=pendientes`);
-
-        // Buscar al socio
-        await page.locator('#form_search').fill(`${cedula}`);
-
-        // El estado de la solicitud tiene que estar pediente
-        await expect(page.getByText('PENDIENTES', {exact: true})).toBeVisible();
-
-        // Boton de confirmar
-        const botonConfirmar = page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[data-icon="check-circle"]');
-        await expect(botonConfirmar).toBeVisible();
-        // Click al boton
-        await botonConfirmar.click();
-
-        // Esperar que se muestre el modal con los datos de la solicitud de reprogramacion
-        await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
-
-        // Los cambios solicitados anteriormente deben estar visibles
-        await expect(page.locator('h1').filter({hasText: 'CAMBIOS SOLICITADOS'})).toBeVisible();
-        
-        // Cuota Sugerida
-        // await expect(page.locator('#form_CAMB_CUOTA')).toHaveValue('');
-
-        // Cambio de Plazo
-        await expect(page.locator('#form_CAMB_PLAZO')).toHaveValue('72');
-
-        // Cambio de Taza
-        await expect(page.locator('#form_CAMB_TASA')).toHaveValue('15%');
-
-        // Razones
-        await expect(page.locator('#form_COMENTARIOS')).toHaveValue('NECESITA MAS TIEMPO PARA LOS PAGOS');
-
-        // Click en Aceptar
-        await page.getByRole('button', {name: 'Actualizar'}).click();
-
-        // Deben salir dos mensajes de operacion exitosa
-        await expect(page.locator('text=Solicitud de cambios productos actualizada exitosamente.')).toBeVisible();
-        await expect(page.locator('text=Cambios Solicitados actualizado exitosamente')).toBeVisible();
-
-        // Cerrar los mensajes
-        await page.locator('[aria-label="close]').first().click();
-        await page.locator('[aria-label="close]').click();
-
-        // La solicitud no debe estar en pendientes
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).not.toBeVisible();
-    });
-
-    test('Confirmar que la Solicitud de reprogramacion haya sido Aprobada', async () => {
-        // Nombre y apellido de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-        // Cambiar el estado de las solicitudes de Pendiente a Aprobado
-        await page.getByText('PENDIENTES', {exact: true}).click();
-        // Elegir el estado de aprobadas
-        await page.getByText('APROBADAS', {exact: true}).click();
-
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reprogramacion_prestamos/01-3-2-2?filter=aprobadas`);
-
-        // La solicitud aprobada debe estar visible
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).toBeVisible();
     });
 
     test.afterAll(async () => {

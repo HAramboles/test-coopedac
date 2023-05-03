@@ -8,6 +8,10 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let nombre: string | null;
+let apellido: string | null;
+
 // Parametros de la reimpresion de la resolucion aporbatoria
 interface ReimpresionResolucionAprobatoria {
     ESTADO_DEFECTO: 'A' | 'D'
@@ -62,6 +66,10 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
 
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
+
+                // Nombre y apellido de la persona almacenada en el state
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
 
             test('Ir a la opcion de Reimprimir Resolucion Aprobatoria', async () => {
@@ -83,10 +91,6 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                 await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR RESOLUCIÓN APROBATORIA'})).toBeVisible();
 
                 if (escenario.ESTADO_DEFECTO === 'A') {
-                    // Nombre y apellido de la persona almacenada en el state
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
                     // El estado de las solicitudes deben estar en Aprobado
                     await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="APROBADO"])')).toBeVisible();
 
@@ -99,10 +103,6 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                     // Skip al test
                     test.skip();
                 } else if ( escenario.ESTADO_DEFECTO === 'D') {
-                    // Nombre y apellido de la persona almacenada en el state
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
                     // El estado de las solicitudes deben estar en Aprobado
                     await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="DESEMBOLSADO"])')).toBeVisible();
 

@@ -8,6 +8,10 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Nombre y apellido de la persona
+let nombre: string | null;
+let apellido: string | null;
+
 // Pruebas
 
 test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
@@ -27,6 +31,10 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Nombre y apellido de la persona almacenados en el state
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {
@@ -41,10 +49,6 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     });
 
     test.skip('Cuenta de Aportaciones del Socio', async () => {
-        // Nombre y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
@@ -87,10 +91,6 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     });
 
     test.skip('Cuenta de Aportaciones Preferentes del Socio', async () => {
-        // Nombre y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
@@ -133,10 +133,6 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     });
 
     test.skip('Cuenta de Ahorros del Socio', async () => {
-        // Nombre y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
@@ -179,10 +175,6 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     });
 
     test('Cuenta de Certificados - Financieros Pagaderas del Socio', async () => {
-        // Nombre y apellidos almacenados en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 

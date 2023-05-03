@@ -8,6 +8,10 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Nombre y apellido de la persona
+let nombre: string | null;
+let apellido: string | null;
+
 // Pruebas
 
 test.describe('Prueba con la Reimpresion de la Solicitud de Credito', () => {
@@ -27,6 +31,10 @@ test.describe('Prueba con la Reimpresion de la Solicitud de Credito', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Nombre y apellidos de la persona almacenada en el state
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Reimpresion de Solicitud de Credito', async () => {
@@ -44,10 +52,6 @@ test.describe('Prueba con la Reimpresion de la Solicitud de Credito', () => {
     });
 
     test('Buscar un socio', async () => {
-        // Nombre y apellidos de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Ingresar un socio
         const buscador = page.locator('#form_search');
         await buscador.fill(`${nombre} ${apellido}`);

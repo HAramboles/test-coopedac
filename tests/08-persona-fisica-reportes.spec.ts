@@ -8,7 +8,12 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Paramtros Relation
+// Cedula, nombre, apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
+// Parametros de Relation
 interface EditarPersonas {
     ID_OPERACION: '' | 8 | 4
 };
@@ -66,6 +71,11 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
         
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula, nombre y apellido de la persona
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
         
             test('Ir a la opcion de Registro de Persona', async () => {
@@ -82,10 +92,7 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
             });
         
-            test('Buscar la cuenta del socio', async () => {
-                // Cedula, nombre y apellido del menor
-                const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        
+            test('Buscar la cuenta del socio', async () => {        
                 // Buscar al menor
                 await page.locator('#form_search').fill(`${cedula}`);
             });
@@ -94,10 +101,6 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             if (escenarios.ID_OPERACION == '') {
                 // Test cuando el ID_OPERACION sea Vacio
                 test('El boton de Editar no debe esatr visible', async () => {
-                    // Nombre y apellido de la persona
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
@@ -108,10 +111,6 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             } else if (escenarios.ID_OPERACION === 8) {
                 // Test cuando el ID_OPERACION sea diferente de 4
                 test('El boton de Editar no debe esatr visible', async () => {
-                    // Nombre y apellido de la persona
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
@@ -122,10 +121,6 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             } else if (escenarios.ID_OPERACION === 4) {
                 // Tests cuando el ID_OPERACION sea igual a 4
                 test('Editar la Cuenta del Socio', async () => {
-                    // Nombre y apellido de la persona
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).toBeVisible();

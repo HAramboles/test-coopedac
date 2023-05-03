@@ -8,6 +8,14 @@ let page: Page;
 /* URL de la pagina */
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
+// Nota de la cuenta de aportaciones de la persona
+let nota: string | null;
+
 // Pruebas
 
 test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
@@ -27,6 +35,14 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
 
         /* Ingresar a la pagina */
         await page.goto(`${url_base}`);
+
+        // Cedula, ,ombre y apellido de la persona alamcenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Nota alamacenada en el state
+        nota = await page.evaluate(() => window.localStorage.getItem('nota'));
     });
 
     test('Ir a la opcion de Transacciones de Caja', async () => {
@@ -64,9 +80,6 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     });
 
     test('Seleccionar un socio', async () => {
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-
         // Input para buscar el socio
         const buscarSocio = page.locator('#select-search');
         await expect(buscarSocio).toBeVisible();
@@ -77,14 +90,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await page.locator('text=APORTACIONES').click();
     });
 
-    test('Debe salir un modal con la nota anteriormente creada', async () => {
-        // Nombre y apellido de la persona alamcenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-        // Nota alamacenada en el state
-        const nota = await page.evaluate(() => window.localStorage.getItem('nota'));
-        
+    test('Debe salir un modal con la nota anteriormente creada', async () => {        
         // Titulo del modal
         await expect(page.locator('h1').filter({hasText: `NOTAS PARA ${nombre} ${apellido}`})).toBeVisible();
 

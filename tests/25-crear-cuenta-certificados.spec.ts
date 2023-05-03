@@ -11,6 +11,14 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
+// Cedula de la persona
+let cedula: string | null;
+
+// Cedula, nombre y apellido del firmante
+let cedulaFirmante: string | null;
+let nombreFirmante: string | null;
+let apellidoFirmante: string | null;
+
 // Parametros de relation
 interface EditarAhorrosParametros {
     ID_OPERACION: '' | 1 | 30
@@ -69,6 +77,14 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
         
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula de la persona almacenada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
+                // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+                cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+                nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+                apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -149,9 +165,6 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                 });
             } else if (escenario.ID_OPERACION === 30) {
                 test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {
-                    // Cedula de la persona almacenada en el state
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
                     await expect(botonNuevaCuenta).toBeVisible();
@@ -256,12 +269,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     Continuar();
                 });
             
-                test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {
-                    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-                    const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-                    const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-            
+                test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {            
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=2`);
             

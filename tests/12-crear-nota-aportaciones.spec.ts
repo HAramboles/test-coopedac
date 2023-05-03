@@ -11,6 +11,11 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Nota
 const nota = 'Deposito a Aportaciones y a Ahorros';
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
 // Pruebas
 
 test.describe('Pruebas agregando y completando notas', () => {
@@ -30,6 +35,11 @@ test.describe('Pruebas agregando y completando notas', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a Apertura de cuenta de aportaciones', async () => {
@@ -61,11 +71,6 @@ test.describe('Pruebas agregando y completando notas', () => {
     });
 
     test('Crear una nota a la cuenta de un socio', async () => {
-        // Cedula, nombre y apellido de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Ingresar la cedula en el buscador
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -102,10 +107,6 @@ test.describe('Pruebas agregando y completando notas', () => {
     });
 
     test('Marcar la nota como completada', async () => {
-        // Cedula, nombre y apellido de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Click a mas opciones 
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[data-icon="more"]').click();
 

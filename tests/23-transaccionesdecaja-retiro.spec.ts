@@ -8,6 +8,18 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
+// Nota de la cuenta de aportaciones de la persona
+let nota: string | null;
+
+// Nombre y apellido del co-propietario
+let nombreCopropietario: string | null;
+let apellidoCopropietario: string | null;
+
 // Pruebas
 
 test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
@@ -27,6 +39,18 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Cedula, nombre y apellido de la persona alamcenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Nota alamacenada en el state
+        nota = await page.evaluate(() => window.localStorage.getItem('nota'));
+
+        // Nombre y apellido del co-propietario
+        nombreCopropietario = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        apellidoCopropietario = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
     test('Ir a la opcion de Transacciones de Caja', async () => {
@@ -64,9 +88,6 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     });
     
     test('Seleccionar un socio', async () => {
-        // Cedula de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-
         // Input para buscar el socio
         const buscarSocio = page.locator('#select-search');
         await expect(buscarSocio).toBeVisible();
@@ -78,13 +99,6 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     });
 
     test('Debe salir un modal con la nota anteriormente creada', async () => {
-        // Nombre y apellido de la persona alamcenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-        // Nota alamacenada en el state
-        const nota = await page.evaluate(() => window.localStorage.getItem('nota'));
-        
         // Titulo del modal
         await expect(page.locator('h1').filter({hasText: `NOTAS PARA ${nombre} ${apellido}`})).toBeVisible();
 
@@ -110,14 +124,6 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     });
 
     test('Datos del Retiro de la Cuenta de Ahorro', async () => {
-        // Nombre y apellido de la persona almacenada en el state
-        const nombreTitular = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellidoTitular = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-        // Nombre y apellido del co-propietario
-        const nombreCopropietario = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        const apellidoCopropietario = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
         // Se deben mostrar el titular y el co-propietario
         await expect(page.locator('text=FIRMANTES')).toBeVisible();
         await expect(page.locator('text=CO-PROPIETARIO')).toBeVisible();
@@ -127,7 +133,7 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         await expect(page.getByRole('heading', {name: 'Firmas Autorizadas'})).toBeVisible();
 
         // La firma del titular debe estar visible
-        await expect(page.getByTitle(`${nombreTitular} ${apellidoTitular}`).nth(1)).toBeVisible();
+        await expect(page.getByTitle(`${nombre} ${apellido}`).nth(1)).toBeVisible();
         
         // Click en siguiente
         await page.getByRole('button', {name: 'Siguiente'}).click();

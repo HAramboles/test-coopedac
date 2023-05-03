@@ -8,6 +8,15 @@ let page: Page;
 /* URL de la pagina */
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
+// Nombre y apellido del firmante
+let nombreFirmante: string | null;
+let apellidoFirmante: string | null;
+
 // Pruebas
 
 test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
@@ -27,6 +36,15 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
 
         // Ingresar a la URL de la pagina
         await page.goto(`${url_base}`);
+
+        // Cedula, nombres y apellidos almacenados en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Nombre y apellido del firmante
+        nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
     // Funcion con el boton de siguiente, que se repite en cada seccion del registro
@@ -77,11 +95,6 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
     });
 
     test('Buscar la cuenta de la persona', async () => {
-        // Cedula, nombres y apellidos almacenados en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Buscar al socio
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -116,11 +129,6 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
     });
 
     test('Ver cuenta - Datos Generales', async () => {
-        // Cedula, nombres y apellidos almacenados en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);
 
@@ -160,14 +168,6 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
     });
 
     test('Ver cuenta - Contacto de Firmante', async () => {
-        // Nombre y apellido del socio
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
-        // Nombre y apellido del firmante
-        const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=2/);
 

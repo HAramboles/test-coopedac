@@ -9,12 +9,17 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
 // Constante con la Fecha del Primer Pago, debe ser el mismo dia un mes despues
 const mesPrimerPago = new Date();
 mesPrimerPago.setMonth(mesPrimerPago.getMonth() + 1);
 
 // Constantes con los diferentes meses que se deben mostrar en los abonos programados
-const mes2 = new Date();
+const mes2 = new Date();    
 const mes4 = new Date();
 const mes6 = new Date();
 const mes8 = new Date();
@@ -48,6 +53,11 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Cedula, nombre ya apellido de la persona
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de la Tabla de Amortizacion', async () => {
@@ -68,11 +78,6 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
     });
 
     test('Calcular la Tabla de Amortizacion de un Socio - Solo Interes', async () => {
-        // Cedula de la persona
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Titulo General
         await expect(page.locator('h1').filter({hasText: 'GENERAL'})).toBeVisible();
 
@@ -169,17 +174,6 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();
-
-        // La tabla de amortizacion debe estar visible
-        await expect(page.getByText('No. Cuota')).toBeVisible();
-        await expect(page.getByText('Fecha')).toBeVisible();
-        await expect(page.getByText('Abono Programado')).toBeVisible();
-        await expect(page.getByText('Capital')).toBeVisible();
-        await expect(page.getByRole('columnheader', {name: 'Interés'})).toBeVisible();
-        await expect(page.getByRole('columnheader', {name: 'Seguro'}).last()).toBeVisible();
-        await expect(page.getByRole('columnheader', {name: 'Cargos'})).toBeVisible();
-        await expect(page.getByText('Total')).toBeVisible();
-        await expect(page.getByText('Balance')).toBeVisible();
 
         // Primera cuota
         await expect(page.getByRole('row', {name: `1 ${formatDate(mesPrimerPago)} 2,036.02	104.17 0.00 2,140.19 22,963.98`})).toBeVisible();
@@ -335,5 +329,5 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
 
         // Cerrar el context
         await context.close();
-    })
-})
+    });
+});

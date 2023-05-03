@@ -8,6 +8,11 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
 // Pruebas
 
 test.describe('Pruebas con la Transferencia de Cuentas de un socio', () => {
@@ -27,6 +32,11 @@ test.describe('Pruebas con la Transferencia de Cuentas de un socio', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Cedula, nombre y apellido de la persona
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Transferencias Cuentas Internas', async () => {
@@ -44,11 +54,6 @@ test.describe('Pruebas con la Transferencia de Cuentas de un socio', () => {
     });
 
     test('Transferir fondo de la Cuenta de Ahorros a la cuenta de Aportaciones Preferentes', async () => {
-        // Cedula, nombre y apellido de la persona
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // El titulo prinicipal debe estar presente
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIAS CUENTAS INTERNAS'})).toBeVisible();
 
@@ -103,11 +108,6 @@ test.describe('Pruebas con la Transferencia de Cuentas de un socio', () => {
     });
 
     test('Resumen de la Transaccion', async () => {
-        // Cedula, nombre y apellido de la persona
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'RESUMEN DE LA TRANSACCIÓN'})).toBeVisible();
 

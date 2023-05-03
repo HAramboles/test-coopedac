@@ -9,9 +9,14 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
 // Pruebas
 
-test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros Pagaderas', () => {
+test.describe('Pruebas con el Debito a la Cuenta de Certificado - Financieros Pagaderas', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -28,6 +33,11 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Cedula, nombre y apellido de la persona
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Credito a Cuenta', async () => {
@@ -38,20 +48,15 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Credito a Cuenta
-        await page.getByRole('menuitem', {name: 'Crédito a Cuenta'}).click();
+        await page.getByRole('menuitem', {name: 'Débito a Cuenta'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/notas_cuentas/01-2-2-3/`);
+        await expect(page).toHaveURL(`${url_base}/notas_cuentas/01-2-2-4/`);
     });
 
     test('Ingresar un Socio', async () => {
-        // Cedula, nombre y apellido de la persona
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // Titulo principal
-        await expect(page.locator('h1').filter({hasText: 'CRÉDITO A CUENTA'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'DÉBITO A CUENTA'})).toBeVisible();
 
         // Buscar un socio
         await page.locator('#select-search').fill(`${cedula}`);
@@ -68,7 +73,7 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         await expect(page.locator('#form_sucursal')).toHaveValue('OFICINA PRINCIPAL');
 
         // Balance
-        await expect(page.locator('#form_BALANCE')).toHaveValue(' 50.00');
+        await expect(page.locator('#form_BALANCE')).toHaveValue(' 2,100.00');
 
         // Pignorado
         await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue(' 0.00');
@@ -77,26 +82,26 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue(' 0.00');
 
         // Disponible
-        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue(' 50.00');
+        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue(' 2,100.00');
     });
 
     test('Hacer el movimiento', async () => {
         // Tipo movimiento
-        await expect(page.getByText('NOTA CREDITO')).toBeVisible();
+        await expect(page.getByText('NOTA DEBITO')).toBeVisible();
 
         // Monto
-        await page.locator('#form_MONTO').fill('2050');
+        await page.locator('#form_MONTO').fill('600');
 
         // Concepto
         await page.locator('#form_ID_TIPO_CONCEPTO').click();
         // Seleccionar Aplicacion de deposito
-        await page.locator('text=APLICACION DE DEPOSITO').click();
+        await page.locator('text=Ajuste Balance').click();
 
         // Fecha documento
         await expect(page.locator('#form_FECHA_DOCUMENTO')).toHaveValue(`${formatDate(new Date())}`);
 
         // Comentario
-        await page.locator('#form_COMENTARIO').fill('Ingreso de 2050 pesos a la cuenta de Certificado');
+        await page.locator('#form_COMENTARIO').fill('Debito de 600 pesos a la cuenta de Certificado');
     });
 
     test('Realizar el Credito a la Cuenta', async () => {

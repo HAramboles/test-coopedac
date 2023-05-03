@@ -10,6 +10,16 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
+// Cedula, nombre y apellido del firmante
+let cedulaFirmante: string | null;
+let nombreFirmante: string | null;
+let apellidoFirmante: string | null;
+
 // Parametros de relation
 interface EditarAhorrosParametros {
     ID_OPERACION: '' | 1 | 31
@@ -68,6 +78,16 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
         
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula, nombres y apellidos de la cuenta de la persona a editar
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+                // Cedula, nombre y apellido del firmante
+                cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+                nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+                apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
             test('Ir a la opcion de Apertura de cuentas -> Ahorros', async () => {
@@ -114,12 +134,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
 
             if (escenario.ID_OPERACION === '') {
                 // Test si el ID_OPERACION es Vacio
-                test('No debe permitir Editar la cuenta de ahorros', async () => {
-                    // Cedula, nombres y apellidos de la cuenta de la persona a editar
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
+                test('No debe permitir Editar la cuenta de ahorros', async () => {            
                     // Buscar al socio a editar
                     await page.locator('#form_search').fill(`${cedula}`);
             
@@ -140,11 +155,6 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
             } else if (escenario.ID_OPERACION === 1) {
                 // Test si el ID_OPERACION es diferente de 31
                 test('No debe permitir Editar la cuenta de ahorros', async () => {
-                    // Cedula, nombres y apellidos de la cuenta de la persona a editar
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
                     // Buscar al socio a editar
                     await page.locator('#form_search').fill(`${cedula}`);
             
@@ -165,11 +175,6 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
             } else if (escenario.ID_OPERACION === 31) {
                 // Tests si el ID_OPERACION es 31
                 test('Dirigirse al primer paso de la edicion de cuentas de ahorros', async () => {
-                    // Cedula, nombres y apellidos de la cuenta de la persona a editar
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
                     // Buscar al socio a editar
                     await page.locator('#form_search').fill(`${cedula}`);
             
@@ -204,11 +209,6 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                 });
             
                 test('Editar Cuenta de Ahorros - Datos Generales', async () => {
-                    // Cedula, nombres y apellidos de la cuenta de la persona a editar
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
                     // Buscar al socio a editar
                     await page.locator('#form_search').fill(`${cedula}`);
             
@@ -271,10 +271,6 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                 });
             
                 test('Editar una Cuenta de Ahorros - Eliminar un Firmante', async () => {
-                    // Cedula, nombre y apellido del firmante
-                    const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-            
                     // Nombre del firmante
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
                     
@@ -319,11 +315,6 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                 });
             
                 test('Editar una Cuenta de Ahorros - Agregar un Firmante', async () => {
-                    // Cedula, nombre y apellido del firmante
-                    const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-                    const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-            
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
                     await expect(botonAgregarFirmantes).toBeVisible();

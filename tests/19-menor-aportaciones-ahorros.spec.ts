@@ -11,6 +11,16 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
+// Cedula, nombre y apellido del menor
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
+// Cedula, nombre y apellido de la madre
+let cedulaMadre: string | null;
+let nombreMadre: string | null;
+let apellidoMadre: string | null;
+
 // Parametros de relation
 interface CrearAportacionesAhorrosMenorParametros {
     ID_OPERACION: '' | 10 | 30
@@ -69,6 +79,16 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
         
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula, nombre y apellido del menor almacenada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaMenor'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombreMenor'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoMenor'));
+        
+                // Nombre de la persona alamcenada en el state, osea su madre
+                cedulaMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                nombreMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellidoMadre = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -152,14 +172,6 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                 });
             
                 test('Registrar Cuenta de Aportaciones del Menor - Datos Generales', async () => {
-                    // Cedula, nombre y apellido del menor almacenada en el state
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedulaMenor'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombreMenor'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoMenor'));
-            
-                    // Nombre de la persona alamcenada en el state, osea su madre
-                    const cedulaMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-            
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             
@@ -192,11 +204,6 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                 });
             
                 test('Registrar Cuenta de Aportaciones del Menor - Contacto de Firmante o Persona', async () => {
-                    // Cedula, nombre y apellido del tutor del menor, en este caso la madre
-                    const cedulaMadre = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombreMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellidoMadre = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
             
@@ -307,10 +314,6 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                 });
             
                 test('Crear la Cuenta de Ahorros del Menor - Datos Generales', async () => {
-                    // Nombre y apellido de la persona almacenada en el state
-                    const nombreMenor = await page.evaluate(() => window.localStorage.getItem('nombreMenor'));
-                    const apellidoMenor = await page.evaluate(() => window.localStorage.getItem('apellidoApellido'));
-            
                     // Debe redirigirse a la creacion de la cuenta de ahorros
                     await expect(page).toHaveURL(/\/ahorros/);
             
@@ -318,7 +321,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
             
                     // La cuenta debe ser la del socio
-                    await expect(page.locator('h1').filter({hasText: `${nombreMenor} ${apellidoMenor}`})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
             
                     // Editar la descripcion de la cuenta
                     const campoDescripcion = page.getByPlaceholder('Descripción o alias de la cuenta, ejemplo: Cuenta para vacaciones.');
@@ -351,11 +354,6 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                 });
 
                 test('Crear la Cuenta de Ahorros del Menor - Contacto de Firmante', async () => {
-                    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-                    const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTE'})).toBeVisible();
 
@@ -379,9 +377,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     // Bucar un socio
                     const buscador = page.locator('#select-search');
                     await buscador.click();
-                    await buscador.fill(`${cedulaFirmante}`);
+                    await buscador.fill(`${cedulaMadre}`);
                     // Seleccionar el socio
-                    await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
+                    await page.locator(`text=${nombreMadre} ${apellidoMadre}`).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();
@@ -416,7 +414,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     await newPage.close();
             
                     // El firmante agregado se debe mostrar
-                    await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
+                    await expect(page.getByRole('row', {name: `${nombreMadre} ${apellidoMadre}`})).toBeVisible();
             
                     // Boton Continuar
                     Continuar();

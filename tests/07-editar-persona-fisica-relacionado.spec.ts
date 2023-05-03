@@ -12,6 +12,15 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Celular del Menor
 const pasaporte = numerosPasaporte;
 
+// Cedula, nombre, apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
+// Telefono y correo de la empresa
+let correoEmpresa: string | null;
+let telefonoEmpresa: string | null;
+
 // Paramtros Relation
 interface EditarPersonas {
     ID_OPERACION: '' | 8 | 4
@@ -70,6 +79,15 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
         
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula, nombre y apellido de la persona
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+                // Telefono y correo de la empresa
+                correoEmpresa = await page.evaluate(() => window.localStorage.getItem('correoEmpresa'));
+                telefonoEmpresa = await page.evaluate(() => window.localStorage.getItem('telefonoJuridica'));
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -95,9 +113,6 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
             });
 
             test('Buscar la cuenta de la Persona a Editar', async () => {
-                // Cedula de la persona 
-                const cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-        
                 // Buscar a la persona
                 await page.locator('#form_search').fill(`${cedula}`);
             });
@@ -106,10 +121,6 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
             if (escenarios.ID_OPERACION === '') {
                 // Test cuando el ID_OPERACION sea Vacio
                 test('El boton de Editar no debe esatr visible', async () => {
-                    // Nombre y apellido de la persona
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
@@ -120,10 +131,6 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
             } else if (escenarios.ID_OPERACION === 8) {
                 // Test cuando el ID_OPERACION sea diferente de 4
                 test('El boton de Editar no debe esatr visible', async () => {
-                    // Nombre y apellido de la persona
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
@@ -134,10 +141,6 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
             } else if (escenarios.ID_OPERACION === 4) {
                 // Tests cuando el ID_OPERACION sea igual a 4
                 test('Editar la Cuenta del Socio', async () => {
-                    // Nombre y apellido de la persona
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).toBeVisible();
@@ -189,10 +192,6 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
                 });
 
                 test('Agregar la informacion faltante del socio - Informacion de Ingresos', async () => {
-                    // Correo y telefono de la persona juridica
-                    const correoEmpresa = await page.evaluate(() => window.localStorage.getItem('correoEmpresa'));
-                    const telefonoEmpresa = await page.evaluate(() => window.localStorage.getItem('telefonoJuridica'));
-
                     // Email de la empresa
                     const campoEmailEmpresa = page.locator('#person_EMAIL_EMPRESA');
                     await campoEmailEmpresa?.fill(`${correoEmpresa}`);

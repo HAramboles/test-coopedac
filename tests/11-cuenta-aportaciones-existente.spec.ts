@@ -8,6 +8,9 @@ let page: Page;
 /* URL de la pagina */
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Variable con la cedula de la persona
+let cedula: string | null;
+
 // Parametros de relation
 interface AportacionesExistentesParametros {
     ID_OPERACION: '' | 5 | 30
@@ -66,6 +69,9 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
         
                 // Ingresar a la url de la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula de la persona almacenada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
             });
         
             test('Ir a Apertura de cuenta de aportaciones', async () => {
@@ -93,8 +99,8 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                 }
             });
 
-            if (escenario.ID_OPERACION === 5) {
-                // Test si el ID_OPERACION es difernte de 30
+            if (escenario.ID_OPERACION === '') {
+                // Test si el ID_OPERACION es Vacio
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
@@ -109,8 +115,8 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === '') {
-                // Test si el ID_OPERACION es Vacio
+            } else if (escenario.ID_OPERACION === 5) {
+                // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
@@ -137,10 +143,7 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1/create?step=1`);
                 });
             
-                test('Debe de salir un modal avisando que el titular ya tiene una cuenta de aportaciones', async () => {
-                    // Cedula de la persona almacenada en el state
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-            
+                test('Debe de salir un modal avisando que el titular ya tiene una cuenta de aportaciones', async () => {            
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             

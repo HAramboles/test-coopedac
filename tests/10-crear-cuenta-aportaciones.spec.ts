@@ -8,6 +8,11 @@ let page: Page;
 /* URL de la pagina */
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre, apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
 // Parametros de relation
 interface CrearAportacionesParametros {
     ID_OPERACION: '' | 10 | 30
@@ -64,6 +69,11 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
         
                 // Ingresar a la url de la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula, nombre y apellido de la persona almacenada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -146,12 +156,7 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1/create?step=1`);
                 });
             
-                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {
-                    // Cedula, nombre y apellido de la persona almacenada en el state
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
+                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {            
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             

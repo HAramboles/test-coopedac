@@ -9,6 +9,11 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
 // Pruebas
 
 test.describe('Prueba con el Estado de Cuenta', () => {
@@ -28,6 +33,11 @@ test.describe('Prueba con el Estado de Cuenta', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la seccion de Estado de Cuentas', async () => {
@@ -45,11 +55,6 @@ test.describe('Prueba con el Estado de Cuenta', () => {
     });
 
     test('Buscar un socio', async () => {
-        // Cedula, nombre y apellido de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTA DEL CLIENTE'})).toBeVisible();
 

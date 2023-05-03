@@ -8,6 +8,9 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula de la persona
+let cedula: string | null;
+
 // Parametros de relation
 interface AhorrosSinAportaciones {
     ID_OPERACION: '' | 10 | 30
@@ -66,6 +69,9 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
         
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula de la persona almacenada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
             });
         
             test('Ir a la opcion de Crear Cuenta de Ahorros', async () => {
@@ -157,9 +163,6 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
                 });
             
                 test('Ingresar un socio para crear una cuenta de ahorros', async () => {
-                    // Cedula de la persona almacenada en el state
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-            
                     // Titular
                     const campoTitular = page.locator('#select-search');
             

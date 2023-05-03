@@ -8,6 +8,11 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
 // Imagen de los documentos
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
@@ -30,6 +35,11 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Cedula, nombre y apellidos de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -99,11 +109,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 1 - Datos del Solicitante', async () => {
-        // Cedula, nombre y apellidos de la persona almacenada en el state
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=1`);
 
@@ -411,10 +416,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 7 - Codeudores y Garantias', async () => {
-        // Nombre y apellidos de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=7`);
 
@@ -578,10 +579,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar el estado de la Solicitud de Solicitado a En Proceso (Analisis)', async () => {
-        // Nombre y apellidos de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
@@ -641,10 +638,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Aprobado', async () => {
-        // Nombre y apellidos de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
@@ -704,10 +697,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar de estado la solicitud de Aprobado a En Proceso y viceversa', async () => {
-        // Nombre y apellidos de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // La url debe regresar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
         
@@ -793,11 +782,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await newPage.close();
     });
 
-    test('Desembolsar la solicitud', async () => {        
-        // Cedula, nombre y apellidos de la persona almacenada en el state
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
+    test('Desembolsar la solicitud', async () => {
         // La url debe regresar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
 

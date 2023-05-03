@@ -8,6 +8,15 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
+// Nombre y apellido del firmante
+let nombreFirmante: string | null;
+let apellidoFirmante: string | null;
+
 // Parametros de relation
 interface EditarAhorrosParametros {
     ID_OPERACION: '' | 1 | 31
@@ -66,6 +75,15 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
         
                 // Ir a la URL
                 await page.goto(`${url_base}`);
+
+                // Cedula, nombres y apellidos de la cuenta de la persona a editar
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+                // Nombre y apellido de la persona relacionada almacenada en el state
+                nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+                apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
             test('Ir a la opcion de Apertura de cuentas -> Ahorros', async () => {
@@ -112,12 +130,7 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
 
             if (escenario.ID_OPERACION === '') {
                 // Test cuando el ID_OPERACION es Vacio
-                test('No debe permitir Entrar a la Edicion de la Cuenta de Ahorros', async () => {
-                    // Cedula, nombres y apellidos de la cuenta de la persona a editar
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
+                test('No debe permitir Entrar a la Edicion de la Cuenta de Ahorros', async () => {            
                     // Buscar al socio a editar
                     await page.locator('#form_search').fill(`${cedula}`);
             
@@ -138,11 +151,6 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
             } else if (escenario.ID_OPERACION === 1) {
                 // Test cuando el ID_OPERACION es diferente de 31
                 test('No debe permitir Entrar a la Edicion de la Cuenta de Ahorros', async () => {
-                    // Cedula, nombres y apellidos de la cuenta de la persona a editar
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
                     // Buscar al socio a editar
                     await page.locator('#form_search').fill(`${cedula}`);
             
@@ -163,11 +171,6 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
             } else if (escenario.ID_OPERACION === 31) {
                 // Tests cuando el ID_OPERACION es 31
                 test('Datos Generales de la Cuenta de Ahorros', async () => {
-                    // Cedula, nombres y apellidos de la cuenta de la persona a editar
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
                     // Buscar al socio a editar
                     await page.locator('#form_search').fill(`${cedula}`);
             
@@ -201,11 +204,7 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
                     await firmantesContactos.click();
                 });
             
-                test('Cuenta de Ahorros - Contacto de Firmante o Persona - Ver Reporte Poder a Terceros', async () => {
-                    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-                    const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-            
+                test('Cuenta de Ahorros - Contacto de Firmante o Persona - Ver Reporte Poder a Terceros', async () => {            
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=2/);
             

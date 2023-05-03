@@ -9,6 +9,10 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Nombre y apellido de la persona
+let nombre: string | null;
+let apellido: string | null;
+
 // Pruebas
 
 test.describe('Pruebas con la Reimpresion de la Transferencia entre Cuentas Internas', () => {
@@ -28,6 +32,10 @@ test.describe('Pruebas con la Reimpresion de la Transferencia entre Cuentas Inte
 
         // URL de la pagina
         await page.goto(`${url_base}`);
+
+        // Nombres y apellidos del socio
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ingresar a la Reimprimision de Transferencia entre Cuentas', async () => {
@@ -45,10 +53,6 @@ test.describe('Pruebas con la Reimpresion de la Transferencia entre Cuentas Inte
     });
 
     test('Buscar las cuentas de un Socio', async () => {
-        // Nombres y apellidos del socio
-        //const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        //const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR TRANSFERENCIA ENTRE CUENTAS'})).toBeVisible();
 

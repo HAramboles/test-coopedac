@@ -10,6 +10,14 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
+// Cedula de la persona
+let cedula: string | null;
+
+// Cedula, nombre y apellido del firmante
+let cedulaFirmante: string | null;
+let nombreFirmante: string | null;
+let apellidoFirmante: string | null;
+
 // Parametros de relation
 interface CrearAhorrosParametros {
     ID_OPERACION: '' | 2 | 30
@@ -66,6 +74,14 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
         
                 /* Ingresar a la pagina */
                 await page.goto(`${url_base}`);
+
+                // Cedula de la persona almacenada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+
+                // Cedula, nombre y apellido de la persona relacionada almacenada en el state
+                cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+                nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+                apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -166,9 +182,6 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                 });
             
                 test('Llenar los campos del primer paso del registro de cuenta de ahorros', async () => {
-                    // Cedula de la persona almacenada en el state
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-            
                     // Titular
                     const campoTitular = page.locator('#select-search');
             
@@ -189,12 +202,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     Continuar();
                 });
             
-                test('Contacto de Firmante o Persona', async () => { 
-                    // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-                    const cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-                    const nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-                    const apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-            
+                test('Contacto de Firmante o Persona', async () => {             
                     // La URL debe de cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16/create?step=2`);
             

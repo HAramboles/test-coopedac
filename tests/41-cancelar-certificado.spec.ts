@@ -8,6 +8,11 @@ let page: Page;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
+
 // Pruebas
 
 test.describe('Pruebas con la Cancelacion de Certificados', () => {
@@ -27,6 +32,11 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Cedula, nombre y apellido de la persona
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Cancelar Certificados', async () => {
@@ -44,11 +54,6 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
     });
 
     test('Cancelar el Certificado de un Socio', async () => {
-        // Cedula, nombre y apellido de la persona
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CANCELACIÓN DE CERTIFICADO FINANCIERO'})).toBeVisible();
 
@@ -63,7 +68,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         // Datos del Certificado
 
         // Tipo de Captacion
-        //await expect(page.locator('#form_DESCTIPOCAPTACION')).toHaveValue('FINANCIEROS PAGADERAS');
+        await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="FINANCIEROS PAGADERAS"])')).toBeVisible();
 
         // Plazo
         await expect(page.locator('#form_PLAZO')).toHaveValue('24');
@@ -137,9 +142,6 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
     });
 
     test('Buscar al Socio al cual se elimino el Certificado', async () => {
-        // Cedula de la persona
-        const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-
         // Buscar al socio
         await page.locator('#form_search').fill(`${cedula}`);
 
