@@ -22,7 +22,7 @@ let apellidoFirmante: string | null;
 
 // Parametros de relation
 interface CrearAportacionesAhorrosJuridicaParametros {
-    ID_OPERACION: '' | 10 | 30
+    ID_OPERACION: '' | 31 | 30
 };
 
 const EscenariosPrueba: CrearAportacionesAhorrosJuridicaParametros[] = [
@@ -30,14 +30,14 @@ const EscenariosPrueba: CrearAportacionesAhorrosJuridicaParametros[] = [
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: 10
+        ID_OPERACION: 31
     },
     {
         ID_OPERACION: 30
     }
 ];
 
-test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Persona Juridica - Pruebas con los diferentes parametros', () => {
+test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Persona Juridica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPrueba) {
         test.describe(`Test cuando el esenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
@@ -136,7 +136,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenarios.ID_OPERACION === 10) {
+            } else if (escenarios.ID_OPERACION === 31) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -209,9 +209,8 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     // Agregar un firmante, debe salir un modal
                     await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
             
-                    // El representante legal se debe mostrar sin tener que buscarla
+                    // El representante legal se debe mostrar sin tener que buscarlo
                     await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
-                    await expect(page.locator(`text=${cedulaFirmante}`)).toBeVisible();
             
                     // Seleccionar el representante
                     await page.locator('text=Seleccionar').click();

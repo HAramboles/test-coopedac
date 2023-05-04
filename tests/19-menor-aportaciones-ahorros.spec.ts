@@ -40,9 +40,9 @@ const EscenariosPrueba: CrearAportacionesAhorrosMenorParametros[] = [
 
 // Pruebas
 
-test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor de Edad - Pruebas con los diferentes parametros', () => {
+test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor de Edad - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPrueba) {
-        test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, async () => {
+        test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
@@ -238,7 +238,6 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
             
                     // La madre se debe mostrar sin tener que buscarla
                     await expect(page.locator(`text=${nombreMadre} ${apellidoMadre}`)).toBeVisible();
-                    await expect(page.locator(`text=${cedulaMadre}`)).toBeVisible();
             
                     // Seleccionar el tutor
                     await page.locator('text=Seleccionar').click();

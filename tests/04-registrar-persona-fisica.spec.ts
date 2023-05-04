@@ -37,7 +37,7 @@ const EscenariosPrueba: CrearPersonas[] = [
 
 /* Pruebas */
 
-test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', () => {
+test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPrueba) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas

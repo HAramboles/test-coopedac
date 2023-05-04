@@ -20,7 +20,7 @@ let apellidoFirmante: string | null;
 
 // Parametros de relation
 interface CrearAhorrosParametros {
-    ID_OPERACION: '' | 2 | 30
+    ID_OPERACION: '' | 10 | 30
 };
 
 const EscenariosPrueba: CrearAhorrosParametros[] = [
@@ -28,14 +28,14 @@ const EscenariosPrueba: CrearAhorrosParametros[] = [
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: 2
+        ID_OPERACION: 10
     },
     {
         ID_OPERACION: 30
     }
 ];
 
-test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros', () => {
+test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
@@ -134,8 +134,8 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                 await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
             });
 
-            if (escenario.ID_OPERACION === 2) {
-                // Test si el ID_OPERACION es diferente de 30
+            if (escenario.ID_OPERACION === '') {
+                // Test si el ID_OPERACION es Vacio
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
@@ -150,8 +150,8 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === '') {
-                // Test si el ID_OPERACION es Vacio
+            } else if (escenario.ID_OPERACION === 10) {
+                // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
@@ -307,8 +307,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
                         await expect(botonFinalizar).toBeVisible(),
-                        await botonFinalizar.click(),
-                        await botonFinalizar.click()
+                        await botonFinalizar.dblclick()
                     ]);
                   
                     // La pagina abierta con la solicitud se cierra

@@ -14,7 +14,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe('', () => {
+test.describe('Pruebas con la Confirmacion de la Reprogramacion de Creditos', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -59,10 +59,10 @@ test.describe('', () => {
         await expect(page.getByText('PENDIENTES', {exact: true})).toBeVisible();
 
         // Buscar al socio
-        await page.locator('#').fill('MIA INES GARCIA LUPERON');
+        await page.locator('#form_search').fill(`${nombre} ${apellido}`);
 
         // Boton confirmar
-        const botonConfirmar = page.getByRole('row', {name: 'MIA INES GARCIA LUPERON CRÉDITO HIPOTECARIO'}).getByRole('button', {name: 'check-circle'});
+        const botonConfirmar = page.getByRole('row', {name: `${nombre} ${apellido} CRÉDITO HIPOTECARIO`}).getByRole('button', {name: 'check-circle'});
         await botonConfirmar.click();
     });
 
@@ -71,7 +71,7 @@ test.describe('', () => {
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
 
         // El nombre de la persona, dueña del credito, debe mostrarse
-        await expect(page.locator('#form_NOMBRE')).toHaveValue('MIA INES GARCIA LUPERON');
+        await expect(page.locator('#form_NOMBRE')).toHaveValue(`${nombre} ${apellido}`);
 
         // Datos del Credito
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();

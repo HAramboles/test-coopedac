@@ -40,7 +40,7 @@ const EscenariosPrueba: EditarPersonas[] = [
 
 // Pruebas
 
-test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferentes parametros', () => {
+test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas

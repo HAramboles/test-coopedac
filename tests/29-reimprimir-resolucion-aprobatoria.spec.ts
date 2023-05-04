@@ -28,7 +28,7 @@ const EscenariosPrueba: ReimpresionResolucionAprobatoria[] = [
 
 // Pruebas
 
-test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferentes parametros', () => {
+test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test si el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas

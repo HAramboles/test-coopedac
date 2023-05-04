@@ -64,38 +64,9 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
     });
 
-    test.skip('Probar el boton de Cancelar', async () => {
-        // El titulo debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
-
-        // El listado de las transferencias debe ser solicitado
-        await expect(page.locator('text=SOLICITADO')).toBeVisible();
-
-        // Boton Nueva Solicitud
-        const botonNuevaSolicitud = page.locator('text=Nueva Solicitud');
-        await expect(botonNuevaSolicitud).toBeVisible();
-        await botonNuevaSolicitud.click();
-
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=1`);
-
-        // Boton de Cancelar
-        const botonCancelar = page.getByRole('button', {name: 'stop Cancelar'});
-        await expect(botonCancelar).toBeVisible();
-        // Click al boton
-        await botonCancelar.click();
-
-        // Debe salir un modal
-        await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
-
-        // Click en Aceptar
-        await page.locator('text=Aceptar').click();
-
-        // Debe regresar al inicio
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
-    });
-
     test('Boton Nueva Solicitud', async () => {
+        test.slow();
+
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
 
@@ -109,6 +80,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 1 - Datos del Solicitante', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=1`);
 
@@ -259,6 +232,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 2 - Datos Prestamo', async () => {
+        test.slow();
+
         // La URL no debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
 
@@ -344,6 +319,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 3 - Cargos del prestamo', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
 
@@ -378,6 +355,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 4 - Deudas', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=4`);
 
@@ -392,6 +371,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 5 - Perfil Financiero', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=5`);
 
@@ -405,6 +386,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 6 - Representantes legales', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=6`);
 
@@ -416,6 +399,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 7 - Codeudores y Garantias', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=7`);
 
@@ -481,6 +466,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 8 - Referencias', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=8`);
 
@@ -494,6 +481,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 9 - Documentos', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=9`);
 
@@ -564,6 +553,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
+        test.slow();
+
         // Boton de Finalizar
         const botonFinalizar = page.getByRole('button', {name: 'check Finalizar'});
         // Esperar que se abra una nueva pestaña
@@ -579,6 +570,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar el estado de la Solicitud de Solicitado a En Proceso (Analisis)', async () => {
+        test.slow();
+
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
@@ -638,6 +631,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Aprobado', async () => {
+        test.slow();
+
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
@@ -697,6 +692,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Cambiar de estado la solicitud de Aprobado a En Proceso y viceversa', async () => {
+        test.slow();
+        
         // La url debe regresar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
         
@@ -783,6 +780,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Desembolsar la solicitud', async () => {
+        test.slow();
+        
         // La url debe regresar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
 

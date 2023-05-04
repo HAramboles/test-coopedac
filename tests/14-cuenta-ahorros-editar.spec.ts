@@ -22,7 +22,7 @@ let apellidoFirmante: string | null;
 
 // Parametros de relation
 interface EditarAhorrosParametros {
-    ID_OPERACION: '' | 1 | 31
+    ID_OPERACION: '' | 10 | 31
 };
 
 const EscenariosPrueba: EditarAhorrosParametros[] = [
@@ -30,7 +30,7 @@ const EscenariosPrueba: EditarAhorrosParametros[] = [
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: 1
+        ID_OPERACION: 10
     },
     {
         ID_OPERACION: 31
@@ -39,7 +39,7 @@ const EscenariosPrueba: EditarAhorrosParametros[] = [
 
 // Pruebas
 
-test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros', () => {
+test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
@@ -152,7 +152,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === 1) {
+            } else if (escenario.ID_OPERACION === 10) {
                 // Test si el ID_OPERACION es diferente de 31
                 test('No debe permitir Editar la cuenta de ahorros', async () => {
                     // Buscar al socio a editar

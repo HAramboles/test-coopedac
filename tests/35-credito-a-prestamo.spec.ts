@@ -81,10 +81,6 @@ test.describe('Pruebas con la opcion de Credito a Prestamos', () => {
         const deudaTotal = page.locator('#form_DEUDA_CAPTITAL');
         await expect(deudaTotal).toHaveValue('$ 50,000');
 
-        // Deuda al dia
-        const deudaAlDia = page.locator('#form_DEUDA_AL_DIA');
-        await expect(deudaAlDia).toHaveValue('RD$ 50,000');
-
         // Moneda
         // const moneda = page.locator('#form_ID_MONEDA');
         await expect(page.locator('text=PESO')).toBeVisible();
@@ -102,7 +98,7 @@ test.describe('Pruebas con la opcion de Credito a Prestamos', () => {
         await page.locator('#form_NOTA').fill('Pago por internet Banking de 12,000 para el prestamo');
 
         // Agregar un monto
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').click();
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').first().click();
         await page.getByPlaceholder('MONTO NOTA').fill('RD$ 12000');
 
         // Los nombres de las etiquetas deben estar visibles

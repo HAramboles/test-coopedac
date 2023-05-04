@@ -66,12 +66,12 @@ test.describe('Pruebas con la Reimpresion de la Transferencia entre Cuentas Inte
         await page.locator('#form_FECHA_FINAL').fill(`${formatDate(new Date())}`);
 
         // Buscar la cuenta de origen del socio
-        await page.locator('#select-search').first().fill('MIA INES GARCIA LUPERON');
+        await page.locator('#select-search').first().fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de ahorros del socio
         await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
 
         // Buscar la cuenta de destino del socio
-        await page.locator('#select-search').last().fill('MIA INES GARCIA LUPERON');
+        await page.locator('#select-search').last().fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de aportaciones preferentes del socio
         await page.getByRole('option', {name: 'APORTACIONES PREFERENTES'}).click();
 

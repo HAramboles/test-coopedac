@@ -79,7 +79,7 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         await expect(page.getByText('AHORROS NORMALES')).toBeVisible();
 
         // En la Categoria Solicitada se coloca automaticamente la categoria Empresarial 
-        await expect(page.getByText('SOCIO EMPRESARIAL')).toBeVisible();
+        await expect(page.getByTitle('SOCIO EMPRESARIAL')).toBeVisible();
 
         // Comentario
         await page.locator('#form_COMENTARIO').fill('CAMBIO DE SOCIO MICROEMPRESARIAL A SOCIO EMPRESARIAL');
@@ -94,9 +94,6 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
     });
 
     test('Ir a la opcion de Aceptar/Rechazar Cambio Categoria', async () => {
-        // Captaciones
-        await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
-
         // Procesos
         await page.getByRole('menuitem', {name: 'PROCESOS'}).click();
 
@@ -117,10 +114,10 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         await page.locator('[aria-label="search"]').click();
 
         // Click a confirmar cambio de categoria
-        await page.getByRole('row', {name: 'CAROLA ORELLANA	SOCIO EMPRESARIAL CAMBIO DE SOCIO MICROEMPRESARIAL A EMPRESARIAL'}).locator('[data-icon="check-circle"]').click();
+        await page.getByRole('row', {name: `${nombreEmpresa} SOCIO EMPRESARIAL`}).locator('[data-icon="check-circle"]').click();
 
         // Debe salir un modal
-        await expect(page.locator('h1').filter({hasText: '¿Seguro que desea aprobar el cambio de categoria?'})).toBeVisible();
+        await expect(page.locator('text=¿Seguro que desea aprobar el cambio de categoria?')).toBeVisible();
 
         // Fecha de aprobacion
         await page.locator('#FECHA_APROBACION').fill(`${formatDate(new Date())}`);

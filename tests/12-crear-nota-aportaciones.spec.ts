@@ -135,7 +135,7 @@ test.describe('Pruebas agregando y completando notas', () => {
         await expect(page.locator('text=Notas Persona actualizada exitosamente.')).toBeVisible();
 
         // El icono debe cambiar al icono de Nota Completada
-        await expect(page.locator('(//DIV)[304]')).toBeVisible();
+        await expect(page.locator('(//button[@ant-btn css-lvymt ant-btn-link ant-btn-sm  ])')).toBeVisible();
 
         // Cerrar el mensaje de confirmacion
         await page.locator('.ant-notification-notice-close').click();

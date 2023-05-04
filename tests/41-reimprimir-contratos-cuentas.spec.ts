@@ -14,7 +14,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe('Prueba con la Reimpresion delos Contratos de las Cuentas', () => {
+test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({

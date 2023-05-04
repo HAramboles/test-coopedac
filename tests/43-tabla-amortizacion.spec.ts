@@ -106,7 +106,7 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         await expect(page.locator('h1').filter({hasText: 'FRECUENCIA Y PLAZO DE PAGO'})).toBeVisible();
 
         // La frecuencia por defecto debe ser mensual
-        await expect(page.locator('text=MENSUAL')).toBeVisible();
+        await expect(page.locator('text=MESES')).toBeVisible();
 
         // Colocar un plazo
         await page.locator('#amortization_form_PLAZO').fill('12');

@@ -38,7 +38,7 @@ const EscenariosPrueba: EditarAhorrosParametros[] = [
 
 // Pruebas
 
-test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros', () => {
+test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
@@ -344,8 +344,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
                         await expect(botonFinalizar).toBeVisible(),
-                        await botonFinalizar.click(),
-                        await botonFinalizar.click()
+                        await botonFinalizar.dblclick()
                     ]);
                   
                     // La pagina abierta con la solicitud se cierra

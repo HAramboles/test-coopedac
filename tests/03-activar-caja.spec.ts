@@ -25,7 +25,7 @@ const EscenariosPrueba: CajaParametros[] = [
 
 /* Pruebas */
 
-test.describe('Activar Caja - Pruebas con los diferentes parametros', () => {
+test.describe('Activar Caja - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas

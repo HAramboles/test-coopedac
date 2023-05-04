@@ -38,7 +38,7 @@ const EscenariosPrueba: CrearAportacionesAhorrosFisicaParametros[] = [
     }
 ];
 
-test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Pruebas con los diferentes parametros', () => {
+test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
@@ -304,6 +304,20 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                     await page.getByText('Cargar ').click(); 
                     const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
                     await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
+            
+                    // Esperar que la firma se suba y se muestre
+                    await expect(page.locator('(//div[@class="ant-upload-list ant-upload-list-picture-card"])')).toBeVisible();
+            
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+            
+                    // Debe aparecer un modal para seleccionar el testigo de la eliminacion del firmante
+                    await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
+            
+                    // Seleccionar un testigo
+                    await page.locator('#form_ID_TESTIGO').click();
+                    // Seleccionar un testigo, la primera opcion que aparezca
+                    await page.getByRole('option').nth(0).click();
             
                     // Boton de Aceptar
                     const botonAceptar = page.locator('text=Aceptar');

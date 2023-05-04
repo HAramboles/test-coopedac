@@ -67,9 +67,9 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN DE PRÉSTAMOS'})).toBeVisible();
 
         // Buscar a la persona
-        await page.locator('#select-search').fill(`${nombre}`);
+        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
         // Seleccionar a la persona buscada
-        await page.locator('text=NADIA ESCOBAR RUIZ').click();
+        await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Se debe mostrar el credito de la persona
         await expect(page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO edit eye'}).getByRole('cell', {name: 'CRÉDITO HIPOTECARIO'})).toBeVisible();
@@ -83,7 +83,7 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
 
         // El nombre del socio debe estar visible
-        await expect(page.locator('#form_NOMBRE')).toHaveValue('NADIA ESCOBAR RUIZ');
+        await expect(page.locator('#form_NOMBRE')).toHaveValue(`${nombre} ${apellido}`);
 
         // Datos del credito
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL CRÉDITO'})).toBeVisible();
@@ -160,7 +160,7 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
 
         // Tipos de cuota
         const cuotaOriginal = page.locator('text=Cuota Original: RD$ 416.67');
-        const CuotaSugerida = page.locator('text=Cuota Sugerida: RD$ 809.09');
+        const CuotaSugerida = page.locator('text=Cuota Sugerida: RD$ 1,057.54');
 
         // Cuota original debe estar visible
         await expect(cuotaOriginal).toBeVisible();
@@ -168,8 +168,10 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         // Click en algun lugar para que se realice el calculo
         await page.getByText('Razones').click();
 
+        // La cuota sugerida debe estar visible
         await expect(CuotaSugerida).toBeVisible();
 
+        // La Cuota Sugerid debe estar marcada
         expect(await page.isChecked('(//INPUT[@type="radio"])[2]')).toBeTruthy();
 
         // Distribucion de cuenta

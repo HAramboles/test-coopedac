@@ -93,7 +93,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
         // Se debe mostrar un mensaje de que se cancelo correctamente el certificado
-        await expect(page.locator('text=Operación exitosa')).toBeVisible();
+        await expect(page.locator('span').filter({hasText: 'Operación exitosa'})).toBeVisible();
 
         // Click en Aceptar para cerrar el mensaje de confirmacion
         await page.getByRole('button', {name: 'Aceptar'}).click();
@@ -113,7 +113,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados`);
     });
 
-    test('Elegir un tipo de captacion', async () => {
+    test('Confirmar que la Cuenta de Certificado del Socio se cancelo correctamente - Elegir un tipo de captacion', async () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
 
@@ -127,15 +127,18 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         const tipoCertificado = page.locator('text=FINANCIEROS PAGADERAS');
 
         if (await tipoCertificado.isHidden()) {
-            // Recargar la pagina
-            await page.reload();
-            // Seleccionar el tipo de captacion financieros pagaderas
-            await botonCaptaciones.click();
-            await page.locator('text=FINANCIEROS PAGADERAS').click();
+            // Si no llega el tipo de captacion, manualmente dirigise a la url de los certificados financieros pagaderas
+            await page.goto(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
         } else if (await tipoCertificado.isVisible()) {
-            // Seleccionar el tipo de captacion financieros pagaderas
+            // Seleccionar el tipo de captacion Ahorros Normales
             await page.locator('text=FINANCIEROS PAGADERAS').click();
-        }
+
+            // La URL debe cambiar
+            await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
+
+            // El titulo debe estar presente
+            await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
+        };
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);

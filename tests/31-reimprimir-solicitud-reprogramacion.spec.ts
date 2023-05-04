@@ -63,12 +63,12 @@ test.describe('Pruebas con la Reimpresion de la Solicitud de Reprogramacion', ()
         await estadoSolicitud.click();
 
         // Buscar un socio
-        await page.locator('#form_search').fill('MIA INES GARCIA LUPERON');
+        await page.locator('#form_search').fill(`${nombre} ${apellido}`);
     });
 
     test('Reimprimir la Solicitud del Socio', async () => {
         // Boton Imprimir
-        const botonImprimir = page.getByRole('row', {name: 'MIA INES GARCIA LUPERON	CRÉDITO HIPOTECARIO'}).getByRole('button', {name: 'Printer'});
+        const botonImprimir = page.getByRole('row', {name: `${nombre} ${apellido}	CRÉDITO HIPOTECARIO`}).getByRole('button', {name: 'Printer'});
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),

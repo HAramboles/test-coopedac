@@ -30,7 +30,7 @@ const EscenariosPrueba: CrearAportacionesParametros[] = [
     }
 ];
 
-test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes parametros', () => {
+test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas

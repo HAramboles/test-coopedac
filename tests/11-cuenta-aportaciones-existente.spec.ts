@@ -30,7 +30,7 @@ const EscenariosPrueba: AportacionesExistentesParametros[] = [
 
 // Pruebas
 
-test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio - Pruebas con los diferentes parametros', () => {
+test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
