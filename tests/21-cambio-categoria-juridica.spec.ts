@@ -75,7 +75,7 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         // Elegir Debito a cuenta
         await page.getByText('DEBITO A CUENTA').click();
 
-        // En a cuenta de cobro se coloca automaticamente la cuenta de ahorros del socio
+        // En la cuenta de cobro se coloca automaticamente la cuenta de ahorros del socio
         await expect(page.getByText('AHORROS NORMALES')).toBeVisible();
 
         // En la Categoria Solicitada se coloca automaticamente la categoria Empresarial 
@@ -124,18 +124,18 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
 
         // Click en Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-        // Esperar que se abra una nueva pestaña el contrato de la persona
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonAceptar).toBeVisible(),
-            await botonAceptar.click()
-        ]);
+        await expect(botonAceptar).toBeVisible();
+        await botonAceptar.click();
 
-        // Cerrar la pagina con el contrato de la persona
-        await newPage.close();
+        // Deben salir dos mensajes de confirmacion
+        // await expect(page.locator('text=')).toBeVisible();
+        // await expect(page.locator('text=')).toBeVisible();
 
-        // Volver a la pagina, y ya no debe estar la solicitud
+        // Cerrar los dos mensajes
+        await page.locator('[aria-label="close"]]').first().click();
+        await page.locator('[aria-label="close"]]').last().click();
+
+        // La solicitud ya no debe estar
         await expect(page.getByText('No hay datos')).toBeVisible();
     });
 

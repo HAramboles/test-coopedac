@@ -8,9 +8,8 @@ let page: Page;
 /* URL de la pagina */
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
-// Cedula, nombre de la persona juridica
+// Cedula de la persona juridica
 let cedulaEmpresa: string | null;
-let nombreEmpresa: string | null;
 
 // Pruebas
 
@@ -32,9 +31,8 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         /* Ingresar a la pagina */
         await page.goto(`${url_base}`);
 
-        // Cedula, ,ombre y apellido de la persona alamcenada en el state
+        // Cedula de la persona juridica almacenada en el state
         cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
-        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombreJuridica'));
     });
 
     test('Ir a la opcion de Transacciones de Caja', async () => {
@@ -78,11 +76,11 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
 
         // Ingresar la cedula del socio
         await buscarSocio.fill(`${cedulaEmpresa}`);
-        // Seleccionar la cuenta de aportaciones del socio  
-        await page.locator('text=APORTACIONES').click();
+        // Seleccionar la cuenta de ahorros del socio  
+        await page.locator('text=AHORROS NORMALES').click();
     });
 
-    test('Boton de Deposito de la cuenta de Aportaciones', async () => {
+    test('Boton de Deposito de la cuenta de Ahorros', async () => {
         // Boton de Deposito debe estar visible
         const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});
         await expect(botonDeposito).toBeVisible();
@@ -90,17 +88,17 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await botonDeposito.click();
 
         // Debe aparecer un modal con las opciones para el deposito
-        await expect(page.locator('text=DEPÓSITO A CUENTA APORTACIONES')).toBeVisible();
+        await expect(page.locator('text=DEPÓSITO A CUENTA AHORROS NORMALES')).toBeVisible();
     });
 
-    test('Datos del Deposito a la Cuenta de Aportaciones', async () => {
+    test('Datos del Deposito a la Cuenta de Ahorros', async () => {
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
         await expect(campoMonto).toBeVisible();
-        await campoMonto.fill('2000');
+        await campoMonto.fill('20000');
 
         // Agregar un comentario
-        await page.locator('#form_COMENTARIO').fill('Deposito de 2000 pesos a la cuenta de Aportaciones');
+        await page.locator('#form_COMENTARIO').fill('Deposito de 20000 pesos a la cuenta de Ahorros');
 
         // Boton Agregar
         await page.locator('text=Agregar').click();
@@ -112,8 +110,8 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await page.locator('[data-icon="close"]').click();
     });
 
-    test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Aportaciones', async () => {
-        // Aplicar el deposito de la cuenta de aportaciones
+    test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
+        // Aplicar el deposito de la cuenta de ahorros
         await page.locator('text=Aplicar').first().click();
 
         // Debe salir un modal para la distribucion de ingresos
@@ -129,13 +127,13 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
         await expect(iconoAlerta).toBeVisible();
 
-        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 1500
-        // Divididos en 500, 200, 100, 100 y 50, 50
-        const cant500 = page.locator('[id="3"]'); // Campo de RD 500
+        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 20000
+        // Divididos en 1000
+        const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
 
-        // Cantidad = 1 de 500
-        await cant500.click();
-        await cant500.fill('3');
+        // Cantidad = 20 de 1000
+        await cant1000.click();
+        await cant1000.fill('20');
 
         // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
         await expect(iconoAlerta).not.toBeVisible();

@@ -184,7 +184,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
         await expect(iconoAlerta).toBeVisible();
 
-        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 1000
+        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 2000
         // Divididos en 500, 200, 100, 100 y 50, 50
         const cant500 = page.locator('[id="2"]'); // Campo de RD 500
         const cant200 = page.locator('[id="3"]'); // Campo de RD 200
