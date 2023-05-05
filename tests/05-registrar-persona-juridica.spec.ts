@@ -35,11 +35,11 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'AGRICULTORES R.S';
+const nombreJuridica = 'GANADEROS GF';
 
 // Nombre del relacionado
-const nombreRelacionado = 'JUAN GONZALO';
-const apellidoRelacionado = 'RAMIREZ SANCHEZ';
+const nombreRelacionado = 'ERIBERTO';
+const apellidoRelacionado = 'GARCIA FERNANDEZ';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -575,7 +575,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                 // Guadar el telefono de la persona juridica
                 await page.evaluate((telefonoJuridica) => window.localStorage.setItem('telefonoJuridica', telefonoJuridica), telefonoJuridica);
                 // Guardar el correo de la persona juridica
-                await page.evaluate((correoEmpresa) => window.localStorage.setItem('correoEmpresa', correoEmpresa), correoEmpresa);
+                await page.evaluate((correoEmpresa) => window.localStorage.setItem('correoEmpresa', correoEmpresa+`@gmail.com`), correoEmpresa);
                 
                 // Guardar la cedula de la persona relacionada creada
                 await page.evaluate((cedulaPersonaJuridicaRelacionado) => window.localStorage.setItem('cedulaPersonaJuridicaRelacionado', cedulaPersonaJuridicaRelacionado), cedulaPersonaJuridicaRelacionado);

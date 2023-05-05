@@ -110,6 +110,36 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await page.locator('[data-icon="close"]').click();
     });
 
+    test('Probar el Deposito de Centavos - Boton de Deposito de la cuenta de Ahorros', async () => {
+        // Boton de Deposito debe estar visible
+        const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});
+        await expect(botonDeposito).toBeVisible();
+        // Click al boton 
+        await botonDeposito.click();
+
+        // Debe aparecer un modal con las opciones para el deposito
+        await expect(page.locator('text=DEPÓSITO A CUENTA AHORROS NORMALES')).toBeVisible();
+    });
+
+    test('Probar el Deposito de Centavos - Datos del Deposito a la Cuenta de Ahorros', async () => {
+        // Input del monto
+        const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
+        await expect(campoMonto).toBeVisible();
+        await campoMonto.fill('200.05');
+
+        // Agregar un comentario
+        await page.locator('#form_COMENTARIO').fill('Deposito de 200.05 pesos a la cuenta de Ahorros');
+
+        // Boton Agregar
+        await page.locator('text=Agregar').click();
+
+        // Debe salir un mensaje de que la operacion salio correctamente
+        await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
+
+        // Cerrar el mensaje
+        await page.locator('[data-icon="close"]').click();
+    });
+
     test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
         // Aplicar el deposito de la cuenta de ahorros
         await page.locator('text=Aplicar').first().click();
@@ -134,6 +164,68 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         // Cantidad = 20 de 1000
         await cant1000.click();
         await cant1000.fill('20');
+
+        // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
+        await expect(iconoAlerta).not.toBeVisible();
+
+        // Iconos check verdes
+        const iconoVerde1 = page.getByRole('img', {name: 'check-circle'}).first();
+        const iconoVerde2 = page.getByRole('img', {name: 'check-circle'}).last();
+
+        // Los dos checks verdes deben salir al hacer bien la distribucion
+        await expect(iconoVerde1).toBeVisible();
+        await expect(iconoVerde2).toBeVisible();
+
+        // Hacer click al boton de Aceptar
+        const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
+
+        // Se abrira una nueva pagina con el reporte del deposito
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Finalizar
+            await expect(botonAceptar).toBeVisible(),
+            await botonAceptar.click()
+        ]);
+        
+        // La pagina abierta con el reporte del deposito se debe cerrar
+        await newPage.close();
+
+        // Debe salir un modal
+        await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
+
+        // Click en Cancelar
+        await page.locator('text=Cancelar').click();
+    });
+
+    test('Probar el Deposito de Centavos - Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
+        // Aplicar el deposito de la cuenta de ahorros
+        await page.locator('text=Aplicar').click();
+
+        // Debe salir un modal para la distribucion de ingresos
+        await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();
+
+        // El modal debe contener 4 titulos y todos deben estar visibles
+        await expect(page.locator('h1').filter({hasText: 'RECIBIDO'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'DETALLE DISTRIBUCIÓN'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
+
+        // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
+        const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
+        await expect(iconoAlerta).toBeVisible();
+
+        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 200.05
+        // Divididos en 1000
+        const cant200 = page.locator('[id="3"]'); // Campo de RD 200
+        const cant01 = page.locator('[id="10"]'); // Campo de RD 0.1
+
+        // Cantidad = 1 de 10
+        await cant200.click();
+        await cant200.fill('1');
+
+        // Cantidad = 5 de 0.1
+        await cant01.click();
+        await cant01.fill('5');
 
         // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
         await expect(iconoAlerta).not.toBeVisible();

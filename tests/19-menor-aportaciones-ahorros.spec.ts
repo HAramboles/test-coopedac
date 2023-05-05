@@ -240,7 +240,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     await expect(page.locator(`text=${nombreMadre} ${apellidoMadre}`)).toBeVisible();
             
                     // Seleccionar el tutor
-                    await page.locator('text=Seleccionar').click();
+                    await page.getByRole('button', {name: 'Seleccionar'}).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();

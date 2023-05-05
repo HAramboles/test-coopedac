@@ -213,7 +213,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
             
                     // Seleccionar el representante
-                    await page.locator('text=Seleccionar').click();
+                    await page.getByRole('button', {name: 'Seleccionar'}).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();

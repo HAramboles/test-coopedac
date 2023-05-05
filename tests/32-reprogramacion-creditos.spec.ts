@@ -66,7 +66,12 @@ test.describe('Pruebas con la Confirmacion de la Reprogramacion de Creditos', ()
         await botonConfirmar.click();
     });
 
-    test('Datos de la Solicitud', async () => {
+    test('Datos del Socio', async () => {
+        // Nombre y apellidod el socio
+        await expect(page.locator('#form_NOMBRE')).toHaveValue(`${nombre} ${apellido}`);
+    });
+
+    test('Datos del Credito', async () => {
         // Debe mostrarse la solicitud con los datos
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
 
@@ -87,10 +92,27 @@ test.describe('Pruebas con la Confirmacion de la Reprogramacion de Creditos', ()
 
         // Grupo
         await expect(page.locator('#form_DESC_GRUPO')).toHaveValue('SIN GARANTIA');
-
+    });  
+    
+    test('Cambios Solicitados al Credito', async () => {
         // Cambios Solicitados
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
-    });     
+
+        // Cuota Sugerida
+        await expect(page.getByText('Cuota Sugerida')).toBeVisible();
+
+        // Cambio de Plazo
+        await expect(page.locator('#form_CAMB_PLAZO')).toHaveValue('72')
+
+        // Cambio de Tasa
+        await expect(page.locator('#form_CAMB_TASA')).toHaveValue('15%');
+
+        // Distribucion de Cuota
+        await page.getByLabel('Siguiente Cuota').check();
+
+        // Razones
+        await expect(page.getByText('NECESITA MAS TIEMPO PARA LOS PAGOS')).toBeVisible();
+    });
 
     test('Confirmar la Reprogramacion del Credito', async () => {
         // Boton Actualizar

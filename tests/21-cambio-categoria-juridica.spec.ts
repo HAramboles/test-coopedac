@@ -127,14 +127,6 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Deben salir dos mensajes de confirmacion
-        // await expect(page.locator('text=')).toBeVisible();
-        // await expect(page.locator('text=')).toBeVisible();
-
-        // Cerrar los dos mensajes
-        await page.locator('[aria-label="close"]]').first().click();
-        await page.locator('[aria-label="close"]]').last().click();
-
         // La solicitud ya no debe estar
         await expect(page.getByText('No hay datos')).toBeVisible();
     });

@@ -21,7 +21,7 @@ let apellidoFirmante: string | null;
 
 // Parametros de relation
 interface EditarAhorrosParametros {
-    ID_OPERACION: '' | 1 | 30
+    ID_OPERACION: '' | 10 | 30
 };
 
 const EscenariosPrueba: EditarAhorrosParametros[] = [
@@ -29,7 +29,7 @@ const EscenariosPrueba: EditarAhorrosParametros[] = [
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: 1
+        ID_OPERACION: 10
     },
     {
         ID_OPERACION: 30
@@ -40,7 +40,7 @@ const EscenariosPrueba: EditarAhorrosParametros[] = [
 
 test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
-        test.describe(`Test cuando el escenario es ${Object.values(escenario).toString()}`, () => {
+        test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
@@ -123,23 +123,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 }
             });
 
-            if (escenario.ID_OPERACION === 1) {
-                // Test si el ID_OPERACION es diferente de 30
-                test('No debe permitir Crear una Nueva Cuenta', async () => {
-                    // Boton de Nueva Cuenta
-                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
-                    await expect(botonNuevaCuenta).toBeVisible();
-                    await botonNuevaCuenta.click();
-
-                    // Debe salir un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenario.ID_OPERACION === '') {
+            if (escenario.ID_OPERACION === '') {
                 // Test si el ID_OPERACION es Vacio
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -155,8 +139,23 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     // Skip al test
                     test.skip();
                 });
-            } 
-            else if (escenario.ID_OPERACION === 30) {
+            } else if (escenario.ID_OPERACION === 10) {
+                // Test si el ID_OPERACION es diferente de 30
+                test('No debe permitir Crear una Nueva Cuenta', async () => {
+                    // Boton de Nueva Cuenta
+                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+                    await expect(botonNuevaCuenta).toBeVisible();
+                    await botonNuevaCuenta.click();
+
+                    // Debe salir un mensaje
+                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // Skip al test
+                    test.skip();
+                });
+            } else if (escenario.ID_OPERACION === 30) {
                 test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
@@ -232,7 +231,17 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await page.locator('text=TOTALES').click();
             
                     // Click en continuar
-                    Continuar();
+                    const botonContinuar = page.locator('text=Continuar');
+                    // Esperar que se abra una nueva pestaña con el reporte de la nota de debito
+                    const [newPage] = await Promise.all([
+                        context.waitForEvent('page'),
+                        // Click al boton de Aceptar
+                        await expect(botonContinuar).toBeVisible(),
+                        await botonContinuar.click()
+                    ]);
+
+                    // Cerrar la pagina con el reporte de la nota de debito
+                    newPage.close();
                 });
             
                 test('Crear cuenta de Aportaciones Preferentes - Paso 2 - Contacto de Firmante', async () => {
@@ -337,6 +346,9 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 });
             
                 test('Finalizar con el registro de cuenta de aportaciones preferentes', async () => {
+                    // Esperar que el mensaje de que los contratos se hayan generado se muestre
+                    await expect(page.locator('text=Contratos Generados Exitosamente.')).toBeVisible();
+                    
                     // Boton de Finalizar
                     const botonFinalizar = page.locator('button:has-text("Finalizar")');
                     // Esperar que se abra una nueva pestaña

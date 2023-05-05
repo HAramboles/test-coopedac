@@ -20,16 +20,16 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Parametros de relation
-interface EditarAhorrosParametros {
-    ID_OPERACION: '' | 1 | 30
+interface CrearCertificadosParametros {
+    ID_OPERACION: '' | 10 | 30
 };
 
-const EscenariosPrueba: EditarAhorrosParametros[] = [
+const EscenariosPrueba: CrearCertificadosParametros[] = [
     {
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: 1
+        ID_OPERACION: 10
     },
     {
         ID_OPERACION: 30
@@ -40,7 +40,7 @@ const EscenariosPrueba: EditarAhorrosParametros[] = [
 
 test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
-        test.describe(`Test cuando el escenario es ${Object.values(escenario).toString()}`, () => {
+        test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
@@ -60,7 +60,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
-                    //Constante con el body
+                    // Constante con el body
                     const body = await response.json();
                     // Condicion para cambiar los parametros del body
                     if (Object.keys(body?.data[33]).length > 1) {
@@ -147,7 +147,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === 1) {
+            } else if (escenario.ID_OPERACION === 10) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -266,7 +266,17 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     await page.locator('text=TOTALES').click();
             
                     // Click al boton de Continuar
-                    Continuar();
+                    const botonContinuar = page.locator('text=Continuar');
+                    // Esperar que se abra una nueva pestaña con el reporte de la nota de debito
+                    const [newPage] = await Promise.all([
+                        context.waitForEvent('page'),
+                        // Click al boton de Aceptar
+                        await expect(botonContinuar).toBeVisible(),
+                        await botonContinuar.click()
+                    ]);
+
+                    // Cerrar la pagina con el reporte de la nota de debito
+                    newPage.close();
                 });
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {            

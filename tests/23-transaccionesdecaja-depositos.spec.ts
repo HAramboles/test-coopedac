@@ -97,9 +97,6 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         // La nota debe estar visible
         await expect(page.getByRole('cell', {name: `${nota}`})).toBeVisible();
 
-        // La nota debe estar como completada
-        //await expect(page.locator('.ant-space > div:nth-child(3) > div')).toBeVisible();
-
         // Cerrar el modal
         await page.locator('[aria-label="close"]').click();  
     });

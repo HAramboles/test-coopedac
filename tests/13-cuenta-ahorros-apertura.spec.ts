@@ -300,6 +300,9 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                 });
             
                 test('Finalizar con el registro de cuenta de ahorro', async () => {
+                    // Esperar que el mensaje de que los contratos se hayan generado se muestre
+                    await expect(page.locator('text=Contratos Generados Exitosamente.')).toBeVisible();
+
                     // Boton de Finalizar
                     const botonFinalizar = page.getByRole('button', {name: 'Finalizar'});
                     // Esperar que se abra una nueva pestaña
@@ -307,7 +310,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
                         await expect(botonFinalizar).toBeVisible(),
-                        await botonFinalizar.dblclick()
+                        await botonFinalizar.click()
                     ]);
                   
                     // La pagina abierta con la solicitud se cierra

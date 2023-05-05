@@ -107,13 +107,19 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await expect(page.locator('text=APROBADO')).not.toBeVisible();
     });
 
+    test('Cambiar los tipos de cuenta que se muestran', async () => {
+        // Tipo Cuenta
+        await page.getByText('TODAS').click();
+        // Elegir el tipo de cuenta de Aportaciones
+        await page.getByRole('option', {name: 'APORTACIONES', exact: true}).click();
+    });
+
     test('Ver los movimientos de la cuenta de Aportaciones', async () => {
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', { name: 'APORTACIONES', exact: true });
+        const verMovimientos = page.getByRole('row', {name: 'APORTACIONES'}).locator('[data-icon="export"]');
         await expect(verMovimientos).toBeVisible();
         
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta 
-        /*
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
             // Click al boton de Aceptar
@@ -134,7 +140,15 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await expect(newPage.locator('text=DEPOSITO DE 2000 PESOS A LA CUENTA DE APORTACIONES')).toBeVisible();
 
         // Cerrar la pagina
-        await newPage.close(); */
+        await newPage.close(); 
+    });
+
+    test('Cambiar el tipo de cuenta que se muestra de Aportaciones a Todas', async () => {
+        // Tipo Cuenta
+        await page.locator('#root').getByTitle('APORTACIONES').click();
+        
+        // Tipo de cuenta a Todas
+        await page.getByText('TODAS').click();
     });
 
     test('Ver los movimientos de la cuenta de Ahorros Normales', async () => {
@@ -181,8 +195,10 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         // Los movimientos deben ser de la cuenta de aportaciones
         await expect(newPage.locator('text=FINANCIEROS PAGADERAS').first()).toBeVisible();
 
-        // Tiene que estar la transaccion de la cuenta, de 50 pesos
-        await expect(newPage.locator('text=50.00').first()).toBeVisible();
+        // Tienen que estar los tres movimientos realizados
+        await expect(page.getByRole('cell', {name: 'DEPOSITO INICIAL APERTURA CERTIFICADO FINANCIEROS PAGADERAS'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'INGRESO DE 2050 PESOS A LA CUENTA DE CERTIFICADO'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'DEBITO DE 600 PESOS A LA CUENTA DE CERTIFICADO'})).toBeVisible();
 
         // Cerrar la pagina
         await newPage.close();
@@ -204,6 +220,10 @@ test.describe('Prueba con el Estado de Cuenta', () => {
 
         // El titulo de movimienos de cuenta debe estar visible
         await expect(newPage.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS CUENTA'})).toBeVisible();
+
+        // Tienen que estar los dos movimientos realizados
+        await expect(page.locator('text=DEPOSITO INICIAL APERTURA CERTIFICADO APORTACIONES PREFERENTES')).toBeVisible();
+        await expect(page.locator('text=TRANSFERENCIA A LA CUENTA DE APORTACIONES PREFERENTES')).toBeVisible();
 
         // Cerrar la pagina
         await newPage.close();

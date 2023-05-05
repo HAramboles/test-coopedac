@@ -87,5 +87,5 @@ test.describe('Pruebas con la Reimpresion de la Solicitud de Reprogramacion', ()
 
         // Cerrar el context
         await context.close();
-    })
-})
+    });
+});

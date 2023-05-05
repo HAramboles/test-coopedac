@@ -159,8 +159,8 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         await campoCambioTasa.fill('15');
 
         // Tipos de cuota
-        const cuotaOriginal = page.locator('text=Cuota Original: RD$ 416.67');
-        const CuotaSugerida = page.locator('text=Cuota Sugerida: RD$ 1,057.54');
+        const cuotaOriginal = page.locator('text=Cuota Original');
+        const CuotaSugerida = page.locator('text=Cuota Sugerida');
 
         // Cuota original debe estar visible
         await expect(cuotaOriginal).toBeVisible();

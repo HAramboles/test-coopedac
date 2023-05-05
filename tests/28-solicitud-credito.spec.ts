@@ -65,8 +65,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Boton Nueva Solicitud', async () => {
-        test.slow();
-
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
 
@@ -80,8 +78,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 1 - Datos del Solicitante', async () => {
-        test.slow();
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=1`);
 
@@ -232,8 +228,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 2 - Datos Prestamo', async () => {
-        test.slow();
-
         // La URL no debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
 
@@ -319,8 +313,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 3 - Cargos del prestamo', async () => {
-        test.slow();
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
 
@@ -355,8 +347,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 4 - Deudas', async () => {
-        test.slow();
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=4`);
 
@@ -371,8 +361,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 5 - Perfil Financiero', async () => {
-        test.slow();
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=5`);
 
@@ -386,21 +374,17 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 6 - Representantes legales', async () => {
-        test.slow();
-
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=6`);
-
         // El titulo principal debe estar visible
         await expect(page.getByRole('heading', {name: 'REPRESENTANTES LEGALES'})).toBeVisible();
+        
+        // La URL debe cambiar
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=6`);
 
         // Click en actualizar y continuar
         GuardaryContinuar();
     });
 
     test('Paso 7 - Codeudores y Garantias', async () => {
-        test.slow();
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=7`);
 
@@ -466,8 +450,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 8 - Referencias', async () => {
-        test.slow();
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=8`);
 
@@ -481,8 +463,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 9 - Documentos', async () => {
-        test.slow();
-
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=9`);
 
@@ -553,8 +533,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
-        test.slow();
-
         // Boton de Finalizar
         const botonFinalizar = page.getByRole('button', {name: 'check Finalizar'});
         // Esperar que se abra una nueva pestaña
@@ -662,9 +640,13 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
+        await campoComentario.click();
         await campoComentario.fill('Credito Aprobado');
         // Guardar Comentario
         await page.getByRole('button', {name: 'Guardar'}).click();
+
+        // Debe mostrarse un mensaje de que el comentario se guardo correctamente
+        await expect(page.locator('text=Prestamos observacion almacenada exitosamente.')).toBeVisible();
 
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();

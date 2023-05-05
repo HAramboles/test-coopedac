@@ -10,9 +10,6 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedula, nombre y apellido de la persona
 let cedula: string | null;
-let nombre: string | null;
-let apellido: string | null;
-
 // Pruebas
 
 test.describe('Pruebas con la Transferencia de Cuentas de un socio', () => {
@@ -35,8 +32,6 @@ test.describe('Pruebas con la Transferencia de Cuentas de un socio', () => {
 
         // Cedula, nombre y apellido de la persona
         cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Transferencias Cuentas Internas', async () => {
@@ -61,12 +56,6 @@ test.describe('Pruebas con la Transferencia de Cuentas de un socio', () => {
         await page.locator('#select-search').first().fill(`${cedula}`);
         // Seleccionar la cuenta de ahorros del socio
         await page.getByText('AHORROS NORMALES').click();
-
-        // Balance
-        //await expect(page.locator('(//INPUT[@autocomplete="off"])[3]')).toHaveValue(' 50,300.00');
-
-        // Balance Disponible
-        //await expect(page.getByText(' 50,200.00')).toBeVisible();
 
         // Buscar la cuenta de aportaciones preferentes
         await page.locator('#select-search').last().fill(`${cedula}`);

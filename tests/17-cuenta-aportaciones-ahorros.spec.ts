@@ -23,7 +23,7 @@ let apellidoFirmante: string | null;
 
 // Parametros de relation
 interface CrearAportacionesAhorrosFisicaParametros {
-    ID_OPERACION: '' | 10 | 30
+    ID_OPERACION: '' | 31 | 30
 };
 
 const EscenariosPrueba: CrearAportacionesAhorrosFisicaParametros[] = [
@@ -31,7 +31,7 @@ const EscenariosPrueba: CrearAportacionesAhorrosFisicaParametros[] = [
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: 10
+        ID_OPERACION: 31
     },
     {
         ID_OPERACION: 30
@@ -141,7 +141,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenarios.ID_OPERACION === 10) {
+            } else if (escenarios.ID_OPERACION === 31) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
