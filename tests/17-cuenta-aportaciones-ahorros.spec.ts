@@ -38,6 +38,8 @@ const EscenariosPrueba: CrearAportacionesAhorrosFisicaParametros[] = [
     }
 ];
 
+// Pruebas
+
 test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {

@@ -16,8 +16,8 @@ let passCampo: Locator;
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 /* Usuario y contraseña */
-const user = 'hector';
-const pass = 'abc';
+const user:string = 'hector';
+const pass:string = 'abc';
 
 /* Usuario y contraseña correctos */
 

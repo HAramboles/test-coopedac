@@ -35,6 +35,8 @@ const EscenariosPrueba: CrearAhorrosParametros[] = [
     }
 ];
 
+// Pruebas
+
 test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {

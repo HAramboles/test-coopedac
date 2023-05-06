@@ -77,16 +77,28 @@ const generarNumerosCelularTelefono = () => {
 
 // Exportar las funciones como constantes
 
-export const numerosCedulas = generarCedulas(); // Cedula para la persona fisica
-export const numerosCedulas2 = generarCedulas(); // Cedula para la persona juridica
-export const numerosCedulas3 = generarCedulas(); // Cedula para el relacionado de la persona juridica
-export const numerosCedulas4 = generarCedulas(); // Cedula para el menor de edad
+const numerosCedulas = generarCedulas(); // Cedula para la persona fisica
+const numerosCedulas2 = generarCedulas(); // Cedula para la persona juridica
+const numerosCedulas3 = generarCedulas(); // Cedula para el relacionado de la persona juridica
+const numerosCedulas4 = generarCedulas(); // Cedula para el menor de edad
 
-export const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para la persona fisica
+const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para la persona fisica
 
-export const numerosRegistroMercantil = generarRegistroMercantil(); // Registro Mercantil de la persona juridica
+const numerosRegistroMercantil = generarRegistroMercantil(); // Registro Mercantil de la persona juridica
 
-export const numerosCorreo = generarNumerosparaCorreo(); // Numeros para el correo de las personas
+const numerosCorreo = generarNumerosparaCorreo(); // Numeros para el correo de las personas
 
-export const numerosCelular = ('829' + generarNumerosCelularTelefono()); // Numeros para los celulares
-export const numerosTelefono = ('809' + generarNumerosCelularTelefono()); // Numeros para los telefonos
+const numerosCelular = ('829' + generarNumerosCelularTelefono()); // Numeros para los celulares
+const numerosTelefono = ('809' + generarNumerosCelularTelefono()); // Numeros para los telefonos
+
+export {
+    numerosCedulas,
+    numerosCedulas2,
+    numerosCedulas3,
+    numerosCedulas4,
+    numerosPasaporte,
+    numerosRegistroMercantil,
+    numerosCorreo,
+    numerosCelular,
+    numerosTelefono
+};

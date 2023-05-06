@@ -37,6 +37,8 @@ const EscenariosPrueba: CrearAportacionesAhorrosJuridicaParametros[] = [
     }
 ];
 
+// Pruebas
+
 test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Persona Juridica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPrueba) {
         test.describe(`Test cuando el esenario es: ${Object.values(escenarios).toString()}`, () => {

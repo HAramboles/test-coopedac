@@ -35,11 +35,11 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'GANADEROS GF';
+const nombreJuridica = 'AGRICULTORES AE&M';
 
 // Nombre del relacionado
-const nombreRelacionado = 'ERIBERTO';
-const apellidoRelacionado = 'GARCIA FERNANDEZ';
+const nombreRelacionado = 'ALAN ELIAS';
+const apellidoRelacionado = 'MOLINERO';
 
 // Parametros de relation
 interface CrearPersonas {
