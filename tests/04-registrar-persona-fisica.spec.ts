@@ -15,8 +15,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = 'ALICIA';
-const apellidoPersona = 'CANO PRIETO';
+const nombrePersona = '';
+const apellidoPersona = '';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -420,7 +420,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await page.locator('button:has-text("Aceptar")').click();
             
                     // El modal debe de desaparecer
-                    await expect(page.locator('text=REGISTRAR PERSONA EXPUESTA POLÍTICAMENTE')).not.toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA EXPUESTA POLÍTICAMENTE'})).not.toBeVisible();
                     
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();

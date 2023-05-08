@@ -35,11 +35,11 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'AGRICULTORES AE&M';
+const nombreJuridica = '';
 
 // Nombre del relacionado
-const nombreRelacionado = 'ALAN ELIAS';
-const apellidoRelacionado = 'MOLINERO';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -551,7 +551,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
             
                 test('Finalizar con el Registro de Persona Juridica', async () => {
                     // Hacer click al boton de finalizar
-                    const botonFinalizar = page.locator('text=Finalizar');
+                    const botonFinalizar = page.locator('#legalPerson').getByRole('button', {name: 'check Finalizar'});
                     // Esperar que se abran dos pestañas con los diferentes reportes
                     const [newPage, newPage2] = await Promise.all([
                         context.waitForEvent('page'),

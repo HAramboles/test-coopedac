@@ -1,5 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
+import { formatDate } from './utils/utils';
 
 // Vaiables globales 
 let browser: Browser;
@@ -14,8 +15,8 @@ const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 
-const nombreMenor = 'JAN LUCAS';
-const apellidoMenor = 'CANO PRIETO';
+const nombreMenor = '';
+const apellidoMenor = '';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -145,10 +146,14 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                 test('Registro de Persona Fisica - Menor de Edad - Datos Generales', async () => {
                     // El titulo de datos generales debe estra visible
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
+
+                    // Restarle 8 años al año actual
+                    const diaActual = new Date();
+                    const año8 = formatDate(new Date(diaActual.setFullYear(diaActual.getFullYear() - 8)));
             
                     // Colocar una fecha de nacimiento, para que aparezca un modal indicando que la persona es un menor de edad
                     const campoFecha = page.locator('#person_FECHA_NAC');
-                    await campoFecha?.fill('17/01/2011');
+                    await campoFecha?.fill(`${año8}`);
                     // Click en otro lugar para que se muestre el modal
                     await page.locator('#person_EDAD_MINIMA').click();
                     // Modal
