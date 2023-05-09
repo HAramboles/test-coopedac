@@ -55,7 +55,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                 page = await context.newPage();
 
                 // Eventos para la request relation
-                await page.route(/\/relation/, async (route) => {
+                await page.route(/\/relation/, async route => {
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
@@ -68,7 +68,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                         route.fulfill({
                             response,
                             body: JSON.stringify(body),
-                        })
+                        });
                     } else {
                         route.continue();
                     };
@@ -502,6 +502,12 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
             
                     // Hacer click al icono de guardar telefono
                     await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
+
+                    // Se debe mostrar un mensaje de que se han guardado correctamente los datos
+                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
+
+                    // Cerrar el mensaje
+                    await page.locator('[aria-label="close"]').click();
                 });
             
                 test('Registrar a la persona - Email/Redes Sociales', async () => {
@@ -530,6 +536,12 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
             
                     // Hacer click al icono de guardar email
                     await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
+
+                    // Se debe mostrar un mensaje de que se han guardado correctamente los datos
+                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
+
+                    // Cerrar el mensaje
+                    await page.locator('[aria-label="close"]').click();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();

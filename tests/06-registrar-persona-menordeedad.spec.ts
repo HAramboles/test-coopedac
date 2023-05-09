@@ -55,7 +55,7 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                 page = await context.newPage();
 
                 // Eventos para la request relation
-                await page.route(/\/relation/, async (route) => {
+                await page.route(/\/relation/, async route => {
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
@@ -68,7 +68,7 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                         route.fulfill({
                             response,
                             body: JSON.stringify(body),
-                        })
+                        });
                     } else {
                         route.continue();
                     };
@@ -363,6 +363,12 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
             
                     // Hacer click al icono de guardar telefono
                     await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
+
+                    // Se debe mostrar un mensaje de que se han guardado correctamente los datos
+                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
+
+                    // Cerrar el mensaje
+                    await page.locator('[aria-label="close"]').click();
                 });
             
                 test('Registro de Persona Fisica - Menor de edad - Email/Redes Sociales', async () => {
@@ -391,6 +397,12 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
             
                     // Hacer click al icono de guardar email
                     await page.locator('button', {has: page.locator('span > svg[data-icon=save]')}).click();
+
+                    // Se debe mostrar un mensaje de que se han guardado correctamente los datos
+                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
+
+                    // Cerrar el mensaje
+                    await page.locator('[aria-label="close"]').click();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();
@@ -410,7 +422,6 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
             
                     // Buscar un relacionado del menor, debe ser un padre, madre o un tutor
                     // Usar la cedula de la persona fisica creada
-            
                     const campoBuscarRelacionado = page.getByRole('combobox');
                     await campoBuscarRelacionado.click();
                     await campoBuscarRelacionado?.fill(`${cedula}`);

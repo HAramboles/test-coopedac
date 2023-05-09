@@ -50,7 +50,7 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                 page = await context.newPage();
 
                 // Eventos para la request relation
-                await page.route(/\/relation/, async (route) => {
+                await page.route(/\/relation/, async route => {
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
