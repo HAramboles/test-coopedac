@@ -177,11 +177,17 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Agregar una cuenta del socio para desembolsar
         await page.locator('#loan_form_ID_CUENTA_DESEMBOLSO').click();
+        // La cuenta de aportaciones no debe estar visible
+        await expect(page.getByText('APORTACIONES')).not.toBeVisible(); 
+
         // Seleccionar la cuenta de ahorros
         await page.getByText('AHORROS NORMALES').click();
 
         // Agregar un cuenta para cobrar
         await page.locator('#loan_form_ID_CUENTA_COBRO').click();
+        // La cuenta de aportaciones no debe estar visible
+        await expect(page.getByText('APORTACIONES')).not.toBeVisible();
+        
         // Seleccionar la cueta de ahorros
         await page.getByText('AHORROS NORMALES').last().click();
 
