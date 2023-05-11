@@ -114,119 +114,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.locator('text=Aceptar').click();
     });
 
-    test.skip('Paso 2 - Datos Prestamo - Extra - Probar control de Plazo', async () => {
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
-
-        // El titulo principal debe estar visible
-        await expect(page.getByRole('heading', {name: 'Generales del Crédito'})).toBeVisible();
-
-        // Tipo de credito
-        await page.getByLabel('Tipo Crédito').click();
-        // Click a credito de consumo
-        await page.getByText('CONSUMO').click();
-
-        // Tipo de garantia
-        await page.getByLabel('Tipo Garantía').click();
-        // Click en garantia ahorros
-        await page.getByText('AHORROS', {exact: true}).click();
-
-        // Oferta
-        await page.getByLabel('Oferta').click();
-        // Elegir oferta madre
-        await page.getByText('MADRE').click();
-
-        // Ver rangos de la oferta
-        await page.locator('[data-icon="eye"]').click();
-
-        // Se debe mostrar un modal
-        await expect(page.locator('h1').filter({hasText: 'DETALLES DE RANGO'})).toBeVisible();
-
-        // Monto minimo y maximo
-        await expect(page.getByText('RD$ 20,000.00', {exact: true})).toBeVisible();
-        await expect(page.getByText('RD$ 1,000,000.00', {exact: true})).toBeVisible();
-
-        // Tasa minima, maxima y por defecto
-        await expect(page.getByText('9.00%', {exact: true})).toBeVisible();
-        await expect(page.getByText('13.00%', {exact: true})).toBeVisible();
-        await expect(page.getByText('12.00%', {exact: true})).toBeVisible();
-
-        // Plazo minimo y maximo
-        await expect(page.getByText('12', {exact: true})).toBeVisible();
-        await expect(page.getByText('36', {exact: true})).toBeVisible();    
-
-        // Click en Aceptar
-        const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-        await botonAceptar.click();
-
-        // Monto
-        await page.locator('#loan_form_MONTO').click();
-        // Colocar un monto por debajo del limite
-        await page.locator('#loan_form_MONTO').fill('60');
-        // Cick fuera del input
-        await page.locator('text=Monto').click();
-        // Debe aparecer un mensaje de error
-        await expect(page.locator('text=El monto digitado está fuera de los rangos de la oferta seleccionada.')).toBeVisible();
-
-        // Colocar un monto por encima del limite
-        await page.locator('#loan_form_MONTO').fill('2000000');
-        // Cick fuera del input
-        await page.getByText('Monto', {exact: true}).click();
-        // Debe aparecer un mensaje de error
-        await expect(page.locator('text=El monto digitado está fuera de los rangos de la oferta seleccionada.')).toBeVisible();
-
-        // Tasa
-        const campoTasa = page.getByLabel('Tasa');
-        await campoTasa.click();
-        // Borrar la tasa
-        await campoTasa.clear();
-
-        // Ingresar una tasa por debajo del limite
-        await campoTasa.fill('8');
-        // Clickear fuera del input
-        await page.getByText('Monto', {exact: true}).click();
-        
-        // Debe aparecer un modal con un mensaje de aviso
-        await expect(page.locator('text=Tasa Mínima para esta oferta es: 9.00')).toBeVisible();
-        // Click en Aceptar
-        await botonAceptar.click();
-
-        // Ingresar una tasa por encima del limite
-        await campoTasa.fill('15');
-        // Clickear fuera del input
-        await page.getByText('Monto', {exact: true}).click();
-        
-        // Debe aparecer un modal con un mensaje de aviso
-        await expect(page.locator('text=Tasa Máxima para esta oferta es: 13.00')).toBeVisible();
-        // Click en Aceptar
-        await botonAceptar.click();
-
-        // Plazo
-        await page.getByPlaceholder('CANTIDAD').click();
-
-        // Ingresar un plazo por debajo del limite
-        await page.getByPlaceholder('CANTIDAD').fill('5');
-
-        // Clickear fuera del input
-        await page.getByText('Monto', {exact: true}).click();
-
-        // Debe salir un modal de aviso
-        await expect(page.locator('text=Plazo Máximo para esta oferta es: 36 (MENSUAL).')).toBeVisible();
-        // Click en Aceptar
-        await botonAceptar.click();
-
-        // Ingresar un plazo por encima del limite
-        await page.getByPlaceholder('CANTIDAD').fill('40');
-
-        // Clickear fuera del input
-        await page.getByText('Monto', {exact: true}).click();
-
-        // Debe salir un modal de aviso
-        await expect(page.locator('text=Plazo Máximo para esta oferta es: 36 (MENSUAL).')).toBeVisible();
-        // Click en Aceptar
-        await botonAceptar.click();
-    });
-
     test('Paso 2 - Datos Prestamo', async () => {
         // La URL no debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
@@ -236,7 +123,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Tipo de credito
         await page.getByLabel('Tipo Crédito').click();
-        // await page.locator('#loan_form').getByText('CONSUMO').click();
         // Click a credito hipotecario
         await page.getByText('HIPOTECARIOS').click();
 
@@ -316,7 +202,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
 
-        /*
         // Colocar una cantidad para los cargos
         const cargos = page.locator('(//td[@class="ant-table-cell montoPorcentajeSolicitud"])');
         await cargos.click();
@@ -324,7 +209,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Guardar los cargos
         await page.getByRole('button', {name: 'Guardar Cargos'}).click();
-        */
 
         // Cerrar los dos mensajes que aparecen
         await page.locator('[aria-label="close"]').first().click();
@@ -621,12 +505,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
-        // El titulo debe estar visible
-        //await expect(page.locator('h1').filter({hasText: 'SOLICITUD DE CRÉDITO'})).toBeVisible();
-
-        // La url debe de tener que la solicitud esta en estado en proceso
-        //await expect(page).toHaveURL(/\/en_proceso_analisis/);
-
         // Dirigirse a la ultima seccion
         const seccionAnalisis = page.getByRole('button', {name: '10 Análisis'});
         await expect(seccionAnalisis).toBeVisible();
@@ -686,9 +564,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
 
-        // La url debe de tener que la solicitud esta en aprobado
-        // await expect(page).toHaveURL(/\/aprobado/);
-
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
         await expect(seccionDesembolso).toBeVisible();
@@ -703,9 +578,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByText('¿Está seguro que desea pasar el préstamo a estado EN PROCESO (ANALISIS)?')).toBeVisible();
         // Click en Aceptar 
         await page.getByRole('button', {name: 'Aceptar'}).click();
-        
-        // La url debe regresar a las solicitudes aprobado
-        // await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=aprobado`);
 
         // Cambiar el estado de las solicitudes de Aprobado a En Proceso
         const solicitudesAprobadas = page.getByText('APROBADO', {exact: true});
@@ -718,9 +590,6 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Elegir la solicitud 
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
-
-        // La url debe de tener que la solicitud esta en estado en proceso
-        //await expect(page).toHaveURL(/\/en_proceso_analisis/);
 
         // Dirigirse a la ultima seccion
         const seccionAnalisis = page.getByRole('button', {name: '10 Análisis'});

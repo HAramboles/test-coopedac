@@ -307,7 +307,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
             
                     // La categoria debe ser Socio Ahorrante
-                    await expect(page.locator('text=SOCIO EMPRESARIAL')).toBeVisible();
+                    await expect(page.locator('text=SOCIO MICROEMPRESARIAL')).toBeVisible();
             
                     // Editar el monto de confirmacion
                     const montoConfirmacion = page.getByPlaceholder('MONTO DE CONFIRMACIÓN');

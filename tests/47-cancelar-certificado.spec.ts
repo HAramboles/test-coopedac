@@ -58,9 +58,9 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await expect(page.locator('h1').filter({hasText: 'CANCELACIÓN DE CERTIFICADO FINANCIERO'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').first().fill('39171931933');
+        await page.locator('#select-search').first().fill(`${cedula}`);
         // Elegir al socio
-        await page.locator('text=AITANA LUCERO GOMEZ').click();
+        await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Se debe mostrar la categoria del socio
         await expect(page.getByText('SOCIO AHORRANTE')).toBeVisible();
@@ -90,16 +90,26 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await expect(page.locator('text=Confirmación')).toBeVisible();
 
         // Click en Aceptar
-        await page.getByRole('button', {name: 'Aceptar'}).click();
+        const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+        // Esperar que se abra una nueva pestaña con el reporte de cancelacion de certificado 
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(botonAceptar).toBeVisible(),
+            await botonAceptar.click()
+        ]);
 
-        // Se debe mostrar un mensaje de que se cancelo correctamente el certificado
+        // Cerrar la pagina con el reporte de cancelacion de certificado
+        await newPage.close();
+
+        // Regresar a la pagina anterior y se debe mostrar un mensaje de que se cancelo correctamente el certificado
         await expect(page.locator('span').filter({hasText: 'Operación exitosa'})).toBeVisible();
 
         // Click en Aceptar para cerrar el mensaje de confirmacion
         await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
-    test.skip('Confirmar que la Cuenta de Certificado del Socio se cancelo correctamente - Ir a la opcion de Certificados', async () => {
+    test('Confirmar que la Cuenta de Certificado del Socio se cancelo correctamente - Ir a la opcion de Certificados', async () => {
         // Captaciones
         await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
         
@@ -113,7 +123,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados`);
     });
 
-    test.skip('Confirmar que la Cuenta de Certificado del Socio se cancelo correctamente - Elegir un tipo de captacion', async () => {
+    test('Confirmar que la Cuenta de Certificado del Socio se cancelo correctamente - Elegir un tipo de captacion', async () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
 
@@ -144,7 +154,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
     });
 
-    test.skip('Buscar al Socio al cual se elimino el Certificado', async () => {
+    test('Buscar al Socio al cual se elimino el Certificado', async () => {
         // Buscar al socio
         await page.locator('#form_search').fill(`${cedula}`);
 

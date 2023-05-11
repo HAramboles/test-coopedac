@@ -167,8 +167,14 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
         // Via Desembolso
         await expect(page.getByRole('row', {name: 'VÍa Desembolso DEPOSITO'})).toBeVisible();
 
-        // Clase
-        await expect(page.getByRole('row', {name: 'Clase HIPOTECARIOS'})).toBeVisible();
+        // Monto Aprobado
+        await expect(page.getByRole('row', {name: 'Monto aprobado 50,000.00'})).toBeVisible();
+
+        // Monto Desembolsado
+        await expect(page.getByRole('row', {name: 'Monto desembolsado 50,000.00'})).toBeVisible();  
+
+        // Tipo Prestamo
+        await expect(page.getByRole('row', {name: 'Tipo préstamo HIPOTECARIOS'})).toBeVisible();
 
         // Estado Prestamo
         await expect(page.getByRole('row', {name: 'Estado préstamo DESEMBOLSADO'})).toBeVisible();

@@ -12,7 +12,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 let cedula: string | null;
 // Pruebas
 
-test.describe('Pruebas con la Transferencia de Cuentas de un Socio', () => {
+test.describe('Pruebas con la Transferencia de Cuentas (Finanzas)', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser= await chromium.launch({
@@ -42,15 +42,15 @@ test.describe('Pruebas con la Transferencia de Cuentas de un Socio', () => {
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Transferencias Cuentas Internas
-        await page.getByRole('menuitem', {name: 'Transferencias Cuentas Internas'}).click();
+        await page.getByRole('menuitem', {name: 'Transferencias Cuentas (Finanzas)'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/transferencia_cuenta/01-2-2-104/`);
+        await expect(page).toHaveURL(`${url_base}/transferencia_cuenta/01-2-2-111/`);
     });
 
     test('Transferir fondo de la Cuenta de Ahorros a la cuenta de Aportaciones Preferentes', async () => {
         // El titulo prinicipal debe estar presente
-        await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIAS CUENTAS INTERNAS'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIAS CUENTAS (FINANZAS)'})).toBeVisible();
 
         // Buscar un socio
         await page.locator('#select-search').first().fill(`${cedula}`);
@@ -69,7 +69,7 @@ test.describe('Pruebas con la Transferencia de Cuentas de un Socio', () => {
         await page.locator('#form_MONTO').fill('1000');
 
         // Agregar un comentario
-        await page.locator('#form_DESCRIPCION').fill('Transferencia a la Cuenta de Aportaciones Preferentes');
+        await page.locator('#form_DESCRIPCION').fill('Transferencia a la Cuenta de Aportaciones Preferentes (Finanzas)');
 
         // Click en siguiente
         await page.getByRole('button', {name: 'Siguiente'}).click();
@@ -133,7 +133,7 @@ test.describe('Pruebas con la Transferencia de Cuentas de un Socio', () => {
         await newPage.close();
 
         // Se debe regresar a la pagina
-        await expect(page).toHaveURL(`${url_base}/transferencia_cuenta/01-2-2-104/`);
+        await expect(page).toHaveURL(`${url_base}/transferencia_cuenta/01-2-2-111/`);
 
         // Se debe mostrar un mensaje de Opercaion Exitosa
         await expect(page.locator('text=Captacion Movimiento almacenada exitosamente.')).toBeVisible();

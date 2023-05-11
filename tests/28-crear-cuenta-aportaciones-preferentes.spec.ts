@@ -182,10 +182,29 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
             
                     // La categoria debe ser de socio ahorrante
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
+
+                    // Monto disponible en aportaciones
+                    await expect(page.getByRole('strong', {name: 'Monto disponible en aportaciones es: 2,000.00'})).toBeVisible();
+
+                    // Ingresar un monto mayor al maximo de apertura
+                    await expect(page.getByRole('strong', {name: 'Monto máximo de apertura: 6,000.00'})).toBeVisible();
+
+                    // Ingresar un monto mayor al maximo de apertura
+                    const montoApertura = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA');
+                    await montoApertura.fill('8,000');
+
+                    // Click fuera del input
+                    await page.getByTitle('Titular').click();
+
+                    // Debe salir un modal de error
+                    await expect(page.locator('text=El monto máximo de apertura es RD$6,000.00')).toBeVisible();
+
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
             
-                    // Ingresar un monto inicial
-                    const montoInicial = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA');
-                    await montoInicial.fill('1500');
+                    // Ingresar un monto de apertura correcto
+                    await montoApertura.clear();
+                    await montoApertura.fill('1500');
                     // Click fuera del input
                     await page.getByTitle('Titular').click();
 

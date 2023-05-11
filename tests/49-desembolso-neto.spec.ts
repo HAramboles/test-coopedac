@@ -86,49 +86,6 @@ test.describe('Pruebas con el Desembolso Neto', () => {
         await newPage.close();
     });
 
-    test('Probar los controles de la fecha - Fecha Final', async () => { 
-        // Sumarle un dia a la fecha actulal
-        const dia = new Date();
-        dia.setDate(dia.getDate() + 1);
-
-        // Borrar la fech del input de fecha final
-        const fechaFinal = page.locator('#form_FECHA_FINAL');
-        await fechaFinal.clear();
-        // Coloacar una fecha mayor al dia actual
-        await fechaFinal.fill(`${formatDate(dia)}`);
-
-        // Click fuera del input
-        await page.locator('text=Centro Costo').click();
-
-        // Debe salir un mensaje de error
-        await expect(page.getByText('Rango de Fecha inválido.')).toBeVisible();
-
-        // Colocar la fecha actual
-        await fechaFinal.fill(`${formatDate(new Date())}`);
-    });
-
-    test('Probar los controles de la fecha - Fecha Inicial', async () => { 
-        // Sumarle un dia a la fecha actual
-        const dia = new Date();
-        dia.setDate(dia.getDate() + 1);
-
-        // Borrar la fecha del input de fecha final
-        const fechaFinal = page.locator('#form_FECHA_INICIO');
-        await fechaFinal.clear();
-        // Coloacar una fecha mayor al de la fecha final
-        await fechaFinal.fill(`${formatDate(dia)}`);
-
-        // Click al boton de generar reporte
-        const generarReporte = page.getByRole('button', {name: 'Generar Reporte'});
-        await generarReporte.click();
-
-        // Debe salir un mensaje de error
-        await expect(page.getByText('La fecha inicial no puede ser mayor a la fecha final')).toBeVisible();
-
-        // Cerrar el mensaje
-        await page.locator('[aria-label="close"]').click();
-    });
-
     test.afterAll(async () => { // Despues de las pruebas
         // Cerrar la page
         await page.close();

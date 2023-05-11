@@ -210,7 +210,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     // Cerrar uno de los mensajes que se muestran
                     await page.locator('[aria-label="close"]').last().click();
             
-                    // Se debe mostrar la fima del titular por defecto
+                    // Se debe mostrar la firma del titular por defecto
                     await expect(page.locator('text=TITULAR')).toBeVisible();
             
                     // El tipo de firma requerida debe estar visible
