@@ -15,8 +15,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = 'SOFIA';
-const apellidoPersona = 'CASTAÑUELAS';
+const nombrePersona = '';
+const apellidoPersona = '';
 
 // Parametros de relation
 interface CrearPersonas {

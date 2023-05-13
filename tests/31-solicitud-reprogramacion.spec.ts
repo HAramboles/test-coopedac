@@ -125,8 +125,18 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         // Cerrar el mensaje de aviso
         await page.locator('[aria-label="close"]').last().click();
 
+        // Mismo dia pero en un mes diferente
+        const diaActual = new Date();
+        const otroMes = new Date(diaActual.setMonth(diaActual.getMonth() + 2)); 
+
         // Ingresar una fecha
-        await page.locator('#form_CAMB_FECHA').fill(`${formatDate(new Date())}`);
+        await page.locator('#form_CAMB_FECHA').fill(`${formatDate(otroMes)}`);
+
+        // Clickear fuera del input de la fecha
+        await page.locator('text=Cambio de Fecha').click();
+
+        // Se debe mostrar un mensaje con la diferencia de interes por el cambio de fecha
+        await expect(page.locator('div').filter({hasText: 'Diferencia de interes por cambio de fecha es:'})).toBeVisible();
 
         // Quitar el check de cambio de fecha
         await page.getByLabel('CAMBIO DE FECHA', {exact: true}).uncheck();

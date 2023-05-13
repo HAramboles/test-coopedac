@@ -98,7 +98,7 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
         
                 // El titulo debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
-                
+
                 // Condicion por si el tipo de captacion llega sin datos o con datos
                 const tipoCaptacion = page.getByTitle('APORTACIONES', {exact: true});
         

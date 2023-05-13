@@ -128,7 +128,7 @@ test.describe('Pruebas con el Registro de Tasa', async () => {
           expect(form_FECHA).toBe('')
         };
 
-        const selectMoney = await page.locator('(//span[@class="ant-select-selection-item"])[1]').textContent()
+        const selectMoney = await page.locator('(//span[@class="ant-select-selection-item"])').first().textContent()
         if (scenarie.ID_MONEDA_DEFECTO) {
           expect(selectMoney).toBe(scenarie.ID_MONEDA_DEFECTO)
         } else {

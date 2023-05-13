@@ -35,11 +35,11 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'AGROS LR';
+const nombreJuridica = '';
 
 // Nombre del relacionado
-const nombreRelacionado = 'RUBEN';
-const apellidoRelacionado = 'DE LEON';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -176,6 +176,9 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     // RNC / cedula
                     const campoRNC = page.locator('#legalPerson_RNC');
                     await campoRNC.fill(`${cedulaPersonaJuridica}`);
+
+                    // Comprobar que se hayan digitado exactamente 11 numeros
+                    // expect(campoRNC).toHaveLength(13); // 13 por los dos guiones que se colocan
             
                     // Tipo de organizacion
                     const tipoOrganizacion = page.locator('#legalPerson_TIPO_SOCIETARIO');

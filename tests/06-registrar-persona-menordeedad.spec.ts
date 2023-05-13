@@ -15,8 +15,8 @@ const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 
-const nombreMenor = 'MARIO';
-const apellidoMenor = 'CASTAÑUELAS';
+const nombreMenor = '';
+const apellidoMenor = '';
 
 // Parametros de relation
 interface CrearPersonas {
