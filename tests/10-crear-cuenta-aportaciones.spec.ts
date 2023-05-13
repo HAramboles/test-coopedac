@@ -32,6 +32,8 @@ const EscenariosPrueba: CrearAportacionesParametros[] = [
 
 // Pruebas
 
+test.describe.configure({mode: 'parallel'});
+
 test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
@@ -127,6 +129,7 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
+
                     // Skip al test
                     test.skip();
                 });
@@ -143,6 +146,7 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
+
                     // Skip al test
                     test.skip();
                 });
@@ -217,14 +221,11 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                     // Debe redirigirse al listado de las cuentas de aportaciones
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
                 });
-            };
+            };         
         
             test.afterAll(async () => { // Despues de todas las pruebas
                 // Cerrar la page
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
     };

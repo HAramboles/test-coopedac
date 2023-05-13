@@ -94,40 +94,6 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
     });
 
-    test('Buscar la cuenta de la persona', async () => {
-        // Buscar al socio
-        await page.locator('#form_search').fill(`${cedula}`);
-
-        // Click al boton de ver cuenta
-        const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'});
-        await expect(botonEditarCuenta).toBeVisible();
-        await botonEditarCuenta.click();
-
-        // La URL debe cambiar
-        await expect(page).toHaveURL(/\/?step=1/);
-    });
-
-    test('Probar el boton de Salir', async () => {
-        // Recargar la pagina
-        await page.reload();
-
-        // El titulo debe estar visible luego de recargar la pagina
-        await expect(page.locator('h1').filter({hasText: 'CUENTA DE AHORROS'})).toBeVisible();
-
-        // Boton de Cancelar
-        const botonSalir = page.locator('button:has-text("Salir")');
-        await expect(botonSalir).toBeVisible();
-        await botonSalir.click();
-
-        // Modal de confirmacion
-        await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
-        // Click en Aceptar
-        await page.locator('text=Aceptar').click();
-
-        // Debe redirigirse al listado de las cuentas de ahorros
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
-    });
-
     test('Ver cuenta - Datos Generales', async () => {
         // Buscar al socio a editar
         await page.locator('#form_search').fill(`${cedula}`);

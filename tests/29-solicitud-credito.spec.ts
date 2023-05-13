@@ -176,17 +176,17 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('text=MENSUAL')).toBeVisible();
 
         // Agregar una cuenta del socio para desembolsar
-        await page.locator('#loan_form_ID_CUENTA_DESEMBOLSO').click();
+        await page.locator('#select-search').first().click();
         // La cuenta de aportaciones no debe estar visible
-        await expect(page.getByText('APORTACIONES')).not.toBeVisible(); 
+        await expect(page.locator('span').filter({hasText: 'APORTACIONES'})).not.toBeVisible(); 
 
         // Seleccionar la cuenta de ahorros
         await page.getByText('AHORROS NORMALES').click();
 
         // Agregar un cuenta para cobrar
-        await page.locator('#loan_form_ID_CUENTA_COBRO').click();
+        await page.locator('#select-search').last().click();
         // La cuenta de aportaciones no debe estar visible
-        await expect(page.getByText('APORTACIONES')).not.toBeVisible();
+        await expect(page.locator('span').filter({hasText: 'APORTACIONES'})).not.toBeVisible(); 
         
         // Seleccionar la cueta de ahorros
         await page.getByText('AHORROS NORMALES').last().click();

@@ -15,8 +15,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = '';
-const apellidoPersona = '';
+const nombrePersona = 'ALINA';
+const apellidoPersona = 'CARABALLO';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -603,9 +603,6 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
         
                 // Cerrar la pagina
                 await page.close();
-        
-                /* Cerrar el context */
-                await context.close();
             });
         });
     }

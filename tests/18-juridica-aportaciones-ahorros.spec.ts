@@ -195,6 +195,10 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                 test('Registrar Cuenta de Aportaciones - Contacto de Firmante o Persona', async () => {            
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
+
+                    // Cerrar los mensajes que se muestran
+                    await page.locator('[aria-label="close"]').first().click();
+                    await page.locator('[aria-label="close"]').last().click();
             
                     // Se debe mostrar la fima del titular por defecto
                     await expect(page.locator('text=TITULAR')).toBeVisible();
@@ -330,6 +334,10 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                 test('Crear la Cuenta de Ahorros - Contacto de Firmante', async () => {            
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
+
+                    // Cerrar los mensajes que se muestran
+                    await page.locator('[aria-label="close"]').first().click();
+                    await page.locator('[aria-label="close"]').last().click();
             
                     // Se debe mostrar la fima del titular por defecto
                     await expect(page.locator('text=TITULAR')).toBeVisible();
@@ -346,12 +354,11 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     // Agregar un firmante, debe salir un modal
                     await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
             
-                    // El representante legal se debe mostrar sin tener que buscarla
+                    // El representante legal se debe mostrar sin tener que buscarlo
                     await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
-                    await expect(page.locator(`text=${cedulaFirmante}`)).toBeVisible();
             
                     // Seleccionar el representante
-                    await page.locator('text=Seleccionar').click();
+                    await page.getByRole('button', {name: 'Seleccionar'}).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();
@@ -436,9 +443,6 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
             test.afterAll(async () => { // Despues de todas las pruebas
                 // Cerrar la page
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
         

@@ -133,10 +133,10 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         await page.locator('#form_CAMB_FECHA').fill(`${formatDate(otroMes)}`);
 
         // Clickear fuera del input de la fecha
-        await page.locator('text=Cambio de Fecha').click();
+        await page.getByText('Cambio de Fecha', {exact: true}).click();
 
         // Se debe mostrar un mensaje con la diferencia de interes por el cambio de fecha
-        await expect(page.locator('div').filter({hasText: 'Diferencia de interes por cambio de fecha es:'})).toBeVisible();
+        await expect(page.getByText('Diferencia de interes por cambio de fecha es:')).toBeVisible();
 
         // Quitar el check de cambio de fecha
         await page.getByLabel('CAMBIO DE FECHA', {exact: true}).uncheck();
@@ -184,10 +184,10 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         // La Cuota Sugerid debe estar marcada
         expect(await page.isChecked('(//INPUT[@type="radio"])[2]')).toBeTruthy();
 
-        // Distribucion de cuenta
+        // Distribucion de cuotas
         await expect(page.getByText('Siguiente Cuota')).toBeVisible();
         await expect(page.getByText('Distribuido')).toBeVisible();
-        await expect(page.getByText('Ultima Cuota')).toBeVisible();
+        await expect(page.getByText('Última Cuota')).toBeVisible();
 
         // Elegir Distribucion Siguiente Cuota
         await page.getByLabel('Siguiente Cuota').check();

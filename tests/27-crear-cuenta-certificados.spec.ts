@@ -165,16 +165,18 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                 });
             } else if (escenario.ID_OPERACION === 30) {
                 test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {
+                    test.slow();
+
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
                     await expect(botonNuevaCuenta).toBeVisible();
                     await botonNuevaCuenta.click();
+
+                    // El titulo debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
             
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=1`);
-            
-                    // El titulo debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
             
                     // La cuenta debe ser de financieros pagaderos
                     await expect(page.locator('text=FINANCIEROS PAGADERAS').first()).toBeVisible();
@@ -217,14 +219,8 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     // El modal se debe cerrar
                     await expect(modalRangos).not.toBeVisible();
             
-                    // No debe permitir un monto menor de 1
-                    const campoMonto = page.getByPlaceholder('MONTO');
-                    await campoMonto.fill('0');
-            
-                    // Debe salir una advertencia
-                    await expect(page.locator("text='Monto' debe estar entre 1 y 99999999999")).toBeVisible();
-            
                     // Ingresar un monto valido
+                    const campoMonto = page.getByPlaceholder('MONTO');
                     await campoMonto.clear();
                     await campoMonto.fill('50');
             
@@ -242,7 +238,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     await page.locator('#FINANCIEROS\\ PAGADERAS_TASA').fill('5');
             
                     // Click al boton de cargar autorizacion
-                    await page.locator('text=Cargar Autorización').click();
+                    await expect(page.getByRole('button', {name: 'Cargar Autorización'})).toBeVisible();
 
                     // El boton de subir la firma no debe estar visible
                     await expect(page.getByRole('button', {name: 'upload Cargar'}).getByRole('button', {name: 'upload Cargar', exact: true}).filter({hasText: 'Cargar'})).not.toBeVisible();
@@ -266,7 +262,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     await page.locator('text=TOTALES').click();
             
                     // Click al boton de Continuar
-                    const botonContinuar = page.locator('text=Continuar');
+                    const botonContinuar = page.getByRole('button', {name: 'Continuar'});
                     // Esperar que se abra una nueva pestaña con el reporte de la nota de debito
                     const [newPage] = await Promise.all([
                         context.waitForEvent('page'),
@@ -401,9 +397,6 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerrar la page
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
     }

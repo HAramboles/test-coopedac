@@ -102,6 +102,9 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     });
 
     test('Boton de Deposito de la cuenta de Aportaciones', async () => {
+        // Debe estar visible la celda de los productos
+        await expect(page.getByText('Producto').first()).toBeVisible();
+
         // Boton de Deposito debe estar visible
         const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});
         await expect(botonDeposito).toBeVisible();

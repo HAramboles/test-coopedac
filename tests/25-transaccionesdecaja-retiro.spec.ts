@@ -110,6 +110,9 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     });
 
     test('Boton de Retiro', async () => {
+        // Debe estar visible la celda de los productos
+        await expect(page.getByText('Producto').first()).toBeVisible();
+        
         // Boton de Retiro debe estar visible
         const botonRetiro = page.locator('text=RETIRO');
         await expect(botonRetiro).toBeVisible();

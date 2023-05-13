@@ -185,9 +185,6 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerrar la page
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
     };

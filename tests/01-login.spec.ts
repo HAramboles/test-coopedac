@@ -75,14 +75,10 @@ test.describe('Pruebas con el Login de Coopedac', () => {
         await expect(page).toHaveURL(/\/login/);
 
         /* Esperar que aparezca un mensaje de error */
-        await expect(
-            page.locator(
-                'text=Ocurrió un error al iniciar sesión, por favor verifique sus datos.')).toBeVisible();
+        await expect(page.locator('text=Ocurrió un error al iniciar sesión, por favor verifique sus datos.')).toBeVisible();
 
         /* Dar click al boton de aceptar que aparece en el mensaje de error */
-        if(page.locator('text=Aceptar')) {
-            await page.locator('text=Aceptar').click();
-        };
+        await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
     test('El login debe ser exitoso y se debe de mandar al usuario a la pagina de inicio', async () => {

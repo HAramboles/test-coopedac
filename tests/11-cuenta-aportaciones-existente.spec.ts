@@ -154,8 +154,8 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                     // Click a la opcion que coincide con lo buscado
                     await page.locator(`text=${cedula}`).click();
             
-                    // El modal debe de salir, luego de ingresar el titular
-                    const modal = page.locator('text=Este cliente ya posee una cuenta de este tipo captación.');
+                    // Debe salir un modal luego de ingresar el titular
+                    const modal = page.locator('text=Este cliente ya posee una cuenta de este tipo.');
                     await expect(modal).toBeVisible();
             
                     // Aceptar y regresar a la pagina de aportaciones
@@ -173,9 +173,6 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
             test.afterAll(async () => { // Despues de todas las pruebas
                 // Cerrar la page
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
     }

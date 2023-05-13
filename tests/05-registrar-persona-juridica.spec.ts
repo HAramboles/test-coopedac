@@ -35,11 +35,11 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = '';
+const nombreJuridica = 'GANADOS CANNAN';
 
 // Nombre del relacionado
-const nombreRelacionado = '';
-const apellidoRelacionado = '';
+const nombreRelacionado = 'AURELIO';
+const apellidoRelacionado = 'CANAAN';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -576,7 +576,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
 
                     // Cerrar el mensaje
-                    await page.locator('.ant-notification-notice-close').last().click();
+                    await page.locator('.ant-notification-notice-close').click();
                 });
             
                 test('Finalizar con el Registro de Persona Juridica', async () => {
@@ -618,9 +618,6 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
         
                 // Cerrar la pagina
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });  
     };

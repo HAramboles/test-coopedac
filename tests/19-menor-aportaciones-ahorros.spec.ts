@@ -248,7 +248,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     // Tipo firmante
                     await page.locator('#form_TIPO_FIRMANTE').click();
                     // Seleccionar un tipo de firmante
-                    await page.locator('text=MADRE').click();
+                    await page.getByRole('option', {name: 'MADRE'}).click();
             
                     // Tipo firma
                     await page.locator('#form_CONDICION').click();
@@ -447,10 +447,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
             };
         
             test.afterAll(async () => { // Despues de las pruebas
-                // Cerrar el context
-                await context.close();
-        
-                // Cerrar la page
+                // Cerrar la pge
                 await page.close();
             });
         });    

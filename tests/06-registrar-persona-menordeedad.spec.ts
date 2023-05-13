@@ -7,6 +7,11 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
+// Cedula, nombre y apellido de la persona almacenada en el state
+let cedulaMadre: string | null;
+let nombreMadre: string | null;
+let apellidoMadre: string | null;
+
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
@@ -15,8 +20,8 @@ const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 
-const nombreMenor = '';
-const apellidoMenor = '';
+const nombreMenor = 'ALEKSANDER';
+const apellidoMenor = 'CARABALLO';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -76,6 +81,11 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
         
                 // Navegar a la URL de la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula, nombre y apellio de la madre
+                cedulaMadre = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                nombreMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellidoMadre = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -409,11 +419,6 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                 });
             
                 test('Registro de Persona Fisica - Menor de Edad - Relacionados', async () => {
-                    // Cedula, nombre y apellido de la persona almacenada en el state
-                    const cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-                    const nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                    const apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            
                     // La url debe cambiar
                     await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=6`);
             
@@ -424,9 +429,9 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                     // Usar la cedula de la persona fisica creada
                     const campoBuscarRelacionado = page.getByRole('combobox');
                     await campoBuscarRelacionado.click();
-                    await campoBuscarRelacionado?.fill(`${cedula}`);
+                    await campoBuscarRelacionado?.fill(`${cedulaMadre}`);
                     // Click a la opcion que coincide con lo buscado
-                    await page.locator(`text=${nombre} ${apellido}`).click();
+                    await page.locator(`text=${nombreMadre} ${apellidoMadre}`).click();
             
                     // Debe de aparecer un modal
                     await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
@@ -468,9 +473,6 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
         
                 // Cerrar la pagina
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
     };

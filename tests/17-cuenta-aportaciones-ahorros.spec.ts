@@ -271,6 +271,10 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                 test('Crear la Cuenta de Ahorros - Contacto de Firmante', async () => {            
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTE'})).toBeVisible();
+
+                    // Cerrar los dos mensajes que se muestran
+                    await page.locator('[aria-label="close"]').first().click();
+                    await page.locator('[aria-label="close"]').last().click();
             
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
@@ -286,6 +290,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                     await buscador.click();
                     await buscador.fill(`${cedulaFirmante}`);
                     // Seleccionar el socio
+                    await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
                     await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
@@ -331,7 +336,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                         await botonAceptar.click()
                     ]);
                   
-                    // La pagina abierta con el reporte se cierra
+                    // Cerrar la nueva pagina con el reporte
                     await newPage.close();
             
                     // El firmante agregado se debe mostrar
@@ -374,9 +379,6 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
             test.afterAll(async () => { // Despues de todas las pruebas
                 // Cerrar la page
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
     }

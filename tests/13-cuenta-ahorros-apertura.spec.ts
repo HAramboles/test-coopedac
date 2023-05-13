@@ -238,6 +238,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     await buscador.click();
                     await buscador.fill(`${cedulaFirmante}`);
                     // Seleccionar el socio
+                    await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
                     await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
@@ -329,9 +330,6 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
             test.afterAll(async () => { // Despues de todas las pruebas
                 // Cerrar la page
                 await page.close();
-
-                // Cerrar el context
-                await context.close();
             });
         });
     }

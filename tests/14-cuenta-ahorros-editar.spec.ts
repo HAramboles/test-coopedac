@@ -205,7 +205,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                     await page.locator('text=Aceptar').click();
             
                     // Debe redirigirse al listado de las cuentas de ahorros
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                    await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
                 });
             
                 test('Editar Cuenta de Ahorros - Datos Generales', async () => {
@@ -329,6 +329,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                     await buscador.click();
                     await buscador.fill(`${cedulaFirmante}`);
                     // Seleccionar el socio
+                    await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
                     await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
@@ -406,9 +407,6 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerrar la page
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
     };

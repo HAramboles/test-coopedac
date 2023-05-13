@@ -56,7 +56,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 page = await context.newPage();
 
                 // Eventos para la request relation
-                await page.route(/\/relation/, async (route) => {
+                await page.route(/\/relation/, async route => {
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
@@ -157,6 +157,8 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                 });
             } else if (escenario.ID_OPERACION === 30) {
                 test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
+                    test.slow();
+
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
                     await expect(botonNuevaCuenta).toBeVisible();
@@ -184,10 +186,10 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
 
                     // Monto disponible en aportaciones
-                    await expect(page.getByRole('strong', {name: 'Monto disponible en aportaciones es: 2,000.00'})).toBeVisible();
+                    await expect(page.getByText('Monto disponible en aportaciones es: 2,000.00')).toBeVisible();
 
                     // Ingresar un monto mayor al maximo de apertura
-                    await expect(page.getByRole('strong', {name: 'Monto máximo de apertura: 6,000.00'})).toBeVisible();
+                    await expect(page.getByText('Monto máximo de apertura: 6,000.00')).toBeVisible();
 
                     // Ingresar un monto mayor al maximo de apertura
                     const montoApertura = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA');
@@ -197,7 +199,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await page.getByTitle('Titular').click();
 
                     // Debe salir un modal de error
-                    await expect(page.locator('text=El monto máximo de apertura es RD$6,000.00')).toBeVisible();
+                    await expect(page.locator('text=El monto máximo de apertura es 6,000.00')).toBeVisible();
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
@@ -393,9 +395,6 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerra la page
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
     }

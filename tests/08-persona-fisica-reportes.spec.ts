@@ -204,9 +204,6 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerrar la page
                 await page.close();
-        
-                // Cerrar el context
-                await context.close();
             });
         });
     };

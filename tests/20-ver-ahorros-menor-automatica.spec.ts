@@ -86,12 +86,12 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
             // Si no llega el tipo de captacion, manualmente dirigise a la url de los ahorros normales
             await page.goto(`${url_base}/crear_cuentas/01-2-5-2/ahorros/18`);
         } else if (await tipoAhorros.isVisible()) {
-            // Seleccionar el tipo de captacion Ahorros Normales
-            await page.locator('text=AHORROS NORMALES').click();
+            // Seleccionar el tipo de captacion Ahorros Infantiles
+            await page.locator('text=AHORROS INFANTILES').click();
         }
 
         // La URL debe de cambiar al elegir el tipo de captacion
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/18`);
     });
 
     test('Ver cuenta - Datos Generales', async () => {
