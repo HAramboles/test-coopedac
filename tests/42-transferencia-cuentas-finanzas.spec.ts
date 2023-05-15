@@ -83,9 +83,9 @@ test.describe('Pruebas con la Transferencia de Cuentas (Finanzas)', () => {
         await botonAnterior.click();
 
         // Debe regresar a la pagina anterior por lo que el titulo debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIAS CUENTAS INTERNAS'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIAS CUENTAS (FINANZAS)'})).toBeVisible();
 
-        // Deben estar visibles la cuenta de origen y de la destino de la transferencia
+        // Debe estar visible el titulo secundario
         await expect(page.locator('h1').filter({hasText: 'Detalle de la Transacción'})).toBeVisible();
 
         // Click en siguiente

@@ -60,7 +60,7 @@ test.describe('Pruebas con la Transferencia de Cuentas de un Socio', () => {
         // Buscar la cuenta de aportaciones preferentes
         await page.locator('#select-search').last().fill(`${cedula}`);
         // Seleccionar la cuenta de Aportaciones Preferentes del socio
-        await page.getByText('APORTACIONES PREFERENTES').click();
+        await page.getByText('APORTACIONES').click();
 
         // Titulo detalle de la transaccion
         await expect(page.locator('h1').filter({hasText: 'Detalle De La Transacción'})).toBeVisible();
@@ -69,7 +69,7 @@ test.describe('Pruebas con la Transferencia de Cuentas de un Socio', () => {
         await page.locator('#form_MONTO').fill('1000');
 
         // Agregar un comentario
-        await page.locator('#form_DESCRIPCION').fill('Transferencia a la Cuenta de Aportaciones Preferentes');
+        await page.locator('#form_DESCRIPCION').fill('Transferencia a la Cuenta de Aportaciones');
 
         // Click en siguiente
         await page.getByRole('button', {name: 'Siguiente'}).click();
@@ -85,7 +85,7 @@ test.describe('Pruebas con la Transferencia de Cuentas de un Socio', () => {
         // Debe regresar a la pagina anterior por lo que el titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIAS CUENTAS INTERNAS'})).toBeVisible();
 
-        // Deben estar visibles la cuenta de origen y de la destino de la transferencia
+        // Debe estar visible el titulo secundario
         await expect(page.locator('h1').filter({hasText: 'Detalle de la Transacción'})).toBeVisible();
 
         // Click en siguiente
@@ -106,7 +106,7 @@ test.describe('Pruebas con la Transferencia de Cuentas de un Socio', () => {
         await expect(page.getByPlaceholder('MONTO')).toHaveValue('RD$ 1,000');
 
         // Comentario
-        await expect(page.getByText('TRANSFERENCIA A LA CUENTA DE APORTACIONES PREFERENTES')).toBeVisible();
+        await expect(page.getByText('TRANSFERENCIA A LA CUENTA DE APORTACIONES')).toBeVisible();
     });
 
     test('Finalizar con la Transferencia entre Cuentas', async () => {

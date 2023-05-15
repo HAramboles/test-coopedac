@@ -72,10 +72,12 @@ test.describe('Pruebas con la Reimpresion en Libreta', () => {
 
         // Restarle 7 dias a la fecha actual
         const dia = new Date();
-        dia.setDate(dia.getDate() - 7);
+        const semana = formatDate(new Date(dia.setDate(dia.getDate() - 7)));
 
-        // Colocar en la fecha inicial uan semana despues desde el dia actual
-        await page.locator('#form_FECHA_CORTE').fill(`${formatDate(dia)}`);
+        // Colocar en la fecha inicial una semana despues desde el dia actual
+        const fechaInicial = page.locator('#form_FECHA_CORTE');
+        await fechaInicial.clear();
+        await fechaInicial.fill(`${semana}`);
 
         // Click en buscar
         await page.getByRole('button', {name: 'Buscar'}).click();
@@ -87,15 +89,15 @@ test.describe('Pruebas con la Reimpresion en Libreta', () => {
 
     test('Cuenta de Aportaciones - Transacciones', async () => {
         // Titulo vista previa debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'VISTA PREVIA'})).toBeVisible();
+        await expect(page.locator('h4').filter({hasText: 'VISTA PREVIA'})).toBeVisible();
 
         // Debe estar la transaccion de 2000 pesos en la libreta de la Cuenta de Aportaciones del Socio
-        await expect(page.getByText('2,000.00').last()).toBeVisible();
+        await expect(page.getByText('2,000.00').first()).toBeVisible();
     });
 
     test('Cuenta de Ahorros - Datos del Socio', async () => {
         // Click en el buscador para elegir otra cuenta del mismo socio
-        await page.locator('#select-search').click();
+        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de Ahorros del socio
         await page.locator('text=AHORROS NORMALES').click();
 
@@ -105,12 +107,12 @@ test.describe('Pruebas con la Reimpresion en Libreta', () => {
 
     test('Cuenta de Ahorros - Transacciones', async () => {
         // Titulo vista previa debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'VISTA PREVIA'})).toBeVisible(); 
+        await expect(page.locator('h4').filter({hasText: 'VISTA PREVIA'})).toBeVisible(); 
 
         // Deben estar las transacciones en la libreta de la Cuenta de Ahorros
-        await expect(page.getByText('100.00').last()).toBeVisible();
-        await expect(page.getByText('2,000.00').last()).toBeVisible();
-        await expect(page.getByText('1,500.00').last()).toBeVisible();
+        await expect(page.getByRole('cell', {name: '100.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '2,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '1,500.00'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

@@ -73,7 +73,7 @@ test.describe('Pruebas con la Reimpresion de la Transferencia entre Cuentas Inte
         // Buscar la cuenta de destino del socio
         await page.locator('#select-search').last().fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de aportaciones preferentes del socio
-        await page.getByRole('option', {name: 'APORTACIONES PREFERENTES'}).click();
+        await page.getByRole('option', {name: '| APORTACIONES |'}).click();
 
         // Click en buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});
@@ -83,7 +83,7 @@ test.describe('Pruebas con la Reimpresion de la Transferencia entre Cuentas Inte
 
     test('Reimprimir la Transferencia entre Cuentas del Socio', async () => {
         // Imprimir el contrato
-        const botonImprimir = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'}).getByRole('button', {name: 'Printer'});
+        const botonImprimir = page.getByRole('row', {name: 'APORTACIONES'}).getByRole('button', {name: 'Printer'});
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),

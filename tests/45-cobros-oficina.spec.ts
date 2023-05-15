@@ -47,7 +47,7 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Cobros de Oficina
-        await page.getByRole('menuitem', {name: 'Cobros de Oficina'}).click();
+        await page.getByRole('menuitem', {name: 'Cobros Oficina'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/cobros_oficina/01-3-2-1/`);
@@ -108,13 +108,13 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         await expect(page.getByText('Saldo total')).toBeVisible();
 
         // Elegir saldar totalmente el prestamo
-        await page.getByRole('checkbox', {name: 'TOTAL_BALANCE'}).check();
+        await page.locator('(//INPUT[@type="checkbox"])[4]').check();
 
         // Agregar un comnetario
         await page.locator('#form_COMENTARIO').fill('Pagar saldo total del prestamo');
 
         // Via de cobro
-        await expect(page.getByText('Vía de cobro:')).toBeVisible();
+        await expect(page.getByText('Vía de cobro')).toBeVisible();
 
         // Enviar a caja
         await expect(page.getByText('Enviar a caja')).toBeVisible();
@@ -126,11 +126,11 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         await page.locator('(//INPUT[@type="radio"])[2]').click();
 
         // Seleccionar la cuenta de ahorros del socio
-        await page.locator('#select-search').click();
+        await page.getByRole('dialog', {name: 'Pago a Préstamo'}).locator('#select-search').click();
         await page.getByText('AHORROS NORMALES').click();
 
         // Debe mostrarse el monto disponible de la cuenta
-        await expect(page.getByText('Disponible: RD$')).toBeVisible();
+        await expect(page.locator('text=RD$ 48,050.00')).toBeVisible();
 
         // Ocultar los detalles de pago
         await page.getByText('Detalle de Pago').click();

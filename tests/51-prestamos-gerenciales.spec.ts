@@ -61,14 +61,12 @@ test.describe('Pruebas con la Impresion de Prestamos Gerenciales', () => {
         // Tipo Garantia
         await expect(page.getByText('TODOS').first()).toBeVisible();
         // Cambiar el tipo de garantia
-        await page.locator('#form_ID_CLASE_GARANTIA').click();
+        await page.locator('(//DIV[@class="ant-select-selector"])[3]').click();
         // Elegir el tipo de garantia hipotecaria
         await page.getByText('HIPOTECARIAS').click();
 
         // Oferta
-        await expect(page.getByText('CRÉDITO CON GARANTÍAS DE APORTACIONES -1M')).toBeVisible();
-        // Cambiar la oferta por defecto
-        await page.locator('#form_ID_OFERTA').click();
+        await page.locator('(//DIV[@class="ant-select-selector"])[4]').click();
         // Elegir la oferta hipotecaria
         await page.getByText('CRÉDITO HIPOTECARIO').click();
 
@@ -77,7 +75,7 @@ test.describe('Pruebas con la Impresion de Prestamos Gerenciales', () => {
         // await grupos.click();
         await grupos.fill('SIN GA')
         // Elegir el grupo sin garantia
-        await page.getByText('SIN GARANTIA').click();
+        await page.getByText('SIN GARANTIA', {exact: true}).click();
 
         // Monto inicial
         await expect(page.locator('#form_MONTO_INICIAL')).toHaveValue('RD$ 0');

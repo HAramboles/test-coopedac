@@ -80,19 +80,19 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
         await expect(page.getByText('CRÉDITO HIPOTECARIO')).toBeVisible();
 
         // Moneda del Credito
-        await expect(page.getByText('RD')).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RD'})).toBeVisible();
 
         // Tasa del Credito
         await expect(page.getByText('10.00%	')).toBeVisible();
 
         // Monto Desembolsado del Credito
-        await expect(page.getByText('50,000.00')).toBeVisible();
+        await expect(page.getByText('50,000.00').first()).toBeVisible();
 
         // Estado del Credito
         await expect(page.getByText('DESEMBOLSADO')).toBeVisible();
 
         // Imprimir Estado a la Fecha de Corte
-        const botonImprimirEstado = page.locator('[data-icon="printer"]');
+        const botonImprimirEstado = page.getByRole('button', {name: 'printer', exact: true});
         // Esperar que se abra una nueva pestaña
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -125,7 +125,7 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
         await expect(page.locator('h1').filter({hasText: 'ÚLTIMO PAGO'})).toBeVisible();
 
         // Total pagado
-        await expect(page.locator('h1').filter({hasText: 'TOTAL PAGADO:'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'TOTAL PAGADO:'}).first()).toBeVisible();
         await expect(page.locator('text=12,000.00').last()).toBeVisible();
     });
 
@@ -210,13 +210,13 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
 
         // La tabla debe estar visible
         await expect(page.getByText('No. Cuota')).toBeVisible();
-        await expect(page.getByText('Fecha Cuota')).toBeVisible();
-        await expect(page.getByText('Capital')).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Fecha Cuota'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Capital', exact: true})).toBeVisible();
         await expect(page.getByText('Interes').last()).toBeVisible();
         await expect(page.getByText('Mora').last()).toBeVisible();
-        await expect(page.getByText('Seguro')).toBeVisible();
-        await expect(page.getByText('Otros')).toBeVisible();
-        await expect(page.getByText('Total').last()).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Seguro'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Otros'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Total'}).last()).toBeVisible();
     });
 
     test('Ver Tabla de Amortización', async () => {
@@ -226,15 +226,15 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
         await tablaAmortizacion.click();
 
         // La tabla debe estar visible
-        await expect(page.getByText('No. Cuota')).toBeVisible();
-        await expect(page.getByText('Fecha').last()).toBeVisible();
-        await expect(page.getByText('Abono Programado')).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'No. Cuota'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Fecha'}).last()).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Abono Programado'})).toBeVisible();
         await expect(page.getByText('Capital').last()).toBeVisible();
         await expect(page.getByText('Interés').last()).toBeVisible();
-        await expect(page.getByText('Seguro')).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Seguro'})).toBeVisible();
         await expect(page.getByText('Cargos').last()).toBeVisible();
-        await expect(page.getByText('Total').last()).toBeVisible();
-        await expect(page.getByText('Balance')).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Total'}).last()).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Balance'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

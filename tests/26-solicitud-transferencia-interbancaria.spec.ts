@@ -75,6 +75,10 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
         // Cuenta de origen
         const campoCuentaOrigen = page.locator('#form_ID_CUENTA_DEBITAR');
         await campoCuentaOrigen.click();
+        // No deben mostrarse ni la cuenta de Aportaciones ni la de Aportaciones Preferentes del socio
+        await expect(page.getByText('APORTACIONES', {exact: true})).not.toBeVisible();
+        await expect(page.getByText('APORTACIONES PREFERENTES', {exact: true})).not.toBeVisible();
+
         // Seleccionar ahorros normales
         await page.locator('text=AHORROS NORMALES').click();
     
@@ -172,11 +176,11 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
         await campoBancoOrigen.click();
         // Elegir un banco de las opciones que aparecen
         await page.locator('text=COOPEDAC').click();
+
+        // El tipo cuenta destino debe ser el tipo elegido en la solicitus, en este caso, de ahorros
+        await expect(page.getByText('CUENTA AHORROS')).toBeVisible();
     
-        // Ingresar un codigo de referencia
-        const campoNoReferencia = page.locator('#form_REFERENCIA');
-        await expect(campoNoReferencia).toBeVisible();
-        await campoNoReferencia?.fill('987654321'); 
+        // El numero de Referencia es opcional, por lo que no se colocara uno
     
         // Activar los impuestos
         await page.locator('text=Impuestos').click();
