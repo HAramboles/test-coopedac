@@ -452,7 +452,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Boton de Finalizar
         const botonFinalizar = page.getByRole('button', {name: 'check Finalizar'});
         // Esperar que se abra una nueva pestaña
-        const [newPage] = await Promise.all([
+        const [newPage, newPage2, newPage3] = await Promise.all([
+            context.waitForEvent('page'),
+            context.waitForEvent('page'),
+            // Por ahora saldran 3 reportes
             context.waitForEvent('page'),
             // Click al boton de Finalizar
             await expect(botonFinalizar).toBeVisible(),
@@ -461,6 +464,12 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         
         // Cerrar la pagina con la solicitud
         await newPage.close();
+
+        // Cerrar la pagina con la tabla de amortizacion
+        await newPage2.close();
+
+        // Cerrar la pagina con el tercer reporte
+        await newPage3.close();
     });
 
     test('Cambiar el estado de la Solicitud de Solicitado a En Proceso (Analisis)', async () => {
