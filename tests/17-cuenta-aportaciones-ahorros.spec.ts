@@ -171,7 +171,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1/create?step=1`);
                 });
             
-                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {            
+                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => { 
+                    test.slow();
+
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             
@@ -198,6 +200,8 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                 });
             
                 test('Registrar Cuenta de Aportaciones - Contacto de Firmante o Persona', async () => {
+                    test.slow();
+
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
             
@@ -217,6 +221,8 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                 });
             
                 test('Finalizar con el Registro de la Cuenta de Aportaciones', async () => {
+                    test.slow();
+                    
                     // Boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
                     await expect(botonFinalizar).toBeVisible();

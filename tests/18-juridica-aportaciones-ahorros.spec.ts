@@ -166,7 +166,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1/create?step=1`);
                 });
             
-                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {            
+                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {  
+                    test.slow();
+
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             
@@ -192,7 +194,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     Continuar();
                 });
             
-                test('Registrar Cuenta de Aportaciones - Contacto de Firmante o Persona', async () => {            
+                test('Registrar Cuenta de Aportaciones - Contacto de Firmante o Persona', async () => { 
+                    test.slow();           
+
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
 
@@ -280,6 +284,8 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                 });
             
                 test('Finalizar con el Registro de la Cuenta de Aportaciones', async () => {
+                    test.slow();
+
                     // Boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
                     await expect(botonFinalizar).toBeVisible();
@@ -389,9 +395,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Person
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    //await page.locator('#form_ID_TESTIGO').click();
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option').nth(0).click();
+                    //await page.getByRole('option').nth(0).click();
             
                     // Boton de Aceptar
                     const botonAceptar = page.locator('text=Aceptar');

@@ -110,6 +110,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Se debe mostrar un modal
         await expect(page.locator('text=No se ha actualizado la información laboral de la persona. ¿Desea continuar?')).toBeVisible();
+        
         // Click en Aceptar
         await page.locator('text=Aceptar').click();
     });
@@ -213,14 +214,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await cargos.click();
         await page.locator('#VALOR').fill('50');
 
-        // Guardar los cargos
-        await page.getByRole('button', {name: 'Guardar Cargos'}).click();
-
-        // Cerrar los dos mensajes que aparecen
-        await page.locator('[aria-label="close"]').first().click();
-
         // El titulo principal debe estar visible
         await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
+
+        // Probar la opcion de seleccionar la aseguradora en los cargos si se eleige un seguro
         
         // Boton de agregar cuotas 
         const agregarCuota = page.locator('[aria-label="plus"]');
@@ -229,8 +226,37 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Debe salir un modal
         await expect(page.locator('text=AGREGAR CARGO')).toBeVisible();
-        // Cerrar el modal
-        await page.getByRole('button', {name: 'Close'}).click();
+
+        // Buscar un seguro
+        await page.locator('#form_DESC_CARGO').fill('SEGURO DE');
+        // Elegir el seguro de vida
+        await page.locator('text=SEGURO DE VIDA').click();
+
+        // Debe de colocarse automaticamente que es un seguro
+        await expect(page.locator('(//INPUT[@type="radio"])[1]')).toBeChecked();
+
+        // Elegir una aseguradora
+        await page.locator('#form_ID_ASEGURADORA').fill('SEGUROS');
+        // Elegir seguros mapfre
+        await page.locator('text=SEGUROS MAPFRE').click();
+
+        // Colocar un valor
+        const campoValor = page.locator('#form_VALOR');
+        await campoValor.clear();
+        await campoValor.fill('50');
+
+        // La via de cobro por defecto debe ser cobro en desembolso
+        await expect(page.getByText('COBRO EN DESEMBOLSO')).toBeVisible();
+
+        // Click en guardar
+        await page.getByRole('button', {name: 'Guardar'}).click();
+
+        // Cerrar los mensajes
+        await page.locator('[aria-label="close"]').first().click();
+        await page.locator('[aria-label="close"]').last().click();
+
+        // Guardar los cargos
+        await page.getByRole('button', {name: 'Guardar Cargos'}).click();
         
         // Click en guardar y continuar
         GuardaryContinuar();
@@ -260,7 +286,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('text=FLUJO DE EFECTIVO')).toBeVisible();
 
         // Click en actualizar y continuar
-        GuardaryContinuar()
+        GuardaryContinuar();
     });
 
     test('Paso 6 - Representantes legales', async () => {

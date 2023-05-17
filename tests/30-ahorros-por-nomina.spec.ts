@@ -38,7 +38,7 @@ const EscenariosPrueba: CrearAhorrosParametros[] = [
 
 // Pruebas
 
-test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros', async () => {
+test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
@@ -123,18 +123,18 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                 await botonCaptaciones.click();
         
                 // Constante con la opcion de ahorros normales
-                const tipoAhorros = page.locator('text=AHORROS NORMALES');
+                const tipoAhorros = page.locator('text=AHORROS POR NOMINA');
         
                 if (await tipoAhorros.isHidden()) {
                     // Si no llega el tipo de captacion, manualmente dirigise a la url de los ahorros normales
-                    await page.goto(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                    await page.goto(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19`);
                 } else if (await tipoAhorros.isVisible()) {
                     // Seleccionar el tipo de captacion Ahorros Normales
-                    await page.locator('text=AHORROS NORMALES').click();
+                    await page.locator('text=AHORROS POR NOMINA').click();
                 }
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19`);
             });
 
             if (escenario.ID_OPERACION === '') {
@@ -178,22 +178,23 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16/create?step=1`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19/create?step=1`);
             
                     // El titulo de Registrar Cuenta debe estar visible
                     await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
                 });
             
-                test('Llenar los campos del primer paso del registro de cuenta de ahorros', async () => {
+                test('Llenar los campos del primer paso del registro de cuenta de ahorros - orden de pago', async () => {
                     // Titular
                     const campoTitular = page.locator('#select-search');
-            
-                    await campoTitular?.fill(`${cedula}`);
+                    
+                    // Buscar un socio
+                    await campoTitular?.fill('CAITLYN CASTILLO');
                     // Seleccionar la opcion que aparece
-                    await page.locator(`text=${cedula}`).click();
+                    await page.locator('text=CAITLYN CASTILLO').click();
             
                     // El tipo de captacion debe ser Ahorros
-                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await expect(page.locator('text=AHORROS POR NOMINA').first()).toBeVisible();
             
                     // Subir la imagen de la firma
                     const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
@@ -207,20 +208,10 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
             
                 test('Contacto de Firmante o Persona', async () => {             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16/create?step=2`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19/create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
-            
-                    // Cambiar a la pestaña de Personas o Contactos
-                    const seccionPersonaContactos = page.locator('text=Personas o Contactos');
-                    await seccionPersonaContactos.click();
-            
-                    // Titulo de la seccion debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'CONTACTOS CON LA PERSONAS O EMPRESA'})).toBeVisible();
-            
-                    // Regresar a la seccion de firmantes
-                    await page.getByRole('tab').filter({hasText: 'Firmantes'}).click();
             
                     // Cerrar uno de los mensajes que aparecen
                     await page.locator('[aria-label="close"]').first().click();
@@ -237,10 +228,10 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     // Bucar un socio
                     const buscador = page.locator('#select-search');
                     await buscador.click();
-                    await buscador.fill(`${cedulaFirmante}`);
+                    await buscador.fill('NADIA ESCOBAR RUIZ');
                     // Seleccionar el socio
-                    await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
-                    await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
+                    await expect(page.locator('text=NADIA ESCOBAR RUIZ')).toBeVisible();
+                    await page.locator('text=NADIA ESCOBAR RUIZ').click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();
@@ -289,7 +280,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     await newPage.close();
             
                     // El firmante agregado se debe mostrar
-                    await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
+                    await expect(page.getByRole('row', {name: 'NADIA ESCOBAR RUIZ'})).toBeVisible();
             
                     // Click al boton de Continuar
                     Continuar();
@@ -297,7 +288,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
             
                 test('Metodo de intereses', async () => {
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16/create?step=3`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19/create?step=3`);
                     
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
@@ -321,7 +312,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     await newPage.close();
                     
                     // Debe de regresar a la pagina las cuentas de ahorros
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19`);
             
                     // El titulo de Ahorros debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();

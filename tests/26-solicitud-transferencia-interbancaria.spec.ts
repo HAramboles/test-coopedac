@@ -106,8 +106,9 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
         // Banco de destino
         const campoBancoDestino = page.locator('#form_ID_BANCO_DESTINO');
         await campoBancoDestino.click();
-        // Seleccionar Alaver
-        await page.locator('text=ALAVER').click();
+        await campoBancoDestino.fill('BANRES');
+        // Seleccionar Banreservas
+        await page.locator('text=BANRESERVAS').click();
     
         // Titular / Apoderado
         await page.locator('#form_TITULAR_APODERADO').click();

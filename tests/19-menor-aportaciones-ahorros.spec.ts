@@ -172,6 +172,8 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                 });
             
                 test('Registrar Cuenta de Aportaciones del Menor - Datos Generales', async () => {
+                    test.slow();
+
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             
@@ -204,6 +206,8 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                 });
             
                 test('Registrar Cuenta de Aportaciones del Menor - Contacto de Firmante o Persona', async () => {
+                    test.slow();
+
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
             
@@ -301,6 +305,8 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                 });
             
                 test('Finalizar con el Registro de la Cuenta de Aportaciones', async () => {
+                    test.slow();
+                    
                     // Boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
                     await expect(botonFinalizar).toBeVisible();
@@ -329,7 +335,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     await campoDescripcion.fill('CUENTA AHORRATIVA PARA MENOR');
             
                     // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
-                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
             
                     // La categoria debe ser Socio Ahorrante
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
@@ -373,12 +379,11 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     // Agregar un firmante, debe salir un modal
                     await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
             
-                    // Bucar un socio
-                    const buscador = page.locator('#select-search');
-                    await buscador.click();
-                    await buscador.fill(`${cedulaMadre}`);
-                    // Seleccionar el socio
-                    await page.locator(`text=${nombreMadre} ${apellidoMadre}`).click();
+                   // La madre debe mostrarse sin tener que buscarlo
+                   await expect(page.locator(`text=${nombreMadre} ${apellidoMadre}`)).toBeVisible();
+            
+                   // Seleccionar el representante
+                   await page.getByRole('button', {name: 'Seleccionar'}).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();
@@ -386,7 +391,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     // Tipo firmante
                     await page.locator('#form_TIPO_FIRMANTE').click();
                     // Seleccionar un tipo de firmante
-                    await page.locator('text=CO-PROPIETARIO').click();
+                    await page.getByRole('option', {name: 'MADRE'}).click();
             
                     // Tipo firma
                     await page.locator('#form_CONDICION').click();

@@ -82,6 +82,8 @@ test.describe('Pruebas con la Confirmacion de Transferencia Interbancaria', () =
     
         // El tipo cuenta destino debe ser el tipo elegido en la solicitus, en este caso, de ahorros
         await expect(page.getByText('CUENTA AHORROS')).toBeVisible();
+        
+        // Probar que el cargo porque los bancos son diferentes se agregue y se muestre
     
         // El numero de Referencia es opcional, por lo que no se colocara uno
     

@@ -35,11 +35,11 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'GANADOS CANNAN';
+const nombreJuridica = 'AGRONOMOS AM';
 
 // Nombre del relacionado
-const nombreRelacionado = 'AURELIO';
-const apellidoRelacionado = 'CANAAN';
+const nombreRelacionado = 'MICHAEL';
+const apellidoRelacionado = 'OBRERO';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -219,7 +219,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     const categoriaSolicitada = page.locator('#legalPerson_ID_CATEGORIA_SOLICITADA');
                     await categoriaSolicitada.click();
                     // Seleccionar una categoria
-                    await page.locator('text=SOCIO AHORRANTE').click();
+                    await page.locator('text=SOCIO EMPRESARIAL').click();
             
                     // Click al boton de no referido
                     await page.locator('#legalPerson_NO_REFERIDO').click();
@@ -534,10 +534,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await page.locator('button', { has: page.locator('span > svg[data-icon=save]')}).click();
 
                     // Se debe mostrar un mensaje de que se han guardado correctamente los datos
-                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
-
-                    // Cerrar el mensaje
-                    await page.locator('.ant-notification-notice-close').click();
+                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.').first()).toBeVisible();
                 });
             
                 test('Registro de Persona Juridica - Relacionados del socio - Emails / Redes Sociales', async () => {
@@ -573,10 +570,11 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'}).click();
 
                     // Se debe mostrar un mensaje de que se han guardado correctamente los datos
-                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
+                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.').last()).toBeVisible();
 
-                    // Cerrar el mensaje
-                    await page.locator('.ant-notification-notice-close').click();
+                    // Cerrar los mensajes
+                    await page.locator('.ant-notification-notice-close').first().click();
+                    await page.locator('.ant-notification-notice-close').last().click();
                 });
             
                 test('Finalizar con el Registro de Persona Juridica', async () => {
