@@ -107,22 +107,23 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         // Saldo total
         await expect(page.getByText('Saldo total')).toBeVisible();
 
-        // Elegir saldar totalmente el prestamo
-        await page.locator('(//INPUT[@type="checkbox"])[4]').check();
+        // Pagar la mitad del prestamo, en este caso 25,000
+        await page.locator('#form_MONTO_ABONO_CAPITAL').fill('25,000');
+
+        // El total a pagar debe ser la misma cantidad que la ingresada en el abono capital
+        await expect(page.locator('text=Total a pagar')).toBeVisible();
+        await expect(page.locator('#form_A_PAGAR')).toHaveValue('RD$ 25,000');
 
         // Agregar un comnetario
-        await page.locator('#form_COMENTARIO').fill('Pagar saldo total del prestamo');
+        await page.locator('#form_COMENTARIO').fill('Pagar la mitad del total del prestamo');
+    });
 
+    test('Cobrar de Cuenta', async () => {
         // Via de cobro
-        await expect(page.getByText('Vía de cobro')).toBeVisible();
+        await expect(page.locator('text=Vía de cobro')).toBeVisible();
 
-        // Enviar a caja
-        await expect(page.getByText('Enviar a caja')).toBeVisible();
-
-        // Cobrar de cuenta
+        // Elegir la opcion de cobrar de cuenta
         await expect(page.getByText('Cobrar de cuenta')).toBeVisible();
-
-        // Marcar la opcion de cobrar de cuenta
         await page.locator('(//INPUT[@type="radio"])[2]').click();
 
         // Seleccionar la cuenta de ahorros del socio
@@ -131,10 +132,9 @@ test.describe('Pruebas con Cobros de Oficina', () => {
 
         // Debe mostrarse el monto disponible de la cuenta
         await expect(page.locator('text=RD$ 48,050.00')).toBeVisible();
+    });
 
-        // Ocultar los detalles de pago
-        await page.getByText('Detalle de Pago').click();
-
+    test('Realizar el pago', async () => {
         // Boton Aplicar
         const botonAplicar = page.getByRole('button', {name: 'Aplicar'});
         // Esperar que se abran dos ventanas con los reportes
