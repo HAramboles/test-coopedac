@@ -55,11 +55,9 @@ test.describe('Pruebas con la Cancelacion de una Cuenta', () =>{
 
     test('Cuentas del Socio elegido', async () => {
         // Buscar un socio
-        await page.locator('#select-search').fill('CAITLYN CASTILLO');
-        // await page.locator('#select-search').fill(`${cedula}`);
+        await page.locator('#select-search').fill(`${cedula}`);
         // Elegir al socio
-        await page.locator('text=CAITLYN CASTILLO').click();
-        //await page.locator(`text=${nombre} ${apellido}`).click();
+        await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Titulo seleccionar cuentas
         await expect(page.locator('h1').filter({hasText: 'Seleccionar Cuenta(S)'})).toBeVisible();

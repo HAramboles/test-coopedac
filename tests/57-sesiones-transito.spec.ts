@@ -144,7 +144,6 @@ test.describe('Pruebas con la Sesion en Transito luego de enviar a Caja el Pago 
 
         // Hacer click al boton de Aceptar
         const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
-
         // Se abrira una nueva pagina con el reporte del deposito
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),

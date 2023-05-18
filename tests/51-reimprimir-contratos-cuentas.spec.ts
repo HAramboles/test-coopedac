@@ -78,25 +78,6 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pageAportaciones.close();
     });
 
-    test('Reimprimir Contrato - Cuenta de Ahorros', async () => {
-        // Cuenta de Ahorros
-        const cuentaAhorros = page.getByRole('row', {name: 'AHORROS NORMALES'});
-        await expect(cuentaAhorros).toBeVisible();
-
-        // Generar contrato
-        const contratoAhorros = cuentaAhorros.locator('[data-icon="file-text"]');
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [pageAhorros] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(contratoAhorros).toBeVisible(),
-            await contratoAhorros.click()
-        ]);
-
-        // Cerrar la pagina con el reporte
-        await pageAhorros.close();
-    });
-
     test('Reimprimir Contrato - Cuenta de Aportaciones Preferentes', async () => {
         // Cuenta de Aportaciones Preferentes
         const cuentaAportacionesPreferentes = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'});
@@ -116,6 +97,63 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         // Cerrar las dos paginas con los reportes
         await pageAportacionesPreferentes.close();
         await pageAportacionesPreferentes2.close();
+    });
+
+    test('Reimprimir Contrato - Cuenta de Ahorros Normales', async () => {
+        // Cuenta de Ahorros
+        const cuentaAhorrosNormales = page.getByRole('row', {name: 'AHORROS NORMALES'});
+        await expect(cuentaAhorrosNormales).toBeVisible();
+
+        // Generar contrato
+        const contratoAhorrosNormales = cuentaAhorrosNormales.locator('[data-icon="file-text"]');
+        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
+        const [pageAhorros] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(contratoAhorrosNormales).toBeVisible(),
+            await contratoAhorrosNormales.click()
+        ]);
+
+        // Cerrar la pagina con el reporte
+        await pageAhorros.close();
+    });
+
+    test('Reimprimir Contrato - Cuenta de Ahorros Por Nomina', async () => {
+        // Cuenta de Ahorros
+        const cuentaAhorrosNomina = page.getByRole('row', {name: 'AHORROS POR NOMINA'});
+        await expect(cuentaAhorrosNomina).toBeVisible();
+
+        // Generar contrato
+        const contratoAhorrosNomina = cuentaAhorrosNomina.locator('[data-icon="file-text"]');
+        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
+        const [pageAhorrosNomina] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(contratoAhorrosNomina).toBeVisible(),
+            await contratoAhorrosNomina.click()
+        ]);
+
+        // Cerrar la pagina con el reporte
+        await pageAhorrosNomina.close();
+    });
+
+    test('Reimprimir Contrato - Cuenta de Ahorros - Orden de Pago', async () => {
+        // Cuenta de Ahorros
+        const cuentaAhorrosOrdenPago = page.getByRole('row', {name: 'ORDEN DE PAGO'});
+        await expect(cuentaAhorrosOrdenPago).toBeVisible();
+
+        // Generar contrato
+        const contratoAhorrosOdenPago = cuentaAhorrosOrdenPago.locator('[data-icon="file-text"]');
+        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
+        const [pageAhorrosOrdenPago] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(contratoAhorrosOdenPago).toBeVisible(),
+            await contratoAhorrosOdenPago.click()
+        ]);
+
+        // Cerrar la pagina con el reporte
+        await pageAhorrosOrdenPago.close();
     });
 
     test('Reimprimir Contrato - Cuenta de Certificados - Financieros Pagaderas', async () => {

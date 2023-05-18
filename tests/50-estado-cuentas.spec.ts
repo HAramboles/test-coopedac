@@ -89,14 +89,20 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         // Cuenta de Aportaciones
         await expect(page.getByRole('cell', {name: 'APORTACIONES', exact: true}).first()).toBeVisible();
 
-        // Cuenta de Ahorros
+        // Cuenta de Aportaciones Preferentes
+        await expect(page.getByRole('cell', {name: 'APORTACIONES PREFERENTES', exact: true})).toBeVisible();
+
+        // Cuenta de Ahorros Normales
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES', exact: true}).first()).toBeVisible();
+
+        // Cuenta de Ahorros Por Nomina
+        await expect(page.getByRole('cell', {name: 'AHORROS POR NOMINA', exact: true})).toBeVisible();
+
+        // Cuenta de Aportaciones Preferentes - Orden de pago
+        await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();
 
         // Cuenta de Certificados - Financieros Pagaderas
         await expect(page.getByRole('cell', {name: 'FINANCIEROS PAGADERAS', exact: true})).toBeVisible();
-
-        // Cuenta de Aportaciones Preferentes
-        await expect(page.getByRole('cell', {name: 'APORTACIONES PREFERENTES', exact: true})).toBeVisible();
 
         // Credito Hipotecario
         await expect(page.getByRole('cell', {name: 'CRÉDITO HIPOTECARIO', exact: true})).toBeVisible();
@@ -156,9 +162,34 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await page.getByText('TODAS').click();
     });
 
+    test('Ver los movimientos de la cuenta de Aportaciones Preferentes', async () => {
+        // Boton de ver movimientos
+        const verMovimientos = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'}).locator('[data-icon="export"]');
+        // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(verMovimientos).toBeVisible(),
+            await verMovimientos.click()
+        ]);
+
+        // La URL de la pagina debe contene que es una consulta de una cuenta
+        await expect(newPage).toHaveURL(/\/consulta_captaciones/);
+
+        // El titulo de movimienos de cuenta debe estar visible
+        await expect(newPage.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS CUENTA'})).toBeVisible();
+
+        // Tienen que estar los dos movimientos realizados
+        await expect(newPage.locator('text=DEPOSITO INICIAL APERTURA CERTIFICADO APORTACIONES PREFERENTES')).toBeVisible();
+        await expect(newPage.locator('text=TRANSFERENCIA A LA CUENTA DE APORTACIONES PREFERENTES (FINANZAS)')).toBeVisible();
+
+        // Cerrar la pagina
+        await newPage.close();
+    });
+
     test('Ver los movimientos de la cuenta de Ahorros Normales', async () => {
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'AHORROS NORMALES'}).locator('[data-icon="export"]').first();
+        const verMovimientos = page.getByRole('row', {name: 'AHORROS NORMALES'}).locator('[data-icon="export"]');
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -182,6 +213,54 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await expect(newPage.locator('text=GENERADO AUTOMATICAMENTE PARA APLICAR DESEMBOLSO PRESTAMO')).toBeVisible();
         await expect(newPage.getByRole('cell', {name: 'TRANSFERENCIA A LA CUENTA DE APORTACIONES', exact: true})).toBeVisible();
         await expect(newPage.locator('text=TRANSFERENCIA A LA CUENTA DE APORTACIONES PREFERENTES (FINANZAS)')).toBeVisible();
+
+        // Cerrar la pagina
+        await newPage.close();
+    });
+
+    test('Ver los movimientos de la cuenta de Ahorros Por Nomina', async () => {
+        // Boton de ver movimientos
+        const verMovimientos = page.getByRole('row', {name: 'AHORROS POR NOMINA'}).locator('[data-icon="export"]');
+        // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(verMovimientos).toBeVisible(),
+            await verMovimientos.click()
+        ]);
+
+        // La URL de la pagina debe contene que es una consulta de una cuenta
+        await expect(newPage).toHaveURL(/\/consulta_captaciones/);
+
+        // El titulo de movimienos de cuenta debe estar visible
+        await expect(newPage.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS CUENTA'})).toBeVisible();
+
+        // No tiene que tener ningun movimiento
+        await expect(page.getByText('No hay datos')).toBeVisible();
+
+        // Cerrar la pagina
+        await newPage.close();
+    });
+
+    test('Ver los movimientos de la cuenta de Ahorros - Orden de Pago', async () => {
+        // Boton de ver movimientos
+        const verMovimientos = page.getByRole('row', {name: 'ORDEN DE PAGO'}).locator('[data-icon="export"]');
+        // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(verMovimientos).toBeVisible(),
+            await verMovimientos.click()
+        ]);
+
+        // La URL de la pagina debe contene que es una consulta de una cuenta
+        await expect(newPage).toHaveURL(/\/consulta_captaciones/);
+
+        // El titulo de movimienos de cuenta debe estar visible
+        await expect(newPage.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS CUENTA'})).toBeVisible();
+
+        // No tiene que tener ningun movimiento
+        await expect(page.getByText('No hay datos')).toBeVisible();
 
         // Cerrar la pagina
         await newPage.close();
@@ -213,31 +292,6 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await expect(newPage.getByRole('cell', {name: 'DEPOSITO INICIAL APERTURA CERTIFICADO FINANCIEROS PAGADERAS'})).toBeVisible();
         await expect(newPage.getByRole('cell', {name: 'INGRESO DE 2050 PESOS A LA CUENTA DE CERTIFICADO'})).toBeVisible();
         await expect(newPage.getByRole('cell', {name: 'DEBITO DE 600 PESOS A LA CUENTA DE CERTIFICADO'})).toBeVisible();
-
-        // Cerrar la pagina
-        await newPage.close();
-    });
-
-    test('Ver los movimientos de la cuenta de Aportaciones Preferentes', async () => {
-        // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'}).locator('[data-icon="export"]');
-        // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(verMovimientos).toBeVisible(),
-            await verMovimientos.click()
-        ]);
-
-        // La URL de la pagina debe contene que es una consulta de una cuenta
-        await expect(newPage).toHaveURL(/\/consulta_captaciones/);
-
-        // El titulo de movimienos de cuenta debe estar visible
-        await expect(newPage.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS CUENTA'})).toBeVisible();
-
-        // Tienen que estar los dos movimientos realizados
-        await expect(newPage.locator('text=DEPOSITO INICIAL APERTURA CERTIFICADO APORTACIONES PREFERENTES')).toBeVisible();
-        await expect(newPage.locator('text=TRANSFERENCIA A LA CUENTA DE APORTACIONES PREFERENTES (FINANZAS)')).toBeVisible();
 
         // Cerrar la pagina
         await newPage.close();

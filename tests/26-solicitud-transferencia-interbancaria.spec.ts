@@ -15,7 +15,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe('Test con Solicitud Transferencia Interbancaria', () => {
+test.describe('Pruebas con la Solicitud de Transferencia Interbancaria', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         browser = await chromium.launch({ 
           headless: false,
@@ -37,7 +37,7 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
-    
+
     test('Ir a la opcion de Solicitud Transferencia Interbancaria', async () => {
         // Captaciones
         await page.locator("text=CAPTACIONES").click();
@@ -131,6 +131,15 @@ test.describe('Test con Solicitud Transferencia Interbancaria', () => {
     
         // La pagina abierta con la solicitud se cierra
         await newPage.close();
+
+        // Regresar a la pagina
+        await expect(page.locator('h1').filter({hasText: 'SOLICITUD TRANSFERENCIA INTERBANCARIA'})).toBeVisible();
+
+        // Se debe mostrar un mensaje de que se hizo la solicitud correctamente
+        await expect(page.locator('text=Encabezado programación de pagos almacenado exitosamente.')).toBeVisible();
+
+        // Cerrar el mensaje
+        await page.locator('[aria-label="close"]').click();
     });
     
     test.afterAll(async () => { // Despues de las pruebas

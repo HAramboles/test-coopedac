@@ -79,13 +79,17 @@ test.describe('Pruebas con la Confirmacion de Transferencia Interbancaria', () =
         await campoBancoOrigen.click();
         // Elegir un banco de las opciones que aparecen
         await page.locator('text=COOPEDAC').click();
+
+        // Se debe colocar automaticamente la cuenta de origen al selecciona el banco
+        await expect(page.locator('#'))
     
-        // El tipo cuenta destino debe ser el tipo elegido en la solicitus, en este caso, de ahorros
+        // El tipo cuenta destino debe ser el tipo elegido en la solicitud, en este caso, de ahorros
         await expect(page.getByText('CUENTA AHORROS')).toBeVisible();
         
         // Probar que el cargo porque los bancos son diferentes se agregue y se muestre
     
-        // El numero de Referencia es opcional, por lo que no se colocara uno
+        // El numero de Referencia es opcional, por lo que no se colocara uno, por lo que debe estar vacio
+        await expect(page.locator('#form_REFERENCIA')).toHaveValue('');
     
         // Activar los impuestos
         await page.locator('text=Impuestos').click();

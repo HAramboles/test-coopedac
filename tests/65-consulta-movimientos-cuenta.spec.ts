@@ -135,7 +135,7 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         await expect(page.getByRole('row', { name: 'Balance Final : 2,500.00' })).toBeVisible();
     });
 
-    test('Cuenta de Ahorros del Socio', async () => {
+    test('Cuenta de Ahorros Normales del Socio', async () => {
         // Buscar una cuenta del mismo socio
         await buscador.fill(`${nombre} ${apellido}`);
         // Elegir la Cuenta de Ahorros del Socio
@@ -194,6 +194,14 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
 
         // Se debe cerrar el modal por lo que el titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS CUENTA'})).toBeVisible();
+    });
+
+    test('Cuenta de Ahorros por Nomina del Socio', async () => {
+
+    });
+
+    test('Cuenta de Ahorros - Orden de Pago del Socio', async () => {
+
     });
 
     test('Cuenta de Certificados - Financieros Pagaderas del Socio', async () => {
