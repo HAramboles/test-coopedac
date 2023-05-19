@@ -92,6 +92,9 @@ test.describe('Pruebas con Cobros de Oficina', () => {
 
         // Cuota
         await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 416.67');
+
+        // Garantia
+        await expect(page.getByText('Sin garantía')).toBeVisible();
     });
 
     test('Opciones de Pago', async () => {
