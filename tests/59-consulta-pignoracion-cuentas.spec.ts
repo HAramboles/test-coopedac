@@ -15,7 +15,7 @@ const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Pruebas
 
 test.describe('Pruebas con el Historial de Pignoracion de Cuentas', () => {
-    test.describe(async () => { // Antes de las pruebas
+    test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
             headless: false
@@ -64,10 +64,14 @@ test.describe('Pruebas con el Historial de Pignoracion de Cuentas', () => {
         await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('ORDEN DE PAGO');
 
         // En el input Pignorado debe salir el mismo que se muestra en el filtrado
-        await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 0.00');
-        //await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 100');
+        await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 100');
 
-        // 
+        // Estado de Cuenta
+        await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');
+
+        // Deben estar los dos montos pignorados
+        await expect(page.getByRole('row', {name: 'PIGNORAR 150 PESOS LIBERADO RD$ 150.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'PIGNORAR 100 PESOS CONGELADO RD$ 100.00'})).toBeVisible(); 
     });
 
     test.afterAll(async () => { // Despues de las pruebas

@@ -32,8 +32,6 @@ const EscenariosPrueba: CrearAportacionesParametros[] = [
 
 // Pruebas
 
-test.describe.configure({mode: 'parallel'});
-
 test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {

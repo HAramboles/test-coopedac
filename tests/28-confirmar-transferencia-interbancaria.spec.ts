@@ -12,6 +12,8 @@ let apellido: string | null;
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Pruebas
+
 test.describe('Pruebas con la Confirmacion de Transferencia Interbancaria', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -79,20 +81,31 @@ test.describe('Pruebas con la Confirmacion de Transferencia Interbancaria', () =
         await campoBancoOrigen.click();
         // Elegir un banco de las opciones que aparecen
         await page.locator('text=COOPEDAC').click();
-
-        // Se debe colocar automaticamente la cuenta de origen al selecciona el banco
-        await expect(page.locator('#'))
     
         // El tipo cuenta destino debe ser el tipo elegido en la solicitud, en este caso, de ahorros
         await expect(page.getByText('CUENTA AHORROS')).toBeVisible();
-        
-        // Probar que el cargo porque los bancos son diferentes se agregue y se muestre
     
         // El numero de Referencia es opcional, por lo que no se colocara uno, por lo que debe estar vacio
         await expect(page.locator('#form_REFERENCIA')).toHaveValue('');
+
+        // Titulo Cargos
+        await expect(page.locator('h1').filter({hasText: 'CARGOS'})).toBeVisible();
+
+        // Debe mostrarse el cargo por bancos diferentes
+        await expect(page.getByRole('row', {name: 'CARGO A OTRO BANCO Monto RD$ 100.00 RD$ 100.00'})).toBeVisible();
     
         // Activar los impuestos
-        await page.locator('text=Impuestos').click();
+        const checkImpuestos = page.locator('text=Impuestos');
+        await checkImpuestos.check();
+
+        // El impuesto debe mostrarse
+        await expect(page.getByRole('row', {name: 'CARGO 0.15% Porcentaje 0.15% RD$ 0.00'})).toBeVisible();
+
+        // Comprobar que la casilla de impuestos este checked
+        await expect(checkImpuestos).toBeChecked();
+
+        // El comentario debe estar visible
+        await expect(page.locator('#form_NOTAS')).toHaveValue('Transferencia Bancaria');
     
         // Click al boton de guardar
         const botonGuardar = page.locator('button:has-text("Guardar")');

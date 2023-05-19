@@ -15,8 +15,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = 'SAMIRA';
-const apellidoPersona = 'ESTEVEZ';
+const nombrePersona = '';
+const apellidoPersona = '';
 
 // Parametros de relation
 interface CrearPersonas {
@@ -577,7 +577,8 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
                     // Esperar que se abran dos pestañas con los diferentes reportes
-                    const [newPage, newPage2] = await Promise.all([
+                    const [newPage, newPage2, newPage3] = await Promise.all([
+                        context.waitForEvent('page'),
                         context.waitForEvent('page'),
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
@@ -588,6 +589,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     // Cerrar las paginas con los reportes
                     await newPage.close();
                     await newPage2.close();
+                    await newPage3.close();
                 });
             };
         

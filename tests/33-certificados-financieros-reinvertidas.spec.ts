@@ -38,7 +38,7 @@ const EscenariosPrueba: CrearCertificadosParametros[] = [
 
 // Pruebas
 
-test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes parametros', async () => {
+test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
@@ -113,18 +113,18 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                 // Click al boton
                 await botonCaptaciones.click();
         
-                // Constante con la opcion de financieros pagaderas
-                const tipoCertificado = page.locator('text=FINANCIEROS PAGADERAS');
+                // Constante con la opcion de financieros reinvertidas
+                const tipoCertificado = page.locator('text=FINANCIEROS REINVERTIDAS');
 
                 if (await tipoCertificado.isHidden()) {
-                    // Si no llega el tipo de captacion, manualmente dirigise a la url de los certificados financieros pagaderas
-                    await page.goto(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
+                    // Si no llega el tipo de captacion, manualmente dirigise a la url de los certificados financieros reinvertidas
+                    await page.goto(`${url_base}/crear_cuentas/01-2-5-4/certificados/10`);
                 } else if (await tipoCertificado.isVisible()) {
                     // Seleccionar el tipo de certificado financieros pagaderas
-                    await page.locator('text=FINANCIEROS PAGADERAS').click();
+                    await page.locator('text=FINANCIEROS REINVERTIDAS').click();
 
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10`);
 
                     // El titulo debe estar presente
                     await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
@@ -176,10 +176,10 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
             
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=1`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10/create?step=1`);
             
-                    // La cuenta debe ser de financieros pagaderos
-                    await expect(page.locator('text=FINANCIEROS PAGADERAS').first()).toBeVisible();
+                    // La cuenta debe ser de financieros reinvertidas
+                    await expect(page.locator('text=FINANCIEROS REINVERTIDAS').first()).toBeVisible();
             
                     // Titular
                     const campoTitular = page.locator('#select-search').first();
@@ -193,7 +193,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     // Viene con una descripcion por defecto, borrar dicha descripcion
                     await descripcionCuenta.clear();
                     // Nueva descripcion de la cuenta
-                    await descripcionCuenta.fill('Cuenta de certificado financiero pagadera');
+                    await descripcionCuenta.fill('Cuenta de certificado financiero reinvertida');
             
                     // La categoria del socio debe ser socio ahorrante
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
@@ -235,7 +235,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     await casillaDebitoCuenta.click();
             
                     // Ingresar la tasa
-                    await page.locator('#FINANCIEROS\\ PAGADERAS_TASA').fill('5');
+                    await page.locator('#FINANCIEROS\\ REINVERTIDAS_TASA').fill('5');
             
                     // Click al boton de cargar autorizacion
                     await expect(page.getByRole('button', {name: 'Cargar Autorización'})).toBeVisible();
@@ -277,7 +277,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {            
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=2`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23/create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -367,7 +367,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 3 - Metodo de Interes', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8/create?step=3`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23/create?step=3`);
             
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
@@ -390,7 +390,7 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
                     await newPage2.close();
 
                     // Debe regresar a la pagina de los certificados
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23`);
                 });
             };
             
