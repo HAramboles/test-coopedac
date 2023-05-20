@@ -1,12 +1,10 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { url_base, CrearCuentas } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
-
-/* URL de la pagina */
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
@@ -20,11 +18,7 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Parametros de relation
-interface CrearAhorrosParametros {
-    ID_OPERACION: '' | 10 | 30
-};
-
-const EscenariosPrueba: CrearAhorrosParametros[] = [
+const EscenariosPrueba: CrearCuentas[] = [
     {
         ID_OPERACION: ''
     },

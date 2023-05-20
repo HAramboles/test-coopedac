@@ -1,12 +1,10 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { url_base, EditarPersonas } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
-
-// URL de la pagina
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedula, nombre, apellido de la persona
 let cedula: string | null;
@@ -14,10 +12,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Parametros de Relation
-interface EditarPersonas {
-    ID_OPERACION: '' | 8 | 4
-};
-
 const EscenariosPrueba: EditarPersonas[] = [
     {
         ID_OPERACION: ''

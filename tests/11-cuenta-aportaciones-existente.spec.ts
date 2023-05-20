@@ -1,27 +1,21 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { url_base, CrearCuentas } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-/* URL de la pagina */
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
-
 // Variable con la cedula de la persona
 let cedula: string | null;
 
 // Parametros de relation
-interface AportacionesExistentesParametros {
-    ID_OPERACION: '' | 5 | 30
-}
-
-const EscenariosPrueba: AportacionesExistentesParametros[] = [
+const EscenariosPrueba: CrearCuentas[] = [
     {
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: 5
+        ID_OPERACION: 10
     },
     {
         ID_OPERACION: 30
@@ -115,7 +109,7 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenario.ID_OPERACION === 5) {
+            } else if (escenario.ID_OPERACION === 10) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta

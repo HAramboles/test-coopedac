@@ -1,13 +1,11 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
+import { url_base, CrearPersonas } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
-
-/* URL de la pagina */
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedula, pasaporte, nombre, apellidos, correo y celular de la persona
 const cedula = numerosCedulas;
@@ -18,11 +16,7 @@ const celular = numerosCelular;
 const nombrePersona = '';
 const apellidoPersona = '';
 
-// Parametros de relation
-interface CrearPersonas {
-    ID_OPERACION: '' | 10 | 3
-};
-
+// Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
     {
         ID_OPERACION: ''

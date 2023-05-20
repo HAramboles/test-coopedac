@@ -1,22 +1,16 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { url_base, CrearCuentas } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// URL de la pagina
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
-
 // Cedula de la persona
 let cedula: string | null;
 
 // Parametros de relation
-interface AhorrosSinAportaciones {
-    ID_OPERACION: '' | 10 | 30
-};
-
-const EscenariosPruebas: AhorrosSinAportaciones[] = [
+const EscenariosPruebas: CrearCuentas[] = [
     {
         ID_OPERACION: ''
     },

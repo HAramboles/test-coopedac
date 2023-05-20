@@ -1,15 +1,13 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosPasaporte } from './utils/cedulasypasaporte';
+import { url_base, EditarPersonas } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// URL de la pagina
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
-
-// Celular del Menor
+// Celular de la persona
 const pasaporte = numerosPasaporte;
 
 // Cedula, nombre, apellido de la persona
@@ -21,11 +19,7 @@ let apellido: string | null;
 let correoEmpresa: string | null;
 let telefonoEmpresa: string | null;
 
-// Paramtros Relation
-interface EditarPersonas {
-    ID_OPERACION: '' | 8 | 4
-};
-
+// Parametros Relation
 const EscenariosPrueba: EditarPersonas[] = [
     {
         ID_OPERACION: ''

@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
 import { formatDate } from './utils/utils';
+import { url_base, CrearPersonas } from './utils/dataTests';
 
 // Vaiables globales 
 let browser: Browser;
@@ -12,9 +13,6 @@ let cedulaMadre: string | null;
 let nombreMadre: string | null;
 let apellidoMadre: string | null;
 
-// URL de la pagina
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
-
 // Cedula, nombre, apellido, numero telefonico y correo del menor
 const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
@@ -23,11 +21,7 @@ const numerosParaCorreo = numerosCorreo;
 const nombreMenor = '';
 const apellidoMenor = '';
 
-// Parametros de relation
-interface CrearPersonas {
-    ID_OPERACION: '' | 10 | 3
-};
-
+// Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
     {
         ID_OPERACION: ''

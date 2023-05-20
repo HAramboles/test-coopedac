@@ -7,14 +7,12 @@ import {
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
+import { url_base, CrearPersonas } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page
-
-// URL de la pagina
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Cedulas
 const cedulaPersonaJuridica = numerosCedulas2;
@@ -41,11 +39,7 @@ const nombreJuridica = '';
 const nombreRelacionado = '';
 const apellidoRelacionado = '';
 
-// Parametros de relation
-interface CrearPersonas {
-    ID_OPERACION: '' | 10 | 3
-};
-
+// Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
     {
         ID_OPERACION: ''

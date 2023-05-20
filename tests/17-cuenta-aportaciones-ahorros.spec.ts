@@ -1,12 +1,10 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { url_base, CrearCuentas } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
-
-/* URL de la pagina */
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
@@ -22,16 +20,12 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Parametros de relation
-interface CrearAportacionesAhorrosFisicaParametros {
-    ID_OPERACION: '' | 31 | 30
-};
-
-const EscenariosPrueba: CrearAportacionesAhorrosFisicaParametros[] = [
+const EscenariosPrueba: CrearCuentas[] = [
     {
         ID_OPERACION: ''
     },
     {
-        ID_OPERACION: 31
+        ID_OPERACION: 10
     },
     {
         ID_OPERACION: 30
@@ -143,7 +137,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                     // Skip al test
                     test.skip();
                 });
-            } else if (escenarios.ID_OPERACION === 31) {
+            } else if (escenarios.ID_OPERACION === 10) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta

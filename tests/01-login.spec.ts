@@ -1,4 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
+import { url_base } from './utils/dataTests';
 
 /* Variables globales */
 
@@ -10,10 +11,6 @@ let page: Page;
 
 let usernameCampo: Locator;
 let passCampo: Locator;
-
-// URL de la pagina
-
-const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 /* Usuario y contraseña */
 const user:string = 'hector';
