@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { 
     numerosCedulas2, 
     numerosCedulas3, 
@@ -25,15 +25,15 @@ const registroMercantil = numerosRegistroMercantil;
 const correoJuridica = numerosCorreo;
 const correoRelacionado = numerosCorreo;
 
-// Correo de la empresa
-const correoEmpresa = `empresa${correoJuridica}`;
-
 // Numeros telefonicos
 const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
 const nombreJuridica = '';
+
+// Correo de la empresa
+const correoEmpresa = nombreJuridica.split(' ').join('') + correoJuridica;
 
 // Nombre del relacionado
 const nombreRelacionado = '';
@@ -205,15 +205,15 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await inputEjecutivo.fill('lega');
                     // Seleccionar la opcion legal
                     await page.getByText('LEGAL', {exact: true}).click();
+
+                    // Click al boton de no referido
+                    await page.locator('#legalPerson_NO_REFERIDO').click();
             
                     // Categoria Solicitada
                     const categoriaSolicitada = page.locator('#legalPerson_ID_CATEGORIA_SOLICITADA');
                     await categoriaSolicitada.click();
                     // Seleccionar una categoria
                     await page.locator('text=SOCIO EMPRESARIAL').click();
-            
-                    // Click al boton de no referido
-                    await page.locator('#legalPerson_NO_REFERIDO').click();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();
@@ -453,56 +453,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     // Hacer click en guardar y continuar
                     guardarContinuar();
                 });
-            
-                test('Registro de Persona Juridica - Relacionados del socio - Direcciones', async () => {
-                    // El titulo debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
-            
-                    // Boton agregar direcciones
-                    const botonAgregarDirecciones = page.locator('text=Agregar direcciones');
-                    await expect(botonAgregarDirecciones).toBeVisible();
-                    await botonAgregarDirecciones.click();
-            
-                    // Se debe mostrar el modal del registro de direcciones
-                    const modalDirecciones = page.locator('h1').filter({hasText: 'REGISTRO DE DIRECCIONES'});
-                    await expect(modalDirecciones).toBeVisible();
-            
-                    // Tipo de direccion
-                    await page.locator('#addressesForm_VALOR').click();
-                    // Seleccionar un tipo de direccion
-                    await page.getByText('CASA', {exact: true}).click();
-            
-                    // Provincia o Estado
-                    const provincia = page.locator('#addressesForm_DESCPROVINCIA');
-                    await provincia.fill('Sant');
-                    // Seleccionar Santiago
-                    await page.locator('text=SANTIAGO').first().click();
-            
-                    // Municipio o Ciudad
-                    await page.locator('#addressesForm_DESCMUNICIPIO').click();
-                    // Seleccionar un municipio
-                    await page.locator('text=SAN JOSE DE LAS MATAS').click();
-            
-                    // Sector
-                    await page.locator('#addressesForm_DESCSECTOR').click();
-                    // Seleccionar un sector
-                    await page.locator('text=EL MAMEY').click();
-            
-                    // Calle
-                    const calle = page.locator('#addressesForm_CALLE');
-                    await calle.fill('Calle 10');
-            
-                    // No. Casa
-                    const casa = page.locator('#addressesForm_CASA');
-                    await casa.fill('20');
-            
-                    // Click al boton de guardar
-                    await page.getByRole('button', {name: 'save Guardar'}).click();
-            
-                    // El modal debe cerrarse
-                    await expect(modalDirecciones).not.toBeVisible();
-                });
-            
+
                 test('Registro de Persona Juridica - Relacionados del socio - Telefonos', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'TELÉFONOS'})).toBeVisible();
@@ -562,10 +513,55 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
 
                     // Se debe mostrar un mensaje de que se han guardado correctamente los datos
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.').last()).toBeVisible();
-
-                    // Cerrar los mensajes
-                    await page.locator('.ant-notification-notice-close').first().click();
-                    await page.locator('.ant-notification-notice-close').last().click();
+                });
+            
+                test('Registro de Persona Juridica - Relacionados del socio - Direcciones', async () => {
+                    // El titulo debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
+            
+                    // Boton agregar direcciones
+                    const botonAgregarDirecciones = page.locator('text=Agregar direcciones');
+                    await expect(botonAgregarDirecciones).toBeVisible();
+                    await botonAgregarDirecciones.click();
+            
+                    // Se debe mostrar el modal del registro de direcciones
+                    const modalDirecciones = page.locator('h1').filter({hasText: 'REGISTRO DE DIRECCIONES'});
+                    await expect(modalDirecciones).toBeVisible();
+            
+                    // Tipo de direccion
+                    await page.locator('#addressesForm_VALOR').click();
+                    // Seleccionar un tipo de direccion
+                    await page.getByText('CASA', {exact: true}).click();
+            
+                    // Provincia o Estado
+                    const provincia = page.locator('#addressesForm_DESCPROVINCIA');
+                    await provincia.fill('Sant');
+                    // Seleccionar Santiago
+                    await page.locator('text=SANTIAGO').first().click();
+            
+                    // Municipio o Ciudad
+                    await page.locator('#addressesForm_DESCMUNICIPIO').click();
+                    // Seleccionar un municipio
+                    await page.locator('text=SAN JOSE DE LAS MATAS').click();
+            
+                    // Sector
+                    await page.locator('#addressesForm_DESCSECTOR').click();
+                    // Seleccionar un sector
+                    await page.locator('text=EL MAMEY').click();
+            
+                    // Calle
+                    const calle = page.locator('#addressesForm_CALLE');
+                    await calle.fill('Calle 10');
+            
+                    // No. Casa
+                    const casa = page.locator('#addressesForm_CASA');
+                    await casa.fill('20');
+            
+                    // Click al boton de guardar
+                    await page.getByRole('button', {name: 'save Guardar'}).click();
+            
+                    // El modal debe cerrarse
+                    await expect(modalDirecciones).not.toBeVisible();
                 });
             
                 test('Finalizar con el Registro de Persona Juridica', async () => {

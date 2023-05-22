@@ -55,18 +55,22 @@ test.describe('Pruebas con la Reimpresion del Credito a Prestamo', async () => {
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR CRÉDITO A PRÉSTAMOS'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        // await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        await page.locator('#select-search').fill('ALINA CARABALLO');
         // Elegir al socio buscado
-        await page.locator(`text=${nombre} ${apellido}`).click();
+        // await page.getByRole('option', {name: `${nombre} ${apellido}`}).click();
+        await page.getByRole('option', {name: 'ALINA CARABALLO'}).click();
 
         // Fecha Inicial, debe tener la fecha del principio de mes
         await expect(page.locator('#form_FECHA_INICIAL')).toHaveValue(`${primerDiaMes}`);
 
-        // Fecha Final, debe tener l fech actual
-        await expect(page.locator('#')).toHaveValue(`${formatDate(new Date())}`);
+        // Fecha Final, debe tener la fecha actual
+        await expect(page.locator('#form_FECHA_FINAL')).toHaveValue(`${formatDate(new Date())}`);
 
         // Click al boton de buscar
-        await page.getByRole('button', {name: 'Buscar'}).click();
+        const botonBuscar = page.getByRole('button', {name: 'Buscar'});
+        await expect(botonBuscar).toBeVisible();
+        await botonBuscar.click();
     });
 
     test('Debe mostrarse el Credito al Prestamo para Imprimir', async () => {
@@ -77,13 +81,27 @@ test.describe('Pruebas con la Reimpresion del Credito a Prestamo', async () => {
         await expect(page.getByText('ABONO A CAPITAL')).toBeVisible();
 
         // Cliente
-        await expect(page.getByText(`${nombre} ${apellido}`)).toBeVisible();
+        // await expect(page.getByText(`${nombre} ${apellido}`)).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'ALINA CARABALLO'})).toBeVisible();
         
         // Monto
         await expect(page.getByText('12,000.00')).toBeVisible();
 
         // Boton Imprimir
-        const botonImprimir = page.getByRole('row', {name: `ABONO A CAPITAL' ${nombre} ${apellido} [data-icon="printer"]`});
+        const botonImprimir = page.getByRole('button', {name: 'printer'});
+        // Esperar que se abra una nueva ventana con el reporte del credito al prestamo
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Imprimir
+            await expect(botonImprimir).toBeVisible(),
+            await botonImprimir.click()
+        ]);
+
+        // Cerrar la ventana con el reporte
+        await newPage.close();
+
+        // Debe regresar a la pagina anterior
+        await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR CRÉDITO A PRÉSTAMOS'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

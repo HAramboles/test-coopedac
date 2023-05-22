@@ -520,7 +520,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     const campoNombreEmail = page.getByPlaceholder('USUARIO');
                     await campoNombreEmail.click();
                     await campoNombreEmail?.fill(`${nombrePersona.split(' ').join('')}${numerosparaCorreo}`);
-                    // Split = dividir el string en subcadenas, lo que lo convierte en un array y con el Join se quita el espacio en blanco
+                    // Split = dividir el string en subcadenas, lo que lo convierte en un array y con el Join se quitan los espacios en blanco
             
                     // Seleccionar un dominio del email
                     const campoDominioEmail = page.locator('#form_DOMAIN');

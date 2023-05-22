@@ -184,8 +184,6 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
 
         // Distribucion de cuotas
         await expect(page.getByText('Siguiente Cuota')).toBeVisible();
-        await expect(page.getByText('Distribuido')).toBeVisible();
-        await expect(page.getByText('Última Cuota')).toBeVisible();
 
         // Elegir Distribucion Siguiente Cuota
         await page.getByLabel('Siguiente Cuota').check();

@@ -46,7 +46,7 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Credito a Cuenta
-        await page.getByRole('menuitem', {name: 'Crédito a Cuenta'}).click();
+        await page.getByRole('menuitem', {name: 'Crédito/Débito a Cuenta'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/notas_cuentas/01-2-2-3/`);
@@ -54,7 +54,7 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
 
     test('Ingresar un Socio', async () => {
         // Titulo principal
-        await expect(page.locator('h1').filter({hasText: 'CRÉDITO A CUENTA'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'CRÉDITO/DEBITO A CUENTA'})).toBeVisible();
 
         // Buscar un socio
         await page.locator('#select-search').fill(`${cedula}`);
@@ -84,11 +84,13 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
     });
 
     test('Hacer el movimiento', async () => {
-        // Tipo movimiento
-        await expect(page.getByText('NOTA CREDITO')).toBeVisible();
-
         // Monto
         await page.locator('#form_MONTO').fill('2050');
+
+        // Tipo Movimiento
+        await page.locator('#form_ORIGEN_MOVIMIENTO').click();
+        // Elegir credito a cuenta
+        await page.getByRole('option', {name: 'NOTA CREDITO'}).click();
 
         // Concepto
         await page.locator('#form_ID_TIPO_CONCEPTO').click();
