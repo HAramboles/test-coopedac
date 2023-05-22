@@ -74,6 +74,12 @@ test.describe('Pruebas con la Confirmacion de Transferencia Interbancaria', () =
         // El titulo principal dbe estar visible
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIA INTERBANCARIA'})).toBeVisible();
         
+        // Debe mostrarse el nombre del socio
+        await expect(page.getByText(`| ${nombre} ${apellido} |`)).toBeVisible();
+
+        // Cuenta
+        await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('AHORROS NORMALES');
+
         // Seleccionar un Banco de Origen
         const campoBancoOrigen = page.locator('#form_ID_BANCO');
         await campoBancoOrigen.click();

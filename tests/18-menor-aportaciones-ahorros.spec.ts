@@ -397,7 +397,21 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     await page.getByText('Cargar ').click(); 
                     const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
                     await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
+                    
+                    // Esperar que la firma se suba y se muestre
+                    await expect(page.locator('(//div[@class="ant-upload-list ant-upload-list-picture-card"])')).toBeVisible();
             
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+            
+                    // Debe aparecer un modal para seleccionar el testigo de la eliminacion del firmante
+                    await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
+            
+                    // Seleccionar un testigo
+                    await page.locator('#form_ID_TESTIGO').click();
+                    // Seleccionar un testigo, la primera opcion que aparezca
+                    await page.getByRole('option').nth(0).click();
+
                     // Boton de Aceptar
                     const botonAceptar = page.locator('text=Aceptar');
                     // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
@@ -424,6 +438,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                 });
             
                 test('Finalizar con el registro de cuenta de ahorro', async () => {
+                    // Esperar que el mensaje de que los contratos se hayan generado se muestre
+                    await expect(page.locator('text=Contratos Generados Exitosamente.')).toBeVisible();
+
                     // Boton de Finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
                     // Esperar que se abra una nueva pestaña

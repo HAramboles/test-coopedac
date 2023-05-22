@@ -93,10 +93,10 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
         await expect(campoMonto).toBeVisible();
-        await campoMonto.fill('20000');
+        await campoMonto.fill('40000');
 
         // Agregar un comentario
-        await page.locator('#form_COMENTARIO').fill('Deposito de 20000 pesos a la cuenta de Ahorros');
+        await page.locator('#form_COMENTARIO').fill('Deposito de 40000 pesos a la cuenta de Ahorros');
 
         // Boton Agregar
         await page.locator('text=Agregar').click();
@@ -155,13 +155,14 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
         await expect(iconoAlerta).toBeVisible();
 
-        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 20000
-        // Divididos en 1000
+        // El monto para el cambio de categoria de Ahorrante a Empresarial es de 25000, colocar un monto mayor
+
+        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 40000. Divididos en 1000
         const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
 
-        // Cantidad = 20 de 1000
+        // Cantidad = 40 de 1000
         await cant1000.click();
-        await cant1000.fill('20');
+        await cant1000.fill('40');
 
         // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
         await expect(iconoAlerta).not.toBeVisible();

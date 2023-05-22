@@ -355,6 +355,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                 });
             
                 test('Finalizar con el registro de cuenta de ahorro', async () => {
+                    // Esperar que el mensaje de que los contratos se hayan generado se muestre
+                    await expect(page.locator('text=Contratos Generados Exitosamente.')).toBeVisible();
+                    
                     // Boton de Finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
                     // Esperar que se abra una nueva pestaña

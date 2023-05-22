@@ -93,13 +93,13 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
         
             test('Ir a Apertura de cuenta de aportaciones', async () => {
                 // Captaciones
-                await page.getByRole('row', {name: 'CAPTACIONES'}).click();
+                await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
         
                 // Apertura de cuentas
-                await page.getByRole('row', {name: 'APERTURA DE CUENTAS'}).click();
+                await page.getByRole('menuitem', {name: 'APERTURA DE CUENTAS'}).click();
         
                 // Captaciones
-                await page.getByRole('row', {name: 'Aportaciones (CREDIAUTOS)'}).click();
+                await page.getByRole('menuitem', {name: 'Aportaciones (CREDIAUTOS)'}).click();
 
                 // Condicion por si el tipo de captacion llega sin datos o con datos
                 const tipoCaptacion = page.getByTitle('APORTACIONES', {exact: true});
@@ -159,7 +159,7 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones_(crediautos)/1/create?step=1`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-7/aportaciones_(crediautos)/1/create?step=1`);
                 });
             
                 test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {            
@@ -178,11 +178,8 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                     // El tipo de captacion debe ser Aportaciones
                     await expect(page.locator('#APORTACIONES_ID_TIPO_CAPTACION').nth(1)).toBeVisible();
             
-                    // Seleccionar una categoria
-                    const campoCategoria = page.locator('#APORTACIONES_ID_CATEGORIA_SOCIO');
-                    await campoCategoria.click();
-                    // Elegir la categoria de socio ahorrante
-                    await page.locator('text=SOCIO AHORRANTE').click();
+                    // La Categoria debe ser Socio Ahorrante por defecto
+                    await expect(page.getByText('SOCIO AHORRANTE')).toBeVisible();
             
                     // Boton de Continuar
                     Continuar();
@@ -191,6 +188,10 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                 test('Registrar Cuenta de Aportaciones - Contacto de Firmante o Persona', async () => {
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
+
+                    // Cerrar dos de los mensajes
+                    await page.locator('[aria-label="close"]').first().click();
+                    await page.locator('[aria-label="close"]').last().click();
             
                     // Se debe mostrar la fima del titular por defecto
                     await expect(page.locator('text=TITULAR')).toBeVisible();

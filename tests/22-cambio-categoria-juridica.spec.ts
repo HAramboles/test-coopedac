@@ -66,21 +66,23 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         await page.getByText(`${nombreEmpresa}`).click();
 
         // La categoria actual debe ser Microempresarial
-        await expect(page.locator('#form_DESC_CATEGORIA')).toHaveValue('SOCIO MICROEMPRESARIAL');
+        await expect(page.locator('#form_DESC_CATEGORIA')).toHaveValue('SOCIO AHORRANTE');
 
         // Via Cobro
         await page.locator('#form_VIA_COBRO').click();
         // Elegir Debito a cuenta
-        await page.getByText('DEBITO A CUENTA').click();
+        await page.getByText('DEBITO A CUENTA', {exact: true}).click();
 
         // En la cuenta de cobro se coloca automaticamente la cuenta de ahorros del socio
         await expect(page.getByText('AHORROS NORMALES')).toBeVisible();
 
         // En la Categoria Solicitada se coloca automaticamente la categoria Empresarial 
-        await expect(page.getByTitle('SOCIO EMPRESARIAL')).toBeVisible();
+        await page.locator('#form_ID_CATEGORIA_SOCIO').click();
+        // Elegir Socio Empresarial
+        await page.getByTitle('SOCIO EMPRESARIAL').click();
 
         // Comentario
-        await page.locator('#form_COMENTARIO').fill('CAMBIO DE SOCIO MICROEMPRESARIAL A SOCIO EMPRESARIAL');
+        await page.locator('#form_COMENTARIO').fill('CAMBIO DE SOCIO AHORRANTE A SOCIO EMPRESARIAL');
 
         // Click en Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});

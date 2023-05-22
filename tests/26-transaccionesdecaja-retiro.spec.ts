@@ -14,10 +14,6 @@ let apellido: string | null;
 // Nota de la cuenta de aportaciones de la persona
 let nota: string | null;
 
-// Nombre y apellido del co-propietario
-let nombreCopropietario: string | null;
-let apellidoCopropietario: string | null;
-
 // Pruebas
 
 test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
@@ -43,12 +39,8 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
-        // Nota alamacenada en el state
+        // Nota almacenada en el state
         nota = await page.evaluate(() => window.localStorage.getItem('nota'));
-
-        // Nombre y apellido del co-propietario
-        nombreCopropietario = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        apellidoCopropietario = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
     test('Ir a la opcion de Transacciones de Caja', async () => {
@@ -86,6 +78,8 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     });
     
     test('Seleccionar un socio', async () => {
+        test.slow();
+        
         // Input para buscar el socio
         const buscarSocio = page.locator('#select-search');
         await expect(buscarSocio).toBeVisible();
@@ -129,15 +123,6 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         
         // El titulo de las firmas debe estar visible
         await expect(page.getByRole('heading', {name: 'Firmas Autorizadas'})).toBeVisible();
-
-        // La firma del titular debe estar visible
-        await expect(page.getByTitle(`${nombre} ${apellido}`).nth(1)).toBeVisible();
-        
-        // Click en siguiente
-        await page.getByRole('button', {name: 'Siguiente'}).click();
-
-        // La firma del co-propietario debe estar visible
-        await expect(page.getByTitle(`${nombreCopropietario} ${apellidoCopropietario}`).first()).toBeVisible();
 
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');

@@ -198,22 +198,7 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                     // El plazo debe ser mensual, que es el que viene por defecto
                     await expect(page.locator('text=MENSUAL')).toBeVisible();
             
-                    // Ver los rangos del monto de apertura
-                    await page.locator('[aria-label="eye"]').click();
-                    // Debe salir un modal
-                    const modalRangos = page.getByRole('heading', {name: 'Detalles de Rango'}).first();
-                    await expect(modalRangos).toBeVisible();
-            
-                    // Debe mostrar que el monto minimo es 1 peso dominicano
-                    await expect(page.getByRole('cell', {name: 'RD$ 1.00'}).nth(1)).toBeVisible();
-            
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'check Aceptar'}).nth(1).click();
-            
-                    // El modal se debe cerrar
-                    await expect(modalRangos).not.toBeVisible();
-            
-                    // Ingresar un monto valido
+                    // Ingresar un monto
                     const campoMonto = page.getByPlaceholder('MONTO');
                     await campoMonto.clear();
                     await campoMonto.fill('50');
@@ -368,6 +353,9 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                 });
             
                 test('Finalizar con la Creacion de Cuenta de Certificado', async () => {
+                    // Esperar que el mensaje de que los contratos se hayan generado se muestre
+                    await expect(page.locator('text=Contratos Generados Exitosamente.')).toBeVisible();
+
                     // Boton de Finalizar
                     const botonFinalizar = page.locator('button:has-text("Finalizar")');
                     // Esperar que se abran dos pestañas

@@ -86,7 +86,10 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
             });
         
-            test('Buscar la cuenta del socio', async () => {        
+            test('Buscar la cuenta del socio', async () => {   
+                // El titulo principal de la pagina debe esatr visible
+                await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
+
                 // Buscar al menor
                 await page.locator('#form_search').fill(`${cedula}`);
             });
@@ -94,7 +97,7 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
             if (escenarios.ID_OPERACION == '') {
                 // Test cuando el ID_OPERACION sea Vacio
-                test('El boton de Editar no debe esatr visible', async () => {
+                test('El boton de Editar no debe estar visible', async () => {
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
@@ -104,7 +107,7 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 });
             } else if (escenarios.ID_OPERACION === 8) {
                 // Test cuando el ID_OPERACION sea diferente de 4
-                test('El boton de Editar no debe esatr visible', async () => {
+                test('El boton de Editar no debe estar visible', async () => {
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
@@ -114,7 +117,7 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 });
             } else if (escenarios.ID_OPERACION === 4) {
                 // Tests cuando el ID_OPERACION sea igual a 4
-                test('Editar la Cuenta del Socio', async () => {
+                test('Ir a la opcion de Editar Persona', async () => {
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).toBeVisible();

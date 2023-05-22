@@ -30,14 +30,14 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = '';
+const nombreJuridica = 'VACUNOS ORG';
 
 // Correo de la empresa
 const correoEmpresa = nombreJuridica.split(' ').join('') + correoJuridica;
 
 // Nombre del relacionado
-const nombreRelacionado = '';
-const apellidoRelacionado = '';
+const nombreRelacionado = 'DARWIN';
+const apellidoRelacionado = 'ZAPATA';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
@@ -507,12 +507,10 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
 
                     // Se debe mostrar un mensaje de que se han guardado correctamente los datos
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.').last()).toBeVisible();
-            
-                    // Click en Finalizar
-                    await page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'}).click();
 
-                    // Se debe mostrar un mensaje de que se han guardado correctamente los datos
-                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.').last()).toBeVisible();
+                    // Cerrar los dos mensajes
+                    await page.locator('[aria-label="close"]').first().click();
+                    await page.locator('[aria-label="close"]').click();
                 });
             
                 test('Registro de Persona Juridica - Relacionados del socio - Direcciones', async () => {
@@ -562,6 +560,12 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
             
                     // El modal debe cerrarse
                     await expect(modalDirecciones).not.toBeVisible();
+
+                    // Click en Finalizar
+                    await page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'}).click();
+
+                    // Se debe mostrar un mensaje de que se han guardado correctamente los datos
+                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.').last()).toBeVisible();
                 });
             
                 test('Finalizar con el Registro de Persona Juridica', async () => {

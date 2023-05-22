@@ -183,9 +183,9 @@ test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los di
                     const campoTitular = page.locator('#select-search');
                     
                     // Buscar un socio
-                    await campoTitular?.fill('CAITLYN CASTILLO');
+                    await campoTitular?.fill(`${cedula}`);
                     // Seleccionar la opcion que aparece
-                    await page.locator('text=CAITLYN CASTILLO').click();
+                    await page.locator(`text=${cedula}`).click();
             
                     // El tipo de captacion debe ser Ahorros
                     await expect(page.locator('text=AHORROS POR NOMINA').first()).toBeVisible();
@@ -222,10 +222,10 @@ test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los di
                     // Bucar un socio
                     const buscador = page.locator('#select-search');
                     await buscador.click();
-                    await buscador.fill('NADIA ESCOBAR RUIZ');
+                    await buscador.fill(`${cedulaFirmante}`);
                     // Seleccionar el socio
-                    await expect(page.locator('text=NADIA ESCOBAR RUIZ')).toBeVisible();
-                    await page.locator('text=NADIA ESCOBAR RUIZ').click();
+                    await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
+                    await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();
@@ -274,7 +274,7 @@ test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los di
                     await newPage.close();
             
                     // El firmante agregado se debe mostrar
-                    await expect(page.getByRole('row', {name: 'NADIA ESCOBAR RUIZ'})).toBeVisible();
+                    await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
             
                     // Click al boton de Continuar
                     Continuar();

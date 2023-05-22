@@ -54,7 +54,7 @@ test.describe('No permitir una Transferencia Interbancaria si la cuenta de Ahorr
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOLICITANTE'})).toBeVisible();
     
         // Ingresar un socio
-        const campoSocio = page.locator('#select-search');
+        const campoSocio = page.locator('#select-search').first();
         await expect(campoSocio).toBeVisible();
     
         await campoSocio?.fill(`${cedula}`);
@@ -67,7 +67,7 @@ test.describe('No permitir una Transferencia Interbancaria si la cuenta de Ahorr
         await expect(page.locator('h1').filter({hasText: 'DATOS TRANSFERENCIA'})).toBeVisible();
     
         // Cuenta de origen
-        const campoCuentaOrigen = page.locator('#form_ID_CUENTA_DEBITAR');
+        const campoCuentaOrigen = page.locator('#select-search').last();
         await campoCuentaOrigen.click();
         // Seleccionar ahorros normales
         await page.locator('text=AHORROS NORMALES').click();

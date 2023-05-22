@@ -271,7 +271,7 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {            
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23/create?step=2`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10/create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -361,13 +361,16 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 3 - Metodo de Interes', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23/create?step=3`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10/create?step=3`);
             
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
                 });
             
                 test('Finalizar con la Creacion de Cuenta de Certificado', async () => {
+                    // Esperar que el mensaje de que los contratos se hayan generado se muestre
+                    await expect(page.locator('text=Contratos Generados Exitosamente.')).toBeVisible();
+                    
                     // Boton de Finalizar
                     const botonFinalizar = page.locator('button:has-text("Finalizar")');
                     // Esperar que se abran dos pestañas
@@ -384,7 +387,7 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     await newPage2.close();
 
                     // Debe regresar a la pagina de los certificados
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10`);
                 });
             };
             
