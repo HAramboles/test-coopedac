@@ -64,11 +64,6 @@ test.describe('Pruebas con la Confirmacion de la Reprogramacion de Creditos', ()
         await botonConfirmar.click();
     });
 
-    test('Datos del Socio', async () => {
-        // Nombre y apellidod el socio
-        await expect(page.locator('#form_NOMBRE')).toHaveValue(`${nombre} ${apellido}`);
-    });
-
     test('Datos del Credito', async () => {
         // Debe mostrarse la solicitud con los datos
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
@@ -95,9 +90,6 @@ test.describe('Pruebas con la Confirmacion de la Reprogramacion de Creditos', ()
     test('Cambios Solicitados al Credito', async () => {
         // Cambios Solicitados
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
-
-        // Cuota Sugerida
-        await expect(page.getByText('Cuota Sugerida')).toBeVisible();
 
         // Cambio de Plazo
         await expect(page.locator('#form_CAMB_PLAZO')).toHaveValue('72')

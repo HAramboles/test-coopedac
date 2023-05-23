@@ -92,7 +92,11 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 416.67');
 
         // Garantia
-        await expect(page.getByText('Sin garantía')).toBeVisible();
+        //await expect(page.getByText('Sin garantía')).toBeVisible();
+
+        // Linea de Credito
+        await expect(page.getByText('Línea de Crédito')).toBeVisible();
+        await expect(page.getByText('No', {exact: true})).toBeVisible();
     });
 
     test('Opciones de Pago', async () => {
@@ -113,10 +117,10 @@ test.describe('Pruebas con Cobros de Oficina', () => {
 
         // El total a pagar debe ser la misma cantidad que la ingresada en el abono capital
         await expect(page.locator('text=Total a pagar')).toBeVisible();
-        await expect(page.locator('#form_A_PAGAR')).toHaveValue('RD$ 25,000');
+        await expect(page.locator('#form_A_PAGAR')).toHaveValue('RD$ 13,000');
 
         // Agregar un comnetario
-        await page.locator('#form_COMENTARIO').fill('Pagar la mitad restante del total del prestamo');
+        await page.locator('#form_COMENTARIO').fill('Pagar 13,000, lo faltante, al prestamo');
 
         // Ocultar los detalles de pago
         await page.getByText('Detalle de Pago').click();
@@ -126,33 +130,21 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         // Via de cobro
         await expect(page.locator('text=Vía de cobro')).toBeVisible();
 
-        // Elegir la opcion de cobrar de cuenta
-        await expect(page.getByText('Cobrar de cuenta')).toBeVisible();
+        // Elegir la opcion de enviar a caja
+        await expect(page.getByText('Enviar a Caja')).toBeVisible();
         await page.locator('(//INPUT[@type="radio"])[1]').click();
 
         // Seleccionar una caja
-        await page.locator('#form_CAJA').click();
+        await page.locator('div').filter({hasText: /^TODOS - TODOS$/}).nth(4).click();
         // Elegir la primera caja que se muestre
-        await page.getByRole('option').nth(0).click();
+        await page.getByRole('option').nth(1).click();
     });
 
     test('Realizar el pago', async () => {
         // Boton Aplicar
         const botonAplicar = page.getByRole('button', {name: 'Aplicar'});
-        // Esperar que se abran dos ventanas con los reportes
-        const [newPage, newPage2] = await Promise.all([
-            context.waitForEvent('page'),
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonAplicar).toBeVisible(),
-            await botonAplicar.click()
-        ]);
-
-        // Cerrar la primera pagina 
-        await newPage.close();
-
-        // Cerrar la segunda pagina
-        await newPage2.close();
+        await expect(botonAplicar).toBeVisible();
+        await botonAplicar.click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

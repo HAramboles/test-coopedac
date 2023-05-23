@@ -46,13 +46,15 @@ test.describe('Pruebas con el Debito a la Cuenta de Certificado - Financieros Pa
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Credito a Cuenta
-        await page.getByRole('menuitem', {name: 'Crédito/Débito a Cuenta'}).click();
+        await page.getByRole('menuitem', {name: 'Crédito/Debito a Cuenta'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/notas_cuentas/01-2-2-3/`);
     });
 
     test('Ingresar un Socio', async () => {
+        test.slow();
+
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'CRÉDITO/DEBITO A CUENTA'})).toBeVisible();
 
@@ -90,7 +92,7 @@ test.describe('Pruebas con el Debito a la Cuenta de Certificado - Financieros Pa
         // Tipo Movimiento
         await page.locator('#form_ORIGEN_MOVIMIENTO').click();
         // Elegir credito a cuenta
-        await page.getByRole('option', {name: 'NOTA CREDITO'}).click();
+        await page.getByRole('option', {name: 'NOTA DEBITO'}).click();
 
         // Concepto
         await page.locator('#form_ID_TIPO_CONCEPTO').click();

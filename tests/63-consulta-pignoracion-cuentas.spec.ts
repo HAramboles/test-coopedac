@@ -55,11 +55,11 @@ test.describe('Pruebas con el Historial de Pignoracion de Cuentas', () => {
 
         // Buscar la cuenta de un socio
         await page.locator('#select-search').fill(`${nombre} ${apellido}`);
-        // Elegir la cuenta de Orden de Pago
-        await page.locator('text=ORDEN DE PAGO').click();
+        // Elegir la cuenta de Ahorros Normales
+        await page.locator('text=AHORROS NORMALES').click();
 
         // Tipo de Cuenta
-        await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('ORDEN DE PAGO');
+        await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('AHORROS NORMALES');
 
         // En el input Pignorado debe salir el mismo que se muestra en el filtrado
         await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 100');

@@ -51,15 +51,13 @@ test.describe('Pruebas con la Reimpresion Solicitud Cancelacion', () => {
 
     test('Buscar la Solicitud de un Socio', async () => {
         // Buscar un socio
-        await page.locator('#form_search').fill('CAITLYN CASTILLO');
         await page.locator('#form_search').fill(`${nombre} ${apellido}`);
         
         // El estado solicitud debe estar en pendiente
         await expect(page.locator('text=PENDIENTE')).toBeVisible();
 
         // Se debe mostrar el tipo de cuenta
-        //await expect(page.getByText('ORDEN DE PAGO')).toBeVisible();
-        await expect(page.getByText('AHORROS POR NOMINA')).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();
 
         // Se debe mostrar las observaciones colocadas en el inventario
         await expect(page.getByText('TIENE MUCHAS CUENTAS, CERRAR LA DE ORDEN DE PAGO')).toBeVisible();
@@ -67,7 +65,7 @@ test.describe('Pruebas con la Reimpresion Solicitud Cancelacion', () => {
 
     test('Imprimir la Solicitud de Cancelacion', async () => {
         // Boton Imprimir
-        const botonImprimir = page.getByRole('row', {name: 'CAITLYN CASTILLO'}).getByRole('button', {name: 'Printer'});
+        const botonImprimir = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'Printer'});
         // Esperar a que se abra una nueva ventana con la solicitud
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),

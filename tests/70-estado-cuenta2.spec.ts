@@ -56,9 +56,9 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTA DEL CLIENTE'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#form').getByRole('combobox').fill('ALINA CARABALLO');
-        // Click al spcio buscado
-        await page.locator('text=ALINA CARABALLO').click();
+        await page.locator('#form').getByRole('combobox').fill(`${cedula}`);
+        // Click al socio buscado
+        await page.locator(`text=${nombre} ${apellido}`).click();
     });
 
     test('Cuentas Activas y Prestamos Desembolsados', async () => {
@@ -68,20 +68,30 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         // Estado de los productos
         const estadoDesembolsado = page.locator('text=CUENTAS ACTIVAS Y PRÉSTAMOS DESEMBOLSADOS');
         await expect(estadoDesembolsado).toBeVisible();
+        //await estadoDesembolsado.click();
 
         // Deben estar visibles solo las cuentas activas
         
         // Cuenta de Aportaciones
         await expect(page.getByRole('cell', {name: 'APORTACIONES', exact: true}).first()).toBeVisible();
 
-        // Cuenta de Ahorros
-        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES', exact: true}).first()).toBeVisible();
-
         // Cuenta de Aportaciones Preferentes
         await expect(page.getByRole('cell', {name: 'APORTACIONES PREFERENTES', exact: true})).toBeVisible();
 
+        // Cuenta de Ahorros Normales
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES', exact: true}).first()).toBeVisible();
+
+        // Cuenta de Ahorros por Nomina
+        await expect(page.getByRole('cell', {name: 'AHORROS POR NOMINA', exact: true})).toBeVisible();
+
+        // Cuenta de Certificado - Financieros Reinvertidas
+        await expect(page.getByRole('cell', {name: 'FINANCIEROS REINVERTIDAS', exact: true})).toBeVisible();
+
+        // Cuenta de Certificado - Inversion Pagaderas
+        await expect(page.getByRole('cell', {name: 'INVERSION PAGADERAS', exact: true})).toBeVisible();
+
         // Totales
-        await expect(page.getByRole('row', {name: 'TOTALES: RD$ 17,222.22 RD$ 16,922.22'}).first()).toBeVisible();
+        await expect(page.getByRole('row', {name: 'TOTALES: RD$ 30,200.00 RD$ 29,900.00'}).first()).toBeVisible();
     });
 
     test('Cuentas y prestamos cancelados', async () => {
@@ -93,11 +103,14 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         // Cuenta de Certificados - Financieros Pagaderas
         await expect(page.getByRole('cell', {name: 'FINANCIEROS PAGADERAS', exact: true})).toBeVisible();
 
+        // Cuenta de Orden de Pago
+        await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();
+
         // Credito Hipotecario
         await expect(page.getByRole('cell', {name: 'CRÉDITO HIPOTECARIO', exact: true})).toBeVisible();
 
         // Totales 
-        await expect(page.getByRole('row', {name: 'TOTALES: RD$ 0.00 RD$ 0.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'TOTALES: RD$ 0.00 RD$ 0.00'}).first()).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

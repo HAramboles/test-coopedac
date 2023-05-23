@@ -54,6 +54,8 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
     });
 
     test('Nueva Solicitud', async () => {
+        test.slow();
+
         // Boton Nueva Solicitud
         const botonSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
         await expect(botonSolicitud).toBeVisible();
@@ -61,6 +63,8 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
     });
 
     test('Buscar un socio y editar su solicitud', async () => {
+        test.slow();
+
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN DE PRÉSTAMOS'})).toBeVisible();
 

@@ -14,7 +14,7 @@ let apellido: string | null;
 // Pruebas
 
 test.describe('Pruebas con la Cancelacion de una Cuenta', () =>{
-    test.beforeAll(async () => { // ANtes de las pruebas
+    test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
             headless: false
@@ -67,7 +67,7 @@ test.describe('Pruebas con la Cancelacion de una Cuenta', () =>{
         await expect(page.getByText('ORDEN DE PAGO').first()).toBeVisible();
     });
 
-    test.skip('Las cuentas de Certificados NO deben estar visibles', async () => {
+    test('Las cuentas de Certificados NO deben estar visibles', async () => {
         // Certificado Financieros Pagaderas
         await expect(page.getByText('FINANCIEROS PAGADERAS')).not.toBeVisible();
 

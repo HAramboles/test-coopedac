@@ -55,11 +55,9 @@ test.describe('Pruebas con la Reimpresion del Credito a Prestamo', async () => {
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR CRÉDITO A PRÉSTAMOS'})).toBeVisible();
 
         // Buscar un socio
-        // await page.locator('#select-search').fill(`${nombre} ${apellido}`);
-        await page.locator('#select-search').fill('ALINA CARABALLO');
+        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
         // Elegir al socio buscado
-        // await page.getByRole('option', {name: `${nombre} ${apellido}`}).click();
-        await page.getByRole('option', {name: 'ALINA CARABALLO'}).click();
+        await page.getByRole('option', {name: `${nombre} ${apellido}`}).click();
 
         // Fecha Inicial, debe tener la fecha del principio de mes
         await expect(page.locator('#form_FECHA_INICIAL')).toHaveValue(`${primerDiaMes}`);
@@ -81,8 +79,7 @@ test.describe('Pruebas con la Reimpresion del Credito a Prestamo', async () => {
         await expect(page.getByText('ABONO A CAPITAL')).toBeVisible();
 
         // Cliente
-        // await expect(page.getByText(`${nombre} ${apellido}`)).toBeVisible();
-        await expect(page.getByRole('cell', {name: 'ALINA CARABALLO'})).toBeVisible();
+        await expect(page.getByRole('cell', { name: `${nombre} ${apellido}`})).toBeVisible();
         
         // Monto
         await expect(page.getByText('12,000.00')).toBeVisible();

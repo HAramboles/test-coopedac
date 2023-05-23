@@ -46,13 +46,15 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Credito a Cuenta
-        await page.getByRole('menuitem', {name: 'Crédito/Débito a Cuenta'}).click();
+        await page.getByRole('menuitem', {name: 'Crédito/Debito a Cuenta'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/notas_cuentas/01-2-2-3/`);
     });
 
     test('Ingresar un Socio', async () => {
+        test.slow();
+        
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'CRÉDITO/DEBITO A CUENTA'})).toBeVisible();
 

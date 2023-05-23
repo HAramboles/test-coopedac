@@ -46,7 +46,7 @@ test.describe('Pruebas con la Sesion en Transito luego de enviar a Caja el Pago 
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Sesiones en Transito
-        await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
+        await page.getByRole('menuitem', {name: 'Sesiones en Tránsito', exact: true}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/sesiones_transito/01-4-1-2-1/`);
@@ -65,9 +65,9 @@ test.describe('Pruebas con la Sesion en Transito luego de enviar a Caja el Pago 
         await page.locator('#form_search').fill(`${nombre} ${apellido}`);
 
         // Se debe mostrar el socio y el area emisora debe ser caja
-        await expect(page.getByText('COBROS')).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'CAJA'})).toBeVisible();
 
-        // Boton de liberar sesion
+        // Boton de liberar sesion debe estar visible
         await expect(page.getByRole('button', {name: 'Liberar Sesión'})).toBeVisible();
 
         // Boton Seleccionar la sesion
@@ -99,10 +99,10 @@ test.describe('Pruebas con la Sesion en Transito luego de enviar a Caja el Pago 
         await expect(page.getByText('RECIBO DE PRESTAMOS')).toBeVisible();
 
         // Monto
-        await expect(page.getByText('25,000.00').first()).toBeVisible();
+        await expect(page.getByText('13,000.00').first()).toBeVisible();
 
         // El total debe ser igual al monto
-        await expect(page.getByRole('strong', {name: 'Total: 25,000.00'})).toBeVisible();
+        await expect(page.getByRole('strong', {name: 'Total: 13,000.00'})).toBeVisible();
     });
 
     test('Aplicar la transaccion', async () => {
@@ -122,12 +122,12 @@ test.describe('Pruebas con la Sesion en Transito luego de enviar a Caja el Pago 
         const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
         await expect(iconoAlerta).toBeVisible();
 
-        // Hacer la distribucion del pago al prestamo, 25,000
+        // Hacer la distribucion del pago al prestamo, 13,000
         const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
 
-        // Cantidad = 20 de 1000
+        // Cantidad = 13 de 1000
         await cant1000.click();
-        await cant1000.fill('25');
+        await cant1000.fill('13');
 
         // El icono de la alerta roja ya no debe estar visible al hacer la distribucion correctamente
         await expect(iconoAlerta).not.toBeVisible();

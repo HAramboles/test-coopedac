@@ -58,8 +58,8 @@ test.describe('Pruebas con la Cartera de Cuentas', async () => {
 
         // Tipo Captacion
         await page.locator('#form div').filter({hasText: /^TODAS$/}).nth(4).click();
-        // Elegir Aportaciones
-        await page.getByRole('option', {name: 'APORTACIONES', exact: true}).click();
+        // Elegir Ahorros 
+        await page.getByRole('option', {name: 'AHORROS', exact: true}).click();
 
         // Fecha Corte, debe tener la fecha atual
         await expect(page.locator('#form_FECHA')).toHaveValue(`${formatDate(new Date())}`);
@@ -71,6 +71,8 @@ test.describe('Pruebas con la Cartera de Cuentas', async () => {
     });
 
     test('Imprimir la Cartera de Cuentas', async () => {
+        test.slow();
+        
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
         // Esperar que se abra otra ventana con el reporte

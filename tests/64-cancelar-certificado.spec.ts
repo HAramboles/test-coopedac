@@ -6,10 +6,8 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre y apellido de la persona
+// Cedula de la persona
 let cedula: string | null;
-let nombre: string | null;
-let apellido: string | null;
 
 // Pruebas
 
@@ -33,8 +31,6 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
 
         // Cedula, nombre y apellido de la persona
         cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Cancelar Certificados', async () => {
@@ -58,7 +54,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         // Buscar un socio
         await page.locator('#select-search').first().fill(`${cedula}`);
         // Elegir al socio
-        await page.locator(`text=${nombre} ${apellido}`).click();
+        await page.locator('text=FINANCIEROS PAGADERAS').click();
 
         // Se debe mostrar la categoria del socio
         await expect(page.getByText('SOCIO AHORRANTE')).toBeVisible();
@@ -108,9 +104,6 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
     });
 
     test('Confirmar que la Cuenta de Certificado del Socio se cancelo correctamente - Ir a la opcion de Certificados', async () => {
-        // Captaciones
-        await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
-        
         // Apertura de cuentas
         await page.getByRole('menuitem', {name: 'APERTURA DE CUENTAS'}).click();
 

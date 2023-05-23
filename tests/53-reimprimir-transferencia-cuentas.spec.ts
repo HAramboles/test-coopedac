@@ -51,6 +51,8 @@ test.describe('Pruebas con la Reimpresion de la Transferencia entre Cuentas Inte
     });
 
     test('Buscar las cuentas de un Socio', async () => {
+        test.slow();
+
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR TRANSFERENCIA ENTRE CUENTAS'})).toBeVisible();
 
@@ -71,7 +73,7 @@ test.describe('Pruebas con la Reimpresion de la Transferencia entre Cuentas Inte
         // Buscar la cuenta de destino del socio
         await page.locator('#select-search').last().fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de aportaciones preferentes del socio
-        await page.getByRole('option', {name: '| APORTACIONES |'}).click();
+        await page.getByRole('option', {name: '| APORTACIONES |'}).first().click();
 
         // Click en buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});

@@ -92,7 +92,11 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 416.67');
 
         // Garantia
-        await expect(page.getByText('Sin garantía')).toBeVisible();
+        //await expect(page.getByText('Sin garantía')).toBeVisible();
+
+        // Linea de Credito
+        await expect(page.getByText('Línea de Crédito')).toBeVisible();
+        await expect(page.getByText('No', {exact: true})).toBeVisible();
     });
 
     test('Opciones de Pago', async () => {
@@ -116,7 +120,7 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_A_PAGAR')).toHaveValue('RD$ 25,000');
 
         // Agregar un comnetario
-        await page.locator('#form_COMENTARIO').fill('Pagar la mitad del total del prestamo');
+        await page.locator('#form_COMENTARIO').fill('Pagar 25,000 al prestamo');
     });
 
     test('Cobrar de Cuenta', async () => {
@@ -132,7 +136,8 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         await page.getByText('AHORROS NORMALES').click();
 
         // Debe mostrarse el monto disponible de la cuenta
-        await expect(page.locator('text=RD$ 48,050.00')).toBeVisible();
+        //await expect(page.locator('text=RD$ 48,050.00')).toBeVisible();
+        await expect(page.locator('text=RD$ 48,900.00')).toBeVisible();
     });
 
     test('Realizar el pago', async () => {

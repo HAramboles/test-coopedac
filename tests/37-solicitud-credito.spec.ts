@@ -49,6 +49,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     };
 
     test('Navegar a la opcion de Solicitud de Credito', async () => {
+        test.slow();
+
         // Negocios
         await page.locator('text=NEGOCIOS').click();
 
@@ -204,6 +206,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 3 - Cargos del prestamo', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
 
@@ -247,11 +251,10 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByText('COBRO EN DESEMBOLSO')).toBeVisible();
 
         // Click en guardar
-        await page.getByRole('button', {name: 'Guardar'}).click();
+        await page.getByRole('button', {name: 'save Guardar'}).click();
 
-        // Cerrar los mensajes
+        // Cerrar el mensaje
         await page.locator('[aria-label="close"]').first().click();
-        await page.locator('[aria-label="close"]').last().click();
 
         // Guardar los cargos
         await page.getByRole('button', {name: 'Guardar Cargos'}).click();
@@ -520,15 +523,24 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Click en Aceptar y se debe abrir otra pagina con la solicitud
         const botonAceptar = page.getByRole('button', {name: 'check Aceptar'});
         // Esperar que se abra una nueva pestaña
-        const [newPage] = await Promise.all([
+        const [newPage, newPage2, newPage3] = await Promise.all([
+            context.waitForEvent('page'),
+            context.waitForEvent('page'),
+            // Por ahora saldran 3 reportes
             context.waitForEvent('page'),
             // Click al boton de Finalizar
             await expect(botonAceptar).toBeVisible(),
             await botonAceptar.click()
         ]);
         
-        // Cerrar la pgina con la solicitud
+        // Cerrar la pagina con la solicitud
         await newPage.close();
+
+        // Cerrar la pagina con la tabla de amortizacion
+        await newPage2.close();
+
+        // Cerrar la pagina con el tercer reporte
+        await newPage3.close();
     });
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Aprobado', async () => {
@@ -572,7 +584,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Debe estar visible el estado de solicitado
         await expect(page.getByText('SOLICITADO', {exact: true})).toBeVisible();
 
-        // Cmabiar el estado a Aprobado
+        // Cambiar el estado a Aprobado
         await page.getByText('APROBADO', {exact: true}).click();
         await page.getByText('¿Está seguro que desea pasar el préstamo a estado APROBADO?').click();   
         

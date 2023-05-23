@@ -54,21 +54,21 @@ test.describe('Pruebas con la Confirmacion de Cancelacion de Cuentas', () => {
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();
 
         // Buscar un socio
-        //await page.locator('#form_search').fill(`${nombre} ${apellido}`);
-        await page.locator('#form_search').fill('CAITLYN CASTILLO');
+        await page.locator('#form_search').fill(`${nombre} ${apellido}`);
 
         // Click en buscar
         await page.locator('[data-icon="search"]').click();
 
         // Tipo de Captacion
-        //await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: 'AHORROS POR NOMINA'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();
 
         // Observaciones
         await expect(page.getByRole('cell', {name: 'TIENE MUCHAS CUENTAS, CERRAR LA DE ORDEN DE PAGO'})).toBeVisible();
     });
 
     test('Confirmar la Cancelacion de la Cuenta', async () => {
+        test.slow();
+
         // Boton de Confirmar
         await page.locator('[aria-label="check-circle"]').click();
 
@@ -94,9 +94,8 @@ test.describe('Pruebas con la Confirmacion de Cancelacion de Cuentas', () => {
         // Click en Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
-        // Deben salir dos mensajes, cerrar los dos mensajes
+        // Deben salir dos mensajes, cerrar uno de los mensajes
         await page.locator('[aria-label="close"]').first().click();
-        await page.locator('[aria-label="close"]').click();
 
         // Debe redirigirse a la Confirmacion de Cancelacion de Cuentas
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();
