@@ -13,8 +13,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = 'LISA ANGELA ';
-const apellidoPersona = 'BUENO DIAZ';
+const nombrePersona = 'CARLA SOFIA';
+const apellidoPersona = 'MIRABALES';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [

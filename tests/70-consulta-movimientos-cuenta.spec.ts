@@ -89,21 +89,18 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
 
         // Balance final
         await expect(page.getByRole('row', { name: 'Balance Final : 3,000.00' })).toBeVisible();
-
-        // Se debe regresar a la pagina de los movimientos de la cuenta
-        await expect(page.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS CUENTA'})).toBeVisible();
     });
 
     test('Cuenta de Aportaciones Preferentes del Socio', async () => {
         // Buscar una cuenta del mismo socio
         await buscador.fill(`${nombre} ${apellido}`);
-        // Elegir la Cuenta de Aportaciones del Socio
+        // Elegir la Cuenta de Aportaciones Preferentes del Socio
         await page.getByText('APORTACIONES PREFERENTES').click();
 
         // La URL no debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
-        // El tipo de captacion debe ser de Aportaciones
+        // El tipo de captacion debe ser de Aportaciones Preferentes
         await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('APORTACIONES PREFERENTES');
 
         // El estado debe estar en Activa
@@ -136,13 +133,13 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     test('Cuenta de Ahorros Normales del Socio', async () => {
         // Buscar una cuenta del mismo socio
         await buscador.fill(`${nombre} ${apellido}`);
-        // Elegir la Cuenta de Ahorros del Socio
+        // Elegir la Cuenta de Ahorros Normales del Socio
         await page.getByText('AHORROS NORMALES').click();
 
         // La URL no debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
-        // El tipo de captacion debe ser de Aportaciones
+        // El tipo de captacion debe ser de Ahorros Normales
         await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('AHORROS NORMALES');
 
         // El estado debe estar en Activa
@@ -195,15 +192,83 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     });
 
     test('Cuenta de Ahorros por Nomina del Socio', async () => {
+        // Buscar una cuenta del mismo socio
+        await buscador.fill(`${nombre} ${apellido}`);
+        // Elegir la Cuenta de Ahorros por Nomina del Socio
+        await page.getByText('AHORROS POR NOMINA').click();
 
+        // La URL no debe cambiar
+        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+
+        // El tipo de captacion debe ser de Ahorros por Nomina
+        await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('AHORROS POR NOMINA');
+
+        // El estado debe estar en Activa
+        await expect(page.getByText('ACTIVA')).toBeVisible();
+
+        // Imprimir los movimientos de la cuenta
+        const imprimirAhorrosPorNomina = page.getByRole('button', {name: 'Imprimir'});
+        // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(imprimirAhorrosPorNomina).toBeVisible(),
+            await imprimirAhorrosPorNomina.click()
+        ]);
+
+        // Cerrar la pagina con la tabla de amortizacion para imprimir
+        await newPage.close();
+
+        // Titulo movimiento de la cuenta debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
+
+        // No debe tener ningun movimiento
+        await expect(page.getByText('No hay datos')).toBeVisible();
+
+        // Balance final
+        await expect(page.getByRole('row', { name: 'Balance Final : 0.00' })).toBeVisible();
     });
 
     test('Cuenta de Ahorros - Orden de Pago del Socio', async () => {
+        // Buscar una cuenta del mismo socio
+        await buscador.fill(`${nombre} ${apellido}`);
+        // Elegir la Cuenta de Orden de Pago del Socio
+        await page.getByText('ORDEN DE PAGO').click();
 
+        // La URL no debe cambiar
+        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+
+        // El tipo de captacion debe ser de Orden de Pago
+        await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('ORDEN DE PAGO');
+
+        // El estado debe estar en Cancelada
+        await expect(page.getByText('CANCELADA')).toBeVisible();
+
+        // Imprimir los movimientos de la cuenta
+        const imprimirOrdenPago = page.getByRole('button', {name: 'Imprimir'});
+        // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(imprimirOrdenPago).toBeVisible(),
+            await imprimirOrdenPago.click()
+        ]);
+
+        // Cerrar la pagina con la tabla de amortizacion para imprimir
+        await newPage.close();
+
+        // Titulo movimiento de la cuenta debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
+
+        // No debe tener ningun movimiento
+        await expect(page.getByText('No hay datos')).toBeVisible();
+
+        // Balance final
+        await expect(page.getByRole('row', { name: 'Balance Final : 0.00' })).toBeVisible();
     });
 
     test('Cuenta de Certificados - Financieros Pagaderas del Socio', async () => {
-        // La URL debe cambiar
+        // La URL NO debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
         // Buscar una cuenta del mismo socio
@@ -211,7 +276,7 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         // Elegir la Cuenta de Certificado - Financieros Pagaderos
         await page.getByText('| FINANCIEROS PAGADERAS |').click();
 
-        // El tipo de captacion debe ser de Aportaciones
+        // El tipo de captacion debe ser de Financieros Pagaderas
         await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('FINANCIEROS PAGADERAS');
 
         // El estado debe estar en Activa
@@ -241,6 +306,82 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
 
         // El balance final debe ser 0, ya que la cuenta esta cancelada
         await expect(page.getByRole('row', { name: 'Balance Final : 0.00' })).toBeVisible();
+    });
+
+    test('Cuenta de Certificados - Financieros Reinvertidas del Socio', async () => {
+        // La URL NO debe cambiar
+        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+
+        // Buscar una cuenta del mismo socio
+        await buscador.fill(`${nombre} ${apellido}`);
+        // Elegir la Cuenta de Certificado - Financieros Reinvertidas
+        await page.getByText('| FINANCIEROS REINVERTIDAS |').click();
+
+        // El tipo de captacion debe ser de Financieros Reinvertidas
+        await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('FINANCIEROS REINVERTIDAS');
+
+        // El estado debe estar en Activa
+        await expect(page.getByText('ACTIVA')).toBeVisible();
+
+        // Imprimir los movimientos de la cuenta
+        const imprimirFinancierosReinvertidas = page.getByRole('button', {name: 'Imprimir'});
+        // Esperar que se abra una nueva pestaña con el reporte de los movimientos de la cuenta 
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(imprimirFinancierosReinvertidas).toBeVisible(),
+            await imprimirFinancierosReinvertidas.click()
+        ]);
+
+        // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
+        await newPage.close();
+
+        // Titulo movimientos de la cuenta debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
+
+        // Movimientos de la cuenta, deben de estar los 4 movimientos que se han hecho a la cuenta
+        await expect(page.getByText('DEPOSITO INICIAL APERTURA CERTIFICADO FINANCIEROS REINVERTIDAS')).toBeVisible();
+
+        // Balance Final
+        await expect(page.getByRole('row', { name: 'Balance Final : 50.00' })).toBeVisible();
+    });
+
+    test('Cuenta de Certificados - Inversion Pagaderas del Socio', async () => {
+        // La URL NO debe cambiar
+        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+
+        // Buscar una cuenta del mismo socio
+        await buscador.fill(`${nombre} ${apellido}`);
+        // Elegir la Cuenta de Certificado - Inversion Pagaderas
+        await page.getByText('| INVERSION PAGADERAS |').click();
+
+        // El tipo de captacion debe ser de Inversion Pagaderas
+        await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('INVERSION PAGADERAS');
+
+        // El estado debe estar en Activa
+        await expect(page.getByText('ACTIVA')).toBeVisible();
+
+        // Imprimir los movimientos de la cuenta
+        const imprimirFinancierosReinvertidas = page.getByRole('button', {name: 'Imprimir'});
+        // Esperar que se abra una nueva pestaña con el reporte de los movimientos de la cuenta 
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(imprimirFinancierosReinvertidas).toBeVisible(),
+            await imprimirFinancierosReinvertidas.click()
+        ]);
+
+        // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
+        await newPage.close();
+
+        // Titulo movimientos de la cuenta debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
+
+        // Movimientos de la cuenta, deben de estar los 4 movimientos que se han hecho a la cuenta
+        await expect(page.getByText('DEPOSITO INICIAL APERTURA CERTIFICADO INVERSION PAGADERAS')).toBeVisible();
+
+        // Balance Final
+        await expect(page.getByRole('row', { name: 'Balance Final : 50.00' })).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

@@ -18,8 +18,8 @@ const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 
-const nombreMenor = 'ROBERTO LUIS';
-const apellidoMenor = 'BUENO DIAZ';
+const nombreMenor = 'JUSTIN';
+const apellidoMenor = 'MIRABALES';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [

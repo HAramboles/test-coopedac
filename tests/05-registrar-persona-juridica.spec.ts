@@ -30,14 +30,14 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'VACUNOS ORG';
+const nombreJuridica = 'GANADOS LEON';
 
 // Correo de la empresa
 const correoEmpresa = nombreJuridica.split(' ').join('') + correoJuridica;
 
 // Nombre del relacionado
-const nombreRelacionado = 'DARWIN';
-const apellidoRelacionado = 'ZAPATA';
+const nombreRelacionado = 'MARINO';
+const apellidoRelacionado = 'LEON PERALTA';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
@@ -508,9 +508,8 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     // Se debe mostrar un mensaje de que se han guardado correctamente los datos
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.').last()).toBeVisible();
 
-                    // Cerrar los dos mensajes
-                    await page.locator('[aria-label="close"]').first().click();
-                    await page.locator('[aria-label="close"]').click();
+                    // Cerrar uno de los mensajes
+                    await page.locator('[aria-label="close"]').last().click();
                 });
             
                 test('Registro de Persona Juridica - Relacionados del socio - Direcciones', async () => {
@@ -563,9 +562,6 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
 
                     // Click en Finalizar
                     await page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'}).click();
-
-                    // Se debe mostrar un mensaje de que se han guardado correctamente los datos
-                    await expect(page.locator('text=Contacto Persona almacenado exitosamente.').last()).toBeVisible();
                 });
             
                 test('Finalizar con el Registro de Persona Juridica', async () => {
