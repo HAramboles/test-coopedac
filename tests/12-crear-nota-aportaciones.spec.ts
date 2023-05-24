@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, dataCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -101,7 +101,7 @@ test.describe('Pruebas agregando y completando notas', () => {
         // Se debe mostrar un mensaje de confirmacion
         await expect(page.locator('text=Notas Persona almacenada exitosamente.')).toBeVisible();
         // Cerrar el mensaje
-        await page.locator('[data-icon="close"]').click();
+        await page.locator(`${dataCerrar}`).click();
     });
 
     test('Marcar la nota como completada', async () => {

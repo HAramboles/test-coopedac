@@ -47,14 +47,15 @@ test.describe('Pruebas con el Historial de las Categorias de un Socio', () => {
         await expect(page).toHaveURL(`${url_base}/historial_categoria_socio/01-2-4-11/`);
     });
 
-    test('Categorias de un Socio', async () => {
+    test('Categoria de un Socio', async () => {
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'HISTORIAL DE CAMBIO DE CATEGORÍA'})).toBeVisible();
 
-        // Buscar un socio
-        await page.locator('#form_search').fill(`${nombreEmpresa}`);
+        // Buscar por el usuario que hizo la solicitud
+        await page.locator('#form_search').fill('BPSHARAMBOLES');
 
-        // 
+        // Debe mostrarse la persona juridica y la categoria solicitada
+        await expect(page.getByRole('row', {name: `${nombreEmpresa}`}).getByText('SOCIO AHORRANTE')).toBeVisible();
     });
 
     test.afterAll(async () => {

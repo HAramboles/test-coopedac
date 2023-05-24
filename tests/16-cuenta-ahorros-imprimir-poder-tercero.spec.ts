@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, EditarCuentas } from './utils/dataTests';
+import { url_base, EditarCuentas, dataPrinter } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -213,7 +213,7 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
                     await expect(AgregarFirmante).toBeVisible();
             
                     // Boton de imprimir reporte
-                    await page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`}).locator('[data-icon="printer"]').click();
+                    await page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`}).locator(`${dataPrinter}`).click();
             
                     // Debe salir un modal con la opcion de seleccionar un testigo
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -125,7 +125,7 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         await expect(page.getByText('No es posible seleccionar más de una opción si tiene seleccionada la opción de cambio de fecha.')).toBeVisible();
 
         // Cerrar el mensaje de aviso
-        await page.locator('[aria-label="close"]').last().click();
+        await page.locator(`${ariaCerrar}`).last().click();
 
         // Mismo dia pero en un mes diferente
         const diaActual = new Date();

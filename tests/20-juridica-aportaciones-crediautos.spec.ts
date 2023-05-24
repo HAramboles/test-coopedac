@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, CrearCuentas } from './utils/dataTests';
+import { url_base, CrearCuentas, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -188,8 +188,8 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
 
                     // Cerrar dos de los mensajes
-                    await page.locator('[aria-label="close"]').first().click();
-                    await page.locator('[aria-label="close"]').last().click();
+                    await page.locator(`${ariaCerrar}`).first().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
             
                     // Se debe mostrar la fima del titular por defecto
                     await expect(page.locator('text=TITULAR')).toBeVisible();

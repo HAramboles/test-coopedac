@@ -1,5 +1,5 @@
 import { APIResponse ,Browser, BrowserContext, chromium, Page, expect, test } from '@playwright/test';
-import { url_base, CrearCuentas } from './utils/dataTests';
+import { url_base, CrearCuentas, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -267,7 +267,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
             
                     // Cerrar uno de los mensajes que se muestran
-                    await page.locator('[aria-label="close"]').last().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
 
                     // Cambiar a la pestaña de Personas o Contactos
                     const seccionPersonaContactos = page.locator('text=Personas o Contactos');
@@ -280,8 +280,8 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await page.getByRole('tab').filter({hasText: 'Firmantes'}).click();
             
                     // Cerrar los mensajes que aparecen
-                    await page.locator('[aria-label="close"]').first().click();
-                    await page.locator('[aria-label="close"]').first().click();
+                    await page.locator(`${ariaCerrar}`).first().click();
+                    await page.locator(`${ariaCerrar}`).first().click();
             
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');

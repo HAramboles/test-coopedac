@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
 
 /* Variables globales */
 
@@ -141,9 +141,9 @@ test.describe('Activar Caja - Pruebas con los diferentes parametros', async () =
                     const exito = page.locator('text=Operación Exitosa'); 
 
                     if (await error.isVisible()) { /* El mensaje de Error debe de estar visible */
-                        await page.locator('[aria-label="close"]').click(); /* Hacer click a la x para cerrar el mensaje */
+                        await page.locator(`${ariaCerrar}`).click(); /* Hacer click a la x para cerrar el mensaje */
                     } else if (await exito.isVisible()) { /* El mensaje de Operación Exitosa debe de estar visible */
-                        await page.locator('[aria-label="close"]').click(); /* Hacer click a la x para cerrar el mensaje */
+                        await page.locator(`${ariaCerrar}`).click(); /* Hacer click a la x para cerrar el mensaje */
                     };
                 };
             });

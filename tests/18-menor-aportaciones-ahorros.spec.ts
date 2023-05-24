@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, CrearCuentas } from './utils/dataTests';
+import { url_base, CrearCuentas, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -206,7 +206,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
             
                     // Cerrar uno de los mensajes que se muestran
-                    await page.locator('[aria-label="close"]').last().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
             
                     // Se debe mostrar la firma del titular por defecto
                     await expect(page.locator('text=TITULAR')).toBeVisible();

@@ -7,7 +7,7 @@ import {
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
-import { url_base, CrearPersonas } from './utils/dataTests';
+import { url_base, CrearPersonas, ariaCerrar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -30,14 +30,14 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'GANADOS LEON';
+const nombreJuridica = '';
 
 // Correo de la empresa
 const correoEmpresa = nombreJuridica.split(' ').join('') + correoJuridica;
 
 // Nombre del relacionado
-const nombreRelacionado = 'MARINO';
-const apellidoRelacionado = 'LEON PERALTA';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
@@ -289,7 +289,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
 
                     // Cerrar el mensaje
-                    await page.locator('[aria-label="close"]').click();
+                    await page.locator(`${ariaCerrar}`).click();
                 });
             
                 test('Registro de Persona Juridica - Informacion de Emails / Redes Sociales', async () => {
@@ -322,7 +322,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
 
                     // Cerrar el mensaje
-                    await page.locator('[aria-label="close"]').click();
+                    await page.locator(`${ariaCerrar}`).click();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();
@@ -509,7 +509,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.').last()).toBeVisible();
 
                     // Cerrar uno de los mensajes
-                    await page.locator('[aria-label="close"]').last().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
                 });
             
                 test('Registro de Persona Juridica - Relacionados del socio - Direcciones', async () => {

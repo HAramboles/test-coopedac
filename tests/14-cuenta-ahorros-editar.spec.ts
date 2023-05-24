@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, EditarCuentas } from './utils/dataTests';
+import { url_base, EditarCuentas, ariaCerrar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -306,7 +306,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).not.toBeVisible();
             
                     // Cerrar uno de los mensajes
-                    await page.locator('[aria-label="close"]').last().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
                 });
             
                 test('Editar una Cuenta de Ahorros - Agregar un Firmante', async () => {

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -137,7 +137,7 @@ test.describe('Pruebas con la Solicitud de Transferencia Interbancaria', () => {
         await expect(page.locator('text=Encabezado programación de pagos almacenado exitosamente.')).toBeVisible();
 
         // Cerrar el mensaje
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
     
     test.afterAll(async () => { // Despues de las pruebas

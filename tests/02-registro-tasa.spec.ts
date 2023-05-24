@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -153,10 +153,10 @@ test.describe('Pruebas con el Registro de Tasa', async () => {
 
           if (await mensajeExito.isVisible()) { // Si no hay una tasa registrada y se registro correctamente la tasa
             // Cerrar el mensaje
-            await page.locator('[aria-label="close"]').click();
+            await page.locator(`${ariaCerrar}`).click();
           } else if (await mensajeError.isVisible()) { // Si ya hay una tasa registrada y no se registro la tasa
             // Cerrar el mensaje
-            await page.locator('[aria-label="close"]').click();
+            await page.locator(`${ariaCerrar}`).click();
           };
 
         } else if (scenarie.FECHA_DIA_AUTO === 'N' || scenarie.FECHA_DIA_AUTO === '' && scenarie.ID_MONEDA_DEFECTO === 'US') {

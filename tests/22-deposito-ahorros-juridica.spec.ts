@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, dataCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -105,7 +105,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
 
         // Cerrar el mensaje
-        await page.locator('[data-icon="close"]').click();
+        await page.locator(`${dataCerrar}`).click();
     });
 
     test('Probar el Deposito de Centavos - Boton de Deposito de la cuenta de Ahorros', async () => {
@@ -135,7 +135,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
 
         // Cerrar el mensaje
-        await page.locator('[data-icon="close"]').click();
+        await page.locator(`${dataCerrar}`).click();
     });
 
     test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {

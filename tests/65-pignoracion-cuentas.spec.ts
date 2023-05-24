@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils'
-import { url_base } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -103,7 +103,7 @@ test.describe('Pruebas con la Pignoracion de Cuentas', () => {
         await expect(page.locator('text=Captaciones congeladas almacenada exitosamente.')).toBeVisible();
 
         // Cerrar el mensaje
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
 
         // Los 100 pesos deben estar en estado congelado
         await expect(page.getByRole('row', {name: 'PIGNORAR 100 PESOS CONGELADO'})).toBeVisible();
@@ -125,7 +125,7 @@ test.describe('Pruebas con la Pignoracion de Cuentas', () => {
         await expect(page.locator('text=Captaciones congeladas almacenada exitosamente.')).toBeVisible();
 
         // Cerrar el mensaje
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
 
         // Los 150 pesos deben estar en estado congelado
         await expect(page.getByRole('row', {name: 'PIGNORAR 150 PESOS CONGELADO'})).toBeVisible();

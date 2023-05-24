@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, expect, Locator, Page, test, chromium } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -185,7 +185,7 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         await expect(page.locator('h1').filter({hasText: 'HISTORIAL DE PIGNORACIONES'})).toBeVisible();
 
         // Cerrar el modal
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
 
         // Se debe cerrar el modal por lo que el titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS CUENTA'})).toBeVisible();

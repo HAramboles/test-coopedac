@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from "@playwright/test";
-import { url_base } from "./utils/dataTests";
+import { url_base, ariaCerrar } from "./utils/dataTests";
 
 // Variables globales
 let browser: Browser;
@@ -95,7 +95,7 @@ test.describe('Pruebas con la Confirmacion de Cancelacion de Cuentas', () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
         // Deben salir dos mensajes, cerrar uno de los mensajes
-        await page.locator('[aria-label="close"]').first().click();
+        await page.locator(`${ariaCerrar}`).first().click();
 
         // Debe redirigirse a la Confirmacion de Cancelacion de Cuentas
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();

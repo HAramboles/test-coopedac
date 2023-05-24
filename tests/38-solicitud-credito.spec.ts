@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -103,7 +103,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('(//img[@class="ant-image-preview-img"])')).toBeVisible();
 
         // Cerrar la imagen de la firma
-        await page.locator('[data-icon="close"]').click();
+        await page.locator(`${dataCerrar}`).click();
 
         // Click al boton de guardar y continuar 
         GuardaryContinuar();
@@ -254,7 +254,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByRole('button', {name: 'save Guardar'}).click();
 
         // Cerrar el mensaje
-        await page.locator('[aria-label="close"]').first().click();
+        await page.locator(`${ariaCerrar}`).first().click();
 
         // Guardar los cargos
         await page.getByRole('button', {name: 'Guardar Cargos'}).click();

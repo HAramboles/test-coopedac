@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, dataFile, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -76,7 +76,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pageAportaciones.close();
 
         // Cerrar el mensaje que se muestra
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
 
     test('Reimprimir Contrato - Cuenta de Aportaciones Preferentes', async () => {
@@ -87,7 +87,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await expect(cuentaAportacionesPreferentes).toBeVisible();
 
         // Generar contrato
-        const contratoAportacionesPreferentes = cuentaAportacionesPreferentes.locator('[data-icon="file-text"]');
+        const contratoAportacionesPreferentes = cuentaAportacionesPreferentes.locator(`${dataFile}`);
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [pageAportacionesPreferentes, pageAportacionesPreferentes2] = await Promise.all([
             context.waitForEvent('page'),
@@ -102,7 +102,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pageAportacionesPreferentes2.close();
 
         // Cerrar el mensaje que se muestra
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
 
     test.skip('Reimprimir Contrato - Cuenta de Ahorros Normales', async () => {
@@ -111,7 +111,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await expect(cuentaAhorrosNormales).toBeVisible();
 
         // Generar contrato
-        const contratoAhorrosNormales = cuentaAhorrosNormales.locator('[data-icon="file-text"]');
+        const contratoAhorrosNormales = cuentaAhorrosNormales.locator(`${dataFile}`);
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [pageAhorros] = await Promise.all([
             context.waitForEvent('page'),
@@ -124,7 +124,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pageAhorros.close();
 
         // Cerrar el mensaje que se muestra
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
 
     test('Reimprimir Contrato - Cuenta de Ahorros Por Nomina', async () => {
@@ -135,7 +135,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await expect(cuentaAhorrosNomina).toBeVisible();
 
         // Generar contrato
-        const contratoAhorrosNomina = cuentaAhorrosNomina.locator('[data-icon="file-text"]');
+        const contratoAhorrosNomina = cuentaAhorrosNomina.locator(`${dataFile}`);
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [pageAhorrosNomina] = await Promise.all([
             context.waitForEvent('page'),
@@ -148,7 +148,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pageAhorrosNomina.close();
 
         // Cerrar el mensaje que se muestra
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
 
     test('Reimprimir Contrato - Cuenta de Ahorros - Orden de Pago', async () => {
@@ -159,7 +159,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await expect(cuentaAhorrosOrdenPago).toBeVisible();
 
         // Generar contrato
-        const contratoAhorrosOdenPago = cuentaAhorrosOrdenPago.locator('[data-icon="file-text"]');
+        const contratoAhorrosOdenPago = cuentaAhorrosOrdenPago.locator(`${dataFile}`);
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [pageAhorrosOrdenPago] = await Promise.all([
             context.waitForEvent('page'),
@@ -172,7 +172,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pageAhorrosOrdenPago.close();
 
         // Cerrar el mensaje que se muestra
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
 
     test('Reimprimir Contrato - Cuenta de Certificados - Financieros Pagaderas', async () => {
@@ -183,7 +183,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await expect(cuentaFinancierosPagaderas).toBeVisible();
 
         // Generar contrato
-        const contratoFinancierosPagaderas = cuentaFinancierosPagaderas.locator('[data-icon="file-text"]');
+        const contratoFinancierosPagaderas = cuentaFinancierosPagaderas.locator(`${dataFile}`);
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [pageFinancierosPagaderas, pageFinancierosPagaderas2] = await Promise.all([
             context.waitForEvent('page'),
@@ -198,7 +198,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pageFinancierosPagaderas2.close();
 
         // Cerrar el mensaje que se muestra
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
 
     test('Reimprimir Contrato - Cuenta de Certificados - Financieros Reinvertidas', async () => {
@@ -209,7 +209,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await expect(cuentaFinancierosReinvertidas).toBeVisible();
 
         // Generar contrato
-        const contratoFinancierosReinvertidas = cuentaFinancierosReinvertidas.locator('[data-icon="file-text"]');
+        const contratoFinancierosReinvertidas = cuentaFinancierosReinvertidas.locator(`${dataFile}`);
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [pageFinancierosReinvertidas] = await Promise.all([
             context.waitForEvent('page'),
@@ -222,7 +222,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pageFinancierosReinvertidas.close();
 
         // Cerrar el mensaje que se muestra
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
 
     test('Reimprimir Contrato - Cuenta de Certificados - Inversion Pagaderas', async () => {
@@ -233,7 +233,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await expect(cuentaInversionPagaderas).toBeVisible();
 
         // Generar contrato
-        const contratoInversionPagaderas = cuentaInversionPagaderas.locator('[data-icon="file-text"]');
+        const contratoInversionPagaderas = cuentaInversionPagaderas.locator(`${dataFile}`);
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [pageInversionPagaderas] = await Promise.all([
             context.waitForEvent('page'),
@@ -246,7 +246,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pageInversionPagaderas.close();
 
         // Cerrar el mensaje que se muestra
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
 
     test.skip('Reimprimir Contrato - Prestamos', async () => {
@@ -255,7 +255,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await expect(cuentaPrestamos).toBeVisible();
 
         // Generar contrato
-        const contratoFinancierosPagaderas = cuentaPrestamos.locator('[data-icon="file-text"]');
+        const contratoFinancierosPagaderas = cuentaPrestamos.locator(`${dataFile}`);
         // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
         const [pagePrestamos] = await Promise.all([
             context.waitForEvent('page'),
@@ -268,7 +268,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await pagePrestamos.close();
 
         // Cerrar el mensaje que se muestra
-        await page.locator('[aria-label="close"]').click();
+        await page.locator(`${ariaCerrar}`).click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

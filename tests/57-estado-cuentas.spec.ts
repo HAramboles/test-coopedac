@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, Page, expect, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base } from './utils/dataTests';
+import { url_base, dataExport } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -130,7 +130,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         test.slow();
 
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'APORTACIONES'}).locator('[data-icon="export"]').first();
+        const verMovimientos = page.getByRole('row', {name: 'APORTACIONES'}).locator(`${dataExport}`).first();
         await expect(verMovimientos).toBeVisible();
         
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta 
@@ -170,7 +170,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
 
     test('Ver los movimientos de la cuenta de Aportaciones Preferentes', async () => {
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'}).locator('[data-icon="export"]');
+        const verMovimientos = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'}).locator(`${dataExport}`);
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -195,7 +195,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
 
     test('Ver los movimientos de la cuenta de Ahorros Normales', async () => {
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'AHORROS NORMALES'}).locator('[data-icon="export"]').first();
+        const verMovimientos = page.getByRole('row', {name: 'AHORROS NORMALES'}).locator(`${dataExport}`).first();
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -228,7 +228,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
 
     test('Ver los movimientos de la cuenta de Ahorros Por Nomina', async () => {
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'AHORROS POR NOMINA'}).locator('[data-icon="export"]');
+        const verMovimientos = page.getByRole('row', {name: 'AHORROS POR NOMINA'}).locator(`${dataExport}`);
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -251,7 +251,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
 
     test('Ver los movimientos de la cuenta de Ahorros - Orden de Pago', async () => {
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'ORDEN DE PAGO'}).locator('[data-icon="export"]');
+        const verMovimientos = page.getByRole('row', {name: 'ORDEN DE PAGO'}).locator(`${dataExport}`);
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -276,7 +276,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         test.slow();
 
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'FINANCIEROS PAGADERAS'}).locator('[data-icon="export"]');
+        const verMovimientos = page.getByRole('row', {name: 'FINANCIEROS PAGADERAS'}).locator(`${dataExport}`);
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -307,7 +307,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         test.slow();
 
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'FINANCIEROS REINVERTIDAS'}).locator('[data-icon="export"]');
+        const verMovimientos = page.getByRole('row', {name: 'FINANCIEROS REINVERTIDAS'}).locator(`${dataExport}`);
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),
@@ -336,7 +336,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         test.slow();
 
         // Boton de ver movimientos
-        const verMovimientos = page.getByRole('row', {name: 'INVERSION PAGADERAS'}).locator('[data-icon="export"]');
+        const verMovimientos = page.getByRole('row', {name: 'INVERSION PAGADERAS'}).locator(`${dataExport}`);
         // Esperar que se abra una nueva pestaña con los movimientos de la cuenta
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),

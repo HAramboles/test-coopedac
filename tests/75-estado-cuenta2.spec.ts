@@ -109,6 +109,9 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         // Credito Hipotecario
         await expect(page.getByRole('cell', {name: 'CRÉDITO HIPOTECARIO', exact: true})).toBeVisible();
 
+        // No debe mostrarse el icono de ver pignoraciones cuando es un prestamo
+        await expect(page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO'}).locator('[data-icon="eye"]')).not.toBeVisible();
+
         // Totales 
         await expect(page.getByRole('row', {name: 'TOTALES: RD$ 0.00 RD$ 0.00'}).first()).toBeVisible();
     });

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, dataPrinter } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -81,7 +81,7 @@ test.describe('Pruebas con la Reimpresion de Desembolso', () => {
         await expect(page.getByRole('dialog').locator('h1').filter({hasText: 'REIMPRIMIR DESEMBOLSO'})).toBeVisible();
 
         // Boton de Imprimir
-        const botonImprimir = page.locator('[data-icon="printer"]');
+        const botonImprimir = page.locator(`${dataPrinter}`);
         // Se abrira una nueva pagina con el reporte del deposito
         const [newPage] = await Promise.all([
             context.waitForEvent('page'),

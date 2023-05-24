@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -98,7 +98,7 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         await expect(page.getByRole('cell', {name: `${nota}`})).toBeVisible();
 
         // Cerrar el modal
-        await page.locator('[aria-label="close"]').click();  
+        await page.locator(`${ariaCerrar}`).click();  
     });
 
     test('Boton de Retiro', async () => {
@@ -139,7 +139,7 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
 
         // Cerrar el mensaje
-        await page.locator('[data-icon="close"]').click();
+        await page.locator(`${dataCerrar}`).click();
 
         // Aplicar el retiro
         await page.locator('text=Aplicar').click();

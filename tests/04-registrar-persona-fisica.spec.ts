@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, CrearPersonas } from './utils/dataTests';
+import { url_base, CrearPersonas, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -13,8 +13,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = 'CARLA SOFIA';
-const apellidoPersona = 'MIRABALES';
+const nombrePersona = '';
+const apellidoPersona = '';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
@@ -204,7 +204,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
             
                     // Input de ejecutivo
                     const campoEjecutivo = page.locator('#person_ID_EJECUTIVO');
-                    await campoEjecutivo?.fill('Cliente');
+                    await campoEjecutivo?.fill('CLIENT');
                     // Hacer click a la opcion de cliente inactivo
                     await page.locator('text=CLIENTE INACTIVO').click();
             
@@ -501,7 +501,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
 
                     // Cerrar el mensaje
-                    await page.locator('[aria-label="close"]').click();
+                    await page.locator(`${ariaCerrar}`).click();
                 });
             
                 test('Registrar a la persona - Email/Redes Sociales', async () => {
@@ -535,7 +535,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
 
                     // Cerrar el mensaje
-                    await page.locator('[aria-label="close"]').click();
+                    await page.locator(`${ariaCerrar}`).click();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();

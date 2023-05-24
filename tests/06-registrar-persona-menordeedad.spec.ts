@@ -1,7 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
 import { formatDate } from './utils/utils';
-import { url_base, CrearPersonas } from './utils/dataTests';
+import { url_base, CrearPersonas, ariaCerrar } from './utils/dataTests';
 
 // Vaiables globales 
 let browser: Browser;
@@ -18,8 +18,8 @@ const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 
-const nombreMenor = 'JUSTIN';
-const apellidoMenor = 'MIRABALES';
+const nombreMenor = '';
+const apellidoMenor = '';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
@@ -372,7 +372,7 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
 
                     // Cerrar el mensaje
-                    await page.locator('[aria-label="close"]').click();
+                    await page.locator(`${ariaCerrar}`).click();
                 });
             
                 test('Registro de Persona Fisica - Menor de edad - Email/Redes Sociales', async () => {
@@ -406,7 +406,7 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.')).toBeVisible();
 
                     // Cerrar el mensaje
-                    await page.locator('[aria-label="close"]').click();
+                    await page.locator(`${ariaCerrar}`).click();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();

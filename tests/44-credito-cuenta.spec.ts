@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -124,7 +124,7 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         await expect(page.locator('text=Captacion Movimiento almacenada exitosamente.')).toBeVisible();
 
         // Cerrar los mensajes
-        await page.locator('[aria-label="close"]').first().click();
+        await page.locator(`${ariaCerrar}`).first().click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

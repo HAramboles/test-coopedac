@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, CrearCuentas } from './utils/dataTests';
+import { url_base, CrearCuentas, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -208,7 +208,7 @@ test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los di
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
             
                     // Cerrar uno de los mensajes que aparecen
-                    await page.locator('[aria-label="close"]').first().click();
+                    await page.locator(`${ariaCerrar}`).first().click();
             
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
