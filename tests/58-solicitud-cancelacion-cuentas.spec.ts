@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -53,7 +53,7 @@ test.describe('Pruebas con la Cancelacion de una Cuenta', () =>{
 
     test('Cuentas del Socio elegido', async () => {
         // Buscar un socio
-        await page.locator('#select-search').fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir al socio
         await page.locator(`text=${nombre} ${apellido}`).click();
 

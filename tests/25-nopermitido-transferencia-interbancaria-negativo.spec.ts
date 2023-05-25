@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -54,7 +54,7 @@ test.describe('No permitir una Transferencia Interbancaria si la cuenta de Ahorr
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOLICITANTE'})).toBeVisible();
     
         // Ingresar un socio
-        const campoSocio = page.locator('#select-search').first();
+        const campoSocio = page.locator(`${selectBuscar}`).first();
         await expect(campoSocio).toBeVisible();
     
         await campoSocio?.fill(`${cedula}`);
@@ -67,7 +67,7 @@ test.describe('No permitir una Transferencia Interbancaria si la cuenta de Ahorr
         await expect(page.locator('h1').filter({hasText: 'DATOS TRANSFERENCIA'})).toBeVisible();
     
         // Cuenta de origen
-        const campoCuentaOrigen = page.locator('#select-search').last();
+        const campoCuentaOrigen = page.locator(`${selectBuscar}`).last();
         await campoCuentaOrigen.click();
         // Seleccionar ahorros normales
         await page.locator('text=AHORROS NORMALES').click();

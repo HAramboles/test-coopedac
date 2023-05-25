@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -54,7 +54,7 @@ test.describe('Pruebas con la opcion de Credito a Prestamos', () => {
         await expect(page.locator('h1').filter({hasText: 'CRÉDITO A PRÉSTAMOS'})).toBeVisible();
 
         // Buscar al socio
-        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
         // Seleccionar a la persona
         await page.locator(`text=${nombre} ${apellido}`).click();
     });

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -94,7 +94,7 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
 
     test('Ver cuenta - Datos Generales', async () => {
         // Buscar al socio a editar
-        await page.locator('#form_search').fill(`${cedulaMenor}`);
+        await page.locator(`${formBuscar}`).fill(`${cedulaMenor}`);
 
         // Click al boton de editar cuenta
         const botonEditarCuenta = page.getByRole('row', {name: `${nombreMenor} ${apellidoMenor}`}).getByRole('button', {name: 'eye'});

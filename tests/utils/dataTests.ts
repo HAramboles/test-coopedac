@@ -6,7 +6,11 @@ const dataCerrar:string = '[data-icon="close"]';
 const dataPrinter:string = '[data-icon="printer"]';
 const dataExport:string = '[data-icon="export"]';
 const dataFile:string = '[data-icon="file-text"]';
+
 const ariaCerrar:string = '[aria-label="close"]';
+
+const formBuscar:string = '#form_search';
+const selectBuscar:string = '#select-search';
 
 // Intefaces para los tests con parametros, el ultimo numero es el correcto
 
@@ -40,6 +44,8 @@ export {
     dataPrinter,
     dataExport,
     dataFile,
-    ariaCerrar
+    ariaCerrar,
+    formBuscar,
+    selectBuscar
 };
 

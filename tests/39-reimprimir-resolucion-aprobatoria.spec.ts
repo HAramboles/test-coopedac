@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -93,7 +93,7 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                     await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="APROBADO"])')).toBeVisible();
 
                     // Buscar un socio
-                    await page.locator('#form_search').fill(`${nombre} ${apellido}`);
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
                     // No se deben mostrar ningun resultado, porque el socio no tiene ninguna solicitud en aprobado
                     await expect(page.getByText('No hay datos')).toBeVisible();
@@ -105,7 +105,7 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
                     await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="DESEMBOLSADO"])')).toBeVisible();
 
                     // Buscar un socio
-                    await page.locator('#form_search').fill(`${nombre} ${apellido}`);
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
                     // Click al boton de reimprimir
                     const botonImprimir = page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[aria-label="printer"]');

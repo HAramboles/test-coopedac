@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, CrearCuentas } from './utils/dataTests';
+import { url_base, CrearCuentas, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -142,7 +142,7 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             
                     // Ingresar el titular
-                    const campoTitular = page.locator('#select-search');
+                    const campoTitular = page.locator(`${selectBuscar}`);
             
                     await campoTitular?.fill(`${cedula}`);
                     // Click a la opcion que coincide con lo buscado

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar } from './utils/dataTests';
+import { url_base, dataCerrar, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -70,7 +70,7 @@ test.describe('Pruebas agregando y completando notas', () => {
 
     test('Crear una nota a la cuenta de un socio', async () => {
         // Ingresar la cedula en el buscador
-        await page.locator('#form_search').fill(`${cedula}`);
+        await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
         // Click a mas opciones 
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[data-icon="more"]').click();

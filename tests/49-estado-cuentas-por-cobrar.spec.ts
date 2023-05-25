@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base } from './utils/dataTests';
+import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -55,7 +55,7 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
         await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTAS POR COBRAR'})).toBeVisible();
 
         // Buscar un Socio
-        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
         // Elegir al Socio buscado
         await page.locator(`text=${nombre} ${apellido}`).click();
 

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base } from './utils/dataTests';
+import { url_base, formBuscar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -61,7 +61,7 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         await expect(page.locator('h1').filter({hasText: 'AGREGAR SOLICITUD PARA CAMBIO DE CATEGORÍA'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').fill(`${nombreEmpresa}`);
+        await page.locator(`${selectBuscar}`).fill(`${nombreEmpresa}`);
         // Elegir al socio
         await page.getByText(`${nombreEmpresa}`).click();
 
@@ -109,7 +109,7 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         await expect(page.locator('h1').filter({hasText: 'AUTORIZACIÓN CAMBIO CATEGORÍA'})).toBeVisible();
 
         // Buscar al socio
-        await page.locator('#form_search').fill(`${nombreEmpresa}`);
+        await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
         // Click al boton de buscar
         await page.locator('[aria-label="search"]').click();
 

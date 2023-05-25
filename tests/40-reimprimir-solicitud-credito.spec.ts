@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, Page, expect, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -51,7 +51,7 @@ test.describe('Prueba con la Reimpresion de la Solicitud de Credito', () => {
 
     test('Buscar un socio', async () => {
         // Ingresar un socio
-        const buscador = page.locator('#form_search');
+        const buscador = page.locator(`${formBuscar}`);
         await buscador.fill(`${nombre} ${apellido}`);
 
         // El titulo debe estar presente

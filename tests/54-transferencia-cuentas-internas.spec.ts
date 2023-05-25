@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -52,12 +52,12 @@ test.describe('Pruebas con la Transferencia de Cuentas de un Socio', () => {
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIAS CUENTAS INTERNAS'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').first().fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
         // Seleccionar la cuenta de ahorros del socio
         await page.getByText('AHORROS NORMALES').click();
 
         // Buscar la cuenta de aportaciones preferentes
-        await page.locator('#select-search').last().fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).last().fill(`${cedula}`);
         // Seleccionar la cuenta de Aportaciones Preferentes del socio
         await page.getByText('APORTACIONES').click();
 

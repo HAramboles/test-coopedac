@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataFile, ariaCerrar } from './utils/dataTests';
+import { url_base, dataFile, ariaCerrar, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -54,7 +54,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await expect(page.locator('h1').filter({hasText: 'REIMPRESIÓN CONTRATOS'})).toBeVisible();
 
         // Ingresar la cedula del socio
-        await page.locator('#form_search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
     });
 
     test('Reimprimir Contrato - Cuenta de Aportaciones', async () => {

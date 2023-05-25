@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, EditarCuentas, dataPrinter } from './utils/dataTests';
+import { url_base, EditarCuentas, dataPrinter, formBuscar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -126,7 +126,7 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
                 // Test cuando el ID_OPERACION es Vacio
                 test('No debe permitir Entrar a la Edicion de la Cuenta de Ahorros', async () => {            
                     // Buscar al socio a editar
-                    await page.locator('#form_search').fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
             
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
@@ -146,7 +146,7 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
                 // Test cuando el ID_OPERACION es diferente de 31
                 test('No debe permitir Entrar a la Edicion de la Cuenta de Ahorros', async () => {
                     // Buscar al socio a editar
-                    await page.locator('#form_search').fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
             
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
@@ -166,7 +166,7 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
                 // Tests cuando el ID_OPERACION es 31
                 test('Datos Generales de la Cuenta de Ahorros', async () => {
                     // Buscar al socio a editar
-                    await page.locator('#form_search').fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
             
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});

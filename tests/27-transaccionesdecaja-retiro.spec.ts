@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -81,7 +81,7 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         test.slow();
         
         // Input para buscar el socio
-        const buscarSocio = page.locator('#select-search');
+        const buscarSocio = page.locator(`${selectBuscar}`);
         await expect(buscarSocio).toBeVisible();
 
         // Ingresar la cedula del socio

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -58,7 +58,7 @@ test.describe('Pruebas con la Solicitud de Transferencia Interbancaria', () => {
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOLICITANTE'})).toBeVisible();
     
         // Ingresar un socio
-        const campoSocio = page.locator('#select-search').first();
+        const campoSocio = page.locator(`${selectBuscar}`).first();
         await expect(campoSocio).toBeVisible();
     
         await campoSocio?.fill(`${cedula}`);
@@ -71,7 +71,7 @@ test.describe('Pruebas con la Solicitud de Transferencia Interbancaria', () => {
         await expect(page.locator('h1').filter({hasText: 'DATOS TRANSFERENCIA'})).toBeVisible();
     
         // Cuenta de origen
-        const campoCuentaOrigen = page.locator('#select-search').last();
+        const campoCuentaOrigen = page.locator(`${selectBuscar}`).last();
         await campoCuentaOrigen.click();
         // No deben mostrarse ni la cuenta de Aportaciones ni la de Aportaciones Preferentes del socio
         await expect(page.getByText('APORTACIONES', {exact: true})).not.toBeVisible();

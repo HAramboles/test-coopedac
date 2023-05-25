@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from "@playwright/test";
-import { url_base, ariaCerrar } from "./utils/dataTests";
+import { url_base, ariaCerrar, formBuscar } from "./utils/dataTests";
 
 // Variables globales
 let browser: Browser;
@@ -54,7 +54,7 @@ test.describe('Pruebas con la Confirmacion de Cancelacion de Cuentas', () => {
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#form_search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Click en buscar
         await page.locator('[data-icon="search"]').click();

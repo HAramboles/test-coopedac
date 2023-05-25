@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, expect, Locator, Page, test, chromium } from '@playwright/test';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -38,7 +38,7 @@ test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Input para buscar las cuentas del socio
-        buscador = page.locator('#select-search');
+        buscador = page.locator(`${selectBuscar}`);
     });
 
     test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {

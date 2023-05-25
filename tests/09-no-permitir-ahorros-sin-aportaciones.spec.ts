@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, CrearCuentas } from './utils/dataTests';
+import { url_base, CrearCuentas, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -158,7 +158,7 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
             
                 test('Ingresar un socio para crear una cuenta de ahorros', async () => {
                     // Titular
-                    const campoTitular = page.locator('#select-search');
+                    const campoTitular = page.locator(`${selectBuscar}`);
             
                     await campoTitular?.fill(`${cedula}`);
                     // Seleccionar la opcion que aparece

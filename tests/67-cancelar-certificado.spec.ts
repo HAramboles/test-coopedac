@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, formBuscar, selectBuscar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -52,7 +52,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await expect(page.locator('h1').filter({hasText: 'CANCELACIÓN DE CERTIFICADO FINANCIERO'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').first().fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
         // Elegir al socio
         await page.locator('text=FINANCIEROS PAGADERAS').click();
 
@@ -71,7 +71,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await expect(page.locator('#form_MONTO_APERTURA').first()).toHaveValue('RD$ 50');
 
         // Cuenta Deposito
-        await page.locator('#select-search').last().click();
+        await page.locator(`${selectBuscar}`).last().click();
         // Elegir la cuenta de Ahorros
         await page.getByText('AHORROS NORMALES').click();
 
@@ -147,7 +147,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
 
     test('Buscar al Socio al cual se elimino el Certificado', async () => {
         // Buscar al socio
-        await page.locator('#form_search').fill(`${cedula}`);
+        await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
         // No debe mostrar resultados
         await expect(page.getByText('No hay datos')).toBeVisible();

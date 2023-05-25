@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -62,7 +62,7 @@ test.describe('Pruebas con la Sesion en Transito luego de enviar a Caja el Pago 
         await botonActualizar.click();
 
         // Buscar al socio
-        await page.locator('#form_search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Se debe mostrar el socio y el area emisora debe ser caja
         await expect(page.getByRole('cell', {name: 'CAJA'})).toBeVisible();

@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, EditarCuentas, ariaCerrar } from './utils/dataTests';
+import { url_base, EditarCuentas, ariaCerrar, formBuscar, selectBuscar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -131,7 +131,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                 // Test si el ID_OPERACION es Vacio
                 test('No debe permitir Editar la cuenta de ahorros', async () => {            
                     // Buscar al socio a editar
-                    await page.locator('#form_search').fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
             
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
@@ -151,7 +151,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                 // Test si el ID_OPERACION es diferente de 31
                 test('No debe permitir Editar la cuenta de ahorros', async () => {
                     // Buscar al socio a editar
-                    await page.locator('#form_search').fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
             
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
@@ -171,7 +171,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                 // Tests si el ID_OPERACION es 31
                 test('Dirigirse al primer paso de la edicion de cuentas de ahorros', async () => {
                     // Buscar al socio a editar
-                    await page.locator('#form_search').fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
             
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
@@ -205,7 +205,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
             
                 test('Editar Cuenta de Ahorros - Datos Generales', async () => {
                     // Buscar al socio a editar
-                    await page.locator('#form_search').fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
             
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
@@ -320,7 +320,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                     await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
             
                     // Bucar un socio
-                    const buscador = page.locator('#select-search');
+                    const buscador = page.locator(`${selectBuscar}`);
                     await buscador.click();
                     await buscador.fill(`${cedulaFirmante}`);
                     // Seleccionar el socio

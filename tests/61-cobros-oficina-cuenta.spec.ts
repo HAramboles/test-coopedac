@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -56,7 +56,7 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir al socio buscado
         await page.locator(`text=${nombre} ${apellido}`).click();
 
@@ -112,39 +112,51 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         // Saldo total
         await expect(page.getByText('Saldo total')).toBeVisible();
 
-        // Saldar la mitad faltante del prestamo
-        await page.locator('(//INPUT[@type="checkbox"])[4]').check();
+        // Pagar la mitad del prestamo, en este caso 25,000
+        await page.locator('#form_MONTO_ABONO_CAPITAL').fill('25,000');
 
         // El total a pagar debe ser la misma cantidad que la ingresada en el abono capital
         await expect(page.locator('text=Total a pagar')).toBeVisible();
-        await expect(page.locator('#form_A_PAGAR')).toHaveValue('RD$ 13,000');
+        await expect(page.locator('#form_A_PAGAR')).toHaveValue('RD$ 25,000');
 
         // Agregar un comnetario
-        await page.locator('#form_COMENTARIO').fill('Pagar 13,000, lo faltante, al prestamo');
-
-        // Ocultar los detalles de pago
-        await page.getByText('Detalle de Pago').click();
+        await page.locator('#form_COMENTARIO').fill('Pagar 25,000 al prestamo');
     });
 
-    test('Enviar a Caja', async () => {
+    test('Cobrar de Cuenta', async () => {
         // Via de cobro
         await expect(page.locator('text=Vía de cobro')).toBeVisible();
 
-        // Elegir la opcion de enviar a caja
-        await expect(page.getByText('Enviar a Caja')).toBeVisible();
-        await page.locator('(//INPUT[@type="radio"])[1]').click();
+        // Elegir la opcion de cobrar de cuenta
+        await expect(page.getByText('Cobrar de cuenta')).toBeVisible();
+        await page.locator('(//INPUT[@type="radio"])[2]').click();
 
-        // Seleccionar una caja
-        await page.locator('div').filter({hasText: /^TODOS - TODOS$/}).nth(4).click();
-        // Elegir la primera caja que se muestre
-        await page.getByRole('option').nth(1).click();
+        // Seleccionar la cuenta de ahorros del socio
+        await page.getByRole('dialog', {name: 'Pago a Préstamo'}).locator(`${selectBuscar}`).click();
+        await page.getByText('AHORROS NORMALES').click();
+
+        // Debe mostrarse el monto disponible de la cuenta
+        //await expect(page.locator('text=RD$ 48,050.00')).toBeVisible();
+        await expect(page.locator('text=RD$ 48,900.00')).toBeVisible();
     });
 
     test('Realizar el pago', async () => {
         // Boton Aplicar
         const botonAplicar = page.getByRole('button', {name: 'Aplicar'});
-        await expect(botonAplicar).toBeVisible();
-        await botonAplicar.click();
+        // Esperar que se abran dos ventanas con los reportes
+        const [newPage, newPage2] = await Promise.all([
+            context.waitForEvent('page'),
+            context.waitForEvent('page'),
+            // Click al boton de Aceptar
+            await expect(botonAplicar).toBeVisible(),
+            await botonAplicar.click()
+        ]);
+
+        // Cerrar la primera pagina 
+        await newPage.close();
+
+        // Cerrar la segunda pagina
+        await newPage2.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

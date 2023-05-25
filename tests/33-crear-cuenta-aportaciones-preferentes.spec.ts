@@ -1,5 +1,5 @@
 import { APIResponse ,Browser, BrowserContext, chromium, Page, expect, test } from '@playwright/test';
-import { url_base, CrearCuentas, ariaCerrar } from './utils/dataTests';
+import { url_base, CrearCuentas, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -168,7 +168,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(page.locator('text=Datos Generales')).toBeVisible();
             
                     // Buscar un socio
-                    await page.locator('#select-search').first().fill(`${cedula}`);
+                    await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
                     // Click al socio
                     await page.locator(`text=${cedula}`).click();
             
@@ -231,7 +231,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(page.locator('h1').filter({hasText: 'ORIGEN DE INVERSIÓN'})).toBeVisible();
             
                     // Buscar una cuenta de la persona
-                    const campoBuscarCuenta = page.locator('#select-search').last();
+                    const campoBuscarCuenta = page.locator(`${selectBuscar}`).last();
                     await campoBuscarCuenta.click();
                     // Elegir la cuenta de ahorros
                     await page.locator('text=AHORROS NORMALES').click();
@@ -293,7 +293,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
             
                     // Bucar un socio
-                    const buscador = page.locator('#select-search');
+                    const buscador = page.locator(`${selectBuscar}`);
                     await buscador.click();
                     await buscador.fill(`${cedulaFirmante}`);
                     // Seleccionar el socio

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -52,7 +52,7 @@ test.describe('Pruebas con el Historial de las Categorias de un Socio', () => {
         await expect(page.locator('h1').filter({hasText: 'HISTORIAL DE CAMBIO DE CATEGORÍA'})).toBeVisible();
 
         // Buscar por el usuario que hizo la solicitud
-        await page.locator('#form_search').fill('BPSHARAMBOLES');
+        await page.locator(`${formBuscar}`).fill('BPSHARAMBOLES');
 
         // Debe mostrarse la persona juridica y la categoria solicitada
         await expect(page.getByRole('row', {name: `${nombreEmpresa}`}).getByText('SOCIO AHORRANTE')).toBeVisible();

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base } from './utils/dataTests';
+import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -58,7 +58,7 @@ test.describe('Pruebas con la Reimpresion en Libreta', () => {
         await expect(page.locator('h1').filter({hasText: 'ACTUALIZAR LIBRETA'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de aportaciones del socio
         await page.locator('text=APORTACIONES').click();
 
@@ -95,7 +95,7 @@ test.describe('Pruebas con la Reimpresion en Libreta', () => {
 
     test('Cuenta de Ahorros - Datos del Socio', async () => {
         // Click en el buscador para elegir otra cuenta del mismo socio
-        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de Ahorros del socio
         await page.locator('text=AHORROS NORMALES').click();
 

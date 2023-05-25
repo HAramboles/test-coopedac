@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate, primerDiaMes } from './utils/utils';
-import { url_base } from './utils/dataTests';
+import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -66,12 +66,12 @@ test.describe('Pruebas con la Reimpresion de la Transferencia entre Cuentas Inte
         await page.locator('#form_FECHA_FINAL').fill(`${formatDate(new Date())}`);
 
         // Buscar la cuenta de origen del socio
-        await page.locator('#select-search').first().fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).first().fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de ahorros del socio
         await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
 
         // Buscar la cuenta de destino del socio
-        await page.locator('#select-search').last().fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).last().fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de aportaciones preferentes del socio
         await page.getByRole('option', {name: '| APORTACIONES |'}).first().click();
 

@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, EditarPersonas } from './utils/dataTests';
+import { url_base, EditarPersonas, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -91,7 +91,7 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
 
                 // Buscar al menor
-                await page.locator('#form_search').fill(`${cedula}`);
+                await page.locator(`${formBuscar}`).fill(`${cedula}`);
             });
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION

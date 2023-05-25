@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -69,7 +69,7 @@ test.describe('Pruebas con la Solicitud de Reprogramacion de Credito', () => {
         await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN DE PRÉSTAMOS'})).toBeVisible();
 
         // Buscar a la persona
-        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
         // Seleccionar a la persona buscada
         await page.locator(`text=${nombre} ${apellido}`).click();
 

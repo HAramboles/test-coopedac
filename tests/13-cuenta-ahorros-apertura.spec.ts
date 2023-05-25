@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, CrearCuentas, ariaCerrar } from './utils/dataTests';
+import { url_base, CrearCuentas, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -180,7 +180,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
             
                 test('Llenar los campos del primer paso del registro de cuenta de ahorros', async () => {
                     // Titular
-                    const campoTitular = page.locator('#select-search');
+                    const campoTitular = page.locator(`${selectBuscar}`);
             
                     await campoTitular?.fill(`${cedula}`);
                     // Seleccionar la opcion que aparece
@@ -229,7 +229,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
             
                     // Bucar un socio
-                    const buscador = page.locator('#select-search');
+                    const buscador = page.locator(`${selectBuscar}`);
                     await buscador.click();
                     await buscador.fill(`${cedulaFirmante}`);
                     // Seleccionar el socio

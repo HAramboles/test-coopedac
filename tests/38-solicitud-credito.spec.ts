@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -87,7 +87,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
 
         // Buscar al socio
-        await page.locator('#select-search').fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Seleccionar al socio
         await page.locator(`text=${cedula}`).click();
 
@@ -177,7 +177,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('text=MENSUAL')).toBeVisible();
 
         // Agregar una cuenta del socio para desembolsar
-        await page.locator('#select-search').first().click();
+        await page.locator(`${selectBuscar}`).first().click();
         // La cuenta de aportaciones no debe estar visible
         await expect(page.locator('span').filter({hasText: 'APORTACIONES'})).not.toBeVisible(); 
 
@@ -185,7 +185,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByText('AHORROS NORMALES').click();
 
         // Agregar un cuenta para cobrar
-        await page.locator('#select-search').last().click();
+        await page.locator(`${selectBuscar}`).last().click();
         // La cuenta de aportaciones no debe estar visible
         await expect(page.locator('span').filter({hasText: 'APORTACIONES'})).not.toBeVisible(); 
         

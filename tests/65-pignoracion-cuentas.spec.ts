@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils'
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -55,7 +55,7 @@ test.describe('Pruebas con la Pignoracion de Cuentas', () => {
         await expect(page.locator('h1').filter({hasText: 'PIGNORACIÓN DE CUENTAS'})).toBeVisible();
 
         // Buscar al socio
-        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de Ahorro
         await page.locator('text=AHORROS NORMALES').click();
     });

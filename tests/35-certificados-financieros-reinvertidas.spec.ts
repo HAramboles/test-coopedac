@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, Page, expect, test } from '@playwright/test';
-import { url_base, CrearCuentas, ariaCerrar } from './utils/dataTests';
+import { url_base, CrearCuentas, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -176,7 +176,7 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     await expect(page.locator('text=FINANCIEROS REINVERTIDAS').first()).toBeVisible();
             
                     // Titular
-                    const campoTitular = page.locator('#select-search').first();
+                    const campoTitular = page.locator(`${selectBuscar}`).first();
             
                     await campoTitular?.fill(`${cedula}`);
                     // Seleccionar la opcion que aparece
@@ -241,7 +241,7 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     await expect(page.locator('h1').filter({hasText: 'ORIGEN DE INVERSIÓN'})).toBeVisible();
             
                     // Buscar una cuenta de la persona
-                    const campoBuscarCuenta = page.locator('#select-search').last();
+                    const campoBuscarCuenta = page.locator(`${selectBuscar}`).last();
                     await campoBuscarCuenta.click();
                     // Elegir la cuenta de ahorros
                     await page.locator('text=AHORROS NORMALES').click();
@@ -300,7 +300,7 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
             
                     // Bucar un socio
-                    const buscador = page.locator('#select-search');
+                    const buscador = page.locator(`${selectBuscar}`);
                     await buscador.click();
                     await buscador.fill(`${cedulaFirmante}`);
                     // Seleccionar el socio

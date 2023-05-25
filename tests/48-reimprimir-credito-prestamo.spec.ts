@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate, primerDiaMes } from './utils/utils';
-import { url_base } from './utils/dataTests';
+import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globles
 let browser: Browser;
@@ -55,7 +55,7 @@ test.describe('Pruebas con la Reimpresion del Credito a Prestamo', async () => {
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR CRÉDITO A PRÉSTAMOS'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
         // Elegir al socio buscado
         await page.getByRole('option', {name: `${nombre} ${apellido}`}).click();
 

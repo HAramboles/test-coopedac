@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -59,7 +59,7 @@ test.describe('Pruebas con el Credito a la Cuenta de Certificado - Financieros P
         await expect(page.locator('h1').filter({hasText: 'CRÉDITO/DEBITO A CUENTA'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#select-search').fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Selccionar una cuenta del socio
         await page.locator('text=FINANCIEROS PAGADERAS').click();
 

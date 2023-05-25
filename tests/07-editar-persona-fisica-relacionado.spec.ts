@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosPasaporte } from './utils/cedulasypasaporte';
-import { url_base, EditarPersonas } from './utils/dataTests';
+import { url_base, EditarPersonas, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -108,7 +108,7 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
 
             test('Buscar la cuenta de la Persona a Editar', async () => {
                 // Buscar a la persona
-                await page.locator('#form_search').fill(`${cedula}`);
+                await page.locator(`${formBuscar}`).fill(`${cedula}`);
             });
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION

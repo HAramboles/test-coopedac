@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataPrinter } from './utils/dataTests';
+import { url_base, dataPrinter, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -54,7 +54,7 @@ test.describe('Pruebas con la Reimpresion de Desembolso', () => {
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR DESEMBOLSO'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator('#form_search').fill(`${nombre} ${apellido}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
         
         // Estado
         await expect(page.getByText('DESEMBOLSADO')).toBeVisible();
