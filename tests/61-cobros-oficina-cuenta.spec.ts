@@ -92,11 +92,15 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 416.67');
 
         // Garantia
-        //await expect(page.getByText('Sin garantía')).toBeVisible();
+        await expect(page.getByText('Sin garantía')).toBeVisible();
 
         // Linea de Credito
         await expect(page.getByText('Línea de Crédito')).toBeVisible();
         await expect(page.getByText('No', {exact: true})).toBeVisible();
+    });
+
+    test('Historial de Pagos del Prestamo', async () => {
+
     });
 
     test('Opciones de Pago', async () => {

@@ -148,6 +148,10 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
 
+                    // La categoria actual debe estar visible
+                    await expect(page.locator('#person_DESC_CATEGORIA')).toHaveValue('SOCIO AHORRANTE');
+
+                    // Pasaporte
                     const campoPasaporte = page.locator('#person_NO_PASAPORTE');
                     await campoPasaporte.click();
                     await campoPasaporte.fill(pasaporte); 

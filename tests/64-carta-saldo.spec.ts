@@ -54,13 +54,13 @@ test.describe('Pruebas con la Carta de Saldo', () => {
         await expect(page.locator('h1').filter({hasText: 'CARTA DE SALDO'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${formBuscar}`).fill('LISA ANGELA BUENO DIAZ');
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
         
         // Financiamiento
         await expect(page.getByRole('cell', {name: 'CRÉDITO HIPOTECARIO'})).toBeVisible();
 
         // Cliente
-        await expect(page.getByRole('cell', {name: 'LISA ANGELA BUENO DIAZ'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Monto
         await expect(page.getByRole('cell', {name: 'RD$ 50,000.00'})).toBeVisible();
@@ -94,7 +94,24 @@ test.describe('Pruebas con la Carta de Saldo', () => {
         // Ver el prestamo
         await page.locator('[data-icon="eye"]').click();
 
-        
+        // El titulo de la seccion de solicitud debe mostrarse que el prestamo esta cancelado
+        await expect(page.locator('h1').filter({hasText: '(CANCELADO)'})).toBeVisible();
+
+        // El nombre del socio debe mostrarse
+        await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
+
+        // Dirigirse a la seccion de datos prestamo
+        const botonSiguiente = page.getByRole('button', {name: 'Siguiente'});
+        await botonSiguiente.click();
+
+        // Titulo de la seccion de los datos del credito
+        await expect(page.locator('h2').filter({hasText: 'GENERALES DEL CRÉDITO'})).toBeVisible();
+
+        // El tipo de credito debe ser hipotecario
+        await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="HIPOTECARIOS"])')).toBeVisible();
+
+        // Dirigirse a la seccion de los cargos
+        await botonSiguiente.click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

@@ -150,10 +150,10 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
         await expect(campoMonto).toBeVisible();
-        await campoMonto.fill('2000');
+        await campoMonto.fill('10000');
 
         // Agregar un comentario
-        await page.locator('#form_COMENTARIO').fill('Deposito de 2000 pesos a la cuenta de Ahorros');
+        await page.locator('#form_COMENTARIO').fill('Deposito de 10000 pesos a la cuenta de Ahorros');
 
         // Boton Agregar
         await page.locator('text=Agregar').click();
@@ -254,14 +254,19 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
         await expect(iconoAlerta).toBeVisible();
 
-        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 2000
-        // Divididos en 500, 200, 100, 100 y 50, 50
-        const cant500 = page.locator('[id="2"]'); // Campo de RD 500
+        // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 10100
+        // Divididos en 1000, 500, 200, 100, 100 y 50
+        const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
+        const cant500 = page.locator('[id="4"]'); // Campo de RD 500
         const cant200 = page.locator('[id="3"]'); // Campo de RD 200
         const cant100 = page.locator('[id="4"]'); // Campo de RD 100
         const cant50 = page.locator('[id="5"]'); // Campo de RD 50
 
-        // Cantidad = 1 de 500
+        // Cantidad = 8 de 1000
+        await cant1000.click();
+        await cant1000.fill('8');
+
+        // Cantidad = 3 de 500
         await cant500.click();
         await cant500.fill('3');
 
@@ -269,9 +274,9 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await cant200.click();
         await cant200.fill('1');
 
-        // Cantidad = 2 de 100
+        // Cantidad = 3 de 100
         await cant100.click();
-        await cant100.fill('2');
+        await cant100.fill('3');
 
         // Cantidad = 2 de 50
         await cant50.click();

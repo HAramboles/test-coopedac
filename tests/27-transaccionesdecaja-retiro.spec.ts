@@ -111,7 +111,7 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
         // Click al boton
         await botonRetiro.click();
 
-        // Debe aparecer un modal con las opciones paar el retiro
+        // Debe aparecer un modal con las opciones para el retiro
         await expect(page.locator('text=RETIRO CUENTAS DE AHORROS')).toBeVisible();
     });
 
