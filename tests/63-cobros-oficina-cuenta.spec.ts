@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar } from './utils/dataTests';
+import { url_base, selectBuscar, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -55,6 +55,18 @@ test.describe('Pruebas con Cobros de Oficina', () => {
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();
 
+        // Elegir buscar por RNC o Cedula
+        await page.locator('(//INPUT[@type="radio"])[3]').click();
+
+        // No debe dejar buscar por nombre de un socio si esta marcado la cedula
+        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
+
+        // Debe aparecer un mensaje de que la cuenta no se encontro
+        await expect(page.locator('text=No se ha encontrado la cuenta digitada')).toBeVisible();
+
+        // Cerrar el mensaje
+        await page.locator(`${ariaCerrar}`).click();
+
         // Buscar un socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir al socio buscado
@@ -100,7 +112,13 @@ test.describe('Pruebas con Cobros de Oficina', () => {
     });
 
     test('Historial de Pagos del Prestamo', async () => {
+        // Boton hsitorial de pagos
+        const botonHistorial = page.getByRole('button', {name: 'Historial de pagos'});
+        await expect(botonHistorial).toBeVisible();
+        await botonHistorial.click();
 
+        // Debe salir el modal del historial de pagos
+        
     });
 
     test('Opciones de Pago', async () => {
