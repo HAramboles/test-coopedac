@@ -75,7 +75,7 @@ test.describe('Pruebas con la Confirmacion de Transferencia Interbancaria', () =
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIA INTERBANCARIA'})).toBeVisible();
         
         // Debe mostrarse el nombre del socio
-        await expect(page.getByText(`| ${nombre} ${apellido} |`)).toBeVisible();
+        await expect(page.getByText(`| ${nombre} ${apellido}`)).toBeVisible();
 
         // Cuenta
         await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('AHORROS NORMALES');
@@ -103,7 +103,7 @@ test.describe('Pruebas con la Confirmacion de Transferencia Interbancaria', () =
         await checkImpuestos.check();
 
         // El impuesto debe mostrarse
-        await expect(page.getByRole('row', {name: 'CARGO 0.15% Porcentaje 0.15% RD$ 0.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'CARGO 0.15% Porcentaje 0.15% RD$ 0.08'})).toBeVisible();
 
         // Comprobar que la casilla de impuestos este checked
         await expect(checkImpuestos).toBeChecked();

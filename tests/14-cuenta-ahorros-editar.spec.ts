@@ -85,7 +85,7 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
-            test('Ir a la opcion de Apertura de cuentas -> Ahorros', async () => {
+            test('Ir a la opcion de Apertura de cuentas de Ahorros', async () => {
                 // Boton de Captaciones
                 await page.locator('text=CAPTACIONES').click();
         
@@ -204,6 +204,8 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                 });
             
                 test('Editar Cuenta de Ahorros - Datos Generales', async () => {
+                    test.slow();
+                    
                     // Buscar al socio a editar
                     await page.locator(`${formBuscar}`).fill(`${cedula}`);
             

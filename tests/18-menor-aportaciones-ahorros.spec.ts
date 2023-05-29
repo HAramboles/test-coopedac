@@ -356,6 +356,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTE'})).toBeVisible();
 
+                    // Debe estar la firma del titular por defecto
+                    await expect(page.getByText('TITULAR')).toBeVisible();
+
                     // Probar que no se pueda continuar sin agregar un firmante a la cuenta del menor
                     Continuar();
 

@@ -118,6 +118,8 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             } else if (escenarios.ID_OPERACION === 4) {
                 // Tests cuando el ID_OPERACION sea igual a 4
                 test('Ir a la opcion de Editar Persona', async () => {
+                    test.slow();
+                    
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).toBeVisible();

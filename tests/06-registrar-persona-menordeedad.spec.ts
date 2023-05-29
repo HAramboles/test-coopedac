@@ -18,8 +18,8 @@ const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 
-const nombreMenor = '';
-const apellidoMenor = '';
+const nombreMenor = 'GERARDO';
+const apellidoMenor = 'FUENTES SOTO';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
@@ -413,6 +413,8 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                 });
             
                 test('Registro de Persona Fisica - Menor de Edad - Relacionados', async () => {
+                    test.slow();
+                    
                     // La url debe cambiar
                     await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=6`);
             

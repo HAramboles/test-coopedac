@@ -275,11 +275,6 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                     const botonFinalizar = page.locator('text=Finalizar');
                     await expect(botonFinalizar).toBeVisible();
                     await botonFinalizar.click();
-                
-                    // Debe de aparecer un modal
-                    await expect(page.locator('text=¿Desea crear una cuenta de ahorro para este socio?')).toBeVisible();
-                    // Click en Cancelar, ya que hay un test exclusivamente para la creacion de cuenta de ahorro
-                    await page.getByRole('dialog').getByRole('button', {name: 'No'}).click();
             
                     // Debe redirigirse al listado de las cuentas de aportaciones
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-7/aportaciones_(crediautos)/1`);

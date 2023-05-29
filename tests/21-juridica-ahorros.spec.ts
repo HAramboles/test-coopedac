@@ -243,7 +243,7 @@ test.describe('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas con lo
                     // Tipo firmante
                     await page.locator('#form_TIPO_FIRMANTE').click();
                     // Seleccionar un tipo de firmante
-                    await page.getByRole('option', {name: 'MADRE'}).click();
+                    await page.getByRole('option', {name: 'REPRESENTANTE'}).click();
             
                     // Tipo firma
                     await page.locator('#form_CONDICION').click();

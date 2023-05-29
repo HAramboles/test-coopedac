@@ -89,7 +89,7 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                 await botonContinuar.click();
             };
         
-            test('Ir a la opcion de Apertura de cuentas -> Ahorros', async () => {
+            test('Ir a la opcion de Apertura de cuentas de Ahorros', async () => {
                 // Boton de Captaciones
                 await page.locator('text=CAPTACIONES').click();
         

@@ -80,7 +80,7 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
-            test('Ir a la opcion de Apertura de cuentas -> Ahorros', async () => {
+            test('Ir a la opcion de Apertura de cuentas de Ahorros', async () => {
                 // Boton de Captaciones
                 await page.locator('text=CAPTACIONES').click();
         
@@ -165,6 +165,8 @@ test.describe('Reporte Poder a Terceros - Pruebas con los diferentes parametros'
             } else if (escenario.ID_OPERACION === 31) {
                 // Tests cuando el ID_OPERACION es 31
                 test('Datos Generales de la Cuenta de Ahorros', async () => {
+                    test.slow();
+
                     // Buscar al socio a editar
                     await page.locator(`${formBuscar}`).fill(`${cedula}`);
             

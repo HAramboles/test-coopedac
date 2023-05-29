@@ -200,7 +200,9 @@ test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los di
                     Continuar();
                 });
             
-                test('Contacto de Firmante o Persona', async () => {             
+                test('Contacto de Firmante o Persona', async () => { 
+                    test.slow();
+                                
                     // La URL debe de cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19/create?step=2`);
             

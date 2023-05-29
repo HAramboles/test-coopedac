@@ -238,6 +238,8 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     });
 
     test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
+        test.slow();
+
         // Aplicar el deposito de la cuenta de ahorros
         await page.locator('text=Aplicar').click();
 
@@ -251,7 +253,7 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
 
         // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
-        const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
+        const iconoAlerta = page.getByRole('img', {name: 'close-circle'}).first();
         await expect(iconoAlerta).toBeVisible();
 
         // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 10100

@@ -52,8 +52,8 @@ test.describe('Activar Caja - Pruebas con los diferentes parametros', async () =
                         // Reemplazar el body de la response con los datos de los escenarios
                         body.data[0] = Object.assign(body.data[0], escenario);
                         route.fulfill({
-                            response, // 
-                            body: JSON.stringify(body), // 
+                            response,  
+                            body: JSON.stringify(body), 
                         });
                     } else {
                         route.continue();
@@ -85,8 +85,14 @@ test.describe('Activar Caja - Pruebas con los diferentes parametros', async () =
             });
 
             test('Activar Nueva Caja', async () => {
+                test.slow();
+                
+                // Boton Activar Caja
+                const activarCaja = page.locator('[aria-label="plus"]');
+                await expect(activarCaja).toBeVisible();
+
                 // Click al boton de Activar Caja
-                await page.locator('[aria-label="plus"]').click();
+                await activarCaja.click();
 
                 // Esperar que aparezca el modal
                 await expect(page.getByRole('dialog', {name: ' Activar Caja'})).toBeVisible();

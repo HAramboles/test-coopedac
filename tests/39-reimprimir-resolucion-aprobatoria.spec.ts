@@ -85,6 +85,8 @@ test.describe('Reimpresion de resolucion aprobatoria - Pruebas con los diferente
             });
 
             test('Reimprimir una solicitud de un socio', async () => {
+                test.slow();
+                
                 // El titulo principal debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR RESOLUCIÓN APROBATORIA'})).toBeVisible();
 

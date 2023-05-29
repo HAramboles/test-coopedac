@@ -118,7 +118,7 @@ test.describe('Pruebas con Transacciones de Caja - Retiro', () => {
     test('Datos del Retiro de la Cuenta de Ahorro', async () => {
         // Se deben mostrar el titular y el co-propietario
         await expect(page.locator('text=FIRMANTES')).toBeVisible();
-        await expect(page.locator('text=CO-PROPIETARIO')).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'CO-PROPIETARIO'})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'TITULAR'})).toBeVisible();
         
         // El titulo de las firmas debe estar visible
