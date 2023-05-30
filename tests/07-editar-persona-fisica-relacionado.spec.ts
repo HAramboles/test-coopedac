@@ -134,6 +134,14 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
                 });
             } else if (escenarios.ID_OPERACION === 4) {
                 // Tests cuando el ID_OPERACION sea igual a 4
+                test('En el listado de las personas debe mostrar la Categoria del Socio', async () => {
+                    // Titulo categoria del socio
+                    await expect(page.getByRole('columnheader', {name: 'Categoria Socio'})).toBeVisible();
+
+                    // La ultima categoria del socio debe ser socio ahorrante, porque fue la ultima persona agregada
+                    await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE', exact: true})).toBeVisible();
+                });
+
                 test('Editar la Cuenta del Socio', async () => {
                     // Click al boton de editar cuenta
                     const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});

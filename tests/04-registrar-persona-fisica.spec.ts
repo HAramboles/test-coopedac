@@ -16,6 +16,9 @@ const celular = numerosCelular;
 const nombrePersona = 'YOLANDA';
 const apellidoPersona = 'FUENTES SOTO';
 
+// Correo de la persona
+const correoPersona = nombrePersona.split(' ').join('') + numerosparaCorreo;
+
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
     {
@@ -519,7 +522,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     // Input de la descripcion del email
                     const campoNombreEmail = page.getByPlaceholder('USUARIO');
                     await campoNombreEmail.click();
-                    await campoNombreEmail?.fill(`${nombrePersona.split(' ').join('')}${numerosparaCorreo}`);
+                    await campoNombreEmail?.fill(`${correoPersona}`);
                     // Split = dividir el string en subcadenas, lo que lo convierte en un array y con el Join se quitan los espacios en blanco
             
                     // Seleccionar un dominio del email
@@ -593,6 +596,8 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                 // Guardar el nombre y el apellido de la persona creada
                 await page.evaluate((nombrePersona) => window.localStorage.setItem('nombrePersona', nombrePersona), nombrePersona);
                 await page.evaluate((apellidoPersona) => window.localStorage.setItem('apellidoPersona', apellidoPersona), apellidoPersona);
+                // Guardar el correo de la persona creada
+                await page.evaluate((correoPersona) => window.localStorage.setItem('correoPersona', correoPersona), correoPersona);
         
                 // Guardar nuevamente el Storage con la cedula, el nombre y el apellido de la persona
                 await context.storageState({path: 'state.json'});

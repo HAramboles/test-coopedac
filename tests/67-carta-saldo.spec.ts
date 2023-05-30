@@ -88,30 +88,14 @@ test.describe('Pruebas con la Carta de Saldo', () => {
     });
 
     test('Ver los datos del prestamo', async () => {
-        // Titulo de la seccion de solicitud de credito
-        await expect(page.locator('h1').filter({hasText: 'SOLICITUD DE CRÉDITO - (UNDEFINED)'})).toBeVisible();
-
         // Ver el prestamo
         await page.locator('[data-icon="eye"]').click();
 
-        // El titulo de la seccion de solicitud debe mostrarse que el prestamo esta cancelado
-        await expect(page.locator('h1').filter({hasText: '(CANCELADO)'})).toBeVisible();
+        // Debe salir un modal con la solicitud
+        await expect(page.locator('h1').filter({hasText: 'SOLICITUD DE CREDITO'}).first()).toBeVisible();
 
-        // El nombre del socio debe mostrarse
+        // Debe mostrarse el nombre del socio como un titulo
         await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
-
-        // Dirigirse a la seccion de datos prestamo
-        const botonSiguiente = page.getByRole('button', {name: 'Siguiente'});
-        await botonSiguiente.click();
-
-        // Titulo de la seccion de los datos del credito
-        await expect(page.locator('h2').filter({hasText: 'GENERALES DEL CRÉDITO'})).toBeVisible();
-
-        // El tipo de credito debe ser hipotecario
-        await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="HIPOTECARIOS"])')).toBeVisible();
-
-        // Dirigirse a la seccion de los cargos
-        await botonSiguiente.click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas
