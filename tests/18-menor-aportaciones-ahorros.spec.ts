@@ -376,7 +376,7 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     // Agregar un firmante, debe salir un modal
                     await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
             
-                   // La madre debe mostrarse sin tener que buscarlo
+                    // La madre debe mostrarse sin tener que buscarlo
                    await expect(page.locator(`text=${nombreMadre} ${apellidoMadre}`)).toBeVisible();
             
                    // Seleccionar el representante

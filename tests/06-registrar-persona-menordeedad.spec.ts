@@ -18,8 +18,8 @@ const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 
-const nombreMenor = 'GERARDO';
-const apellidoMenor = 'FUENTES SOTO';
+const nombreMenor = '';
+const apellidoMenor = '';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
@@ -436,6 +436,12 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                     await page.locator('#rc_select_30').click();
                     await page.locator('text=MADRE').click();
                     await page.locator('text="Aceptar"').click();
+
+                    // Esperar que la madre se haya agregado correctamente
+                    await expect(page.getByText(`${nombreMadre} ${apellidoMadre}`)).toBeVisible();
+
+                    // La relacion debe mostrase
+                    await expect(page.getByText('MADRE')).toBeVisible();
                 });
             
                 test('Finalizar con el Registro del Menor de Edad', async () => {

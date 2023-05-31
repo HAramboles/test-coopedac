@@ -13,8 +13,8 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = 'YOLANDA';
-const apellidoPersona = 'FUENTES SOTO';
+const nombrePersona = '';
+const apellidoPersona = '';
 
 // Correo de la persona
 const correoPersona = nombrePersona.split(' ').join('') + numerosparaCorreo;

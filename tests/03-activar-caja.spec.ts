@@ -117,7 +117,7 @@ test.describe('Activar Caja - Pruebas con los diferentes parametros', async () =
                     // Click en Aceptar 
                     const botonAceptarConfirmacion = page.getByRole('dialog')
                         .filter({hasText: 'Confirmar¿Desea salir sin guardar los datos?CancelarAceptar'})
-                        .getByRole('button', { name: 'check Aceptar' });
+                        .getByRole('button', {name: 'check Aceptar'});
                     await botonAceptarConfirmacion.click(); 
 
                     // Skip al test
@@ -138,7 +138,7 @@ test.describe('Activar Caja - Pruebas con los diferentes parametros', async () =
                     // Click en Aceptar 
                     const botonAceptarConfirmacion = page.getByRole('dialog')
                         .filter({hasText: 'Confirmar¿Desea confirmar los datos del formulario?CancelarAceptar'})
-                        .getByRole('button', { name: 'check Aceptar' });
+                        .getByRole('button', {name: 'check Aceptar'});
                     await botonAceptarConfirmacion.click();  
 
                     /* Mensaje si ya existia un turno con esa caja, por lo que dio error */

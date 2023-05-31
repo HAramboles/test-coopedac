@@ -1,6 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate } from './utils/utils';
-import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
+import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -80,55 +79,27 @@ test.describe('Pruebas con la Pignoracion de Cuentas', () => {
         await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');
     });
 
-    test('Pignorar un monto', async () => {
-        // Fecha de pignoracion
-        await expect(page.locator('#form_FECHA_PIGNORACION')).toHaveValue(`${formatDate(new Date())}`);
+    test('Despignorar un monto', async () => {
+        // Liberar la pignoracion de 150 pesos
+        await page.getByRole('row', {name: 'CONGELADO RD$ 150.00'}).locator('[data-icon="check-circle"]').click();
 
-        // Cambiar la razon a motivos legales
-        await page.locator('div').filter({ hasText: /^OTRAS RAZONES$/ }).nth(4).click();
-        await page.locator('text=MOTIVOS LEGALES').click();
+        // Debe salir un modal
+        await expect(page.locator('h1').filter({hasText: 'RAZON DE LIBERACIÓN'})).toBeVisible();
 
-        // Monto
-        await page.locator('#form_MONTO').fill('100');
+        // Razon
+        await expect(page.getByText('RAZON DE DESPIGNORACION')).toBeVisible();
 
-        // Descripcion Pignoracion
-        await page.locator('#form_DESC_PIGNORACION').fill('Pignorar 100 pesos');
+        // Comentario
+        await page.locator('#form_DESC_RAZON_DESPIGNORACION').fill('Despignorar los 150 pesos pignorados anteriormente');
 
-        // Click en Guardar
-        const botonGuardar = page.getByRole('button', {name: 'Guardar'});
-        await expect(botonGuardar).toBeVisible();
-        await botonGuardar.click();
+        // Debe salir otro modal de confirmacion
+        await expect(page.getByText('¿Está seguro de liberar el registro?')).toBeVisible();
 
-        // Debe salir un mensaje de que se realizo correctamente la operacion
-        await expect(page.locator('text=Captaciones congeladas almacenada exitosamente.')).toBeVisible();
+        // Click en Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
 
-        // Cerrar el mensaje
-        await page.locator(`${ariaCerrar}`).click();
-
-        // Los 100 pesos deben estar en estado congelado
-        await expect(page.getByRole('row', {name: 'PIGNORAR 100 PESOS CONGELADO'})).toBeVisible();
-    });
-
-    test('Pignorar otro Monto', async () => {
-        // Monto
-        await page.locator('#form_MONTO').fill('150');
-
-        // Descripcion Pignoracion
-        await page.locator('#form_DESC_PIGNORACION').fill('Pignorar 150 pesos');
-
-        // Click en Guardar
-        const botonGuardar = page.getByRole('button', {name: 'Guardar'});
-        await expect(botonGuardar).toBeVisible();
-        await botonGuardar.click();
-
-        // Debe salir un mensaje de que se realizo correctamente la operacion
-        await expect(page.locator('text=Captaciones congeladas almacenada exitosamente.')).toBeVisible();
-
-        // Cerrar el mensaje
-        await page.locator(`${ariaCerrar}`).click();
-
-        // Los 150 pesos deben estar en estado congelado
-        await expect(page.getByRole('row', {name: 'PIGNORAR 150 PESOS CONGELADO'})).toBeVisible();
+        // Los 150 pesos deben estar en estado liberado
+        await expect(page.getByRole('row', {name: 'PIGNORAR 150 PESOS LIBERADO'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

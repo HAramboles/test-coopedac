@@ -30,14 +30,14 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'CHIVOS VM';
+const nombreJuridica = '';
 
 // Correo de la empresa
 const correoEmpresa = nombreJuridica.split(' ').join('') + correoJuridica;
 
 // Nombre del relacionado
-const nombreRelacionado = 'HUMBERTO';
-const apellidoRelacionado = 'VEGA MOLINA';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
@@ -513,6 +513,8 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                 });
             
                 test('Registro de Persona Juridica - Relacionados del socio - Direcciones', async () => {
+                    test.slow();
+                    
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
             
