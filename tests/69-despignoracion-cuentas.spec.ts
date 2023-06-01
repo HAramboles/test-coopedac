@@ -70,7 +70,7 @@ test.describe('Pruebas con la Pignoracion de Cuentas', () => {
         await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('RD$ 0');
 
         // Pignorado
-        await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 0');
+        await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 100');
 
         // Disponible
         await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 23,900');
