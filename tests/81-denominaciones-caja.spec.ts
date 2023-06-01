@@ -86,8 +86,16 @@ test.describe('Pruebas con las Denominaciones por Caja', () => {
 
         // Cambiar de sucursal
         await page.getByText('OFICINA EMPO').click();
-        // Elegir oficina empo
+        // Elegir oficina principal
         await page.getByText('OFICINA PRINCIPAL').click();
+
+        // Debe mostrarse la caja bpsharamboles
+        const cajaBPSH = page.getByText('CAJA BPSHARAMBOLES');
+        await expect(cajaBPSH).toBeVisible();
+
+        // Seleccionar la caja de aperdomo, y el titulo debe cambiar
+        await cajaBPSH.click();
+        await expect(page.locator('h1').filter({hasText: 'DENOMINACIONES CAJA BPSHARAMBOLES'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

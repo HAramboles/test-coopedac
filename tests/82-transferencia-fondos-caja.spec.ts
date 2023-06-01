@@ -38,7 +38,7 @@ test.describe('Pruebas con la Transferencia Fondos de Caja', () => {
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Transacciones fondos de caja
-        await page.getByRole('menuitem', {name: 'Transacciones fondos de caja'});
+        await page.getByRole('menuitem', {name: 'Transacciones fondos de caja'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/transferencias_cajas/01-4-1-2-9/`);
