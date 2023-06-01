@@ -30,14 +30,14 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = '';
+const nombreJuridica = 'AGRICULTORES PM';
 
 // Correo de la empresa
 const correoEmpresa = nombreJuridica.split(' ').join('') + correoJuridica;
 
 // Nombre del relacionado
-const nombreRelacionado = '';
-const apellidoRelacionado = '';
+const nombreRelacionado = 'LEONARDO';
+const apellidoRelacionado = 'PEREZ MATA';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [

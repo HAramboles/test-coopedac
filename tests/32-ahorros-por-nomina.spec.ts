@@ -9,8 +9,10 @@ let page: Page;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
-// Cedula de la persona
+// Cedula, nombre y apellido de la persona
 let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
 
 // Cedula, nombre y apellido del firmante
 let cedulaFirmante: string | null;
@@ -72,8 +74,10 @@ test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los di
                 /* Ingresar a la pagina */
                 await page.goto(`${url_base}`);
 
-                // Cedula de la persona almacenada en el state
+                // Cedula, nombre y apellido de la persona almacenada en el state
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                 // Cedula, nombre y apellido de la persona relacionada almacenada en el state
                 cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
@@ -288,6 +292,9 @@ test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los di
                     
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
+
+                    // Debe mostrarse la cuenta que se esta creando, y el titular
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
                 });
             
                 test('Finalizar con el registro de cuenta de ahorro', async () => {

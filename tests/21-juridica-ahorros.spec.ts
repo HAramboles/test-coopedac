@@ -296,6 +296,9 @@ test.describe('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas con lo
                     
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
+
+                    // Debe mostrarse la cuenta que se esta creando, y el titular, que para las personas juridicas es el representante
+                    await expect(page.getByRole('cell', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
                 });
             
                 test('Finalizar con el registro de cuenta de ahorro', async () => {

@@ -268,6 +268,9 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                 test('Registrar Cuenta de Aportaciones - Método de intereses', async () => {
                     // El titulo de  debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
+
+                    // Debe mostrarse la cuenta que se esta creando, y el titular, que para las personas juridicas es el representante
+                    await expect(page.getByRole('cell', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
                 });
             
                 test('Finalizar con el Registro de la Cuenta de Aportaciones', async () => {

@@ -352,6 +352,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                 test('Crear la Cuenta de Ahorros - Método de intereses', async () => {
                     // El titulo de  debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
+
+                    // Debe mostrarse la cuenta que se esta creando, y el titular
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
                 });
             
                 test('Finalizar con el registro de cuenta de ahorro', async () => {

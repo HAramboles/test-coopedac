@@ -173,8 +173,21 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                     // Seleccionar una categoria
                     const campoCategoria = page.locator('#APORTACIONES_ID_CATEGORIA_SOCIO');
                     await campoCategoria.click();
+
+                    // Las categorias de no aplica, no es socio y de socio pleno no deben mostrarse
+                    await expect(page.getByRole('option', {name: 'NO APLICA'})).not.toBeVisible();
+                    await expect(page.getByRole('option', {name: 'NO ES SOCIO'})).not.toBeVisible();
+                    await expect(page.getByRole('option', {name: 'SOCIO PLENO'})).not.toBeVisible();
+
+                    // Las categorias de socio ahorrante, socio microempresarial, socio empresarial y de socio relacionado deben mostrarse
+                    await expect(page.getByRole('option', {name: 'SOCIO MICROEMPRESARIAL'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'SOCIO EMPRESARIAL'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'SOCIO RELACIONADO'})).toBeVisible();
+                    const socioAhorrante = page.getByRole('option', {name: 'SOCIO AHORRANTE'});
+                    await expect(socioAhorrante).toBeVisible();
+
                     // Elegir la categoria de socio ahorrante
-                    await page.locator('text=SOCIO AHORRANTE').click();
+                    await socioAhorrante.click();
             
                     // Boton de Continuar
                     Continuar();
@@ -197,6 +210,9 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                 test('Registrar Cuenta de Aportaciones - Método de intereses', async () => {
                     // El titulo de  debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
+
+                    // Debe mostrarse la cuenta que se esta creando, y el titular
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
                 });
             
                 test('Finalizar con el Registro de la Cuenta de Aportaciones', async () => {
