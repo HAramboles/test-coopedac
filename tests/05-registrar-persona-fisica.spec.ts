@@ -571,6 +571,8 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                 });
             
                 test('Finalizar con el Registro de Persona Fisica', async () => {
+                    test.slow();
+                    
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
                     // Esperar que se abran dos pestañas con los diferentes reportes

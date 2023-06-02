@@ -1,3 +1,7 @@
+// Usuario y password para ingresar a la pagina
+const userCorrecto = process.env.REACT_APP_WEB_SERVICE_API_USER;
+const passCorrecto = process.env.REACT_APP_WEB_SERVICE_API_PASS;
+
 // URL de la pagina
 const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
@@ -35,6 +39,8 @@ interface EditarCuentas {
 }
 
 export {
+    userCorrecto,
+    passCorrecto,
     url_base,
     CrearPersonas,
     EditarPersonas,

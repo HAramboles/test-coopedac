@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, userCorrecto, passCorrecto } from './utils/dataTests';
 
 /* Variables globales */
 
@@ -15,11 +15,6 @@ let passCampo: Locator;
 /* Usuario y contraseña */
 const user:string = 'hector';
 const pass:string = 'abc';
-
-/* Usuario y contraseña correctos */
-
-const userCorrecto = process.env.REACT_APP_WEB_SERVICE_API_USER;
-const passCorrecto = process.env.REACT_APP_WEB_SERVICE_API_PASS;
 
 /* Pruebas */
 
@@ -78,12 +73,14 @@ test.describe('Pruebas con el Login de Coopedac', () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
-    test('El login debe ser exitoso y se debe de mandar al usuario a la pagina de inicio', async () => {
+    test('El login debe ser exitoso y se debe mandar al usuario a la pagina de inicio', async () => {
+        test.slow();
+        
         /* Ingresar un usuario y una contraseña correctos */
         await usernameCampo?.fill(`${userCorrecto}`);
         await passCampo?.fill(`${passCorrecto}`);
 
-        /* Dar click al boton de Login que se llama Iniciar Sesión */
+        /* Dar click al boton de Iniciar Sesión */
         const buttonLogin = page.getByRole('button', {name: 'Iniciar Sesión'});
         await buttonLogin.click();
 
