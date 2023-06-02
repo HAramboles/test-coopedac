@@ -6,8 +6,7 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre y apellido de la persona
-let cedula: string | null;
+// Nombre y apellido de la persona
 let nombre: string | null;
 let apellido: string | null;
 
@@ -31,8 +30,7 @@ test.describe('Pruebas Agregando Cargos a una Prestamo Desembolsado', () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula, nombre y apellidos de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        // Nombre y apellidos de la persona almacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -54,7 +52,11 @@ test.describe('Pruebas Agregando Cargos a una Prestamo Desembolsado', () => {
     });
 
     test('Cambiar el estado de las solicitudes a Desembolsado', async () => {
+        // Titulo principal
+        await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
 
+        // El listado de las solicitudes debe ser solicitado
+        await expect(page.locator('text=SOLICITADO')).toBeVisible();
     });
 
     test('Agregar un cargo a un Solicitud Desembolsada', async () => {

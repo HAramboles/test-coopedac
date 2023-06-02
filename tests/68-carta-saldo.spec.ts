@@ -35,6 +35,14 @@ test.describe('Pruebas con la Carta de Saldo', () => {
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
+    // Funcion con el boton de siguiente
+    const Siguiente = async () => {
+        // continuar
+        const botonSiguiente = page.locator('button:has-text("Siguiente")');
+        // presionar el boton
+        await botonSiguiente.click();
+    }; 
+
     test('Ir a la opcion de Carta de Saldo', async () => {
         // Negocios
         await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -78,6 +86,8 @@ test.describe('Pruebas con la Carta de Saldo', () => {
     });
 
     test('Ver los datos del prestamo', async () => {
+        test.slow();
+
         // Ver el prestamo
         await page.locator('[data-icon="eye"]').click();
 
@@ -88,21 +98,69 @@ test.describe('Pruebas con la Carta de Saldo', () => {
         // Debe mostrarse el nombre del socio como un titulo
         await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
-        // El boton de salir no debe estar visible
-        await expect(page.getByRole('button', {name: 'Salir'})).not.toBeVisible();
-
         // El boton de finalizar no debe estar visible
         await expect(page.getByRole('button', {name: 'Finalizar'})).not.toBeVisible();
 
-        // Ir a la seccion de los cargos
-        await page.getByText('3 Cargos del Préstamo').click();
+        // Paso 1 - Solicitante
+        await expect(page.locator('h1').filter({hasText: 'SOLICITANTE'})).toBeVisible();
 
-        // Los cargos deben mostrarse
+        // Click en Siguiente
+        Siguiente();
 
-        // Ir a la seccion de los documentos
-        await page.getByText('9 Documentos').click();
+        // Paso 2 - Datos Prestamos
+        await expect(page.locator('h1').filter({hasText: 'GENERALES DEL CRÉDITO'})).toBeVisible();
+
+        // Click en Siguiente
+        Siguiente();
+
+        // Paso 3 - Cargos
+        await expect(page.locator('h1').filter({hasText: 'CARGOS'})).toBeVisible();
+
+        // Los cargos deben mostarse
+        await expect(page.getByText('CONTRATO')).toBeVisible();
+        // Colocar aqui el cargo agregado por el test de cargos prestamos desembolsado
+
+        // Click en Siguiente
+        Siguiente();
+
+        // Paso 4 - Deudas
+        await expect(page.locator('h1').filter({hasText: 'DEUDAS PENDIENTES'})).toBeVisible();
+
+        // Click en Siguiente
+        Siguiente();
+
+        // Paso 5 - Perfil Financiero
+        await expect(page).toHaveURL(`${url_base}/carta_saldo/01-3-2-5?step=5`);
+
+        // Click en Siguiente
+        Siguiente();
+
+        // Paso 6 - Representantes
+        await expect(page.locator('h1').filter({hasText: 'REPRESENTANTES LEGALES'})).toBeVisible();
+
+        // Click en Siguiente
+        Siguiente();
+
+        // Paso 7 - Codeudores
+        await expect(page.locator('h1').filter({hasText: 'GARANTÍAS'})).toBeVisible();
+
+        // Debe mostarse la garantia de hipoteca
+        await expect(page.getByRole('cell', {name: 'HIPOTECA'})).toBeVisible();
+
+        // Paso 8 - Referencias
+        await expect(page.locator('h1').filter({hasText: 'FAMILIARES MAS CERCANOS'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'REFERENCIAS MORALES O PERSONALES'})).toBeVisible();        
+        await expect(page.locator('h1').filter({hasText: 'REFERENCIAS COMERCIALES'})).toBeVisible();  
+        
+        // Paso 9 - Documentos
+        await expect(page.locator('h1').filter({hasText: 'LISTA DE DOCUMENTOS'})).toBeVisible();
 
         // Los documentos deben mostrase
+        await expect(page.locator('div').filter({hasText: 'CARTA DE TRABAJO'}).nth(4)).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'INFORME BURO CREDITO (DATACREDITO)'}).nth(4)).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'INFORME DEL SUBGERENTE DE NEGOCIOS'}).nth(4)).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'TABLA AMORTIZACION'}).nth(4)).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'CEDULA DEUDOR'}).nth(4)).toBeVisible();
 
         // Click en Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();

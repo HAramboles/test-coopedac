@@ -68,7 +68,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
 
-        // El listado de las transferencias debe ser solicitado
+        // El listado de las solicitudes debe ser solicitado
         await expect(page.locator('text=SOLICITADO')).toBeVisible();
 
         // Boton Nueva Solicitud
