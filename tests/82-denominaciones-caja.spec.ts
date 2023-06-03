@@ -93,7 +93,7 @@ test.describe('Pruebas con las Denominaciones por Caja', () => {
         const cajaBPSH = page.getByText('CAJA BPSHARAMBOLES');
         await expect(cajaBPSH).toBeVisible();
 
-        // Seleccionar la caja de aperdomo, y el titulo debe cambiar
+        // Seleccionar la caja de bpsharamboles, y el titulo debe cambiar
         await cajaBPSH.click();
         await expect(page.locator('h1').filter({hasText: 'DENOMINACIONES CAJA BPSHARAMBOLES'})).toBeVisible();
     });
