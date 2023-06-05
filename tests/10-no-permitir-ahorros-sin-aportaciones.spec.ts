@@ -156,7 +156,7 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
                     await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
                 });
             
-                test('Ingresar un socio para crear una cuenta de ahorros', async () => {
+                test('Ingresar un Socio', async () => {
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`);
             

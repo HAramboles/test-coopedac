@@ -296,6 +296,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                 test('Registrar Cuenta de Aportaciones del Menor - Método de intereses', async () => {
                     // El titulo de  debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
+
+                    // Debe mostrarse la cuenta donde se va a depositar 
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
                 });
             
                 test('Finalizar con el Registro de la Cuenta de Aportaciones', async () => {
@@ -390,8 +393,10 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     // Seleccionar un tipo de firmante
                     await page.getByRole('option', {name: 'MADRE'}).click();
             
-                    // Tipo firma
-                    await page.locator('#form_CONDICION').click();
+                    // Seleccionar un testigo
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
                     // Seleccionar un tipo de firma
                     await page.locator('text=(O) FIRMA CONDICIONAL').click();
             

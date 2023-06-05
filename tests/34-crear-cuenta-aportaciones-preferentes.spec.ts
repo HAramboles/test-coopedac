@@ -154,14 +154,17 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     test.skip();
                 });
             } else if (escenario.ID_OPERACION === 30) {
-                test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
+                // Tests si el ID_OPERACION es 30
+                test('Boton de Nueva Cuenta', async () => {
                     test.slow();
 
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
                     await expect(botonNuevaCuenta).toBeVisible();
                     await botonNuevaCuenta.click();
-            
+                });
+
+                test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=1`);
             
@@ -260,7 +263,7 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     ]);
 
                     // Cerrar la pagina con el reporte de la nota de debito
-                    newPage.close();
+                    await newPage.close();
                 });
             
                 test('Crear cuenta de Aportaciones Preferentes - Paso 2 - Contacto de Firmante', async () => {
@@ -284,7 +287,6 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await page.getByRole('tab').filter({hasText: 'Firmantes'}).click();
             
                     // Cerrar los mensajes que aparecen
-                    await page.locator(`${ariaCerrar}`).first().click();
                     await page.locator(`${ariaCerrar}`).first().click();
             
                     // Boton de Agregar Firmantes debe estar visible
@@ -332,7 +334,9 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
                     await page.getByRole('option').nth(0).click();
             

@@ -9,8 +9,9 @@ let page: Page;
 // Imagen de la firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
-// Cedula de la empresa
+// Cedula y nombre de la empresa
 let cedulaEmpresa: string | null;
+let nombreEmpresa: string | null;
 
 // Cedula, nombre y apellido del firmante
 let cedulaFirmante: string | null;
@@ -72,8 +73,9 @@ test.describe('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas con lo
                 /* Ingresar a la pagina */
                 await page.goto(`${url_base}`);
 
-                // Cedula de la persona almacenada en el state
+                // Cedula y nombre de la persona almacenada en el state
                 cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
+                nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
 
                 // Cedula, nombre y apellido de la persona relacionada almacenada en el state
                 cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
@@ -266,7 +268,9 @@ test.describe('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas con lo
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
                     await page.getByRole('option').nth(0).click();
 
@@ -297,8 +301,8 @@ test.describe('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas con lo
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
 
-                    // Debe mostrarse la cuenta que se esta creando, y el titular, que para las personas juridicas es el representante
-                    await expect(page.getByRole('cell', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
+                    // Debe mostrarse la cuenta que se esta creando, y el titular
+                    await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
                 });
             
                 test('Finalizar con el registro de cuenta de ahorro', async () => {

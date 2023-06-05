@@ -241,7 +241,9 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
                     await page.getByRole('option').nth(0).click();
             
@@ -269,8 +271,8 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                     // El titulo de  debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
 
-                    // Debe mostrarse la cuenta que se esta creando, y el titular, que para las personas juridicas es el representante
-                    await expect(page.getByRole('cell', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
+                    // Debe mostrarse la cuenta que se esta creando, y el titular
+                    await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
                 });
             
                 test('Finalizar con el Registro de la Cuenta de Aportaciones', async () => {

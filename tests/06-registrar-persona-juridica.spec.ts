@@ -30,14 +30,14 @@ const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
 // Nombre de la persona juridica
-const nombreJuridica = 'AGRICULTORES PM';
+const nombrePersonaJuridica = '';
 
 // Correo de la empresa
-const correoEmpresa = nombreJuridica.split(' ').join('') + correoJuridica;
+const correoEmpresa = nombrePersonaJuridica.split(' ').join('') + correoJuridica;
 
 // Nombre del relacionado
-const nombreRelacionado = 'LEONARDO';
-const apellidoRelacionado = 'PEREZ MATA';
+const nombreRelacionado = '';
+const apellidoRelacionado = '';
 
 // Parametros de Relation
 const EscenariosPrueba: CrearPersonas[] = [
@@ -165,7 +165,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
             
                     // Razon social / nombre de la empresa
-                    await page.locator('#legalPerson_NOMBRE_EMPRESA').fill(`${nombreJuridica}`);
+                    await page.locator('#legalPerson_NOMBRE_EMPRESA').fill(`${nombrePersonaJuridica}`);
             
                     // RNC / cedula
                     const campoRNC = page.locator('#legalPerson_RNC');
@@ -392,7 +392,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await page.getByText('AGRICULTOR', {exact: true}).click();
             
                     // Lugar de trabajo
-                    await page.locator('#relatedRecord_NOMBRE_EMPRESA').fill(`${nombreJuridica}`);
+                    await page.locator('#relatedRecord_NOMBRE_EMPRESA').fill(`${nombrePersonaJuridica}`);
             
                     // Tipo de empleo
                     await page.locator('text=Privado').click();
@@ -563,7 +563,9 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     await expect(modalDirecciones).not.toBeVisible();
 
                     // Click en Finalizar
-                    await page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'}).click();
+                    const finalizarRelacionado = page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'});
+                    await expect(finalizarRelacionado).toBeVisible();
+                    await finalizarRelacionado.click();
                 });
             
                 test('Finalizar con el Registro de Persona Juridica', async () => {
@@ -588,7 +590,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                 // Guardar la cedula de la persona juridica creada
                 await page.evaluate((cedulaPersonaJuridica) => window.localStorage.setItem('cedulaPersonaJuridica', cedulaPersonaJuridica), cedulaPersonaJuridica);
                 // Guardar el nombre de la persona juridica creada
-                await page.evaluate((nombreJuridica) => window.localStorage.setItem('nombreJuridica', nombreJuridica), nombreJuridica);
+                await page.evaluate((nombrePersonaJuridica) => window.localStorage.setItem('nombrePersonaJuridica', nombrePersonaJuridica), nombrePersonaJuridica);
                 // Guadar el telefono de la persona juridica
                 await page.evaluate((telefonoJuridica) => window.localStorage.setItem('telefonoJuridica', telefonoJuridica), telefonoJuridica);
                 // Guardar el correo de la persona juridica

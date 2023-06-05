@@ -34,7 +34,7 @@ const EscenariosPrueba: CrearCuentas[] = [
 
 // Pruebas
 
-test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros', async () => {
+test.describe('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPrueba) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
@@ -269,7 +269,9 @@ test.describe('Crear Cuenta de Ahorros - Pruebas con los diferentes parametros',
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
                     await page.getByRole('option').nth(0).click();
             

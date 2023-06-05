@@ -162,14 +162,17 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     test.skip();
                 });
             } else if (escenario.ID_OPERACION === 30) {
-                test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {
+                // Tests si el ID_OPERACION es 30
+                test('Boton de Nueva Cuenta', async () => {
                     test.slow();
 
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
                     await expect(botonNuevaCuenta).toBeVisible();
                     await botonNuevaCuenta.click();
+                });
 
+                test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
             
@@ -270,7 +273,7 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     ]);
 
                     // Cerrar la pagina con el reporte de la nota de debito
-                    newPage.close();
+                    await newPage.close();
                 });
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {            
@@ -291,7 +294,6 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     await page.getByRole('tab').filter({hasText: 'Firmantes'}).click();
             
                     // Cerrar los mensajes que aparecen
-                    await page.locator(`${ariaCerrar}`).first().click();
                     await page.locator(`${ariaCerrar}`).first().click();
             
                     // Boton de Agregar Firmantes debe estar visible
@@ -339,7 +341,9 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
                     await page.getByRole('option').nth(0).click();
             

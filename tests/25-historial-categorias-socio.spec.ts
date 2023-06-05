@@ -30,7 +30,7 @@ test.describe('Pruebas con el Historial de las Categorias de un Socio', () => {
         await page.goto(`${url_base}`);
 
         // Nombre de la persona juridica almacenada en el state
-        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombreJuridica'));
+        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
 
     test('Ir a la opcion de Historial Categorias Socio', async () => {

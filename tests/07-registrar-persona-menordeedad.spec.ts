@@ -438,10 +438,10 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
                     await page.locator('text="Aceptar"').click();
 
                     // Esperar que la madre se haya agregado correctamente
-                    await expect(page.getByText(`${nombreMadre} ${apellidoMadre}`)).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombreMadre} ${apellidoMadre}`})).toBeVisible();
 
                     // La relacion debe mostrase
-                    await expect(page.getByText('MADRE')).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'MADRE'})).toBeVisible();
                 });
             
                 test('Finalizar con el Registro del Menor de Edad', async () => {

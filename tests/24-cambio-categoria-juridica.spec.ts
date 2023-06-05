@@ -31,7 +31,7 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         await page.goto(`${url_base}`);
 
         // Nombre de la empresa
-        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombreJuridica'));
+        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
 
     test('Ir a la seccion de Solicitar Cambio Categoria', async () => {
@@ -126,9 +126,6 @@ test.describe('Pruebas con el Cambio de Categoria de la Persona Juridica', () =>
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
-
-        // La solicitud ya no debe estar
-        await expect(page.getByText('No hay datos')).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

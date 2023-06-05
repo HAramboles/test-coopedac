@@ -44,7 +44,7 @@ test.describe('Pruebas con la Cartera de Cuentas', async () => {
 
     test('Cambiar los datos de la Cartera de Cuentas', async () => {
         // Titulo principal
-        await expect(page.locator('h1').filter({hasText: 'CARTERA DE CUENTAS'})).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Cartera de cuentas' })).toBeVisible();
 
         // Sucursal
         await page.locator('.ant-select-selector').first().click();
@@ -68,11 +68,19 @@ test.describe('Pruebas con la Cartera de Cuentas', async () => {
         await page.locator('((//DIV[@class="ant-select-selector"])[4])').click();
         // Elegir Activas
         await page.getByText('ACTIVA', {exact: true}).click();
+
+        // Rango Balace, monto inicial
+        const montoInicial = page.locator('#form_MONTO_INICIAL');
+        await montoInicial.clear();
+        await montoInicial.fill('1900');
+
+        // Range Balance, monto final
+        await page.locator('#form_MONTO_FINAL').fill('2000');
     });
 
     test('Imprimir la Cartera de Cuentas', async () => {
         test.slow();
-        
+
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
         // Esperar que se abra otra ventana con el reporte

@@ -109,7 +109,7 @@ test.describe('Pruebas con la Confirmacion de Transferencia Interbancaria', () =
         await expect(checkImpuestos).toBeChecked();
 
         // El comentario debe estar visible
-        await expect(page.locator('#form_NOTAS')).toHaveValue('Transferencia Bancaria');
+        await expect(page.locator('#form_NOTAS')).toHaveValue('TRANSFERENCIA BANCARIA');
     
         // Click al boton de guardar
         const botonGuardar = page.locator('button:has-text("Guardar")');

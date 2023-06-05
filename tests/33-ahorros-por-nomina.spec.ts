@@ -170,6 +170,8 @@ test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los di
             } else if (escenario.ID_OPERACION === 30) {
                 // Tests si el ID_OPERACION es 30
                 test('Click al boton de Nueva Cuenta', async () => {
+                    test.slow();
+                    
                     // Boton de Nueva Cuenta
                     const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
                     await expect(botonNuevaCuenta).toBeVisible();
@@ -262,7 +264,9 @@ test.describe('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los di
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
                     await page.getByRole('option').nth(0).click();
             

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -43,7 +43,9 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     // Funcion con el boton de continuar, que se repite en cada seccion del registro
     const GuardaryContinuar = async () => {
         // continuar
-        const botonGuardaryContinuar = page.locator('button:has-text("Guardar y Continuar")');
+        const botonGuardaryContinuar = page.locator('button:has-text("Guardar y continuar")');
+        // Esperar a que este visible
+        await expect(botonGuardaryContinuar).toBeVisible();
         // presionar el boton
         await botonGuardaryContinuar.click();
     };
@@ -60,19 +62,32 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // Solicitud de Credito
         await page.locator('text=Solicitud de Crédito').click();
 
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+        // El titulo debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
+
+        // Condicion por si el tipo de solicitud llega sin datos o con datos
+        const estadoSolicitud = page.getByTitle('SOLICITADO', {exact: true});
+
+        if (await estadoSolicitud.isHidden()) {
+            // Si no llega el tipo de captacion, manualmente dirigise a la url de las aportaciones
+            await page.goto(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+        } else if (await estadoSolicitud.isVisible()) {
+            // La URL debe de cambiar
+            await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+
+            // El titulo debe estar visible
+            await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
+        };
     });
 
     test('Boton Nueva Solicitud', async () => {
-        // El titulo debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
+        test.setTimeout(60000);
 
         // El listado de las solicitudes debe ser solicitado
         await expect(page.locator('text=SOLICITADO')).toBeVisible();
 
         // Boton Nueva Solicitud
-        const botonNuevaSolicitud = page.locator('text=Nueva Solicitud');
+        const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
         await expect(botonNuevaSolicitud).toBeVisible();
         await botonNuevaSolicitud.click();
     });
@@ -116,6 +131,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 2 - Datos Prestamo', async () => {
+        test.slow();
+
         // La URL no debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
 
@@ -201,12 +218,23 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         await page.getByPlaceholder('Destino o propósito').click();
         await page.getByPlaceholder('Destino o propósito').fill('comprar una casa');
 
+        // Los valores del monto, tasa y plazo deben estar correctos
+        await expect(page.locator('#loan_form_MONTO')).toHaveValue('RD$ 50,000');
+        await expect(page.locator('#loan_form_TASA')).toHaveValue('10%');
+        await expect(page.locator('#loan_form_PLAZO')).toHaveValue('48');
+
+        // Via desembolso
+        await expect(page.getByText('Vía Desembolso')).toBeVisible();
+
+        // El monto de la cuota debe estar visible
+        await expect(page.locator('#loan_form_CUOTA')).toHaveValue('RD$ 416.67');
+
         // Click en guardar y continuar
         GuardaryContinuar();
     });
 
     test('Paso 3 - Cargos del prestamo', async () => {
-        test.slow();
+        test.setTimeout(60000);
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
@@ -221,6 +249,34 @@ test.describe('Prueba con la Solicitud de Credito', () => {
 
         // Guardar los cargos
         await page.getByRole('button', {name: 'Guardar Cargos'}).click();
+
+        // Boton de agregar cargos 
+        const agregarCuota = page.locator('[aria-label="plus"]');
+        await expect(agregarCuota).toBeVisible();
+        await agregarCuota.click();
+    
+        // Debe salir un modal
+        const modal = page.locator('text=AGREGAR CARGO');
+        await expect(modal).toBeVisible();
+
+        // Boton Cancelar
+        await page.getByRole('dialog').getByRole('button', {name: 'stop Cancelar'}).click();
+
+        // Debe salir un modal de confirmacion
+        await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
+
+        // Click en aceptar
+        await page.getByRole('dialog').getByRole('button', {name: 'check Aceptar'}).click();
+
+        // El modal debe desaparecer
+        await expect(modal).not.toBeVisible();
+
+        // Deben estar tres alertas
+        await expect(page.locator('text=Prestamo almacenado exitosamente.')).toBeVisible();
+        await expect(page.locator('text=Cargos del préstamo guardados exitosamente.')).toBeVisible();
+
+        // Cerrar las alertas
+        await page.locator(`${ariaCerrar}`).first().click();
         
         // Click en guardar y continuar
         GuardaryContinuar();

@@ -358,7 +358,9 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
                     await page.getByRole('option').nth(0).click();
             
@@ -390,6 +392,9 @@ test.describe('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros'
             
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
+
+                    // Debe mostrarse la cuenta donde se va a depositar 
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             
                     // Boton Finalizar
                     const botonFinalizar = page.locator('button:has-text("Finalizar")')

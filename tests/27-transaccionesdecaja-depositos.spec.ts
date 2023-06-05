@@ -114,6 +114,8 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     });
 
     test('Datos del Deposito a la Cuenta de Aportaciones', async () => {
+        test.slow();
+
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
         await expect(campoMonto).toBeVisible();
@@ -147,13 +149,15 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     });
 
     test('Datos del Deposito a la Cuenta de Ahorros', async () => {
+        test.slow();
+
         // Input del monto
         const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
         await expect(campoMonto).toBeVisible();
-        await campoMonto.fill('10000');
+        await campoMonto.fill('10100');
 
         // Agregar un comentario
-        await page.locator('#form_COMENTARIO').fill('Deposito de 10000 pesos a la cuenta de Ahorros');
+        await page.locator('#form_COMENTARIO').fill('Deposito de 10100 pesos a la cuenta de Ahorros');
 
         // Boton Agregar
         await page.locator('text=Agregar').click();
@@ -166,6 +170,8 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     });
 
     test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Aportaciones', async () => {
+        test.slow();
+
         // Aplicar el deposito de la cuenta de aportaciones
         await page.locator('text=Aplicar').first().click();
 
@@ -257,9 +263,9 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
         await expect(iconoAlerta).toBeVisible();
 
         // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 10100
-        // Divididos en 1000, 500, 200, 100, 100 y 50
+        // Divididos en 1000, 500, 200, 100 y 50
         const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
-        const cant500 = page.locator('[id="4"]'); // Campo de RD 500
+        const cant500 = page.locator('[id="2"]'); // Campo de RD 500
         const cant200 = page.locator('[id="3"]'); // Campo de RD 200
         const cant100 = page.locator('[id="4"]'); // Campo de RD 100
         const cant50 = page.locator('[id="5"]'); // Campo de RD 50

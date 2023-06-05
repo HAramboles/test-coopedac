@@ -81,6 +81,7 @@ const numerosCedulas = generarCedulas(); // Cedula para la persona fisica
 const numerosCedulas2 = generarCedulas(); // Cedula para la persona juridica
 const numerosCedulas3 = generarCedulas(); // Cedula para el relacionado de la persona juridica
 const numerosCedulas4 = generarCedulas(); // Cedula para el menor de edad
+const numerosCedulas5 = generarCedulas(); // Cedula para persona casada
 
 const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para la persona fisica
 
@@ -96,6 +97,7 @@ export {
     numerosCedulas2,
     numerosCedulas3,
     numerosCedulas4,
+    numerosCedulas5,
     numerosPasaporte,
     numerosRegistroMercantil,
     numerosCorreo,

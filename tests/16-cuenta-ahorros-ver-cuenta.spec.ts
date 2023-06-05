@@ -164,6 +164,9 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
 
+        // Debe mostrarse la cuenta donde se va a depositar 
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
         // Boton Finalizar
         const botonFinalizar = page.locator('button:has-text("Finalizar")')
         await expect(botonFinalizar).toBeVisible();
