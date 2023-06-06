@@ -82,8 +82,11 @@ const numerosCedulas2 = generarCedulas(); // Cedula para la persona juridica
 const numerosCedulas3 = generarCedulas(); // Cedula para el relacionado de la persona juridica
 const numerosCedulas4 = generarCedulas(); // Cedula para el menor de edad
 const numerosCedulas5 = generarCedulas(); // Cedula para persona casada
+const numerosCedulas6 = generarCedulas(); // Cedula para el conyuge de la persona casada
 
 const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para la persona fisica
+const numerosPasaporte2 = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para la persona fisica casada
+const numerosPasaporte3 = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para el conyuge de la persona casada
 
 const numerosRegistroMercantil = generarRegistroMercantil(); // Registro Mercantil de la persona juridica
 
@@ -98,7 +101,10 @@ export {
     numerosCedulas3,
     numerosCedulas4,
     numerosCedulas5,
+    numerosCedulas6,
     numerosPasaporte,
+    numerosPasaporte2,
+    numerosPasaporte3,
     numerosRegistroMercantil,
     numerosCorreo,
     numerosCelular,

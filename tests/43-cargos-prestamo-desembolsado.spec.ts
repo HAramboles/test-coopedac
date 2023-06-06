@@ -162,6 +162,15 @@ test.describe('Pruebas Agregando Cargos a una Prestamo Desembolsado', () => {
         const botonFinalizar = page.getByRole('button', {name: 'Finalizar'});
         await expect(botonFinalizar).toBeVisible();
         await botonFinalizar.click();
+
+        // Debe salir un modal de confirmacion
+        await expect(page.locator('text=¿Seguro que desea finalizar la operación?')).toBeVisible();
+
+        // Click en Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // Debe regresar a la pagina de las solicitudes
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=desembolsado`);
     });
 
     test.afterAll(async () => { // Despues de las pruebas
