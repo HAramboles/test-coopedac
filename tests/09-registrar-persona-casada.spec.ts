@@ -3,7 +3,6 @@ import {
     numerosCedulas5, 
     numerosCedulas6,
     numerosPasaporte2, 
-    numerosPasaporte3,
     numerosCorreo, 
     numerosCelular 
 } from './utils/cedulasypasaporte';
@@ -35,7 +34,7 @@ const apellidoPersonaCasada = '';
 
 // Nombre y apellido del conyuge de la persona
 const nombrePersonaConyuge = '';
-const apellidoPersonaConyuge = ';';
+const apellidoPersonaConyuge = '';
 
 // Correos de las personas
 const correoPersonaCasada = nombrePersonaCasada.split(' ').join('') + numerosCorreoPersonaCasada;
@@ -223,7 +222,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
             
                     // Input del estado civil
                     const campoEstado = page.locator('#person_ESTADO_CIVIL');
-                    await campoEstado?.fill('Soltero');
+                    await campoEstado?.fill('Casado');
                     await page.locator('text=Casado(a)').click();
             
                     // Click al boton de no referido
@@ -250,7 +249,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     const campoOcupacion = page.locator('#person_OCUPACION');
                     await campoOcupacion?.fill('Veterina');
                     // Hacer click a la opcion de veterinario
-                    await page.locator('text=VETERINARIO').click();
+                    await page.getByText('VETERINARIO', {exact: true}).click();
             
                     // Input del lugar de trabajo
                     const campoTrabajo = page.locator('#person_NOMBRE_EMPRESA');
@@ -560,7 +559,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     // Posicion en la empresa
                     await page.locator('#relatedRecord_POSICION_EMPRESA').fill('VETERINARIO');
                     // Elegir una opcion
-                    await page.getByText('MEDICO VETERINARIO', {exact: true}).click();
+                    await page.getByText('MEDICO VETERINARIO').nth(2).click();
             
                     // Actividad Economica
                     const actividadEconomicaRelacionado = page.locator('#relatedRecord_ID_ACTIVIDAD_ECONOMICA').nth(1); 

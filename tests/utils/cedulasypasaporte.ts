@@ -86,7 +86,6 @@ const numerosCedulas6 = generarCedulas(); // Cedula para el conyuge de la person
 
 const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para la persona fisica
 const numerosPasaporte2 = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para la persona fisica casada
-const numerosPasaporte3 = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para el conyuge de la persona casada
 
 const numerosRegistroMercantil = generarRegistroMercantil(); // Registro Mercantil de la persona juridica
 
@@ -104,7 +103,6 @@ export {
     numerosCedulas6,
     numerosPasaporte,
     numerosPasaporte2,
-    numerosPasaporte3,
     numerosRegistroMercantil,
     numerosCorreo,
     numerosCelular,
