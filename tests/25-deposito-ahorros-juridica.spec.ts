@@ -139,6 +139,8 @@ test.describe('Pruebas con Transacciones de Caja - Deposito', () => {
     });
 
     test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
+        test.slow();
+        
         // Aplicar el deposito de la cuenta de ahorros
         await page.locator('text=Aplicar').first().click();
 

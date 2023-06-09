@@ -475,6 +475,9 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
         
                 // Cerrar la pagina
                 await page.close();
+
+                // Cerrar el context
+                await context.close();
             });
         });
     };

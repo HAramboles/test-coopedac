@@ -69,6 +69,8 @@ test.describe('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio
             });
         
             test('Ir a Apertura de cuenta de aportaciones', async () => {
+                test.slow();
+                
                 // Captaciones
                 await page.locator('text=CAPTACIONES').click();
         

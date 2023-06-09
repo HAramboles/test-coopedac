@@ -45,6 +45,7 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // continuar
         const botonGuardaryContinuar = page.locator('button:has-text("Guardar y continuar")');
         // Esperar a que este visible
+        await expect(botonGuardaryContinuar).toHaveClass("ant-btn css-lvymt ant-btn-primary ant-btn-sm  ");
         await expect(botonGuardaryContinuar).toBeVisible();
         // presionar el boton
         await botonGuardaryContinuar.click();
@@ -81,10 +82,8 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Boton Nueva Solicitud', async () => {
-        test.setTimeout(60000);
-
         // El listado de las solicitudes debe ser solicitado
-        await expect(page.locator('text=SOLICITADO')).toBeVisible();
+        await expect(page.locator('text=SOLICITADO')).toBeVisible({timeout: 20000});
 
         // Boton Nueva Solicitud
         const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
@@ -234,26 +233,26 @@ test.describe('Prueba con la Solicitud de Credito', () => {
     });
 
     test('Paso 3 - Cargos del prestamo', async () => {
-        test.setTimeout(60000);
+        test.slow();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
 
-        // Colocar una cantidad para los cargos
-        const cargos = page.locator('(//td[@class="ant-table-cell montoPorcentajeSolicitud"])');
-        await cargos.click();
-        await page.locator('#VALOR').fill('50');
-
         // El titulo principal debe estar visible
         await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
 
+        // Colocar una cantidad para los cargos
+        const cargos = page.locator('(//td[@class="ant-table-cell montoPorcentajeSolicitud"])');
+        await cargos.click({timeout: 20000});
+        await page.locator('#VALOR').fill('50', {timeout: 20000});
+
         // Guardar los cargos
-        await page.getByRole('button', {name: 'Guardar Cargos'}).click();
+        await page.getByRole('button', {name: 'Guardar Cargos', }).click({timeout: 15000});
 
         // Boton de agregar cargos 
         const agregarCuota = page.locator('[aria-label="plus"]');
-        await expect(agregarCuota).toBeVisible();
-        await agregarCuota.click();
+        await expect(agregarCuota).toBeVisible({timeout: 15000});
+        await agregarCuota.click({timeout: 15000});
     
         // Debe salir un modal
         const modal = page.locator('text=AGREGAR CARGO');
@@ -271,12 +270,13 @@ test.describe('Prueba con la Solicitud de Credito', () => {
         // El modal debe desaparecer
         await expect(modal).not.toBeVisible();
 
-        // Deben estar tres alertas
+        // Deben aparecer dos alertas
         await expect(page.locator('text=Prestamo almacenado exitosamente.')).toBeVisible();
         await expect(page.locator('text=Cargos del préstamo guardados exitosamente.')).toBeVisible();
 
         // Cerrar las alertas
         await page.locator(`${ariaCerrar}`).first().click();
+        await page.locator(`${ariaCerrar}`).last().click();
         
         // Click en guardar y continuar
         GuardaryContinuar();

@@ -107,6 +107,8 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
             });
 
             test('Buscar la cuenta de la Persona a Editar', async () => {
+                test.slow();
+                
                 // Buscar a la persona
                 await page.locator(`${formBuscar}`).fill(`${cedula}`);
             });

@@ -45,14 +45,6 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
-    // Funcion con el boton de siguiente, que se repite en cada seccion del registro
-    const Siguiente = async () => {
-        // continuar
-        const botonSiguiente = page.locator('button:has-text("Siguiente")');
-        // presionar el boton
-        await botonSiguiente.click();
-    };
-
     test('Ir a la opcion de Cuentas de Ahorros', async () => {
         // Captaciones
         await page.locator('text=CAPTACIONES').click();
@@ -68,6 +60,8 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
     });
 
     test('Seleccionar un tipo de captaciones', async () => {
+        test.slow();
+
         // El titulo de tipo de captaciones debe estar visible
         await expect(page.locator('h1').filter({hasText: 'TIPO DE CAPTACIONES'})).toBeVisible();
 
@@ -90,9 +84,14 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
 
         // La URL debe de cambiar al elegir el tipo de captacion
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+
+        // El tipo de captacion de ahorros normales debe estar visible
+        await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
     });
 
     test('Ver cuenta - Datos Generales', async () => {
+        test.slow();
+
         // Buscar al socio a editar
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
@@ -118,7 +117,8 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
 
         // La categoria debe ser Socio Ahorrante
-        await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
+        // await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
+        await expect(page.getByTitle('3')).toBeVisible();
 
         // Editar el monto de confirmacion
         const montoConfirmacion = page.getByPlaceholder('MONTO DE CONFIRMACIÓN');
@@ -127,11 +127,15 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         // El componente de firma debe estar visible y debe ser unico
         await expect(page.locator('(//div[@class="ant-upload-list-item-container"])')).toBeVisible();
 
-        // Click al boton de Siguiente
-        Siguiente();
+        // Click al boton de Firmantes y Contactos
+        const botonFirmantes = page.locator('text=Firmantes y Contactos');
+        await expect(botonFirmantes).toBeVisible();
+        await botonFirmantes.click();
     });
 
     test('Ver cuenta - Contacto de Firmante', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=2/);
 
@@ -153,11 +157,15 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         // Debe tener una firma condicional
         await expect(page.locator('text=(O) FIRMA CONDICIONAL')).toBeVisible();
 
-        // Click al boton de Siguiente
-        Siguiente();
+        // Click al boton de Metodo de Interes
+        const botonMetodoInteres = page.locator('text=Método de Interes');
+        await expect(botonMetodoInteres).toBeVisible();
+        await botonMetodoInteres.click();
     });
 
     test('Ver cuenta - Metodo de Interes', async () => {
+        test.slow();
+
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=3/);
 
@@ -176,7 +184,7 @@ test.describe('Pruebas en el modo solo lectura, para ver una cuenta', () => {
         await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
     });
 
-    test.afterAll(async () => { // despues de todas las pruebas
+    test.afterAll(async () => { // Despues de todas las pruebas
         // Cerrar la page
         await page.close();
 

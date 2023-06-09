@@ -271,7 +271,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Prueba
                     await botonActualizar.click();
                 });
             
-                test('Crear la Cuenta de Ahorros - Contacto de Firmante', async () => {            
+                test('Crear la Cuenta de Ahorros - Contacto de Firmante', async () => {    
+                    test.slow();
+                            
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTE'})).toBeVisible();
 

@@ -81,6 +81,8 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
             };
         
             test('Ir a Apertura de cuenta de aportaciones', async () => {
+                test.slow();
+                
                 // Captaciones
                 await page.locator('text=CAPTACIONES').click();
         

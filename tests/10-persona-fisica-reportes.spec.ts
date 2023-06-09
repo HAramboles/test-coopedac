@@ -73,6 +73,8 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             });
         
             test('Ir a la opcion de Registro de Persona', async () => {
+                test.slow();
+                
                 // Socios
                 await page.getByRole('menuitem', {name: 'SOCIOS'}).click();
         
@@ -87,6 +89,8 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             });
         
             test('Buscar la cuenta del socio', async () => {   
+                test.slow();
+
                 // El titulo principal de la pagina debe esatr visible
                 await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
 

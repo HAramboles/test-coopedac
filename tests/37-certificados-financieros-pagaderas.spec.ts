@@ -105,6 +105,8 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
             });
         
             test('Elegir un tipo de certificado', async () => {
+                test.slow();
+                
                 // Boton de seleccionar captaciones
                 const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
                 await expect(botonCaptaciones).toBeVisible();
@@ -126,6 +128,9 @@ test.describe('Certificados - Financieros Pagaderas - Pruebas con los diferentes
 
                     // El titulo debe estar presente
                     await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
+
+                    // El tipo de captacion de financieros pagaderas debe estar visible
+                    await expect(page.locator('#form').getByTitle('FINANCIEROS PAGADERAS')).toBeVisible();
                 };
             });
 

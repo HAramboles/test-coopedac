@@ -562,6 +562,9 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
                     // El modal debe cerrarse
                     await expect(modalDirecciones).not.toBeVisible();
 
+                    // La direccion debe haberse agregado correctamente
+                    await expect(page.getByRole('cell', {name: 'CALLE 15, EL MAMEY, CASA NO. 62, SANTIAGO, REPUBLICA DOMINICANA'})).toBeVisible();
+
                     // Click en Finalizar
                     const finalizarRelacionado = page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'});
                     await expect(finalizarRelacionado).toBeVisible();
@@ -604,9 +607,12 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
         
                 // Guardar nuevamente el Storage con la cedula, el nombre y el apellido de la persona relacionada
                 await context.storageState({path: 'state.json'});
-        
+                
                 // Cerrar la pagina
                 await page.close();
+
+                // Cerrar el context
+                await context.close();
             });
         });  
     };

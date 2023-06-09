@@ -105,6 +105,8 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
             });
         
             test('Elegir un tipo de certificado', async () => {
+                test.slow();
+                
                 // Boton de seleccionar captaciones
                 const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
                 await expect(botonCaptaciones).toBeVisible();
@@ -118,7 +120,7 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     // Si no llega el tipo de captacion, manualmente dirigise a la url de los certificados financieros reinvertidas
                     await page.goto(`${url_base}/crear_cuentas/01-2-5-4/certificados/10`);
                 } else if (await tipoCertificado.isVisible()) {
-                    // Seleccionar el tipo de certificado financieros pagaderas
+                    // Seleccionar el tipo de certificado financieros reinvertidas
                     await page.locator('text=FINANCIEROS REINVERTIDAS').click();
 
                     // La URL debe cambiar
@@ -126,6 +128,9 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
 
                     // El titulo debe estar presente
                     await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
+
+                    // El tipo de captacion de financieros reinvertidas debe estar visible
+                    await expect(page.locator('#form').getByTitle('FINANCIEROS REINVERTIDAS')).toBeVisible();
                 };
             });
 
@@ -200,7 +205,7 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
             
                     // Plazo
-                    await page.getByPlaceholder('PLAZO').fill('24');
+                    await page.getByPlaceholder('PLAZO').fill('36');
             
                     // El plazo debe ser mensual, que es el que viene por defecto
                     await expect(page.locator('text=MENSUAL')).toBeVisible();
@@ -236,7 +241,7 @@ test.describe('Certificados - Financieros Reinvertidas - Pruebas con los diferen
                     await casillaDebitoCuenta.click();
             
                     // Ingresar la tasa
-                    await page.locator('#FINANCIEROS\\ REINVERTIDAS_TASA').fill('5');
+                    await page.locator('#FINANCIEROS\\ REINVERTIDAS_TASA').fill('8');
             
                     // Click al boton de cargar autorizacion
                     await expect(page.getByRole('button', {name: 'Cargar Autorización'})).toBeVisible();

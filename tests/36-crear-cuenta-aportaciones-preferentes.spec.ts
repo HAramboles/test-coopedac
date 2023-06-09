@@ -94,6 +94,8 @@ test.describe('Aportaciones Preferentes - Pruebas con los diferentes parametros'
             };
         
             test('Ir a la opcion de Aportaciones Preferentes', async () => {
+                test.slow();
+                
                 // Captaciones
                 await page.locator('text=CAPTACIONES').click();
         

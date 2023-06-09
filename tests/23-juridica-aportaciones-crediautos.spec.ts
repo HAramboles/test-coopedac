@@ -74,7 +74,7 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
 
                 // Cedula, nombre y apellido de la persona almacenada en el state
                 cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
-                nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombreJuridica'));
+                nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
 
                 // Cedula, nombre y apellido de la persona relacionada almacenada en el state
                 nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
@@ -160,7 +160,9 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-7/aportaciones_(crediautos)/1/create?step=1`);
                 });
             
-                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {            
+                test('Registrar Cuenta de Aportaciones - Datos Generales', async () => { 
+                    test.slow();
+
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
             

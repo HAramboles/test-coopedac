@@ -86,6 +86,8 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
             });
         
             test('Seleccionar un tipo de captaciones', async () => {
+                test.slow();
+
                 // El titulo de tipo de captaciones debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'TIPO DE CAPTACIONES'})).toBeVisible();
         
@@ -108,6 +110,9 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
         
                 // La URL debe de cambiar al elegir el tipo de captacion
                 await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+
+                // El tipo de captacion de ahorros normales debe estar visible
+                await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
             });
 
             if (escenario.ID_OPERACION === '') {
@@ -156,7 +161,7 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
                     await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
                 });
             
-                test('Ingresar un Socio', async () => {
+                test('No debe permitir crear una Cuenta de Ahorros sin tener una de Aportaciones', async () => {
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`);
             
@@ -175,7 +180,6 @@ test.describe('No permitir la Creacion de una Cuenta de Ahorros sin crear una de
                 });
             };
             
-        
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerrar la page
                 await page.close();

@@ -55,7 +55,7 @@ const EscenariosPrueba: CrearPersonas[] = [
 
 /* Pruebas */
 
-test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', async () => {
+test.describe('Crear Persona Casada y Conyuge - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPrueba) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
@@ -105,6 +105,8 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
             };
         
             test('Ir a la opcion de Registrar Persona', async () => {
+                test.slow();
+
                 // Boton de Socios
                 await page.locator('text=SOCIOS').click();
         
@@ -145,6 +147,8 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
             } else if (escenarios.ID_OPERACION === 3) {
                 // Tests cuando el ID_OPERACION sea 3
                 test('Hacer click al boton de nueva persona', async () => {
+                    test.slow();
+
                     // Boton Nueva persona
                     const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).toBeVisible();
@@ -498,7 +502,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await page.locator('text=Registro Completo').click();
                 });
 
-                test('Registro del Conyugue de la Persona - Datos Generales', async () => {
+                test('Registro del Conyuge de la Persona - Datos Generales', async () => {
                     // Se debe abrir un modal con el formulario para el registro
                     await expect(page.locator('h1').filter({hasText: 'CREAR RELACIONADO'})).toBeVisible();
 
@@ -541,7 +545,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     guardarContinuar();
                 });
 
-                test('Registro del Conyugue de la Persona - Informacion de Ingresos', async () => {
+                test('Registro del Conyuge de la Persona - Informacion de Ingresos', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
             
@@ -578,7 +582,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     guardarContinuar();
                 });
 
-                test('Registro del Conyugue de la Persona - Peps', async () => {
+                test('Registro del Conyuge de la Persona - Peps', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'PERSONA EXPUESTA POLÍTICAMENTE'})).toBeVisible();
             
@@ -613,7 +617,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     guardarContinuar();
                 });
 
-                test('Registro del Conyugue de la Persona - Telefonos', async () => {
+                test('Registro del Conyuge de la Persona - Telefonos', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'TELÉFONOS'})).toBeVisible();
             
@@ -638,7 +642,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.').first()).toBeVisible();
                 });
 
-                test('Registro del Conyugue de la Persona - Emails / Redes Sociales', async () => {
+                test('Registro del Conyuge de la Persona - Emails / Redes Sociales', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'EMAILS / REDES SOCIALES'})).toBeVisible();
             
@@ -671,7 +675,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await page.locator(`${ariaCerrar}`).last().click();
                 });
 
-                test('Registro del Conyugue de la Persona - Direcciones', async () => {
+                test('Registro del Conyuge de la Persona - Direcciones', async () => {
                     test.slow();
                     
                     // El titulo debe estar visible
@@ -727,11 +731,11 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await finalizarRelacionado.click();
                 });
             
-                test('Finalizar con el Registro de Persona Fisica', async () => {
+                test('Finalizar con el Registro de la Persona Casada y el Conyuge', async () => {
                     test.slow();
                     
                     // Hacer click al boton de finalizar
-                    const botonFinalizar = page.locator('text=Finalizar');
+                    const botonFinalizar = page.locator('#person').getByRole('button', {name: 'check Finalizar'});
                     // Esperar que se abran dos pestañas con los diferentes reportes
                     const [newPage, newPage2, newPage3] = await Promise.all([
                         context.waitForEvent('page'),
@@ -752,6 +756,9 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
             test.afterAll(async () => { /* Despues de que se realizen todas las pruebas */
                 // Cerrar la pagina
                 await page.close();
+
+                // Cerrar el context
+                await context.close();
             });
         });
     };

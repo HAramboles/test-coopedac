@@ -105,7 +105,7 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
         await page.locator(`${ariaCerrar}`).click();
     });
 
-    test.skip('Reimprimir Contrato - Cuenta de Ahorros Normales', async () => {
+    test('Reimprimir Contrato - Cuenta de Ahorros Normales', async () => {
         // Cuenta de Ahorros
         const cuentaAhorrosNormales = page.getByRole('row', {name: 'AHORROS NORMALES'});
         await expect(cuentaAhorrosNormales).toBeVisible();
@@ -244,28 +244,6 @@ test.describe('Prueba con la Reimpresion de los Contratos de las Cuentas', () =>
 
         // Cerrar la pagina con el reporte
         await pageInversionPagaderas.close();
-
-        // Cerrar el mensaje que se muestra
-        await page.locator(`${ariaCerrar}`).click();
-    });
-
-    test.skip('Reimprimir Contrato - Prestamos', async () => {
-        // Prestamos
-        const cuentaPrestamos = page.getByRole('row', {name: 'PRESTAMOS'});
-        await expect(cuentaPrestamos).toBeVisible();
-
-        // Generar contrato
-        const contratoFinancierosPagaderas = cuentaPrestamos.locator(`${dataFile}`);
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [pagePrestamos] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(contratoFinancierosPagaderas).toBeVisible(),
-            await contratoFinancierosPagaderas.click()
-        ]);
-
-        // Cerrar la pagina con el reporte
-        await pagePrestamos.close();
 
         // Cerrar el mensaje que se muestra
         await page.locator(`${ariaCerrar}`).click();

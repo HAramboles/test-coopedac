@@ -393,10 +393,8 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     // Seleccionar un tipo de firmante
                     await page.getByRole('option', {name: 'MADRE'}).click();
             
-                    // Seleccionar un testigo
-                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
-                    await expect(seleccionarTestigo).toBeVisible();
-                    await seleccionarTestigo.click();
+                    // Tipo firma
+                    await page.locator('#form_CONDICION').click();
                     // Seleccionar un tipo de firma
                     await page.locator('text=(O) FIRMA CONDICIONAL').click();
             
@@ -416,7 +414,9 @@ test.describe('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor 
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
                     await page.getByRole('option').nth(0).click();
 

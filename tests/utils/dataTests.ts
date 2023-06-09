@@ -38,6 +38,11 @@ interface EditarCuentas {
     ID_OPERACION: '' | 10 | 31
 }
 
+// Interfaz para Agregar Cargos a Prestamos Desembolsados
+interface AgregarCargos {
+    ID_OPERACION: '' | 10 | 32
+}
+
 export {
     userCorrecto,
     passCorrecto,
@@ -46,6 +51,7 @@ export {
     EditarPersonas,
     CrearCuentas,
     EditarCuentas,
+    AgregarCargos,
     dataCerrar,
     dataPrinter,
     dataExport,
