@@ -1,5 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, CrearCuentas, ariaCerrar, selectBuscar } from './utils/dataTests';
+import { formatDate } from './utils/utils';
 
 // Variables globales
 let browser: Browser;
@@ -186,18 +187,36 @@ test.describe('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con los dife
             
                     // El titulo de Registrar Cuenta debe estar visible
                     await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
+
+                    // Botones con los pasos del formulario
+                    await expect(page.getByText('Datos Generales')).toBeVisible();
+                    await expect(page.getByText('Firmantes y Contactos')).toBeVisible();
+                    await expect(page.getByText('Método de Interés')).toBeVisible();
                 });
             
                 test('Llenar los campos del primer paso del registro de cuenta de ahorros', async () => {
+                    // Numero de cuenta
+                    await expect(page.locator('#APORTACIONES_ID_CUENTA')).toHaveValue('readonly');
+
+                    // Fecha de apertura, debe ser la fecha actual
+                    const fechaApetura = page.locator('#APORTACIONES_FECHA_APERTURA');
+                    await expect(fechaApetura).toHaveValue('disabled');
+                    await expect(fechaApetura).toHaveValue(`${formatDate(new Date())}`);
+                    
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`);
-            
                     await campoTitular?.fill(`${cedula}`);
                     // Seleccionar la opcion que aparece
                     await page.locator(`text=${cedula}`).click();
             
                     // El tipo de captacion debe ser Ahorros
                     await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+
+                    // Retenciones
+                    await expect(page.getByText('RETENCION PERSONA FISICA 10%')).toBeVisible();
+
+                    // La categoria debe ser Socio Ahorrante
+                    await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
             
                     // Subir la imagen de la firma
                     const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
@@ -232,72 +251,17 @@ test.describe('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con los dife
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
                     await expect(botonAgregarFirmantes).toBeVisible();
-                    // Click al boton
-                    await botonAgregarFirmantes.click();
             
-                    // Agregar un firmante, debe salir un modal
-                    await expect(page.locator('h1').filter({hasText: 'SELECCIONAR FIRMANTE'})).toBeVisible();
+                    // El titular debe estar en la tabla de los firmantes
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             
-                    // Bucar un socio
-                    const buscador = page.locator(`${selectBuscar}`);
-                    await buscador.click();
-                    await buscador.fill(`${cedulaFirmante}`);
-                    // Seleccionar el socio
-                    await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
-                    await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
+                    // Se debe mostrar la fima del titular por defecto
+                    await expect(page.locator('text=TITULAR')).toBeVisible();
             
-                    // Debe salir otro modal para llenar la informacion de la firmante
-                    await expect(page.locator('text=FIRMANTE:')).toBeVisible();
+                    // El tipo de firma requerida debe estar visible
+                    await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();
             
-                    // Tipo firmante
-                    await page.locator('#form_TIPO_FIRMANTE').click();
-                    // Seleccionar un tipo de firmante
-                    await page.locator('text=CO-PROPIETARIO').click();
-            
-                    // Tipo firma
-                    await page.locator('#form_CONDICION').click();
-                    // Seleccionar un tipo de firma
-                    await page.locator('text=(O) FIRMA CONDICIONAL').click();
-            
-                    // Subir la imagen de la firma
-                    const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
-                    await page.getByText('Cargar ').click(); 
-                    const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
-                    await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
-            
-                    // Esperar que la firma se suba y se muestre
-                    await expect(page.locator('(//div[@class="ant-upload-list ant-upload-list-picture-card"])')).toBeVisible();
-            
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-            
-                    // Debe aparecer un modal para seleccionar el testigo de la eliminacion del firmante
-                    await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
-            
-                    // Seleccionar un testigo
-                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
-                    await expect(seleccionarTestigo).toBeVisible();
-                    await seleccionarTestigo.click();
-                    // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option').nth(0).click();
-            
-                    // Boton de Aceptar
-                    const botonAceptar = page.locator('text=Aceptar');
-                    // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
-                  
-                    // La pagina abierta con el reporte se cierra
-                    await newPage.close();
-            
-                    // El firmante agregado se debe mostrar
-                    await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
-            
-                    // Click al boton de Continuar
+                    // Boton de Continuar
                     Continuar();
                 });
             
