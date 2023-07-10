@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, EditarPersonas, formBuscar } from './utils/dataTests';
+import { url_base, EscenariosPruebaEditarPersonas, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -11,28 +11,15 @@ let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
-// Parametros de Relation
-const EscenariosPrueba: EditarPersonas[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 8
-    },
-    {
-        ID_OPERACION: 4
-    }
-];
-
 // Pruebas
 
 test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Pruebas con los diferentes parametros', async () => {
-    for (const escenarios of EscenariosPrueba) {
+    for (const escenarios of EscenariosPruebaEditarPersonas) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: true
                 });
         
                 // Crear el context

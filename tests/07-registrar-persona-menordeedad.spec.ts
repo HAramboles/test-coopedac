@@ -2,7 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } fr
 import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
 import { formatDate } from './utils/utils';
 import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
-import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './00-nombreyapellidos-personas';
+import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './00-nombresyapellidos-personas';
 
 // Vaiables globales 
 let browser: Browser;
@@ -31,7 +31,7 @@ test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
+                    headless: true,
                 });
         
                 // Crear el context

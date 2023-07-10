@@ -19,7 +19,7 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: true
         });
 
         // Crear el context

@@ -29,7 +29,7 @@ test.describe('Activar Caja - Pruebas con los diferentes parametros', async () =
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false
+                    headless: true
                 });
 
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

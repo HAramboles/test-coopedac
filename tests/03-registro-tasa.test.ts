@@ -61,7 +61,7 @@ test.describe('Pruebas con el Registro de Tasa', async () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
+                    headless: true,
                 });
 
                 // Crear el context

@@ -27,7 +27,7 @@ test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferent
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: true
                 });
         
                 // Crear el context

@@ -11,7 +11,7 @@ import {
     apellidoPersonaFisicaCasada, 
     nombrePersonaFisicaConyuge, 
     apellidoPersonaFisicaConyuge  
-} from './00-nombreyapellidos-personas';
+} from './00-nombresyapellidos-personas';
 import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
@@ -54,7 +54,7 @@ test.describe('Crear Persona Casada y Conyuge - Pruebas con los diferentes param
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false
+                    headless: true
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

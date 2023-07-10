@@ -21,7 +21,7 @@ test.describe('Pruebas con el Login de Coopedac', () => {
     test.beforeAll(async () => { /* Antes de las pruebas */
         /* Crear el browser, en este caso el chromiun */
         browser = await chromium.launch({
-            headless: false,
+            headless: true,
         });
 
         /* Crear un context */

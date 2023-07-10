@@ -8,7 +8,7 @@ import {
     numerosTelefono
 } from './utils/cedulasypasaporte';
 import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
-import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './00-nombreyapellidos-personas';
+import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './00-nombresyapellidos-personas';
 
 // Variables Globales
 let browser: Browser;
@@ -48,7 +48,7 @@ test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', 
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
+                    headless: true,
                 });
         
                 // Crear el context
