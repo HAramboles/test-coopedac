@@ -164,6 +164,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await tipoOrganizacion.click();
                     // Seleccionar un tipo de organizacion
                     await page.locator('text=ÚNICO DUEÑO').click();
+                    await expect(page.locator('#legalPerson').getByTitle('ÚNICO DUEÑO')).toBeVisible(); 
             
                     // Registro Mercantil
                     const campoRegistroMercantil = page.locator('#legalPerson_REGISTRO_MERCANTIL');
@@ -193,15 +194,21 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await inputEjecutivo.fill('lega');
                     // Seleccionar la opcion legal
                     await page.getByText('LEGAL', {exact: true}).click();
+                    await expect(page.locator('#legalPerson').getByTitle('LEGAL')).toBeVisible();
 
                     // Click al boton de no referido
                     await page.locator('#legalPerson_NO_REFERIDO').click();
+
+                    // Input de Referido por
+                    const referidoPor = page.locator('#legalPerson_NOMBRE_REFERIDO');
+                    await expect(referidoPor).toHaveValue('Cooperativa Empresarial de A Y C (COOPEDAC)  ');
             
                     // Categoria Solicitada
                     const categoriaSolicitada = page.locator('#legalPerson_ID_CATEGORIA_SOLICITADA');
                     await categoriaSolicitada.click();
                     // Seleccionar una categoria
                     await page.locator('text=SOCIO EMPRESARIAL').click();
+                    await expect(page.locator('#legalPerson').getByTitle('SOCIO EMPRESARIAL')).toBeVisible();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();
@@ -249,7 +256,14 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await casa.fill('62');
             
                     // Click al boton de guardar
-                    await page.getByRole('button', {name: 'save Guardar'}).click();
+                    const botonGuardar = page.getByRole('button', {name: 'save Guardar'});
+                    await botonGuardar.click();
+
+                    // El modal debe de desaparecer, por lo que el titulo no debe de estar visible
+                    await expect(page.locator('text=Registro de Direcciones')).not.toBeVisible();
+
+                    // La direccion creada debe aparecer en la tabla 
+                    await expect(page.getByRole('cell', {name: 'CALLE 15, EL MAMEY, CASA NO. 62, SANTIAGO, REPUBLICA DOMINICANA'})).toBeVisible();
                 });
             
                 test('Registro de Persona Juridica - Informacion de Telefonos', async () => {
@@ -501,9 +515,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 });
             
                 test('Registro de Persona Juridica - Relacionados del socio - Direcciones', async () => {
-                    test.slow();
-                    
-                    // El titulo debe estar visible
+                   // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
             
                     // Boton agregar direcciones
@@ -545,13 +557,15 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await casa.fill('20');
             
                     // Click al boton de guardar
-                    await page.getByRole('button', {name: 'save Guardar'}).click();
+                    const botonGuardarRelacionado = page.getByRole('button', {name: 'save Guardar'});
+                    await expect(botonGuardarRelacionado).toBeVisible();
+                    await botonGuardarRelacionado.click();
             
                     // El modal debe cerrarse
                     await expect(modalDirecciones).not.toBeVisible();
 
                     // La direccion debe haberse agregado correctamente
-                    await expect(page.getByRole('cell', {name: 'CALLE 15, EL MAMEY, CASA NO. 62, SANTIAGO, REPUBLICA DOMINICANA'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'})).toBeVisible();
 
                     // Click en Finalizar
                     const finalizarRelacionado = page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'});
@@ -574,6 +588,20 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // Cerrar las paginas con los reportes
                     await newPage.close();
                     await newPage2.close();
+                });
+
+                test('Debe regresar a la pagina de Registrar persona', async () => {
+                    // Alerta de Operación Exitosa
+                    await expect(page.locator('text=Registro Completado')).toBeVisible();
+
+                    // Contentido de la alerta
+                    await expect(page.locator('text=Registro de persona completado exitosamente.')).toBeVisible();
+
+                    // La URL debe regresar a la pagina de Registrar persona
+                    await expect(page).toHaveURL(/\/registrar_cliente/);
+
+                    // El titulo de registrar persona debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
                 });
             };
         

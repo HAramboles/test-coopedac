@@ -1,0 +1,21 @@
+{
+  "name": "test-coopedac",
+  "version": "1.0.0",
+  "description": "**Antes de iniciar a correr los test**  \r Ir a los tests de registro de **persona fisica**, **persona juridica** y **menor de edad** y colocar los **nombres y apellidos** de las personas.  \r Luego correr todos los tests",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.35.0"
+  },
+  "dependencies": {
+    "allure-commandline": "^2.23.0",
+    "allure-playwright": "^2.4.0",
+    "dotenv": "^16.1.4"
+  }
+}
