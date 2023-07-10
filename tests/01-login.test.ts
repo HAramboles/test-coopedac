@@ -149,7 +149,9 @@ test.describe('Pruebas con el Login de Coopedac', () => {
         // Pagina no encontrada
         await expect(page.getByText('404')).toBeVisible();
         await expect(page.locator('text=Página no encontrada')).toBeVisible();
+    });
 
+    test('Ir a la Home Page', async () => {
         // Boton de ir al inicio
         const botonIrInicio = page.getByRole('button', {name: 'Ir a inicio'});
         await expect(botonIrInicio).toBeVisible();

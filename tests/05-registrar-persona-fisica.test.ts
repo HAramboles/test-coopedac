@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, CrearPersonas, ariaCerrar } from './utils/dataTests';
+import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
+import { nombrePersonaFisica, apellidoPersonaFisica } from './00-nombreyapellidos-personas';
 
 // Variables globales
 let browser: Browser;
@@ -13,29 +14,17 @@ const pasaporte = numerosPasaporte;
 const numerosparaCorreo = numerosCorreo;
 const celular = numerosCelular;
 
-const nombrePersona = '';
-const apellidoPersona = '';
+// Nombres y apellidos
+const nombrePersona = nombrePersonaFisica;
+const apellidoPersona = apellidoPersonaFisica;
 
 // Correo de la persona
 const correoPersona = nombrePersona.split(' ').join('') + numerosparaCorreo;
 
-// Parametros de Relation
-const EscenariosPrueba: CrearPersonas[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 10
-    },
-    {
-        ID_OPERACION: 3
-    }
-];
-
 /* Pruebas */
 
 test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', async () => {
-    for (const escenarios of EscenariosPrueba) {
+    for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */

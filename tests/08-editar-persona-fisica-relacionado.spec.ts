@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosPasaporte } from './utils/cedulasypasaporte';
-import { url_base, EditarPersonas, formBuscar } from './utils/dataTests';
+import { url_base, EscenariosPruebaEditarPersonas, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -19,23 +19,10 @@ let apellido: string | null;
 let correoEmpresa: string | null;
 let telefonoEmpresa: string | null;
 
-// Parametros Relation
-const EscenariosPrueba: EditarPersonas[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 8
-    },
-    {
-        ID_OPERACION: 4
-    }
-];
-
 // Pruebas
 
 test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferentes parametros', async () => {
-    for (const escenarios of EscenariosPrueba) {
+    for (const escenarios of EscenariosPruebaEditarPersonas) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
