@@ -23,10 +23,34 @@ interface CrearPersonas {
     ID_OPERACION: '' | 10 | 3 
 };
 
+const EscenariosPruebaCrearPersonas: CrearPersonas[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 10
+    },
+    {
+        ID_OPERACION: 3
+    }
+];
+
 // Interfaz para Editar Personas
 interface EditarPersonas {
     ID_OPERACION: '' | 8 | 4
 };
+
+const EscenariosPruebaEditarPersonas: EditarPersonas[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 8
+    },
+    {
+        ID_OPERACION: 4
+    }
+];
 
 // Interfaz para Crear Cuentas
 interface CrearCuentas {
@@ -47,17 +71,18 @@ export {
     userCorrecto,
     passCorrecto,
     url_base,
-    CrearPersonas,
-    EditarPersonas,
-    CrearCuentas,
-    EditarCuentas,
-    AgregarCargos,
     dataCerrar,
     dataPrinter,
     dataExport,
     dataFile,
     ariaCerrar,
     formBuscar,
-    selectBuscar
+    selectBuscar,
+    CrearCuentas,
+    EditarCuentas,
+    AgregarCargos,
+
+    EscenariosPruebaCrearPersonas,
+    EscenariosPruebaEditarPersonas
 };
 

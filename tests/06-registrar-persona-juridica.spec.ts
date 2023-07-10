@@ -7,7 +7,8 @@ import {
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
-import { url_base, CrearPersonas, ariaCerrar } from './utils/dataTests';
+import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
+import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './00-nombreyapellidos-personas';
 
 // Variables Globales
 let browser: Browser;
@@ -29,33 +30,20 @@ const correoRelacionado = numerosCorreo;
 const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
 
-// Nombre de la persona juridica
-const nombrePersonaJuridica = '';
+// Nombre Persona Juridica
+const nombrePersonaJuridica = nombreJuridica;
 
 // Correo de la empresa
 const correoEmpresa = nombrePersonaJuridica.split(' ').join('') + correoJuridica;
 
-// Nombre del relacionado
-const nombreRelacionado = '';
-const apellidoRelacionado = '';
-
-// Parametros de Relation
-const EscenariosPrueba: CrearPersonas[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 10
-    },
-    {
-        ID_OPERACION: 3
-    }
-];
+// Nombres y apellidos del relacionado de la persona juridica
+const nombreRelacionado = nombreRelacionadoJuridica;
+const apellidoRelacionado = apellidoRelacionadoJuridica;
 
 // Pruebas
 
 test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', async () => {
-    for (const escenarios of EscenariosPrueba) {
+    for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser

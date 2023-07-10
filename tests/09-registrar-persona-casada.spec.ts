@@ -6,7 +6,13 @@ import {
     numerosCorreo, 
     numerosCelular 
 } from './utils/cedulasypasaporte';
-import { url_base, CrearPersonas, ariaCerrar } from './utils/dataTests';
+import { 
+    nombrePersonaFisicaCasada, 
+    apellidoPersonaFisicaCasada, 
+    nombrePersonaFisicaConyuge, 
+    apellidoPersonaFisicaConyuge  
+} from './00-nombreyapellidos-personas';
+import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -29,34 +35,21 @@ const numerosCorreoPersonaCasada = numerosCorreo;
 const numerosCorreoPersonaConyuge = numerosCorreo;
 
 // Nombre y apellido de la persona casada
-const nombrePersonaCasada = '';
-const apellidoPersonaCasada = '';
+const nombrePersonaCasada = nombrePersonaFisicaCasada;
+const apellidoPersonaCasada = apellidoPersonaFisicaCasada;
 
 // Nombre y apellido del conyuge de la persona
-const nombrePersonaConyuge = '';
-const apellidoPersonaConyuge = '';
+const nombrePersonaConyuge = nombrePersonaFisicaConyuge;
+const apellidoPersonaConyuge = apellidoPersonaFisicaConyuge;
 
 // Correos de las personas
 const correoPersonaCasada = nombrePersonaCasada.split(' ').join('') + numerosCorreoPersonaCasada;
 const correoPersonaConyuge = nombrePersonaConyuge.split(' ').join('') + numerosCorreoPersonaConyuge;
 
-// Parametros de Relation
-const EscenariosPrueba: CrearPersonas[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 10
-    },
-    {
-        ID_OPERACION: 3
-    }
-];
-
 /* Pruebas */
 
 test.describe('Crear Persona Casada y Conyuge - Pruebas con los diferentes parametros', async () => {
-    for (const escenarios of EscenariosPrueba) {
+    for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
