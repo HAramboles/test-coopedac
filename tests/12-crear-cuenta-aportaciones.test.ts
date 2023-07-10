@@ -1,5 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, CrearCuentas, selectBuscar } from './utils/dataTests';
+import { formatDate } from './utils/utils'; './utils/utils';
 
 // Variables globales
 let browser: Browser;
@@ -159,6 +160,22 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                 test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {            
                     // El titulo de registrar cuenta deb estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
+
+                    // Botones con los pasos del formulario
+                    await expect(page.getByText('Datos Generales')).toBeVisible();
+                    await expect(page.getByText('Firmantes y Contactos')).toBeVisible();
+                    await expect(page.getByText('Método de Interés')).toBeVisible();
+
+                    // El tipo de captacion debe ser Aportaciones
+                    await expect(page.locator('#APORTACIONES_ID_TIPO_CAPTACION').nth(1)).toBeVisible();
+
+                    // Numero de cuenta
+                    await expect(page.locator('#APORTACIONES_ID_CUENTA')).toHaveValue('readonly');
+
+                    // Fecha de apertura, debe ser la fecha actual
+                    const fechaApetura = page.locator('#APORTACIONES_FECHA_APERTURA');
+                    await expect(fechaApetura).toHaveValue('disabled');
+                    await expect(fechaApetura).toHaveValue(`${formatDate(new Date())}`);
             
                     // Ingresar el titular
                     const campoTitular = page.locator(`${selectBuscar}`);
@@ -168,9 +185,9 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
             
                     // El nombre y el apellido de la persona deben aparecer como un titulo
                     await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
-            
-                    // El tipo de captacion debe ser Aportaciones
-                    await expect(page.locator('#APORTACIONES_ID_TIPO_CAPTACION').nth(1)).toBeVisible();
+
+                    // Retenciones
+                    await expect(page.getByText('RETENCION PERSONA FISICA 10%')).toBeVisible();
             
                     // Seleccionar una categoria
                     const campoCategoria = page.locator('#APORTACIONES_ID_CATEGORIA_SOCIO');
@@ -198,6 +215,9 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                 test('Registrar Cuenta de Aportaciones - Contacto de Firmante o Persona', async () => {
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
+
+                    // El titular debe estar en la tabla de los firmantes
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             
                     // Se debe mostrar la fima del titular por defecto
                     await expect(page.locator('text=TITULAR')).toBeVisible();

@@ -1,7 +1,8 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
 import { formatDate } from './utils/utils';
-import { url_base, CrearPersonas, ariaCerrar } from './utils/dataTests';
+import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
+import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './00-nombreyapellidos-personas';
 
 // Vaiables globales 
 let browser: Browser;
@@ -13,31 +14,19 @@ let cedulaMadre: string | null;
 let nombreMadre: string | null;
 let apellidoMadre: string | null;
 
-// Cedula, nombre, apellido, numero telefonico y correo del menor
+// Cedula, numero telefonico y correo del menor
 const cedulaMenor = numerosCedulas4;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 
-const nombreMenor = '';
-const apellidoMenor = '';
-
-// Parametros de Relation
-const EscenariosPrueba: CrearPersonas[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 10
-    },
-    {
-        ID_OPERACION: 3
-    }
-];
+// Nombres y apellidos de la persona menor de edad
+const nombreMenor = nombrePersonaMenorEdad;
+const apellidoMenor = apellidoPersonaMenorEdad;
 
 // Pruebas
 
 test.describe('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes parametros', async () => {
-    for (const escenarios of EscenariosPrueba) {
+    for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
