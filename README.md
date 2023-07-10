@@ -1,5 +1,7 @@
 # Playwright Tests para Coopedac app
 
 **Antes de iniciar a correr los test**  
-Ir a los tests de registro de **persona fisica**, **persona juridica** y **menor de edad** y colocar los **nombres y apellidos** de las personas.  
-Luego correr todos los tests
+
+Ir al archivo **00-nombresyapellidos-personas.ts** y colocar los nombres de cada persona que se creara en los tests.  
+
+Luego correr todos los tests.
