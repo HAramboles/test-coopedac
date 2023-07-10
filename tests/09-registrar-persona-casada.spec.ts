@@ -48,13 +48,13 @@ const correoPersonaConyuge = nombrePersonaConyuge.split(' ').join('') + numerosC
 
 /* Pruebas */
 
-test.describe('Crear Persona Casada y Conyuge - Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: true
+                    headless: false
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

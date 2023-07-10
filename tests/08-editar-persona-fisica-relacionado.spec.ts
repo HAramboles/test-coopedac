@@ -21,13 +21,13 @@ let telefonoEmpresa: string | null;
 
 // Pruebas
 
-test.describe('Editar la Cuenta de una Persona Fisica - Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaEditarPersonas) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: true
+                    headless: false
                 });
         
                 // Crear el context

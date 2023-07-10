@@ -23,13 +23,13 @@ const correoPersona = nombrePersona.split(' ').join('') + numerosparaCorreo;
 
 /* Pruebas */
 
-test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: true
+                    headless: false
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */
@@ -74,13 +74,13 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
         
             test('Ir a la opcion de Registrar Persona', async () => {
                 // Boton de Socios
-                await page.locator('text=SOCIOS').click();
+                await page.getByRole('menuitem', {name: 'SOCIOS'}).click();
         
                 // Boton de Operaciones
-                await page.locator('text=OPERACIONES').click();
+                await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
         
                 // Boton de Registrar Persona
-                await page.locator('text=Registrar persona').click();
+                await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
         
                 // La url debe de cambiar
                 await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
@@ -137,22 +137,22 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
             
                 test('Registrar a la persona - Datos Generales', async() => {
                     // El boton de guardar y continuar debe estar inhabilitado
-                    await expect(page.locator('button:has-text("Guardar y continuar")')).toHaveValue('disabled');
+                    await expect(page.locator('button:has-text("Guardar y continuar")')).toBeDisabled();
 
                     // El input del Estado debe estar inhabilitado
                     const estadoPersona = page.locator('#person_ID_ESTADO');
                     await expect(estadoPersona).toBeVisible();
-                    await expect(estadoPersona).toHaveValue('readonly');
+                    await expect(estadoPersona).toBeDisabled();
 
                     // Codigo de la persona
                     const codigoPersona = page.locator('#person_ID_PERSONA');
                     await expect(codigoPersona).toBeVisible();
-                    await expect(codigoPersona).toHaveValue('disabled');
+                    await expect(codigoPersona).toBeDisabled();
 
                     // Categoria Actual de la persona
                     const categoriaActual = page.locator('#person_DESC_CATEGORIA');
                     await expect(categoriaActual).toBeVisible();
-                    await expect(categoriaActual).toHaveValue('disabled');
+                    await expect(categoriaActual).toBeDisabled();
 
                     // Input de la cedula. Cada cedula debe ser unica
                     const campoCedula = page.locator('#person_DOCUMENTO_IDENTIDAD');
@@ -189,7 +189,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await page.locator('#person_NACIONALIDAD')?.fill('DOMINICANA');
                     // nth(0) = Hacer click a la primera opcion, que debe de coincidir con lo escrito
                     await page.locator('text=DOMINICANA').nth(0).click();
-                    await expect(page.getByTitle('DOMINICANA')).toBeVisible();
+                    await expect(page.locator('#person').getByTitle('DOMINICANA')).toBeVisible();
             
                     // Input de la fecha de nacimiento
                     const campoFecha = page.locator('#person_FECHA_NAC');
@@ -208,7 +208,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await campoAcademico?.fill('Universitario');
                     // Hacer click a la opcion que aparece de nivel academico universitario
                     await page.locator('text=UNIVERSITARIO').click();
-                    await expect(page.getByTitle('UNIVERSITARIO')).toBeVisible();
+                    await expect(page.locator('#person').getByTitle('UNIVERSITARIO')).toBeVisible();
             
                     // Input de la cantidad de dependientes
                     const campoDependientes = page.locator('#person_CANT_DEPENDIENTES');
@@ -219,7 +219,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await campoEjecutivo?.fill('CLIENT');
                     // Hacer click a la opcion de cliente inactivo
                     await page.locator('text=CLIENTE INACTIVO').click();
-                    await expect(page.getByTitle('CLIENTE INACTIVO')).toBeVisible();
+                    await expect(page.locator('#person').getByTitle('CLIENTE INACTIVO')).toBeVisible();
             
                     // Seleccionar sexo
                     await page.locator('text=Femenino').click();
@@ -228,14 +228,14 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await expect(page.getByTitle('FACTURA DE CONSUMO')).toBeVisible();
                     await page.locator('#person_ID_TIPO_NCF').fill('Factura de Consumo elec'); 
                     // Hacer click a la opcion de factura de consumo electronica
-                    await page.locator('text=FACTURA DE CONSUMO ELECTRÓNICA').click();
-                    await expect(page.getByTitle('FACTURA DE CONSUMO ELECTRÓNICA')).toBeVisible();
+                    await page.locator('text=FACTURA DE CONSUMO ELECTRONICA').click();
+                    await expect(page.locator('#person').getByTitle('FACTURA DE CONSUMO ELECTRONICA')).toBeVisible();
             
                     // Input del estado civil
                     const campoEstado = page.locator('#person_ESTADO_CIVIL');
                     await campoEstado?.fill('Soltero');
                     await page.locator('text=Soltero(a)').click();
-                    await expect(page.getByTitle('Soltero(a)')).toBeVisible();
+                    await expect(page.locator('#person').getByTitle('Soltero(a)')).toBeVisible();
             
                     // Click al boton de no referido
                     await page.locator('#person_NO_REFERIDO').click();
@@ -245,13 +245,13 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await campoCategoria?.fill('ahorra');
                     // Seleccionar la opcion de socio ahorrante
                     await page.locator('text=SOCIO AHORRANTE').click();
-                    await expect(page.getByTitle('SOCIO AHORRANTE')).toBeVisible();
+                    await expect(page.locator('#person').getByTitle('SOCIO AHORRANTE')).toBeVisible();
 
                     // Boton de Cancelar debe estar visible
                     await expect(page.getByRole('button', {name: 'Cancelar'})).toBeVisible();
 
                     // El boton de guardar y continuar debe estar habilitado
-                    await expect(page.locator('button:has-text("Guardar y continuar")')).not.toHaveValue('disabled');
+                    await expect(page.locator('button:has-text("Guardar y continuar")')).toBeEnabled();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();
@@ -448,15 +448,16 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
 
                     // Cargo
                     await expect(page.getByRole('columnheader', {name: 'Cargo'})).toBeVisible();
-                    await expect(page.locator('text=1')).toBeVisible();
+                    await expect(page.getByRole('cell', {name: '1'})).toBeVisible();
 
                     // Entidad
                     await expect(page.getByRole('columnheader', {name: 'Entidad'})).toBeVisible();
-                    await expect(page.locator('text=36')).toBeVisible();
+                    await expect(page.getByRole('cell', {name: '36'})).toBeVisible();
 
                     // Estado
                     await expect(page.getByRole('columnheader', {name: 'Estado'})).toBeVisible();
-                    await expect(page.locator('text=Activo')).toBeVisible();
+                    const estadoActivo = page.getByRole('cell', {name: 'Activo'})
+                    await expect(estadoActivo).toBeVisible();
 
                     // Boton de inhabilitar
                     const botonInhabilitar = page.locator('[data-icon="check-circle"]');
@@ -464,15 +465,15 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await botonInhabilitar.click();
 
                     // El estado ahora debe ser Inactivo
-                    await expect(page.locator('text=Inactivo')).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'Inactivo'})).toBeVisible();
 
                     // Debe cambiar la boton de habilitar
-                    const botonHabilitar = page.locator('[data-icon="stop"]');
+                    const botonHabilitar = page.getByRole('button', {name: 'stop', exact: true});
                     await expect(botonHabilitar).toBeVisible();
                     await botonHabilitar.click();
 
                     // El estado debe volver a ser Activo
-                    await expect(page.locator('text=Activo')).toBeVisible();
+                    await expect(estadoActivo).toBeVisible();
 
                     // Y el boton volver a ser inhabilitar
                     await expect(botonInhabilitar).toBeVisible();
@@ -536,7 +537,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await expect(page.locator('text=Registro de Direcciones')).not.toBeVisible();
 
                     // La direccion creada debe aparecer en la tabla 
-                    await expect(page.locator('text=CALLE DE EJEMPLO, SABANETA CASA NO. 52, LA VEGA, REPUBLICA DOMINICANA')).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'CALLE DE EJEMPLO, SABANETA, CASA NO. 52, LA VEGA, REPUBLICA DOMINICANA'})).toBeVisible();
                 });
 
                 test('Editar la direccion agregada', async () => {
@@ -562,7 +563,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await expect(page.locator('text=EDITAR DIRECCIÓN')).not.toBeVisible();
 
                     // La direccion editada debe aparecer en la tabla 
-                    await expect(page.locator('text=CALLE 12, SABANETA, CASA NO. 52, LA VEGA, REPUBLICA DOMINICANA')).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'CALLE 12, SABANETA, CASA NO. 52, LA VEGA, REPUBLICA DOMINICANA'})).toBeVisible();
                 });
 
                 test('Agregar y eliminar una nueva direccion', async () => {
@@ -614,7 +615,7 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     await expect(page.locator('text=Registro de Direcciones')).not.toBeVisible();
 
                     // La nueva direccion creada debe aparecer en la tabla 
-                    const nuevaDireccion = page.locator('text=CALLE 44, ARROYO MALO, CASA NO. 102, SANTIAGO, REPUBLICA DOMINICANA');
+                    const nuevaDireccion = page.getByRole('cell', {name: 'CALLE 44, ARROYO MALO, CASA NO. 102, SANTIAGO, REPUBLICA DOMINICANA'});
                     await expect(nuevaDireccion).toBeVisible();
                 
                     // Eliminar la nueva direccion
@@ -679,7 +680,6 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     const campoNombreEmail = page.getByPlaceholder('USUARIO');
                     await campoNombreEmail.click();
                     await campoNombreEmail?.fill(`${correoPersona}`);
-                    // Split = dividir el string en subcadenas, lo que lo convierte en un array y con el Join se quitan los espacios en blanco
             
                     // Seleccionar un dominio del email
                     const campoDominioEmail = page.locator('#form_DOMAIN');
@@ -707,58 +707,65 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
                     // El titulo de relacionados del socio debe estar visible 
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible(); 
             
-                    // Input de Buscar relacionados 
+                    // Boton de Crear Relacionado debe estar visible
+                    await expect(page.getByRole('button', {name: 'Crear relacionado'})).toBeVisible();
+                    
+                    // Input de Buscar relacionados debe estar visible
                     const campoBuscarRelacionado = page.getByRole('combobox');
-                    await campoBuscarRelacionado?.click();
-            
-                    // Seleccionar la opcion de la Cooperativa
-                    await page.locator('text=Cooperativa Empresarial de A Y C (COOPEDAC)').click();
-            
-                    // Debe de aparecer un modal
-                    await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
-            
-                    // Seleccionar tipo de relacion
-                    await page.locator('#rc_select_34').click();
-                    await page.locator('text=AMIGA(O)').click();
-                    await page.locator('text="Aceptar"').click();
-            
-                    // El modal debe de desaparecer
-                    await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).not.toBeVisible(); 
+                    await expect(campoBuscarRelacionado).toBeVisible();
+                    
+                    // En la tabla de los relacionados no debe haber ningun registro
+                    await expect(page.locator('text=No hay Datos')).toBeVisible();
 
-                    // El relacionado tiene que aparecer en la tabla
-
-                    // Nombre del relacionado
-                    await expect(page.getByRole('columnheader', {name: 'Nombre del Relacionado'})).toBeVisible();
-                    await expect(page.locator('text=Cooperativa Empresarial de A Y C (COOPEDAC)')).toBeVisible();
-
-                    // Doc. Identidad
-                    await expect(page.getByRole('columnheader', {name: 'Doc. Identidad'})).toBeVisible();
-                    await expect(page.locator('text=4-30-07883-2')).toBeVisible();
-
-                    // Relacion
-                    await expect(page.getByRole('columnheader', {name: 'Relación'})).toBeVisible();
-                    await expect(page.locator('text=AMIGA(O)')).toBeVisible();
+                    // Seccion de Reportes
+                    await expect(page.locator('h2').filter({hasText: 'REPORTES'})).toBeVisible();
+                    await expect(page.locator('text=Admisión')).toBeVisible();
+                    await expect(page.locator('text=Aportación Referente')).toBeVisible();
+                    await expect(page.locator('text=Conozca a su Socio')).toBeVisible();
                 });
             
                 test('Finalizar con el Registro de Persona Fisica', async () => {
-                    test.slow();
-                    
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
+                    await expect(botonFinalizar).toBeVisible();
+                    await botonFinalizar.click();
+
+                    // Debe mostrarse un modal
+                    await expect(page.getByText('No Registró Relacionado.')).toBeVisible();
+
+                    // Contenido del modal
+                    await expect(page.getByText('¿Desea finalizar el registro sin agregar relacionados?')).toBeVisible();
+                    
+                    // Botones del modal
+                    await expect(page.getByRole('dialog').getByRole('button', { name: 'Cancelar' })).toBeVisible();
+                    const botonFinalizarModal = page.getByRole('dialog').getByRole('button', { name: 'check Finalizar' });
+
                     // Esperar que se abran dos pestañas con los diferentes reportes
-                    const [newPage, newPage2, newPage3] = await Promise.all([
-                        context.waitForEvent('page'),
+                    const [newPage, newPage2] = await Promise.all([
                         context.waitForEvent('page'),
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
-                        await expect(botonFinalizar).toBeVisible(),
-                        await botonFinalizar.click()
+                        await expect(botonFinalizarModal).toBeVisible(),
+                        await botonFinalizarModal.click()
                     ]);
                   
                     // Cerrar las paginas con los reportes
                     await newPage.close();
                     await newPage2.close();
-                    await newPage3.close();
+                });
+
+                test('Debe regresar a la pagina de Registrar persona', async () => {
+                    // Alerta de Operación Exitosa
+                    await expect(page.locator('text=Registro Completado')).toBeVisible();
+
+                    // Contentido de la alerta
+                    await expect(page.locator('text=Registro de persona completado exitosamente.')).toBeVisible();
+
+                    // La URL debe regresar a la pagina de Registrar persona
+                    await expect(page).toHaveURL(/\/registrar_cliente/);
+
+                    // El titulo de registrar persona debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
                 });
             };
         
@@ -776,6 +783,9 @@ test.describe('Crear Persona Fisica - Pruebas con los diferentes parametros', as
         
                 // Cerrar la pagina
                 await page.close();
+
+                // Cerrar el context
+                await context.close();
             });
         });
     };

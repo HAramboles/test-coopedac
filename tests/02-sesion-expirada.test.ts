@@ -15,11 +15,11 @@ let campoContraseña: Locator;
 
 // Pruebas
 
-test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
+test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: true
+            headless: false
         });
 
         // Crear el context
@@ -41,22 +41,19 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
         campoContraseña = page.locator('#form_password');
     });
 
-    test('Eliminar la Cookie con la Sesion del Usuario', async () => {
-        /*
-            Funcionamiento: primero filtra las cookies que sean diferentes del nombre elegido de la cookie,
-            entonces se eliminan todas las cookies y agregan las cookies nuevamente pero con el filtro
-            aplicado.
-        */
-
+    const EliminarCookies = async () => {
         const cookies: Cookie[] = (await context.cookies()).filter((cookie) => {
             return cookie.name !== 'fibankingUsername';
         });
 
         await context.clearCookies();
         await context.addCookies(cookies);
-    });
+    };
 
     test('Modal de Aviso de Expiracion de la Sesion', async () => {
+        // Eliminar las cookies de la sesion del usuario
+        EliminarCookies();
+
         // Debe salir un modal
         await expect(page.locator('h1').filter({hasText: 'CONFIRMAR USUARIO.'})).toBeVisible();
 
@@ -128,27 +125,16 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
         await expect(page).toHaveURL(`${url_base}`);
     });
 
-    test('Eliminar Nuevamente la Cookie con la Sesion del Usuario', async () => {
-        /*
-            Funcionamiento: primero filtra las cookies que sean diferentes del nombre elegido de la cookie,
-            entonces se eliminan todas las cookies y agregan las cookies nuevamente pero con el filtro
-            aplicado.
-        */
-
-        const cookies: Cookie[] = (await context.cookies()).filter((cookie) => {
-            return cookie.name !== 'fibankingUsername';
-        });
-
-        await context.clearCookies();
-        await context.addCookies(cookies);
-    });
-
     test('El Modal de Aviso de Expiracion de la Sesion debe mostrarse', async () => {
+        // Eliminar las cookies de la sesion del usuario
+        EliminarCookies();
+
         // Recargar la pagina
         await page.reload();
 
         // Debe salir un modal
-        await expect(page.locator('h1').filter({hasText: 'CONFIRMAR USUARIO.'})).toBeVisible();
+        const modalExpiracionSesion = page.locator('h1').filter({hasText: 'CONFIRMAR USUARIO.'});
+        await expect(modalExpiracionSesion).toBeVisible();
 
         // Debe mostrar un mensaje de que la sesion ha expirado
         await expect(page.getByText('SU SESIÓN HA EXPIRADO, POR FAVOR INGRESE SU CONTRASEÑA PARA PODER CONTINUAR.')).toBeVisible();
@@ -159,15 +145,18 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
         // Click al boton de Aceptar
         await botonAceptar.click();
 
+        // El modal debe desaparecer
+        await expect(modalExpiracionSesion).not.toBeVisible();
+
         // Deberia quedarse en la misma pagina 
         await expect(page).toHaveURL(`${url_base}`);
     });
 
     test.afterAll(async () => { // Despues de las pruebas
-        // Cerrar el context
-        await context.close();
-
         // Cerrar la page
         await page.close();
+
+        // Cerrar el context
+        await context.close();
     });
 });

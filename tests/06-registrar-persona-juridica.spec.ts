@@ -42,13 +42,13 @@ const apellidoRelacionado = apellidoRelacionadoJuridica;
 
 // Pruebas
 
-test.describe('Crear Persona Juridica - Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: true,
+                    headless: false,
                 });
         
                 // Crear el context
