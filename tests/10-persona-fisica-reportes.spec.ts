@@ -19,7 +19,7 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: true
+                    headless: false
                 });
         
                 // Crear el context
@@ -194,6 +194,9 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerrar la page
                 await page.close();
+
+                // Cerrar el contex
+                await context.close();
             });
         });
     };

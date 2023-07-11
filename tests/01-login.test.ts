@@ -11,7 +11,7 @@ let usernameCampo: Locator;
 let passCampo: Locator;
 let botonLogin: Locator;
 
-/* Usuario y contraseña */
+// Usuario y contraseña erronea 
 const user:string = 'hector';
 const pass:string = 'abc';
 

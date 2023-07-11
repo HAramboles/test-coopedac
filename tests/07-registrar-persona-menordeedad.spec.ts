@@ -422,7 +422,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
             
                     // Seleccionar tipo de relacion
-                    await page.locator('#rc_select_30').click();
+                    await page.getByRole('dialog').getByRole('combobox').click();
                     await page.locator('text=MADRE').click();
                     await page.locator('text="Aceptar"').click();
 
@@ -448,6 +448,14 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     // Cerrar las paginas con los reportes
                     await newPage.close();
                     await newPage2.close();
+                });
+
+                test('Debe regresar a la pagina de Registrar persona', async () => {
+                    // La URL debe regresar a la pagina de Registrar persona
+                    await expect(page).toHaveURL(/\/registrar_cliente/);
+
+                    // El titulo de registrar persona debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
                 });
             };
         

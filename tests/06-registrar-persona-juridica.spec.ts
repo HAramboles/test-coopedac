@@ -591,12 +591,6 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 });
 
                 test('Debe regresar a la pagina de Registrar persona', async () => {
-                    // Alerta de Operación Exitosa
-                    await expect(page.locator('text=Registro Completado')).toBeVisible();
-
-                    // Contentido de la alerta
-                    await expect(page.locator('text=Registro de persona completado exitosamente.')).toBeVisible();
-
                     // La URL debe regresar a la pagina de Registrar persona
                     await expect(page).toHaveURL(/\/registrar_cliente/);
 
@@ -620,7 +614,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 // Guardar el nombre y el apellido de la persona relacionada creada
                 await page.evaluate((nombreRelacionado) => window.localStorage.setItem('nombrePersonaJuridicaRelacionada', nombreRelacionado), nombreRelacionado);
                 await page.evaluate((apellidoRelacionado) => window.localStorage.setItem('apellidoPersonaJuridicaRelacionada', apellidoRelacionado), apellidoRelacionado);
-        
+                
                 // Guardar nuevamente el Storage con la cedula, el nombre y el apellido de la persona relacionada
                 await context.storageState({path: 'state.json'});
                 

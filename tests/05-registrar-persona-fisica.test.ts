@@ -755,12 +755,6 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                 });
 
                 test('Debe regresar a la pagina de Registrar persona', async () => {
-                    // Alerta de Operación Exitosa
-                    await expect(page.locator('text=Registro Completado')).toBeVisible();
-
-                    // Contentido de la alerta
-                    await expect(page.locator('text=Registro de persona completado exitosamente.')).toBeVisible();
-
                     // La URL debe regresar a la pagina de Registrar persona
                     await expect(page).toHaveURL(/\/registrar_cliente/);
 

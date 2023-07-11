@@ -98,8 +98,6 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
             };
         
             test('Ir a la opcion de Registrar Persona', async () => {
-                test.slow();
-
                 // Boton de Socios
                 await page.locator('text=SOCIOS').click();
         
@@ -140,8 +138,6 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
             } else if (escenarios.ID_OPERACION === 3) {
                 // Tests cuando el ID_OPERACION sea 3
                 test('Hacer click al boton de nueva persona', async () => {
-                    test.slow();
-
                     // Boton Nueva persona
                     const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).toBeVisible();
@@ -669,8 +665,6 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                 });
 
                 test('Registro del Conyuge de la Persona - Direcciones', async () => {
-                    test.slow();
-                    
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
             
@@ -725,13 +719,10 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                 });
             
                 test('Finalizar con el Registro de la Persona Casada y el Conyuge', async () => {
-                    test.slow();
-                    
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('#person').getByRole('button', {name: 'check Finalizar'});
                     // Esperar que se abran dos pestañas con los diferentes reportes
-                    const [newPage, newPage2, newPage3] = await Promise.all([
-                        context.waitForEvent('page'),
+                    const [newPage, newPage2] = await Promise.all([
                         context.waitForEvent('page'),
                         context.waitForEvent('page'),
                         // Click al boton de Finalizar
@@ -742,7 +733,6 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                     // Cerrar las paginas con los reportes
                     await newPage.close();
                     await newPage2.close();
-                    await newPage3.close();
                 });
             };
         

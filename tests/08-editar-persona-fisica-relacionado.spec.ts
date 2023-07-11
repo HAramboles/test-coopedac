@@ -15,7 +15,8 @@ let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
-// Telefono y correo de la empresa
+// Nombre, telefono y correo de la empresa
+let nombreEmpresa: string | null;
 let correoEmpresa: string | null;
 let telefonoEmpresa: string | null;
 
@@ -66,7 +67,8 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
-                // Telefono y correo de la empresa
+                // Nombre, telefono y correo de la empresa
+                nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
                 correoEmpresa = await page.evaluate(() => window.localStorage.getItem('correoEmpresa'));
                 telefonoEmpresa = await page.evaluate(() => window.localStorage.getItem('telefonoJuridica'));
             });
@@ -94,8 +96,6 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             });
 
             test('Buscar la cuenta de la Persona a Editar', async () => {
-                test.slow();
-                
                 // Buscar a la persona
                 await page.locator(`${formBuscar}`).fill(`${cedula}`);
             });
@@ -133,10 +133,24 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(page).toHaveURL(/\/edit/);
                 });
 
-                test('Agregar la informacion faltante del socio - Datos Generales', async () => {
+                test('Datos del Socio agregados anteriormente - Datos Generales', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
 
+                    // El nombre debe estar visible
+                    await expect(page.locator('#person_NOMBRES')).toHaveValue(`${nombre}`);
+
+                    // El apellido debe estar visible
+                    await expect(page.locator('#person_APELLIDOS')).toHaveValue(`${apellido}`);
+
+                    // La nacionalidad debe estar visible
+                    await expect(page.locator('#person').getByTitle('DOMINICANA')).toBeVisible();
+
+                    // El estado civil debe estar visible
+                    await expect(page.locator('#person').getByTitle('Soltero(a)')).toBeVisible();
+                });
+
+                test('Agregar la informacion faltante del socio - Datos Generales', async () => {
                     // Pasaporte
                     const campoPasaporte = page.locator('#person_NO_PASAPORTE');
                     await campoPasaporte.click();
@@ -173,6 +187,14 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
 
                     // Click en Actualizar y continuar
                     actualizarContinuar();
+                });
+
+                test('Datos del Socio agregados anteriormente - Informacion de Ingresos', async () => {
+                    // La Ocupacion debe estar visible
+                    await expect(page.locator('#person').getByTitle('AGRICULTOR')).toBeVisible();
+
+                    // El lugar de trabajo debe estar visible
+                    await expect(page.locator('#person_NOMBRE_EMPRESA')).toHaveValue(`${nombreEmpresa}`);
                 });
 
                 test('Agregar la informacion faltante del socio - Informacion de Ingresos', async () => {
@@ -212,11 +234,15 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     actualizarContinuar();
                 });
 
-                test('Agregar la informacion faltante del socio - Direcciones - Email - Redes Sociales', async () => {
+                test('Datos del Socio agregados anteriormente - Direcciones - Email - Redes Sociales', async () => {
                     // Los tres titulos deben estar visibles
                     await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
                     await expect(page.locator('h1').filter({hasText: 'TELÉFONOS'})).toBeVisible();
                     await expect(page.locator('h1').filter({hasText: 'EMAILS / REDES SOCIALES'})).toBeVisible();
+
+                    // La direccion debe estar visible
+                    const direccionRelacionado = page.getByRole('cell', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'});
+                    await expect(direccionRelacionado).toBeVisible();
 
                     // Click en Actualizar y continuar
                     actualizarContinuar();
@@ -248,6 +274,9 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             test.afterAll(async () => { // Despues de las pruebas
                 // Cerrar la page
                 await page.close();
+
+                // Cerrar el contex
+                await context.close();
             });
         });
     };
