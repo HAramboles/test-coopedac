@@ -15,7 +15,7 @@ let campoContraseña: Locator;
 
 // Pruebas
 
-test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
+test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -42,12 +42,6 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     });
 
     test('Eliminar la Cookie con la Sesion del Usuario', async () => {
-        /*
-            Funcionamiento: primero filtra las cookies que sean diferentes del nombre elegido de la cookie,
-            entonces se eliminan todas las cookies y agregan las cookies nuevamente pero con el filtro
-            aplicado.
-        */
-
         const cookies: Cookie[] = (await context.cookies()).filter((cookie) => {
             return cookie.name !== 'fibankingUsername';
         });
@@ -129,12 +123,6 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     });
 
     test('Eliminar Nuevamente la Cookie con la Sesion del Usuario', async () => {
-        /*
-            Funcionamiento: primero filtra las cookies que sean diferentes del nombre elegido de la cookie,
-            entonces se eliminan todas las cookies y agregan las cookies nuevamente pero con el filtro
-            aplicado.
-        */
-
         const cookies: Cookie[] = (await context.cookies()).filter((cookie) => {
             return cookie.name !== 'fibankingUsername';
         });
@@ -144,6 +132,9 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     });
 
     test('El Modal de Aviso de Expiracion de la Sesion debe mostrarse', async () => {
+        // Se debe estar en la pagina de inicio
+        await expect(page).toHaveURL(`${url_base}`);
+        
         // Recargar la pagina
         await page.reload();
 
