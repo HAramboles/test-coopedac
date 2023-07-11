@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { 
     numerosCedulas2, 
     numerosCedulas3, 
@@ -13,7 +13,10 @@ import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica 
 // Variables Globales
 let browser: Browser;
 let context: BrowserContext;
-let page: Page
+let page: Page;
+
+// Boton de Crear Persona
+let botonNuevaPersona: Locator;
 
 // Cedulas
 const cedulaPersonaJuridica = numerosCedulas2;
@@ -81,6 +84,9 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
         
                 // Navegar a la URL de la pagina
                 await page.goto(`${url_base}`);
+
+                // Boton de Crear Nueva Persona
+                botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -113,7 +119,6 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 // Test cuando el ID_OPERACION sea Vacio
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).not.toBeVisible();
 
                     // Skip al test
@@ -123,7 +128,6 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 // Test cuando el ID_OPERACION sea diferente de 3
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).not.toBeVisible();
 
                     // Skip al test
@@ -132,7 +136,6 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
             } else if (escenarios.ID_OPERACION === 3) {
                 test('Crear Persona Juridica', async () => {
                     // Boton de Nueva persona
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).toBeVisible();
                     await botonNuevaPersona.click();
             

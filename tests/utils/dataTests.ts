@@ -57,10 +57,34 @@ interface CrearCuentas {
     ID_OPERACION: '' | 10 | 30
 }
 
+const EscenariosPruebaCrearCuentas: CrearCuentas[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 10
+    }, 
+    {
+        ID_OPERACION: 30
+    }
+];
+
 // Interfaz para Editar Cuentas
 interface EditarCuentas {
     ID_OPERACION: '' | 10 | 31
 }
+
+const EscenariosPruebaEditarCuentas: EditarCuentas[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 10
+    },
+    {
+        ID_OPERACION: 31
+    }
+];
 
 // Interfaz para Agregar Cargos a Prestamos Desembolsados
 interface AgregarCargos {
@@ -78,11 +102,10 @@ export {
     ariaCerrar,
     formBuscar,
     selectBuscar,
-    CrearCuentas,
-    EditarCuentas,
     AgregarCargos,
-
     EscenariosPruebaCrearPersonas,
-    EscenariosPruebaEditarPersonas
+    EscenariosPruebaEditarPersonas,
+    EscenariosPruebaCrearCuentas,
+    EscenariosPruebaEditarCuentas
 };
 

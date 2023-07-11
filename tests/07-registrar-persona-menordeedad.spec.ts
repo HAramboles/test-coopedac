@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
 import { formatDate } from './utils/utils';
 import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
@@ -8,6 +8,9 @@ import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './00-nombresya
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
+
+// Boton de Crear Persona
+let botonNuevaPersona: Locator;
 
 // Cedula, nombre y apellido de la persona almacenada en el state
 let cedulaMadre: string | null;
@@ -65,7 +68,10 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                 // Navegar a la URL de la pagina
                 await page.goto(`${url_base}`);
 
-                // Cedula, nombre y apellio de la madre
+                // Boton de Crear Nueva Persona
+                botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
+
+                // Cedula, nombre y apellido de la madre
                 cedulaMadre = await page.evaluate(() => window.localStorage.getItem('cedula'));
                 nombreMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellidoMadre = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
@@ -101,7 +107,6 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                 // Test cuando el ID_OPERACION sea Vacio
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).not.toBeVisible();
 
                     // Skip al test
@@ -111,7 +116,6 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                 // Test cuando el ID_OPERACION sea diferente de 3
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).not.toBeVisible();
 
                     // Skip al test
@@ -120,7 +124,6 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             } else if (escenarios.ID_OPERACION === 3) {
                 test('Crear Persona Fisica - Menor de Edad', async () => {
                     // Boton Nueva Persona
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).toBeVisible();
                     await botonNuevaPersona.click();
             

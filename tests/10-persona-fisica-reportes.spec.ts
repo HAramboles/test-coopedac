@@ -1,10 +1,13 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, EscenariosPruebaEditarPersonas, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
+
+// Boton de Editar
+let botonEditarCuenta: Locator;
 
 // Cedula, nombre, apellido de la persona
 let cedula: string | null;
@@ -13,7 +16,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaEditarPersonas) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
@@ -53,6 +56,9 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
 
+                // Boton de Editar Cuenta
+                botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
+
                 // Cedula, nombre y apellido de la persona
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
@@ -90,7 +96,6 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 // Test cuando el ID_OPERACION sea Vacio
                 test('El boton de Editar no debe estar visible', async () => {
                     // Click al boton de editar cuenta
-                    const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
 
                     // Skip al test
@@ -100,7 +105,6 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 // Test cuando el ID_OPERACION sea diferente de 4
                 test('El boton de Editar no debe estar visible', async () => {
                     // Click al boton de editar cuenta
-                    const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
 
                     // Skip al test
@@ -112,7 +116,6 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                     test.slow();
                     
                     // Click al boton de editar cuenta
-                    const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();
 
@@ -195,7 +198,7 @@ test.describe('Imprimir los Reportes de Admision y de Conozca a su Socio - Prueb
                 // Cerrar la page
                 await page.close();
 
-                // Cerrar el contex
+                // Cerrar el context
                 await context.close();
             });
         });

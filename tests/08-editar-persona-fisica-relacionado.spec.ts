@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosPasaporte } from './utils/cedulasypasaporte';
 import { url_base, EscenariosPruebaEditarPersonas, formBuscar } from './utils/dataTests';
 
@@ -6,6 +6,9 @@ import { url_base, EscenariosPruebaEditarPersonas, formBuscar } from './utils/da
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
+
+// Boton de Editar
+let botonEditarCuenta: Locator;
 
 // Celular de la persona
 const pasaporte = numerosPasaporte;
@@ -62,6 +65,9 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
 
+                // Boton de Editar Cuenta
+                botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
+
                 // Cedula, nombre y apellido de la persona
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
@@ -105,7 +111,6 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 // Test cuando el ID_OPERACION sea Vacio
                 test('El boton de Editar no debe esatr visible', async () => {
                     // Click al boton de editar cuenta
-                    const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
 
                     // Skip al test
@@ -115,7 +120,6 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 // Test cuando el ID_OPERACION sea diferente de 4
                 test('El boton de Editar no debe esatr visible', async () => {
                     // Click al boton de editar cuenta
-                    const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).not.toBeVisible();
 
                     // Skip al test
@@ -125,7 +129,6 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 // Tests cuando el ID_OPERACION sea igual a 4
                 test('Editar la Cuenta del Socio', async () => {
                     // Click al boton de editar cuenta
-                    const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();
 
@@ -275,7 +278,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 // Cerrar la page
                 await page.close();
 
-                // Cerrar el contex
+                // Cerrar el context
                 await context.close();
             });
         });

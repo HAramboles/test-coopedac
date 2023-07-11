@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { 
     numerosCedulas5, 
     numerosCedulas6,
@@ -18,6 +18,9 @@ import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dat
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
+
+// Boton de Crear Persona
+let botonNuevaPersona: Locator;
 
 // Cedulas de las personas
 const cedulaPersonaCasada = numerosCedulas5;
@@ -87,6 +90,9 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
         
                 /* Ingresar a la pagina */
                 await page.goto(`${url_base}`);
+
+                // Boton de Crear Nueva Persona
+                botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -119,7 +125,6 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                 // Test cuando el ID_OPERACION sea Vacio
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).not.toBeVisible();
 
                     // Skip al test
@@ -129,7 +134,6 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                 // Test cuando el ID_OPERACION sea diferente de 3
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).not.toBeVisible();
 
                     // Skip al test
@@ -139,7 +143,6 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                 // Tests cuando el ID_OPERACION sea 3
                 test('Hacer click al boton de nueva persona', async () => {
                     // Boton Nueva persona
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).toBeVisible();
                     await botonNuevaPersona.click();
             

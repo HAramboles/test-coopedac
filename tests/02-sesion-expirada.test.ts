@@ -155,10 +155,10 @@ test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', () =>
     });
 
     test.afterAll(async () => { // Despues de las pruebas
-        // Cerrar el context
-        await context.close();
-
         // Cerrar la page
         await page.close();
+
+        // Cerrar el context
+        await context.close();
     });
 });

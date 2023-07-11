@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
 import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './00-nombresyapellidos-personas';
@@ -7,6 +7,9 @@ import { nombrePersonaFisica, apellidoPersonaFisica } from './00-nombresyapellid
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
+
+// Boton de Crear Persona
+let botonNuevaPersona: Locator;
 
 // Cedula, pasaporte, nombre, apellidos, correo y celular de la persona
 const cedula = numerosCedulas;
@@ -62,6 +65,9 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
         
                 /* Ingresar a la pagina */
                 await page.goto(`${url_base}`);
+
+                // Boton de Crear Nueva Persona
+                botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -94,7 +100,6 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                 // Test cuando el ID_OPERACION sea Vacio
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).not.toBeVisible();
 
                     // Skip al test
@@ -104,7 +109,6 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                 // Test cuando el ID_OPERACION sea diferente de 3
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).not.toBeVisible();
 
                     // Skip al test
@@ -114,7 +118,6 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                 // Tests cuando el ID_OPERACION sea 3
                 test('Hacer click al boton de nueva persona', async () => {
                     // Boton Nueva persona
-                    const botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
                     await expect(botonNuevaPersona).toBeVisible();
                     await botonNuevaPersona.click();
             
@@ -765,7 +768,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
         
             test.afterAll(async () => { /* Despues de que se realizen todas las pruebas */
                 // Guardar la cedula de la persona creada
-                await page.evaluate((cedula) => window.localStorage.setItem('cedula', cedula), cedula);
+                await page.evaluate((cedula) => window.localStorage.setItem('cedulaPersona', cedula), cedula);
                 // Guardar el nombre y el apellido de la persona creada
                 await page.evaluate((nombrePersona) => window.localStorage.setItem('nombrePersona', nombrePersona), nombrePersona);
                 await page.evaluate((apellidoPersona) => window.localStorage.setItem('apellidoPersona', apellidoPersona), apellidoPersona);
