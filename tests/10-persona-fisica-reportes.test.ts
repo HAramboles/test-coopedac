@@ -66,8 +66,6 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
             });
         
             test('Ir a la opcion de Registro de Persona', async () => {
-                test.slow();
-                
                 // Socios
                 await page.getByRole('menuitem', {name: 'SOCIOS'}).click();
         
@@ -81,9 +79,7 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                 await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
             });
         
-            test('Buscar la cuenta del socio', async () => {   
-                test.slow();
-
+            test('Buscar la cuenta del socio', async () => { 
                 // El titulo principal de la pagina debe esatr visible
                 await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
 
@@ -113,8 +109,6 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
             } else if (escenarios.ID_OPERACION === 4) {
                 // Tests cuando el ID_OPERACION sea igual a 4
                 test('Ir a la opcion de Editar Persona', async () => {
-                    test.slow();
-                    
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();

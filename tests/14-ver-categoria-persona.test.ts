@@ -12,7 +12,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe.serial('Pruebas con la Categoria del Socio', () => {
+test.describe.serial('Pruebas con la Categoria del Socio', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({

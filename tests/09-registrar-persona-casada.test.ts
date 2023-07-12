@@ -733,7 +733,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                         await botonFinalizar.click()
                     ]);
                   
-                    // Cerrar las paginas con los reportes
+                    // Cerrar las dos ventanas con los reportes
                     await newPage.close();
                     await newPage2.close();
                 });

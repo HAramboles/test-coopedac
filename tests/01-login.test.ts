@@ -17,7 +17,7 @@ const pass:string = 'abc';
 
 /* Pruebas */
 
-test.describe.serial('Pruebas con el Login de Coopedac', () => {
+test.describe.serial('Pruebas con el Login de Coopedac', async () => {
     test.beforeAll(async () => { /* Antes de las pruebas */
         /* Crear el browser, en este caso el chromiun */
         browser = await chromium.launch({

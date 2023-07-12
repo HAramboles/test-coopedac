@@ -588,7 +588,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                         await botonFinalizar.click()
                     ]);
                   
-                    // Cerrar las paginas con los reportes
+                    // Cerrar las dos ventanas con los reportes
                     await newPage.close();
                     await newPage2.close();
                 });

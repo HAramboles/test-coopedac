@@ -268,7 +268,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                         await botonFinalizar.click()
                     ]);
                   
-                    // Cerrar las paginas con los reportes
+                    // Cerrar las dos ventanas con los reportes
                     await newPage.close();
                     await newPage2.close();
                 });

@@ -448,7 +448,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                         await botonFinalizar.click()
                     ]);
                   
-                    // Cerrar las paginas con los reportes
+                    // Cerrar las dos ventanas con los reportes
                     await newPage.close();
                     await newPage2.close();
                 });

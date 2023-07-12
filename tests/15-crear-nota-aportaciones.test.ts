@@ -16,7 +16,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe.serial('Pruebas agregando y completando notas', () => {
+test.describe.serial('Pruebas agregando y completando notas', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({

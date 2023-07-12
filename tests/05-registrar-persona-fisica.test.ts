@@ -751,8 +751,8 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                         await expect(botonFinalizarModal).toBeVisible(),
                         await botonFinalizarModal.click()
                     ]);
-                  
-                    // Cerrar las paginas con los reportes
+
+                    // Cerrar las dos ventanas con los reportes
                     await newPage.close();
                     await newPage2.close();
                 });
