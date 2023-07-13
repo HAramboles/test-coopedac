@@ -9,9 +9,6 @@ let page: Page;
 // Boton de Editar
 let botonEditarCuenta: Locator;
 
-// Imagen de la Firma
-const firma = './tests/firma.jpg' // Con este path la imagen de la firma debe estar en la carpeta tests
-
 // Cedula, nombre y apellido de la persona
 let cedula: string | null;
 let nombre: string | null;
@@ -250,7 +247,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await expect(botonFinalizar).toBeVisible();
                     await botonFinalizar.click();
             
-                    // Debe regresar a la pagina de inicio de las Cuentas de Ahorros
+                    // Debe regresar a la pagina de inicio de las Cuentas de Aportaciones Preferentes
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
                 });
             };

@@ -86,6 +86,23 @@ const EscenariosPruebaEditarCuentas: EditarCuentas[] = [
     }
 ];
 
+// Interfaz para Activar e Inactivar Cuentas
+interface ActivarInactivarCuentas {
+    ID_OPERACION: '' | 15 | 23
+};
+
+const EscenariosPruebasActivarInactivarCuentas: ActivarInactivarCuentas[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 15
+    },
+    {
+        ID_OPERACION: 23
+    }
+];
+
 // Interfaz para Agregar Cargos a Prestamos Desembolsados
 interface AgregarCargos {
     ID_OPERACION: '' | 10 | 32
@@ -106,6 +123,7 @@ export {
     EscenariosPruebaCrearPersonas,
     EscenariosPruebaEditarPersonas,
     EscenariosPruebaCrearCuentas,
-    EscenariosPruebaEditarCuentas
+    EscenariosPruebaEditarCuentas,
+    EscenariosPruebasActivarInactivarCuentas
 };
 
