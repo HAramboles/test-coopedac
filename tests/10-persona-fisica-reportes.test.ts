@@ -60,7 +60,7 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                 botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
 
                 // Cedula, nombre y apellido de la persona
-                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });

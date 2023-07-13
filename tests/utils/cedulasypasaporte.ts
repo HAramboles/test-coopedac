@@ -1,7 +1,7 @@
 // Funciones para los test de Registro de Personas
 
 // Funcion para generar numeros de aleatorios para las cedulas
-const generarCedulas = () => { 
+const generarCedulasyPasaporte = () => { 
     const aleatorios:number[] = []; // Iniciar con un array vacio
     // Generar 11 numeros
     for (let i = 0; i < 11; i++) { 
@@ -12,18 +12,6 @@ const generarCedulas = () => {
         aleatorios[i] = random; // Cada elemento del array va a ser un numero random 
     };
     return (aleatorios.join('')); // Retornar la lista / .join('') para unir los elementos, se eliminan las comas
-};
-
-// Funcion para generar 11 numeros aleatorios para el pasaporte 
-const generarNumerosPasaporte = () => { 
-    const aleatorios:number[] = []; 
-    for (let i = 0; i < 11; i++) { 
-        let random = Math.random(); 
-        random = random * 9 + 1;  
-        random = Math.trunc(random); 
-        aleatorios[i] = random;  
-    };
-    return (aleatorios.join('')); 
 };
 
 // Funcion para generar un par de letras aleatorias para el pasaporte
@@ -77,15 +65,15 @@ const generarNumerosCelularTelefono = () => {
 
 // Exportar las funciones como constantes
 
-const numerosCedulas = generarCedulas(); // Cedula para la persona fisica
-const numerosCedulas2 = generarCedulas(); // Cedula para la persona juridica
-const numerosCedulas3 = generarCedulas(); // Cedula para el relacionado de la persona juridica
-const numerosCedulas4 = generarCedulas(); // Cedula para el menor de edad
-const numerosCedulas5 = generarCedulas(); // Cedula para persona casada
-const numerosCedulas6 = generarCedulas(); // Cedula para el conyuge de la persona casada
+const numerosCedulas = generarCedulasyPasaporte(); // Cedula para la persona fisica
+const numerosCedulas2 = generarCedulasyPasaporte(); // Cedula para la persona juridica
+const numerosCedulas3 = generarCedulasyPasaporte(); // Cedula para el relacionado de la persona juridica
+const numerosCedulas4 = generarCedulasyPasaporte(); // Cedula para el menor de edad
+const numerosCedulas5 = generarCedulasyPasaporte(); // Cedula para persona casada
+const numerosCedulas6 = generarCedulasyPasaporte(); // Cedula para el conyuge de la persona casada
 
-const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para la persona fisica
-const numerosPasaporte2 = (generarLetrasPasaporte() + generarNumerosPasaporte()); // Pasaporte para la persona fisica casada
+const numerosPasaporte = (generarLetrasPasaporte() + generarCedulasyPasaporte()); // Pasaporte para la persona fisica
+const numerosPasaporte2 = (generarLetrasPasaporte() + generarCedulasyPasaporte()); // Pasaporte para la persona fisica casada
 
 const numerosRegistroMercantil = generarRegistroMercantil(); // Registro Mercantil de la persona juridica
 

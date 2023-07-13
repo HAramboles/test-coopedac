@@ -80,7 +80,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
         // Elegir la Categoria Solicitada
         await page.locator('#form_ID_CATEGORIA_SOCIO').click();
         // Elegir Socio Micro Empresarial
-        await page.getByTitle('SOCIO EMPRESARIAL').click();
+        await page.getByTitle('SOCIO MICROEMPRESARIAL').click();
 
         // Monto Admision
         const montoAdmision = page.locator('#form_MONTO_ADMISION');

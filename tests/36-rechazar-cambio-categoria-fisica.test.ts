@@ -49,7 +49,7 @@ test.describe.serial('Pruebas con el Rechazo de Cambio de Categoria de la Person
         await expect(page).toHaveURL(`${url_base}/aceptar_rechazar_cambio_categoria/01-2-3-3/`);
     });
 
-    test('Confirmar Cambio Categoria', async () => {
+    test('Cancelar Cambio Categoria', async () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'AUTORIZACIÓN CAMBIO CATEGORÍA'})).toBeVisible();
 

@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, EscenariosPruebaEditarCuentas, formBuscar, selectBuscar } from './utils/dataTests';
+import { url_base, EscenariosPruebaEditarCuentas, formBuscar, selectBuscar, ariaCerrar } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -188,9 +188,6 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                 });
             
                 test('Editar Cuenta de Ahorros - Datos Generales', async () => {
-                    // Recargar la pagina
-                    await page.reload();
-                    
                     // Buscar al socio a editar
                     await page.locator(`${formBuscar}`).fill(`${cedula}`);
             
@@ -237,6 +234,9 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                 test('Editar una Cuenta de Ahorros - Contacto de Firmante o Persona', async () => {
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=2/);
+
+                    // Cerrar uno de los mensajes que se muestran
+                    await page.locator(`${ariaCerrar}`).first().click();
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();

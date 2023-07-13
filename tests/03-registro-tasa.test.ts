@@ -50,9 +50,6 @@ const testScenaries: ActivityParameters[] = [
     },
 ];
 
-// Annotate entire file as serial.
-test.describe.configure({mode: 'parallel'});
-
 // Pruebas
 
 test.describe('Pruebas con el Registro de Tasa', async () => {

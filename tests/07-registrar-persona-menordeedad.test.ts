@@ -72,7 +72,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                 botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
 
                 // Cedula, nombre y apellido de la madre
-                cedulaMadre = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                cedulaMadre = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombreMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellidoMadre = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
@@ -87,13 +87,13 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             
             test('Ir a la opcion de Registrar Persona', async () => {
                 // Boton de Socios
-                await page.locator('text=SOCIOS').click();
+                await page.getByRole('menuitem', {name: 'SOCIOS'}).click();
         
                 // Boton de Operaciones
-                await page.locator('text=OPERACIONES').click();
+                await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
         
                 // Boton de Registrar Persona
-                await page.locator('text=Registrar persona').click();
+                await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
         
                 // La url debe de cambiar
                 await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);

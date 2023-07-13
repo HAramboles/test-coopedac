@@ -24,7 +24,7 @@ let apellidoFirmante: string | null;
 
 // Pruebas
 
-test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaCrearCuentas) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
@@ -113,16 +113,16 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                 // Click al boton
                 await botonCaptaciones.click();
 
-                // Click a la opcion de Ahorros Normales
-                const opcionAhorrosNormales = page.locator('text=AHORROS NORMALES');
-                await expect(opcionAhorrosNormales).toBeVisible();
-                await opcionAhorrosNormales.click();
+                // Click a la opcion de Orden de Pago
+                const opcionOrdenPago = page.locator('text=ORDEN DE PAGO');
+                await expect(opcionOrdenPago).toBeVisible();
+                await opcionOrdenPago.click();
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17`);
 
                 // El tipo de captacion de ahorros normales debe estar visible
-                await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
+                await expect(page.locator('#form').getByTitle('ORDEN DE PAGO')).toBeVisible();
             });
 
             if (escenario.ID_OPERACION === '') {
@@ -163,7 +163,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19/create?step=1`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17/create?step=1`);
             
                     // El titulo de Registrar Cuenta debe estar visible
                     await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
@@ -179,7 +179,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     await page.locator(`text=${cedula}`).click();
             
                     // El tipo de captacion debe ser Ahorros
-                    await expect(page.locator('text=AHORROS POR NOMINA').first()).toBeVisible();
+                    await expect(page.locator('text=ORDEN DE PAGO').first()).toBeVisible();
             
                     // Subir la imagen de la firma
                     const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
@@ -191,15 +191,24 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     Continuar();
                 });
             
-                test('Contacto de Firmante o Persona', async () => {            
+                test('Contacto de Firmante o Persona', async () => {              
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19/create?step=2`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17/create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
             
                     // Cerrar uno de los mensajes que aparecen
                     await page.locator(`${ariaCerrar}`).first().click();
+
+                    // El titular debe estar en la tabla de los firmantes
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+                    // Se debe mostrar la firma del titular por defecto
+                    await expect(page.locator('text=TITULAR')).toBeVisible();
+            
+                    // El tipo de firma requerida debe estar visible
+                    await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();
             
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
@@ -275,7 +284,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
             
                 test('Metodo de intereses', async () => {
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19/create?step=3`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17/create?step=3`);
                     
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
@@ -302,7 +311,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     await newPage.close();
                     
                     // Debe de regresar a la pagina las cuentas de ahorros
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17`);
             
                     // El titulo de Ahorros debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
@@ -319,3 +328,4 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
         });
     };
 });
+

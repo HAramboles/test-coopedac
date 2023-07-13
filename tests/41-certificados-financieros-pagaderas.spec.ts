@@ -94,7 +94,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                 await page.getByRole('menuitem', {name: 'APERTURA DE CUENTAS'}).click();
         
                 // Boton de Certificados
-                await page.getByRole('menuitem', {name: 'Certificados'}).click();
+                await page.getByRole('menuitem', {name: 'Certificados', exact: true}).click();
         
                 // La url debe de cambiar
                 await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados`);
@@ -286,6 +286,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
             
                     // Cerrar los mensajes que aparecen
                     await page.locator(`${ariaCerrar}`).first().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
             
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');

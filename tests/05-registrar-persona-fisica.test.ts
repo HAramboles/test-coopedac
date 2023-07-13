@@ -740,8 +740,8 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await expect(page.getByText('¿Desea finalizar el registro sin agregar relacionados?')).toBeVisible();
                     
                     // Botones del modal
-                    await expect(page.getByRole('dialog').getByRole('button', { name: 'Cancelar' })).toBeVisible();
-                    const botonFinalizarModal = page.getByRole('dialog').getByRole('button', { name: 'check Finalizar' });
+                    await expect(page.getByRole('dialog').getByRole('button', {name: 'Cancelar'})).toBeVisible();
+                    const botonFinalizarModal = page.getByRole('dialog').getByRole('button', {name: 'check Finalizar'});
 
                     // Esperar que se abran dos pestañas con los diferentes reportes
                     const [newPage, newPage2] = await Promise.all([
