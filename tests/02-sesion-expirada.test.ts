@@ -15,7 +15,7 @@ let campoContraseña: Locator;
 
 // Pruebas
 
-test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
+test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -42,12 +42,6 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     });
 
     test('Eliminar la Cookie con la Sesion del Usuario', async () => {
-        /*
-            Funcionamiento: primero filtra las cookies que sean diferentes del nombre elegido de la cookie,
-            entonces se eliminan todas las cookies y agregan las cookies nuevamente pero con el filtro
-            aplicado.
-        */
-
         const cookies: Cookie[] = (await context.cookies()).filter((cookie) => {
             return cookie.name !== 'fibankingUsername';
         });
@@ -79,10 +73,10 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
         await botonAceptar.click();
 
         // Deberia salir un modal de error
-        await expect(page.getByText('Error', {exact: true})).toBeVisible();
+        await expect(page.getByText('Error', {exact: true}).first()).toBeVisible();
 
         // Mensaje del modal
-        await expect(page.getByText('Ocurrió un error al iniciar sesión, por favor verifique sus datos.')).toBeVisible();
+        await expect(page.getByText('Ocurrió un error al iniciar sesión, por favor verifique sus datos.').first()).toBeVisible();
 
         // Click al boton de Aceptar del modal de error
         await page.getByRole('dialog').filter({hasText: 'ErrorOcurrió un error al iniciar sesión, por favor verifique sus datos.Aceptar'}).getByRole('button', {name: 'Aceptar'}).click();
@@ -105,7 +99,7 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
         await page.getByRole('dialog').filter({hasText: 'Confirmar¿Está seguro que desea perder la sesión?CancelarAceptar'}).getByRole('button', {name: 'check Aceptar'}).click();
 
         // Debe mostrarse otro modal de confirmacion
-        await expect(page.locator('text=¿Seguro que deseas cerrar sesión?')).toBeVisible();
+        await expect(page.locator('text=¿Está seguro que desea perder la sesión?')).toBeVisible();
 
         // Click al boton de Aceptar del nuevo modal de confirmacion
         await page.getByRole('dialog').filter({hasText: 'Cerrar sesión¿Seguro que deseas cerrar sesión?CancelarAceptar'}).getByRole('button', {name: 'check Aceptar'}).click();
@@ -129,12 +123,6 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     });
 
     test('Eliminar Nuevamente la Cookie con la Sesion del Usuario', async () => {
-        /*
-            Funcionamiento: primero filtra las cookies que sean diferentes del nombre elegido de la cookie,
-            entonces se eliminan todas las cookies y agregan las cookies nuevamente pero con el filtro
-            aplicado.
-        */
-
         const cookies: Cookie[] = (await context.cookies()).filter((cookie) => {
             return cookie.name !== 'fibankingUsername';
         });
@@ -144,6 +132,9 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     });
 
     test('El Modal de Aviso de Expiracion de la Sesion debe mostrarse', async () => {
+        // Se debe estar en la pagina de inicio
+        await expect(page).toHaveURL(`${url_base}`);
+        
         // Recargar la pagina
         await page.reload();
 
@@ -164,10 +155,10 @@ test.describe('Pruebas con la Expiracion de la Sesion del Usuario', () => {
     });
 
     test.afterAll(async () => { // Despues de las pruebas
-        // Cerrar el context
-        await context.close();
-
         // Cerrar la page
         await page.close();
+
+        // Cerrar el context
+        await context.close();
     });
 });

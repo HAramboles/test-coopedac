@@ -57,10 +57,65 @@ interface CrearCuentas {
     ID_OPERACION: '' | 10 | 30
 }
 
+const EscenariosPruebaCrearCuentas: CrearCuentas[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 10
+    }, 
+    {
+        ID_OPERACION: 30
+    }
+];
+
 // Interfaz para Editar Cuentas
 interface EditarCuentas {
     ID_OPERACION: '' | 10 | 31
 }
+
+const EscenariosPruebaEditarCuentas: EditarCuentas[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 10
+    },
+    {
+        ID_OPERACION: 31
+    }
+];
+
+// Interfaz para Activar e Inactivar Cuentas
+interface ActivarInactivarCuentas {
+    ID_OPERACION: '' | 15 | 23
+};
+
+const EscenariosPruebasActivarInactivarCuentas: ActivarInactivarCuentas[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 15
+    },
+    {
+        ID_OPERACION: 23
+    }
+];
+
+// Interfaz para cuando la Caja sea Boveda o Caja, si es boveda no debe poder transacciones de ningun tipo
+interface CajaBoveda {
+    ES_BOVEDA: '1' | '0'
+};
+
+const EscenariosPruebasCajaBoveda: CajaBoveda[] = [
+    {
+        ES_BOVEDA: '1' // Permite hacer transacciones
+    }, 
+    {
+        ES_BOVEDA: '0' // No permite hacer transacciones
+    }
+];
 
 // Interfaz para Agregar Cargos a Prestamos Desembolsados
 interface AgregarCargos {
@@ -78,11 +133,12 @@ export {
     ariaCerrar,
     formBuscar,
     selectBuscar,
-    CrearCuentas,
-    EditarCuentas,
     AgregarCargos,
-
     EscenariosPruebaCrearPersonas,
-    EscenariosPruebaEditarPersonas
+    EscenariosPruebaEditarPersonas,
+    EscenariosPruebaCrearCuentas,
+    EscenariosPruebaEditarCuentas,
+    EscenariosPruebasActivarInactivarCuentas,
+    EscenariosPruebasCajaBoveda
 };
 

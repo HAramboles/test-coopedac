@@ -50,9 +50,6 @@ const testScenaries: ActivityParameters[] = [
     },
 ];
 
-// Annotate entire file as serial.
-test.describe.configure({mode: 'parallel'});
-
 // Pruebas
 
 test.describe('Pruebas con el Registro de Tasa', async () => {
@@ -147,19 +144,42 @@ test.describe('Pruebas con el Registro de Tasa', async () => {
                     // Click en guardar tasa
                     await page.locator('[data-icon="save"]').click();
 
+                    // Debe aparecer un mensaje preguntando si se guardara la tasa o no
+                    const mensajeConfirmacion = page.locator('text=¿Deseas guardar la operación?');
+                    await expect(mensajeConfirmacion).toBeVisible();
+
+                    // Boton de Cancelar
+                    await expect(page.getByRole('button', {name: 'Cancelar'})).toBeVisible();
+
                     // Click button:has-text("Aceptar")
                     await page.locator('button:has-text("Aceptar")').click();
 
-                    // Mensajes que se mostraran si se registro la tasa correctamente o no
-                    const mensajeExito = page.locator('text=Moneda historial almacenado exitosamente.');
-                    const mensajeError = page.locator('text=Ya existe un registro con esta moneda');
+                    // El mensaje de confirmacion no debe estar visible
+                    await expect(mensajeConfirmacion).not.toBeVisible();
 
-                    if (await mensajeExito.isVisible()) { // Si no hay una tasa registrada y se registro correctamente la tasa
-                        // Cerrar el mensaje
+                    // Alertas que se mostraran si se registro la tasa correctamente o no
+                    const AlertaExito = page.locator('text=Operación Exitosa');
+                    const AlertaError = page.locator('text=Error');
+
+                    if (await AlertaExito.isVisible()) { // Si no hay una tasa registrada y se registro correctamente la tasa
+                        // Contenido de la alerta
+                        await expect(page.locator('text=Moneda historial almacenado exitosamente.')).toBeVisible();
+                        
+                        // Cerrar la alerta
                         await page.locator(`${ariaCerrar}`).click();
-                    } else if (await mensajeError.isVisible()) { // Si ya hay una tasa registrada y no se registro la tasa
-                        // Cerrar el mensaje
+
+                        // La alerta no debe estar visible
+                        await expect(AlertaExito).not.toBeVisible();
+
+                    } else if (await AlertaError.isVisible()) { // Si ya hay una tasa registrada y no se registro la tasa
+                        // Contenido de la alerta
+                        await expect(page.locator('text=Ya existe un registro con esta moneda')).toBeVisible();
+
+                        // Cerrar la alerta
                         await page.locator(`${ariaCerrar}`).click();
+
+                        // La alerta no debe estar visible
+                        await expect(AlertaError).not.toBeVisible();
                     };
 
                     // La moneda agregada debe estar en la table de monedas

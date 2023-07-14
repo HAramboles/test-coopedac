@@ -1,5 +1,5 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, CrearCuentas, selectBuscar } from './utils/dataTests';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
+import { url_base, EscenariosPruebaCrearCuentas, selectBuscar } from './utils/dataTests';
 import { formatDate } from './utils/utils'; './utils/utils';
 
 // Variables globales
@@ -7,28 +7,18 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
+// Boton de Crear Cuenta
+let botonNuevaCuenta: Locator;
+
 // Cedula, nombre, apellido de la persona
 let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
-// Parametros de relation
-const EscenariosPrueba: CrearCuentas[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 10
-    },
-    {
-        ID_OPERACION: 30
-    }
-];
-
 // Pruebas
 
-test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes parametros', async () => {
-    for (const escenario of EscenariosPrueba) {
+test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes parametros', async () => {
+    for (const escenario of EscenariosPruebaCrearCuentas) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser, con la propiedad headless
@@ -67,8 +57,11 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                 // Ingresar a la url de la pagina
                 await page.goto(`${url_base}`);
 
+                // Boton de Crear Nueva Cuenta
+                botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
+
                 // Cedula, nombre y apellido de la persona almacenada en el state
-                cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
@@ -81,75 +74,44 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
               await botonContinuar.click();
             };
         
-            test('Ir a Apertura de cuenta de aportaciones', async () => {
-                test.slow();
-                
+            test('Ir a Apertura de Cuenta de Aportaciones', async () => {
                 // Captaciones
-                await page.locator('text=CAPTACIONES').click();
+                await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
         
                 // Apertura de cuentas
-                await page.locator('text=APERTURA DE CUENTAS').click();
+                await page.getByRole('menuitem', {name: 'APERTURA DE CUENTAS'}).click();
         
                 // Captaciones
-                await page.locator('text=Aportaciones').first().click();
+                await page.getByRole('menuitem', {name: 'Aportaciones'}).first().click();
+
+                // La URL debe cambiar
+                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
         
                 // El titulo debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
-
-                // Condicion por si el tipo de captacion llega sin datos o con datos
-                const tipoCaptacion = page.getByTitle('APORTACIONES', {exact: true});
-        
-                if (await tipoCaptacion.isHidden()) {
-                    // Si no llega el tipo de captacion, manualmente dirigise a la url de las aportaciones
-                    await page.goto(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
-                } else if (await tipoCaptacion.isVisible()) {
-                    // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
-
-                    // El titulo debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
-                }
             });
 
-            if (escenario.ID_OPERACION === '') {
-                // Test si el ID_OPERACION es Vacio
-                test('No debe permitir Crear una Nueva Cuenta', async () => {
-                    // Boton de Nueva Cuenta
-                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
-                    await expect(botonNuevaCuenta).toBeVisible();
-                    await botonNuevaCuenta.click();
-
-                    // Debe salir un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenario.ID_OPERACION === 10) {
+            if (escenario.ID_OPERACION !== 30) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
-                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
                     await expect(botonNuevaCuenta).toBeVisible();
                     await botonNuevaCuenta.click();
 
                     // Debe salir un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
+                    const mensajeError = page.getByRole('dialog').getByText('No tiene permisos para crear cuentas');
+                    await expect(mensajeError).toBeVisible();
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
 
-                    // Skip al test
-                    test.skip();
+                    // El mensaje debe desaparecer
+                    await expect(mensajeError).not.toBeVisible();
                 });
             } else if (escenario.ID_OPERACION === 30) {
                 // Tests si el ID_OPERACION es 30
                 test('Click al boton de Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
-                    const botonNuevaCuenta = page.getByRole('button', {name: 'plus Nueva Cuenta'});
                     await expect(botonNuevaCuenta).toBeVisible();
                     await botonNuevaCuenta.click();
             
@@ -158,23 +120,23 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                 });
             
                 test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {            
-                    // El titulo de registrar cuenta deb estar visible
+                    // El titulo de registrar cuenta debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES'})).toBeVisible();
 
                     // Botones con los pasos del formulario
                     await expect(page.getByText('Datos Generales')).toBeVisible();
                     await expect(page.getByText('Firmantes y Contactos')).toBeVisible();
-                    await expect(page.getByText('Método de Interés')).toBeVisible();
+                    await expect(page.getByText('Método de Intereses')).toBeVisible();
 
                     // El tipo de captacion debe ser Aportaciones
                     await expect(page.locator('#APORTACIONES_ID_TIPO_CAPTACION').nth(1)).toBeVisible();
 
                     // Numero de cuenta
-                    await expect(page.locator('#APORTACIONES_ID_CUENTA')).toHaveValue('readonly');
+                    await expect(page.locator('#APORTACIONES_ID_CUENTA')).not.toBeEditable();
 
                     // Fecha de apertura, debe ser la fecha actual
                     const fechaApetura = page.locator('#APORTACIONES_FECHA_APERTURA');
-                    await expect(fechaApetura).toHaveValue('disabled');
+                    await expect(fechaApetura).toBeDisabled();
                     await expect(fechaApetura).toHaveValue(`${formatDate(new Date())}`);
             
                     // Ingresar el titular
@@ -245,6 +207,7 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
                 
                     // Debe de aparecer un modal
                     await expect(page.locator('text=¿Desea crear una cuenta de ahorro para este socio?')).toBeVisible();
+
                     // Click en Cancelar, ya que hay un test exclusivamente para la creacion de cuenta de ahorro
                     await page.getByRole('dialog').getByRole('button', {name: 'No'}).click();
             
@@ -256,6 +219,9 @@ test.describe('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes p
             test.afterAll(async () => { // Despues de todas las pruebas
                 // Cerrar la page
                 await page.close();
+
+                // Cerrar el context
+                await context.close();
             });
         });
     };

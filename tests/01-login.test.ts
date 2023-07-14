@@ -11,13 +11,13 @@ let usernameCampo: Locator;
 let passCampo: Locator;
 let botonLogin: Locator;
 
-/* Usuario y contraseña */
+// Usuario y contraseña erronea 
 const user:string = 'hector';
 const pass:string = 'abc';
 
 /* Pruebas */
 
-test.describe('Pruebas con el Login de Coopedac', () => {
+test.describe.serial('Pruebas con el Login de Coopedac', async () => {
     test.beforeAll(async () => { /* Antes de las pruebas */
         /* Crear el browser, en este caso el chromiun */
         browser = await chromium.launch({
@@ -159,6 +159,17 @@ test.describe('Pruebas con el Login de Coopedac', () => {
 
         // Debe de redirigir al usuario al inicio
         await expect(page).toHaveURL(`${url_base}`);
+    });
+
+    test('Menu de Navegacion de la pagina', async () => {
+        // Las opciones del menu de navegacion deben de estar visibles
+        await expect(page.getByRole('menuitem', {name: 'SOCIOS'})).toBeVisible();
+        await expect(page.getByRole('menuitem', {name: 'CAPTACIONES'})).toBeVisible();
+        await expect(page.getByRole('menuitem', {name: 'NEGOCIOS'})).toBeVisible();
+        await expect(page.getByRole('menuitem', {name: 'TESORERIA'})).toBeVisible();
+        await expect(page.getByRole('menuitem', {name: 'CONTABILIDAD'})).toBeVisible();
+        await expect(page.getByRole('menuitem', {name: 'CONFIGURACION'})).toBeVisible();
+        await expect(page.getByRole('menuitem', {name: 'REPORTES BIRT'})).toBeVisible();
     });
 
     test.afterAll(async () => { /* Despues de que se realizen todas las pruebas */
