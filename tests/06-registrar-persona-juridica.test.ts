@@ -99,13 +99,13 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
         
             test('Ir a la opcion de Registrar Persona', async () => {
                 // Boton de Socios
-                await page.locator('text=SOCIOS').click();
+                await page.getByRole('menuitem', {name: 'SOCIOS'}).click();
         
                 // Boton de Operaciones
-                await page.locator('text=OPERACIONES').click();
+                await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
         
                 // Boton de Registrar Persona
-                await page.locator('text=Registrar persona').click();
+                await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
         
                 // La url debe de cambiar
                 await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
@@ -115,23 +115,11 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
             });            
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
-            if (escenarios.ID_OPERACION === '') {
-                // Test cuando el ID_OPERACION sea Vacio
-                test('El boton de Nueva Persona no debe mostrarse', async () => {
-                    // El boton no debe estar visible
-                    await expect(botonNuevaPersona).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenarios.ID_OPERACION === 10) {
+            if (escenarios.ID_OPERACION !== 3) {
                 // Test cuando el ID_OPERACION sea diferente de 3
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
                     await expect(botonNuevaPersona).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
                 });
             } else if (escenarios.ID_OPERACION === 3) {
                 test('Crear Persona Juridica', async () => {
@@ -579,18 +567,16 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 test('Finalizar con el Registro de Persona Juridica', async () => {
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('#legalPerson').getByRole('button', {name: 'check Finalizar'});
-                    // Esperar que se abran dos pestañas con los diferentes reportes
-                    const [newPage, newPage2] = await Promise.all([
-                        context.waitForEvent('page'),
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonFinalizar).toBeVisible(),
-                        await botonFinalizar.click()
-                    ]);
+                    await expect(botonFinalizar).toBeVisible();
+                    await botonFinalizar.click();
+
+                    // Esperar que se abran dos nuevas pestañas con los reportes
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
                   
                     // Cerrar las dos ventanas con los reportes
-                    await newPage.close();
-                    await newPage2.close();
+                    await page1.close();
+                    await page2.close();
                 });
 
                 test('Debe regresar a la pagina de Registrar persona', async () => {

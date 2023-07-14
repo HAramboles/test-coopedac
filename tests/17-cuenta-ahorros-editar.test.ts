@@ -117,8 +117,8 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                 await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
             });
 
-            if (escenario.ID_OPERACION === '') {
-                // Test si el ID_OPERACION es Vacio
+            if (escenario.ID_OPERACION !== 31) {
+                // Test si el ID_OPERACION es diferente de 31
                 test('No debe permitir Editar la cuenta de ahorros', async () => {            
                     // Buscar al socio a editar
                     await page.locator(`${formBuscar}`).fill(`${cedula}`);
@@ -128,32 +128,14 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await botonEditarCuenta.click();
 
                     // Debe mostrarse un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para editar cuentas.')).toBeVisible();
+                    const mensajeError = page.getByRole('dialog').getByText('No tiene permisos para editar cuentas.')
+                    await expect(mensajeError).toBeVisible();
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
-            
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenario.ID_OPERACION === 10) {
-                // Test si el ID_OPERACION es diferente de 31
-                test('No debe permitir Editar la cuenta de ahorros', async () => {
-                    // Buscar al socio a editar
-                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
-            
-                    // Click al boton de editar cuenta
-                    await expect(botonEditarCuenta).toBeVisible();
-                    await botonEditarCuenta.click();
 
-                    // Debe mostrarse un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para editar cuentas.')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-            
-                    // Skip al test
-                    test.skip();
+                    // El mensaje debe desaparecer
+                    await expect(mensajeError).not.toBeVisible();
                 });
             } else if (escenario.ID_OPERACION === 31) {
                 // Tests si el ID_OPERACION es 31

@@ -107,23 +107,11 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             });
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
-            if (escenarios.ID_OPERACION === '') {
-                // Test cuando el ID_OPERACION sea Vacio
-                test('El boton de Editar no debe esatr visible', async () => {
-                    // Click al boton de editar cuenta
-                    await expect(botonEditarCuenta).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenarios.ID_OPERACION === 8) {
+            if (escenarios.ID_OPERACION !== 4) {
                 // Test cuando el ID_OPERACION sea diferente de 4
                 test('El boton de Editar no debe esatr visible', async () => {
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
                 });
             } else if (escenarios.ID_OPERACION === 4) {
                 // Tests cuando el ID_OPERACION sea igual a 4
@@ -259,18 +247,16 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 test('Finalizar con la Edicion de la Persona Fisica', async () => {
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
-                    // Esperar que se abran dos pestañas con los diferentes reportes
-                    const [newPage, newPage2] = await Promise.all([
-                        context.waitForEvent('page'),
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonFinalizar).toBeVisible(),
-                        await botonFinalizar.click()
-                    ]);
+                    await expect(botonFinalizar).toBeVisible();
+                    await botonFinalizar.click();
+
+                    // Esperar que se abran dos nuevas pestañas con los reportes
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
                   
                     // Cerrar las dos ventanas con los reportes
-                    await newPage.close();
-                    await newPage2.close();
+                    await page1.close();
+                    await page2.close();
                 });
             };
         

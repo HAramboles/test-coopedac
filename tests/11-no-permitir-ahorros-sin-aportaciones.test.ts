@@ -100,22 +100,7 @@ test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear
                 await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
             });
 
-            if (escenario.ID_OPERACION === '') {
-                // Test si el ID_OPERACION es Vacio
-                test('No debe permitir Crear una Nueva Cuenta', async () => {
-                    // Boton de Nueva Cuenta
-                    await expect(botonNuevaCuenta).toBeVisible();
-                    await botonNuevaCuenta.click();
-
-                    // Debe salir un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
-
-                    // Click en Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-                    // Skip al test
-                    test.skip();
-                });
-            }  else if (escenario.ID_OPERACION === 10) {
+            if (escenario.ID_OPERACION !== 30) {
                 // Test si el ID_OPERACION es diferente de 30
                 test('No debe permitir Crear una Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
@@ -123,14 +108,17 @@ test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear
                     await botonNuevaCuenta.click();
 
                     // Debe salir un mensaje
-                    await expect(page.getByRole('dialog').getByText('No tiene permisos para crear cuentas')).toBeVisible();
+                    const mensajeError = page.getByRole('dialog').getByText('No tiene permisos para crear cuentas');
+                    await expect(mensajeError).toBeVisible();
 
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
-                    // Skip al test
-                    test.skip();
+
+                    // El mensaje debe desaparecer
+                    await expect(mensajeError).not.toBeVisible();
                 });
-            } else if (escenario.ID_OPERACION === 30) {
+            }  else if (escenario.ID_OPERACION === 30) {
+                // Tests si el ID_OPERACION es igual a 30
                 test('Click al boton de Nueva Cuenta', async () => {
                     // Boton de Nueva Cuenta
                     await expect(botonNuevaCuenta).toBeVisible();

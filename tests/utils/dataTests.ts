@@ -103,6 +103,20 @@ const EscenariosPruebasActivarInactivarCuentas: ActivarInactivarCuentas[] = [
     }
 ];
 
+// Interfaz para cuando la Caja sea Boveda o Caja, si es boveda no debe poder transacciones de ningun tipo
+interface CajaBoveda {
+    ES_BOVEDA: '1' | '0'
+};
+
+const EscenariosPruebasCajaBoveda: CajaBoveda[] = [
+    {
+        ES_BOVEDA: '1' // Permite hacer transacciones
+    }, 
+    {
+        ES_BOVEDA: '0' // No permite hacer transacciones
+    }
+];
+
 // Interfaz para Agregar Cargos a Prestamos Desembolsados
 interface AgregarCargos {
     ID_OPERACION: '' | 10 | 32
@@ -124,6 +138,7 @@ export {
     EscenariosPruebaEditarPersonas,
     EscenariosPruebaCrearCuentas,
     EscenariosPruebaEditarCuentas,
-    EscenariosPruebasActivarInactivarCuentas
+    EscenariosPruebasActivarInactivarCuentas,
+    EscenariosPruebasCajaBoveda
 };
 

@@ -88,23 +88,11 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
             });
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
-            if (escenarios.ID_OPERACION == '') {
-                // Test cuando el ID_OPERACION sea Vacio
-                test('El boton de Editar no debe estar visible', async () => {
-                    // Click al boton de editar cuenta
-                    await expect(botonEditarCuenta).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenarios.ID_OPERACION === 8) {
+            if (escenarios.ID_OPERACION !== 4) {
                 // Test cuando el ID_OPERACION sea diferente de 4
                 test('El boton de Editar no debe estar visible', async () => {
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
                 });
             } else if (escenarios.ID_OPERACION === 4) {
                 // Tests cuando el ID_OPERACION sea igual a 4

@@ -96,23 +96,11 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
             });            
             
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
-            if (escenarios.ID_OPERACION === '') {
-                // Test cuando el ID_OPERACION sea Vacio
-                test('El boton de Nueva Persona no debe mostrarse', async () => {
-                    // El boton no debe estar visible
-                    await expect(botonNuevaPersona).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenarios.ID_OPERACION === 10) {
+            if (escenarios.ID_OPERACION !== 3) {
                 // Test cuando el ID_OPERACION sea diferente de 3
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
                     await expect(botonNuevaPersona).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
                 });
             } else if (escenarios.ID_OPERACION === 3) {
                 // Tests cuando el ID_OPERACION sea 3
@@ -743,18 +731,17 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await expect(page.getByRole('dialog').getByRole('button', {name: 'Cancelar'})).toBeVisible();
                     const botonFinalizarModal = page.getByRole('dialog').getByRole('button', {name: 'check Finalizar'});
 
-                    // Esperar que se abran dos pestañas con los diferentes reportes
-                    const [newPage, newPage2] = await Promise.all([
-                        context.waitForEvent('page'),
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonFinalizarModal).toBeVisible(),
-                        await botonFinalizarModal.click()
-                    ]);
+                    // Click al boton de Finalizar del modal
+                    await expect(botonFinalizarModal).toBeVisible();
+                    await botonFinalizarModal.click();
 
-                    // Cerrar las dos ventanas con los reportes
-                    await newPage.close();
-                    await newPage2.close();
+                    // Esperar que se abran dos nuevas pestañas con los reportes
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
+
+                    // Cerrar las dos paginas
+                    await page1.close();
+                    await page2.close();
                 });
 
                 test('Debe regresar a la pagina de Registrar persona', async () => {

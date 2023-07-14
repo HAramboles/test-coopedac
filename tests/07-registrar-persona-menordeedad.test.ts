@@ -103,23 +103,11 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             });
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
-            if (escenarios.ID_OPERACION === '') {
-                // Test cuando el ID_OPERACION sea Vacio
-                test('El boton de Nueva Persona no debe mostrarse', async () => {
-                    // El boton no debe estar visible
-                    await expect(botonNuevaPersona).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
-                });
-            } else if (escenarios.ID_OPERACION === 10) {
+            if (escenarios.ID_OPERACION !== 3) {
                 // Test cuando el ID_OPERACION sea diferente de 3
                 test('El boton de Nueva Persona no debe mostrarse', async () => {
                     // El boton no debe estar visible
                     await expect(botonNuevaPersona).not.toBeVisible();
-
-                    // Skip al test
-                    test.skip();
                 });
             } else if (escenarios.ID_OPERACION === 3) {
                 test('Crear Persona Fisica - Menor de Edad', async () => {
@@ -439,18 +427,16 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                 test('Finalizar con el Registro del Menor de Edad', async () => {
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
-                    // Esperar que se abran tres pestañas con los diferentes reportes
-                    const [newPage, newPage2] = await Promise.all([
-                        context.waitForEvent('page'),
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonFinalizar).toBeVisible(),
-                        await botonFinalizar.click()
-                    ]);
+                    await expect(botonFinalizar).toBeVisible();
+                    await botonFinalizar.click();
+
+                    // Esperar que se abran dos nuevas pestañas con los reportes
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
                   
                     // Cerrar las dos ventanas con los reportes
-                    await newPage.close();
-                    await newPage2.close();
+                    await page1.close();
+                    await page2.close();
                 });
 
                 test('Debe regresar a la pagina de Registrar persona', async () => {

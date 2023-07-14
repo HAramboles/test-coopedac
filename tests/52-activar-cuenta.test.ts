@@ -16,7 +16,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebasActivarInactivarCuentas) {
         test.describe(`Test cuando el parametro sea: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
@@ -61,7 +61,7 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                 // Boton de Inactivar Cuentas y de Aceptar
-                botonActivarInactivar = page.getByRole('button', {name: 'check-circle'});
+                botonActivarInactivar = page.getByRole('cell', {name: 'ONA GABRIELA ESPINOZA FLORES'}).getByRole('button', {name: 'stop'});
                 botonAceptar = page.getByRole('button', {name: 'Aceptar'});
             });
 
@@ -104,17 +104,22 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
                 await expect(page.locator('#form').getByTitle('AHORROS POR NOMINA')).toBeVisible();
             });
             
-            test('Buscar la cuenta del Socio', async () => {
+            test('Buscar la cuenta del Socio en las cuentas Inactivas', async () => {
+                // Click al radio de cuentas inactivas
+                const radioInactivas = page.getByText('Inactivas', {exact: true});
+                await expect(radioInactivas).toBeVisible();
+                await radioInactivas.click();
+
                 // Ingresar el nombre del socio
-                await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+                await page.locator(`${formBuscar}`).fill('ONA GABRIELA ESPINOZA FLORES');
 
                 // Debe mostrarse la cuenta del socio
-                await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+                await expect(page.getByRole('cell', {name: 'ONA GABRIELA ESPINOZA FLORES'})).toBeVisible();
             });
 
             if (escenarios.ID_OPERACION !== 23) {
                 // Test cuando el ID_OPERACION sea diferente de 23
-                test('No debe permitir Inactivar una cuenta', async () => {
+                test('No debe permitir Activar una cuenta', async () => {
                     // Debe mostrarse el boton de Inactivar Cuenta
                     await expect(botonActivarInactivar).toBeVisible();
 
@@ -134,7 +139,7 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
                 });
             } else if (escenarios.ID_OPERACION === 23) {
                 // Test cuando el ID_OPERACION sea 23
-                test('Debe permitir Inactivar una cuenta', async () => {
+                test('Debe permitir Activar una cuenta', async () => {
                     // Debe mostrarse el boton de Inactivar Cuenta
                     await expect(botonActivarInactivar).toBeVisible();
 
@@ -142,7 +147,7 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
                     await botonActivarInactivar.click();
 
                     // Debe salir un modal de confirmacion
-                    await expect(page.locator('text=¿Está seguro de Inactivar esta cuenta?')).toBeVisible();
+                    await expect(page.locator('text=¿¿Está seguro de Activar esta cuenta??')).toBeVisible();
 
                     // Click al boton de Aceptar del modal
                     await expect(botonAceptar).toBeVisible();
@@ -154,15 +159,15 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
 
                 test('Buscar la cuenta en la lista de cuentas inactivas', async () => {
                     // Click al radio de cuentas inactivas
-                    const radioInactivas = page.getByText('Inactivas', {exact: true});
+                    const radioInactivas = page.getByText('Activas', {exact: true});
                     await expect(radioInactivas).toBeVisible();
                     await radioInactivas.click();
 
                     // Buscar la cuenta del socio 
-                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+                    await page.locator(`${formBuscar}`).fill('ONA GABRIELA ESPINOZA FLORES');
 
                     // Debe mostrarse la cuenta del socio
-                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'ONA GABRIELA ESPINOZA FLORES'})).toBeVisible();
 
                     // Debe mostrarse el boton de Activar Cuenta
                     await expect(page.getByRole('button', {name: 'stop'})).toBeVisible();
