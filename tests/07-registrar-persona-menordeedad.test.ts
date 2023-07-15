@@ -1,7 +1,8 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
 import { formatDate } from './utils/utils';
-import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
+import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './00-nombresyapellidos-personas';
 
 // Vaiables globales 

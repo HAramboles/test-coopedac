@@ -1,5 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, EscenariosPruebasCajaBoveda, dataCerrar, selectBuscar } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar } from './utils/dataTests';
+import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 
 // Variables globales
 let browser: Browser;

@@ -1,5 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, EscenariosPruebasActivarInactivarCuentas, formBuscar } from './utils/dataTests';
+import { url_base, formBuscar } from './utils/dataTests';
+import { EscenariosPruebasActivarInactivarCuentas } from './utils/interfaces';
 
 // Variables Globales
 let browser: Browser;

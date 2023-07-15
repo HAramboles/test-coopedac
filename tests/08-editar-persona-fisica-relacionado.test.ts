@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosPasaporte } from './utils/cedulasypasaporte';
-import { url_base, EscenariosPruebaEditarPersonas, formBuscar } from './utils/dataTests';
+import { url_base, formBuscar } from './utils/dataTests';
+import { EscenariosPruebaEditarPersonas } from './utils/interfaces';
 
 // Variables globales
 let browser: Browser;

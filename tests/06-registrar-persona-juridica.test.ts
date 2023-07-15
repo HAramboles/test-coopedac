@@ -7,7 +7,8 @@ import {
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
-import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
+import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './00-nombresyapellidos-personas';
 
 // Variables Globales

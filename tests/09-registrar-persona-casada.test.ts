@@ -12,7 +12,8 @@ import {
     nombrePersonaFisicaConyuge, 
     apellidoPersonaFisicaConyuge  
 } from './00-nombresyapellidos-personas';
-import { url_base, EscenariosPruebaCrearPersonas, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar } from './utils/dataTests';
+import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 
 // Variables globales
 let browser: Browser;
