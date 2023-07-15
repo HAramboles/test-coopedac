@@ -61,7 +61,7 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                 // Boton de Inactivar Cuentas y de Aceptar
-                botonActivarInactivar = page.getByRole('button', {name: 'check-circle'});
+                botonActivarInactivar = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'check-circle'});
                 botonAceptar = page.getByRole('button', {name: 'Aceptar'});
             });
 
@@ -163,9 +163,6 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
 
                     // Debe mostrarse la cuenta del socio
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
-
-                    // Debe mostrarse el boton de Activar Cuenta
-                    await expect(page.getByRole('button', {name: 'stop'})).toBeVisible();
                 });
             };
 

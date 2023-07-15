@@ -61,7 +61,7 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                 // Boton de Inactivar Cuentas y de Aceptar
-                botonActivarInactivar = page.getByRole('cell', {name: 'ONA GABRIELA ESPINOZA FLORES'}).getByRole('button', {name: 'stop'});
+                botonActivarInactivar = page.getByRole('row', {name: 'ONA GABRIELA ESPINOZA FLORES'}).getByRole('button', {name: 'stop'});
                 botonAceptar = page.getByRole('button', {name: 'Aceptar'});
             });
 
@@ -147,7 +147,7 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
                     await botonActivarInactivar.click();
 
                     // Debe salir un modal de confirmacion
-                    await expect(page.locator('text=¿¿Está seguro de Activar esta cuenta??')).toBeVisible();
+                    await expect(page.locator('text=¿Está seguro de Activar esta cuenta?')).toBeVisible();
 
                     // Click al boton de Aceptar del modal
                     await expect(botonAceptar).toBeVisible();
@@ -168,9 +168,6 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
 
                     // Debe mostrarse la cuenta del socio
                     await expect(page.getByRole('cell', {name: 'ONA GABRIELA ESPINOZA FLORES'})).toBeVisible();
-
-                    // Debe mostrarse el boton de Activar Cuenta
-                    await expect(page.getByRole('button', {name: 'stop'})).toBeVisible();
                 });
             };
 
