@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, Page, expect, Locator, test } from '@playwright/test';
-import { url_base, formBuscar } from './utils/dataTests';
+import { url_base, formBuscar, selectBuscar } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 
 // Variables globales
@@ -253,6 +253,13 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     await page.getByRole('button', {name: 'edit'}).click();
 
                     // Debe mostrarse un modal para editar el valor
+                    const modalDistribucionIntereses = page.locator('text=EDITAR DISTRIBUCIÓN DE INTERESES');
+                    await expect(modalDistribucionIntereses).toBeVisible();
+
+                    // El modal debe contener el nombre del socio
+                    await expect(page.getByRole('dialog').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
+
+                    // Input del Valor
                     const inputValor = page.locator('#form_VALOR');
                     await expect(inputValor).toBeVisible();
                     await expect(inputValor).toHaveValue('100');
@@ -267,16 +274,24 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     await botonAceptar.click();
 
                     // Debe mostrarse un mensaje en la pagina
-                    await expect(page.locator('text=Debe Completar Forma Pago de Rendimientos Hasta que el sumatorio sea igual a 100%')).toBeVisible();
+                    await expect(page.locator('text=Captaciones cuenta deposito actualizada exitosamente.')).toBeVisible();
+
+                    // Debe mostrar un mensaje de aviso
+                    await expect(page.locator('text=El total de la columna VALOR debe sumar 100')).toBeVisible();
 
                     // Digitar el nombre del firmante en el buscador de socio
-                    await page.locator('#FINANCIEROS\\ REINVERTIDAS_DOC_CLIENTE').fill(`${nombreFirmante} ${apellidoFirmante}`);
+                    await page.locator(`${selectBuscar}`).fill(`${nombreFirmante} ${apellidoFirmante}`);
 
                     // Deben salir todas las cuentas que posee la persona, elegir la cuenta de ahorros normales
                     await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
                     await page.locator('text=AHORROS NORMALES').click();
 
                     // Debe salir un modal para agregar el valor de los intereses que se le enviaran a la cuenta
+                    await expect(modalDistribucionIntereses).toBeVisible();
+
+                    // El modal debe contener el nombre del firmante
+                    await expect(page.getByRole('dialog').filter({hasText: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
+
                     await expect(inputValor).toBeVisible();
                     // Debe tener el valor de 50
                     await expect(inputValor).toHaveValue('50');

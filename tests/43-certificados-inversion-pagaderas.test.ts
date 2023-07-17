@@ -348,18 +348,17 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
 
                     // Boton de Finalizar
                     const botonFinalizar = page.locator('button:has-text("Finalizar")');
+                    await expect(botonFinalizar).toBeVisible();
+                    await botonFinalizar.click();
+                    
                     // Esperar que se abran dos pestañas
-                    const [newPage, newPage2] = await Promise.all([
-                        context.waitForEvent('page'),
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonFinalizar).toBeVisible(),
-                        await botonFinalizar.click()
-                    ]);
-                  
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
+
                     // Cerrar las dos paginas abiertas
-                    await newPage.close();
-                    await newPage2.close();
+                    await page1.close();
+                    await page2.close();
+
 
                     // Debe regresar a la pagina de los certificados
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23`);
