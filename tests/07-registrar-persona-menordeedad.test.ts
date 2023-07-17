@@ -31,7 +31,7 @@ const apellidoMenor = apellidoPersonaMenorEdad;
 
 test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearPersonas) {
-        test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
+        test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({

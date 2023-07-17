@@ -23,7 +23,7 @@ let apellidoFirmante: string | null;
 
 test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaEditarCuentas) {
-        test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
+        test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({

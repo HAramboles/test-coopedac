@@ -25,7 +25,7 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 
 test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaCrearCuentas) {
-        test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
+        test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser, con la propiedad headless
                 browser = await chromium.launch({

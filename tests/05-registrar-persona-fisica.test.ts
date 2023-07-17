@@ -29,7 +29,7 @@ const correoPersona = nombrePersona.split(' ').join('') + numerosparaCorreo;
 
 test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearPersonas) {
-        test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
+        test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({

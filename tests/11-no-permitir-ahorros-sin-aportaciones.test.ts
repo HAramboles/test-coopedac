@@ -17,7 +17,7 @@ let cedula: string | null;
 
 test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear una de Aportaciones - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaCrearCuentas) {
-        test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
+        test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({

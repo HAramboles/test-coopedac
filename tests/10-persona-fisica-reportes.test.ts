@@ -19,7 +19,7 @@ let apellido: string | null;
 
 test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaEditarPersonas) {
-        test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
+        test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({

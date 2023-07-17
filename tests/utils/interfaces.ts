@@ -104,7 +104,7 @@ interface AgregarPignoracion {
     ID_OPERACION: '' | 10 | 29
 };
 
-const EscenariosPruebasAgregarPignoracion: AgregarPignoracion[] = [
+const EscenariosPruebasAgregarEliminarPignoracion: AgregarPignoracion[] = [
     {
         ID_OPERACION: ''
     },
@@ -116,23 +116,6 @@ const EscenariosPruebasAgregarPignoracion: AgregarPignoracion[] = [
     }
 ];
 
-// Interfaz para Eliminar pignoracion a cuentas
-interface EliminarPignoracion {
-    ID_OPERACION: '' | 10 | 20
-};
-
-const EscenariosPruebasEliminarPignoracion: EliminarPignoracion[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 10
-    },
-    {
-        ID_OPERACION: 20
-    }
-];
-
 export {
     EscenariosPruebaCrearPersonas,
     EscenariosPruebaEditarPersonas,
@@ -140,6 +123,5 @@ export {
     EscenariosPruebaEditarCuentas,
     EscenariosPruebasActivarInactivarCuentas,
     EscenariosPruebasCajaBoveda,
-    EscenariosPruebasAgregarPignoracion,
-    EscenariosPruebasEliminarPignoracion
+    EscenariosPruebasAgregarEliminarPignoracion,
 }

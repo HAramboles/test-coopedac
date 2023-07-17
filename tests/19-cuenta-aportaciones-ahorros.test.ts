@@ -27,7 +27,7 @@ let apellidoFirmante: string | null;
 
 test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearCuentas) {
-        test.describe(`Test cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
+        test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser, con la propiedad headless
                 browser = await chromium.launch({
