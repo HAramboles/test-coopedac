@@ -357,7 +357,71 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     // Debe mostrarse la cuenta que se esta creando, y el titular
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
+                    // Debe mostrarse el valor de 100, todo se depositara en la cuenta de la persona
+                    await expect(page.getByRole('cell', {name: '100'})).toBeVisible();   
+
                     // Distibuir el monto de intereses
+
+                    // Click al boton de Editar
+                    const botonEditarIntereses = page.getByRole('button', {name: 'edit'});
+                    await expect(botonEditarIntereses).toBeVisible();
+                    await page.getByRole('button', {name: 'edit'}).click();
+
+                    // Debe mostrarse un modal para editar el valor
+                    const modalDistribucionIntereses = page.locator('text=EDITAR DISTRIBUCIÓN DE INTERESES');
+                    await expect(modalDistribucionIntereses).toBeVisible();
+
+                    // El modal debe contener el nombre del socio
+                    await expect(page.getByRole('dialog').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
+
+                    // Input del Valor
+                    const inputValor = page.locator('#form_VALOR');
+                    await expect(inputValor).toBeVisible();
+                    await expect(inputValor).toHaveValue('100');
+
+                    // Cambiar el valor
+                    await inputValor.clear();
+                    await inputValor.fill('50');
+
+                    // Click al boton de Aceptar del modal
+                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
+
+                    // Debe mostrarse un mensaje en la pagina
+                    await expect(page.locator('text=Captaciones cuenta deposito actualizada exitosamente.')).toBeVisible();
+
+                    // Debe mostrar un mensaje de aviso
+                    await expect(page.locator('text=El total de la columna VALOR debe sumar 100')).toBeVisible();
+
+                    // Digitar el nombre del firmante en el buscador de socio
+                    await page.locator(`${selectBuscar}`).fill(`${nombreFirmante} ${apellidoFirmante}`);
+
+                    // Deben salir todas las cuentas que posee la persona, elegir la cuenta de ahorros normales
+                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await page.locator('text=AHORROS NORMALES').click();
+
+                    // Debe salir un modal para agregar el valor de los intereses que se le enviaran a la cuenta
+                    await expect(modalDistribucionIntereses).toBeVisible();
+
+                    // El modal debe contener el nombre del firmante
+                    await expect(page.getByRole('dialog').filter({hasText: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
+
+                    await expect(inputValor).toBeVisible();
+                    // Debe tener el valor de 50
+                    await expect(inputValor).toHaveValue('50');
+
+                    // Click al boton de Aceptar del modal
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
+
+                    // Ahora deben mostrarse las cuentas
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
+
+                    // Los valores deben estar divididos en 50 y 50
+                    await expect(page.getByRole('cell', {name: '50'}).first()).toBeVisible();
+                    await expect(page.getByRole('cell', {name: '50'}).last()).toBeVisible();
                 });
             
                 test('Finalizar con la Creacion de Cuenta de Certificado', async () => {

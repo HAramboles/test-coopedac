@@ -34,6 +34,23 @@ const EscenariosPruebaEditarPersonas: EditarPersonas[] = [
     }
 ];
 
+// Interfaz para Cambiar Estado de Personas
+interface CambioEstadoPersonas {
+    ID_OPERACION:  "" | 1 | 25
+};
+
+const EscenariosCambioEstadoPersonas: CambioEstadoPersonas[] = [
+    {
+        ID_OPERACION: ""
+    },
+    {
+        ID_OPERACION: 1
+    },
+    {
+        ID_OPERACION: 25
+    }
+];
+
 // Interfaz para Crear Cuentas
 interface CrearCuentas {
     ID_OPERACION: '' | 10 | 30
@@ -65,6 +82,23 @@ const EscenariosPruebaEditarCuentas: EditarCuentas[] = [
     },
     {
         ID_OPERACION: 31
+    }
+];
+
+// Interfaz para Remover Firmantes
+interface RemoverFirmantes {
+    ID_OPERACION: '' | 10 | 28
+};
+
+const EscenariosPruebaRemoverFirmantes: RemoverFirmantes[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 10
+    },
+    {
+        ID_OPERACION: 28
     }
 ];
 
@@ -119,8 +153,10 @@ const EscenariosPruebasAgregarEliminarPignoracion: AgregarPignoracion[] = [
 export {
     EscenariosPruebaCrearPersonas,
     EscenariosPruebaEditarPersonas,
+    EscenariosCambioEstadoPersonas,
     EscenariosPruebaCrearCuentas,
     EscenariosPruebaEditarCuentas,
+    EscenariosPruebaRemoverFirmantes,
     EscenariosPruebasActivarInactivarCuentas,
     EscenariosPruebasCajaBoveda,
     EscenariosPruebasAgregarEliminarPignoracion,

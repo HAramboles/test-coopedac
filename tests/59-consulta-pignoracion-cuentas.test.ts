@@ -67,9 +67,11 @@ test.describe.serial('Pruebas con el Historial de Pignoracion de Cuentas', () =>
         // Estado de Cuenta
         await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');
 
-        // Deben estar los dos montos pignorados
-        await expect(page.getByRole('row', {name: 'PIGNORAR 150 PESOS LIBERADO RD$ 150.00'})).toBeVisible();
-        await expect(page.getByRole('row', {name: 'PIGNORAR 100 PESOS CONGELADO RD$ 100.00'})).toBeVisible(); 
+        // Debe estar el monto pignorado
+        await expect(page.getByRole('row', {name: 'CONGELADO RD$ 100.00'})).toBeVisible(); 
+
+        // Debe estar el monto despignorado
+        await expect(page.getByRole('row', {name: 'LIBERADO RD$ 150.00'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas
