@@ -57,7 +57,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
 
         // Buscar un socio
         await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
-        // Elegir al socio
+        // Elegir el Certificado Financieros Pagaderas del socio
         await page.locator('text=FINANCIEROS PAGADERAS').click();
 
         // Se debe mostrar la categoria del socio

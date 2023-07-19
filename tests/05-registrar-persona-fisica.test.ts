@@ -665,7 +665,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await expect(botonEmailRedSocial).toBeVisible();
                     await botonEmailRedSocial.click();
             
-                    // Debe de aprecer un menu de opciones al hacer click al boton
+                    // Debe de aparecer un menu de opciones al hacer click al boton
                     await page.getByRole('menuitem', {name: 'EMAIL'}).getByText('EMAIL').click();
             
                     // Input de la descripcion del email

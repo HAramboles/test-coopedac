@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { numerosPasaporte } from './utils/cedulasypasaporte';
+import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
 import { url_base, formBuscar } from './utils/dataTests';
 import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
 
@@ -11,6 +11,9 @@ let page: Page;
 // Boton de Editar
 let botonEditarCuenta: Locator;
 
+// Direccion de la persona
+let direccionRelacionado: Locator;
+
 // Inputs para los tests
 let inputNombre: Locator;
 let inputApellido: Locator;
@@ -18,8 +21,9 @@ let editarDireccion: Locator;
 let editarTelefono: Locator;
 let editarEmail: Locator;
 
-// Celular de la persona
+// Pasaporte y nuevo celular de la persona
 const pasaporte = numerosPasaporte;
+const nuevoCelular = numerosCelular;
 
 // Cedula, nombre, apellido de la persona
 let cedula: string | null;
@@ -30,6 +34,9 @@ let apellido: string | null;
 let nombreEmpresa: string | null;
 let correoEmpresa: string | null;
 let telefonoEmpresa: string | null;
+
+// Apellido de la persona fisica para cambiar el apellido de la persona
+let nuevoApellidoPersona: string | null;
 
 // Pruebas
 
@@ -85,6 +92,19 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
                 correoEmpresa = await page.evaluate(() => window.localStorage.getItem('correoEmpresa'));
                 telefonoEmpresa = await page.evaluate(() => window.localStorage.getItem('telefonoJuridica'));
+
+                // Apellido de la persona fisica, el nuevo apellido de la persona relacionada
+                nuevoApellidoPersona = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+                // Direccion de la persona
+                direccionRelacionado = page.getByRole('cell', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'});
+
+                // Inputs
+                inputNombre = page.locator('#person_NOMBRES');
+                inputApellido = page.locator('#person_APELLIDOS');
+                editarDireccion = page.getByRole('row', {name: `${direccionRelacionado}`}).getByRole('button', {name: 'edit'});
+                editarTelefono = page.getByRole('row', {name: 'CELULAR'}).getByRole('button', {name: 'edit'});
+                editarEmail = page.getByRole('row', {name: 'EMAIL'}).getByRole('button', {name: 'edit'});
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -138,14 +158,16 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
 
                     // El nombre debe estar visible
-                    await expect(page.locator('#person_NOMBRES')).toHaveValue(`${nombre}`);
+                    await expect(inputNombre).toHaveValue(`${nombre}`);
 
                     // El input del nombre debe estar deshabilitado
+                    await expect(inputNombre).toBeDisabled();
 
                     // El apellido debe estar visible
-                    await expect(page.locator('#person_APELLIDOS')).toHaveValue(`${apellido}`);
+                    await expect(inputApellido).toHaveValue(`${apellido}`);
 
                     // El input del apellido debe estar deshabilitado
+                    await expect(inputApellido).toBeDisabled();
 
                     // La nacionalidad debe estar visible
                     await expect(page.locator('#person').getByTitle('DOMINICANA')).toBeVisible();
@@ -245,14 +267,34 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(page.locator('h1').filter({hasText: 'EMAILS / REDES SOCIALES'})).toBeVisible();
 
                     // La direccion debe estar visible
-                    const direccionRelacionado = page.getByRole('cell', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'});
                     await expect(direccionRelacionado).toBeVisible();
 
-                    // No debe permitir editar la direccion
+                    // Click al boton de editar de la direccion
+                    await editarDireccion.click();
 
-                    // No debe permitir editar el telefono
+                    // No debe permitir editar la direccion, debe salir un modal
+                    await expect(page.locator('text=No tienes permisos para editar direcciones.')).toBeVisible();
 
-                    // No debe permitir editar el email
+                    // Click al boton de Aceptar del modal de direccion
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Click al boton de editar del celular
+                    await editarTelefono.click();
+
+                    // No debe permitir editar el telefono, debe salir un modal
+                    await expect(page.locator('text=No tiene permiso para editar eMails / redes sociales.')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal de telefono
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Click al boton de editar del email
+                    await editarEmail.click();
+
+                    // No debe permitir editar el email, debe salir un modal
+                    await expect(page.locator('text=No tiene permiso para editar eMails / redes sociales.')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal de email
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
 
                     // Click en Actualizar y continuar
                     actualizarContinuar();
@@ -276,11 +318,147 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     // Cerrar las dos ventanas con los reportes
                     await page1.close();
                     await page2.close();
+
+                    // Debe regresar a la pagina de Registrar personas
+                    await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
+
+                    // La URL deba cambiar
+                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
                 });
 
             } else if (escenarios.ID_OPERACION_MODIFICA_PER === '4' && escenarios.ID_OPERACION_EDITAR_DIRECCION === '6' && escenarios.ID_OPERACION_EDITAR_EMAIL === '8' && escenarios.ID_OPERACION_EDITAR_NOMBRE == '24' && escenarios.ID_OPERACION_EDITAR_TEL === '7') {
                 // Test cuando cada parametro es diferente de vacio
+                test('Editar la Cuenta del Socio', async () => {
+                    // Click al boton de editar cuenta
+                    await expect(botonEditarCuenta).toBeVisible();
+                    await botonEditarCuenta.click();
 
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(/\/edit/);
+                });
+
+                test('Datos del Socio agregados anteriormente - Datos Generales', async () => {
+                    // El titulo debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
+
+                    // El nombre debe estar visible
+                    await expect(inputNombre).toHaveValue(`${nombre}`);
+
+                    // El input del nombre debe estar habilitado
+                    await expect(inputNombre).toBeEnabled();
+
+                    // El apellido debe estar visible
+                    await expect(inputApellido).toHaveValue(`${apellido}`);
+
+                    // El input del apellido debe estar habilitado
+                    await expect(inputApellido).toBeEnabled();
+
+                    // Cambiar el apellido de la persona
+                    await inputApellido.clear();
+                    await inputApellido.fill(`${nuevoApellidoPersona}`);
+
+                    // El apellido debe cambiar
+                    await expect(inputApellido).toHaveValue(`${nuevoApellidoPersona}`);
+
+                    // Click en Actualizar y continuar
+                    actualizarContinuar();
+                });
+
+                test('Dirigirse al Quinto paso del Formulario', async () => {
+                    // Boton del 5 paso
+                    const botonQuintoPaso = page.getByRole('button', {name: '5 Direcciones y Contactos Direcciones, teléfonos y redes sociales'});
+                    await expect(botonQuintoPaso).toBeVisible();
+                    await botonQuintoPaso.click();
+
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(/\/?step=5/);
+
+                    // Los tres titulos deben estar visibles
+                    await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'TELÉFONOS'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'EMAILS / REDES SOCIALES'})).toBeVisible(); 
+
+                    // Click al boton de editar direccion
+                    await editarDireccion.click();
+
+                    // El modal debe de aparecer
+                    await expect(page.locator('text=EDITAR DIRECCIÓN')).toBeVisible();
+
+                    // Editar la calle
+                    const campoCalle = page.locator('#addressesForm_CALLE');
+                    await campoCalle.clear();
+                    await campoCalle?.fill('Calle 15');
+
+                    // Hacer click al boton de Actualizar
+                    const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+                    await expect(botonActualizar).toBeVisible();
+                    await botonActualizar.click();
+
+                    // El modal debe de desaparecer, por lo que el titulo no debe de estar visible
+                    await expect(page.locator('text=EDITAR DIRECCIÓN')).not.toBeVisible();
+
+                    // Click al boton de editar celular
+                    await editarTelefono.click();
+
+                    // El input del telefono debe estar habilitado para editar
+                    const campoNumero = page.locator('#form_NUMERO');
+                    await campoNumero.click();
+
+                    // Cambiar el numero de telefono
+                    await campoNumero.clear();
+                    await campoNumero.fill(`${nuevoCelular}`);
+
+                    // Click al boton de Guardar
+                    await page.getByRole('button', {name: 'save'}).click();
+
+                    // Debe guardarse el nuevo numero de telefono
+                    await expect(campoNumero).toHaveValue(`${nuevoCelular}`);
+
+                    // Click al boton de editar email
+                    await editarEmail.click();
+
+                    // El input del email debe estar habilitado para editar
+                    const campoNombreEmail = page.getByPlaceholder('USUARIO');
+                    await campoNombreEmail.click();
+
+                    // Click al boton de Cancelar
+                    await page.getByRole('button', {name: 'stop', exact: true}).click();
+
+                    // Debe salir un mensaje de confirmacion
+                    await page.getByText('¿Desea cancelar la operación?').click();
+
+                    // Click al boton de Aceptar del mensaje de confirmacion
+                    await page.getByRole('button', {name: 'check Aceptar'}).click();
+
+                    // Click al boton de Actualizar y continuar
+                    actualizarContinuar();
+                });
+
+                test('Debe dirigirse al paso de Relacionados del Socio', async () => {
+                    // El titulo principal debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
+                });
+
+                test('Finalizar con la Edicion de la Persona Fisica', async () => {
+                    // Hacer click al boton de finalizar
+                    const botonFinalizar = page.locator('text=Finalizar');
+                    await expect(botonFinalizar).toBeVisible();
+                    await botonFinalizar.click();
+
+                    // Esperar que se abran dos nuevas pestañas con los reportes
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
+                  
+                    // Cerrar las dos ventanas con los reportes
+                    await page1.close();
+                    await page2.close();
+
+                    // Debe regresar a la pagina de Registrar personas
+                    await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
+
+                    // La URL deba cambiar
+                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
+                });
             };
         
             test.afterAll(async () => { // Despues de las pruebas
