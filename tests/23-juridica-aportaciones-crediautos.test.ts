@@ -75,14 +75,6 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
-            // Funcion con el boton de continuar, que se repite en cada seccion del registro
-            const Continuar = async () => {
-              // continuar
-              const botonContinuar = page.locator('button:has-text("Continuar")');
-              // presionar el boton
-              await botonContinuar.click();
-            };
-        
             test('Ir a Apertura de Cuenta de Aportaciones Creiautos', async () => {
                 // Captaciones
                 await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -148,7 +140,9 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                     await expect(page.getByText('SOCIO AHORRANTE')).toBeVisible();
             
                     // Boton de Continuar
-                    Continuar();
+                    const botonContinuar = page.getByRole('button', {name: 'Continuar'});
+                    await expect(botonContinuar).toBeVisible();
+                    await botonContinuar.click();
                 });
             
                 test('Registrar Cuenta de Aportaciones - Contacto de Firmante o Persona', async () => {
@@ -231,8 +225,10 @@ test.describe('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los d
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible(); 
             
-                    // Boton de Continuar
-                    Continuar();
+                    // Boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
             
                 test('Registrar Cuenta de Aportaciones - Método de intereses', async () => {

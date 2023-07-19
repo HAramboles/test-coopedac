@@ -79,14 +79,6 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
-            // Funcion con el boton de continuar, que se repite en cada seccion del registro
-            const Continuar = async () => {
-                // continuar
-                const botonContinuar = page.locator('button:has-text("Continuar")');
-                // presionar el boton
-                await botonContinuar.click();
-            };
-        
             test('Ir a Apertura de Cuenta de Aportaciones', async () => {
                 // Captaciones
                 await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -331,8 +323,10 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
             
-                    // Click al boton de Continuar
-                    Continuar();
+                    // Boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
             
                 test('Crear cuenta de Aportaciones Preferentes - Paso 3 - Metodo de Interes', async () => {

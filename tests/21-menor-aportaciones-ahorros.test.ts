@@ -79,14 +79,6 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                 apellidoMadre = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
         
-            // Funcion con el boton de continuar, que se repite en cada seccion del registro
-            const Continuar = async () => {
-                // continuar
-                const botonContinuar = page.locator('button:has-text("Continuar")');
-                // presionar el boton
-                await botonContinuar.click();
-            };
-        
             test('Ir a Apertura de cuenta de aportaciones', async () => {
                 // Captaciones
                 await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -161,7 +153,9 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await expect(page.locator(`text=${cedulaMadre} | MADRE`)).toBeVisible();
             
                     // Boton de Continuar
-                    Continuar();
+                    const botonContinuar = page.getByRole('button', {name: 'Continuar'});
+                    await expect(botonContinuar).toBeVisible();
+                    await botonContinuar.click();
                 });
             
                 test('Registrar Cuenta de Aportaciones del Menor - Contacto de Firmante o Persona', async () => {
@@ -252,8 +246,10 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreMadre} ${apellidoMadre}`})).toBeVisible();
             
-                    // Boton de Continuar
-                    Continuar();
+                    // Boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
             
                 test('Registrar Cuenta de Aportaciones del Menor - Método de intereses', async () => {
@@ -323,8 +319,10 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // Debe estar la firma del titular por defecto
                     await expect(page.getByText('TITULAR')).toBeVisible();
 
-                    // Probar que no se pueda continuar sin agregar un firmante a la cuenta del menor
-                    Continuar();
+                    // Boton de Guardar y Continuar, probar que no se pueda continuar sin agregar un representante
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
 
                     // Se debe mostrar un mensaje
                     await expect(page.locator('text=Debe agregar como firmante al representante legal del socio.')).toBeVisible();
@@ -397,8 +395,8 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreMadre} ${apellidoMadre}`})).toBeVisible();
             
-                    // Boton Continuar
-                    Continuar();
+                    // Boton Guardar y Continuar
+                    await botonGuardaryContinuar.click();
                 });
                 
                 test('Crear la Cuenta de Ahorros - Método de intereses', async () => {

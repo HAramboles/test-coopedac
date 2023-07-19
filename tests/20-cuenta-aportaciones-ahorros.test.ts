@@ -79,14 +79,6 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
         
-            // Funcion con el boton de continuar, que se repite en cada seccion del registro
-            const Continuar = async () => {
-              // continuar
-              const botonContinuar = page.locator('button:has-text("Continuar")');
-              // presionar el boton
-              await botonContinuar.click();
-            };
-        
             test('Ir a Apertura de cuenta de aportaciones', async () => {
                 // Captaciones
                 await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -155,7 +147,9 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await page.locator('text=SOCIO AHORRANTE').click();
             
                     // Boton de Continuar
-                    Continuar();
+                    const botonContinuar = page.getByRole('button', {name: 'Continuar'});
+                    await expect(botonContinuar).toBeVisible();
+                    await botonContinuar.click();
                 });
             
                 test('Registrar Cuenta de Aportaciones - Contacto de Firmante o Persona', async () => {
@@ -168,8 +162,10 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // El tipo de firma requerida debe estar visible
                     await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();
             
-                    // Boton de Continuar
-                    Continuar();
+                    // Boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
             
                 test('Registrar Cuenta de Aportaciones - Método de intereses', async () => {
@@ -308,11 +304,10 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
             
-                    // Boton Continuar
-                    const botonContinuar = page.getByRole('button', {name: 'Continuar'});
-                    await expect(botonContinuar).toBeVisible();
-                    // Click al boton
-                    await botonContinuar.click();
+                    // Boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
                 
                 test('Crear la Cuenta de Ahorros - Método de intereses', async () => {

@@ -79,14 +79,6 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
-            // Funcion con el boton de continuar, que se repite en cada seccion del registro
-            const Continuar = async () => {
-                // continuar
-                const botonContinuar = page.locator('button:has-text("Continuar")');
-                // presionar el boton
-                await botonContinuar.click();
-            };
-        
             test('Ir a la opcion de Apertura de cuentas de Certificados', async () => {
                 // Boton de Captaciones
                 await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -327,8 +319,10 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
             
-                    // Click al boton de Continuar
-                    Continuar();
+                    // Boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 3 - Metodo de Interes', async () => {

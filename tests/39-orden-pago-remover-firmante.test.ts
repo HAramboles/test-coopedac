@@ -218,10 +218,10 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                     // El firmante debe desaparecer de la lista
                     await expect(page.getByRole('cell', {name: `${nombreFirmante} ${apellidoFirmante}`})).not.toBeVisible();
 
-                    // Click al boton de Continuar
-                    const botonContinuar = page.getByRole('button', {name: 'Continuar'});
-                    await expect(botonContinuar).toBeVisible();
-                    await botonContinuar.click();
+                    // Boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
 
                 test('Tercer Paso - Metodo de Intereses', async () => {

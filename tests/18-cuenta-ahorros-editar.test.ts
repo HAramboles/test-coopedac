@@ -303,10 +303,10 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
             
-                    // Click al boton de Continuar
-                    const botonContinuar = page.locator('button:has-text("Continuar")');
-                    await expect(botonContinuar).toBeVisible();
-                    await botonContinuar.click();
+                    // Click al boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y Continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
             
                 test('Editar una Cuenta de Ahorros - Metodo de Intereses', async () => {

@@ -79,14 +79,6 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
-            // Funcion con el boton de continuar, que se repite en cada seccion del registro
-            const Continuar = async () => {
-                // continuar
-                const botonContinuar = page.locator('button:has-text("Continuar")');
-                // presionar el boton
-                await botonContinuar.click();
-            };
-        
             test('Ir a la opcion de Apertura de cuentas de Ahorros', async () => {
                 // Boton de Captaciones
                 await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -175,8 +167,10 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
                     await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
             
-                    // Click al boton de continuar
-                    Continuar();
+                    // Boton de  Continuar
+                    const botonContinuar = page.getByRole('button', {name: 'Continuar'});
+                    await expect(botonContinuar).toBeVisible();
+                    await botonContinuar.click();
                 });
             
                 test('Contacto de Firmante o Persona', async () => {            
@@ -266,8 +260,10 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
             
-                    // Click al boton de Continuar
-                    Continuar();
+                    // Boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
             
                 test('Metodo de intereses', async () => {

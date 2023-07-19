@@ -76,15 +76,6 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                 botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
             });
 
-            const Actualizar = async () => {
-                // Boton de Actualizar
-                const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
-                await expect(botonActualizar).toBeVisible();
-
-                // Click al boton de Actualizar
-                await botonActualizar.click();
-            };
-
             test('Ir a Apertura de Cuenta de Aportaciones', async () => {
                 // Captaciones
                 await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
@@ -177,8 +168,12 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
+                    // Boton de Actualizar
+                    const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+                    await expect(botonActualizar).toBeVisible();
+
                     // Click al boton de Actualizar
-                    Actualizar();
+                    await botonActualizar.click();
                 });
 
                 test('Editar Cuenta de Aportaciones Preferentes - Firmantes y Contactos', async () => {
@@ -206,8 +201,10 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     // El tipo de firma condicional debe estar visible
                     await expect(page.locator('text=(O) FIRMA CONDICIONAL')).toBeVisible();
 
-                    // Click al boton de Actualizar
-                    Actualizar();
+                    // Boton de Guardar y Continuar
+                    const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
+                    await expect(botonGuardaryContinuar).toBeVisible();
+                    await botonGuardaryContinuar.click();
                 });
 
                 test('Editar Cuenta de Aportaciones Preferentes - Metodo de Intereses', async () => {
