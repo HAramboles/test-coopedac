@@ -44,13 +44,13 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                     if (Object.keys(body?.data[32]).length > 1) {
                         // Reemplazar el body con la response con los datos del escenario
                         body.data[32] = Object.assign(body.data[32], escenario);
-                        await route.fulfill({
+                        route.fulfill({
                             response, 
                             body: JSON.stringify(body)
                         });
                     } else {
                         route.continue();
-                    }
+                    };
                 });
         
                 // Ingresar a la pagina

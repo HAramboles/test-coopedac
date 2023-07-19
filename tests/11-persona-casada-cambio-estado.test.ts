@@ -8,7 +8,7 @@ let context: BrowserContext;
 let page: Page;
 
 // Selecor de la categoria
-let selectorCategoria: Locator;
+let selectorEstado: Locator;
 
 // Cedula, nombre, apellido de la persona
 let cedula: string | null;
@@ -27,7 +27,7 @@ test.describe.serial('Cambio de Estado de la Persona Casada - Pruebas con los di
                 });
         
                 // Crear el context
-                context =  await browser.newContext({
+                context = await browser.newContext({
                     storageState: 'state.json'
                 });
         
@@ -41,9 +41,9 @@ test.describe.serial('Cambio de Estado de la Persona Casada - Pruebas con los di
 
                     // Constante con el body
                     const body = await response.json();
-                    // Condicicion para cambiar los parametros del body
+                    // Condicion para cambiar los parametros del body
                     if (Object.keys(body?.data[29]).length > 1) {
-                        // Reemplazar el body con la response con los datos de los escenarios
+                        // Reemplazar el body con la response con los datos del escenario
                         body.data[29] = Object.assign(body.data[29], escenarios);
                         route.fulfill({
                             response,
@@ -58,12 +58,12 @@ test.describe.serial('Cambio de Estado de la Persona Casada - Pruebas con los di
                 await page.goto(`${url_base}`);
 
                 // Boton de Editar Cuenta
-                selectorCategoria = page.locator('#person_ID_ESTADO');
+                selectorEstado = page.locator('#person_ID_ESTADO');
 
                 // Cedula, nombre y apellido de la persona
-                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
-                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaCasada'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaCasada'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaCasada'));
             });
         
             test('Ir a la opcion de Registro de Persona', async () => {
@@ -84,8 +84,11 @@ test.describe.serial('Cambio de Estado de la Persona Casada - Pruebas con los di
                 // El titulo principal de la pagina debe esatr visible
                 await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
 
-                // Buscar al menor
-                await page.locator(`${formBuscar}`).fill(`${cedula}`);
+                // Buscar a la persona casada
+                await page.locator(`${formBuscar}`).fill(`${apellido}`);
+
+                // Click al boton de editar 
+                await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
             });
 
             test('Primer Paso - Datos Generales', async () => {
@@ -101,10 +104,85 @@ test.describe.serial('Cambio de Estado de la Persona Casada - Pruebas con los di
 
             if (escenarios.ID_OPERACION !== 25) {
                 // Test cuando ID_OPERACION es diferente de 25
-
+                test('No debe permitir poder cambiar el Estado', async () => {
+                    await expect(selectorEstado).toBeDisabled();
+                });
             } else if (escenarios.ID_OPERACION === 25) {
                 // Tests cuando ID_OPERACION es igual a 25
-                
+                test('Cambiar de estado Activo a Inactivo', async () => {
+                    // El estado de la persona debe ser Activo
+                    await expect(page.getByTitle('ACTIVO')).toBeVisible();
+
+                    // Click al selector de estado
+                    await expect(selectorEstado).toBeVisible();
+                    await selectorEstado.click();
+
+                    // Deben salir los diferentes estados a elegir
+                    await expect(page.getByRole('option', {name: 'ACTIVO'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'FALLECIDO'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'INCOMPLETO'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'RETIRADO'})).toBeVisible();
+                    const estadoInactivo = page.getByRole('option', {name: 'INACTIVO'});
+                    await expect(estadoInactivo).toBeVisible();
+
+                    // Click a la opcion de estado Inactivo
+                    await estadoInactivo.click();
+                    
+                    // El estado de la persona debe ser Inactivo
+                    await expect(page.getByTitle('INACTIVO')).toBeVisible();
+
+                    // Click al boton de Actualizar y continuar
+                    const botonActualizar = page.locator('button').filter({hasText: 'Actualizar y continuar'});
+                    await expect(botonActualizar).toBeVisible();
+                    await botonActualizar.click();
+                });
+
+                test('Volver a la pagina del Registro de Personas', async () => {
+                    // La url debe cambiar
+                    await expect(page).toHaveURL(/\/?step=2/);
+
+                    // Titulo del segundo paso
+                    await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
+
+                    // Click al boton de Cancelar
+                    const botonCancelar = page.locator('button').filter({hasText: 'Cancelar'});
+                    await expect(botonCancelar).toBeVisible();
+                    await botonCancelar.click();
+
+                    // Debe salir un modal
+                    await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Debe regresar a la pagina del Registro de Personas, el titulo debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
+                });
+
+                test('Buscar a la Persona en el Estado Inactivo', async () => {
+                    // Buscar a la persona casada
+                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
+
+                    // No deberia aparecer la persona
+                    await expect(page.locator('text=No hay datos')).toBeVisible();
+
+                    // Click al selector del filtro de estado
+                    await page.getByRole('combobox').click();
+
+                    // Deben salir los diferentes estados a elegir
+                    await expect(page.getByRole('option', {name: 'ACTIVO'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'FALLECIDO'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'INCOMPLETO'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'RETIRADO'})).toBeVisible();
+                    const estadoInactivo = page.getByRole('option', {name: 'INACTIVO'});
+                    await expect(estadoInactivo).toBeVisible();
+
+                    // Click a la opcion de estado Inactivo
+                    await estadoInactivo.click();
+
+                    // Deberia mostrarse la persona buscada
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+                }); 
             };
 
             test.afterAll(async () => { // Despues de las pruebas

@@ -34,14 +34,53 @@ const EscenariosPruebaEditarPersonas: EditarPersonas[] = [
     }
 ];
 
+interface AcividadParametro {
+    ID_OPERACION_MODIFICA_PER: '' | '4',
+    ID_OPERACION_EDITAR_DIRECCION: '' | '6',
+    ID_OPERACION_EDITAR_TEL: '' | '7',
+    ID_OPERACION_EDITAR_EMAIL: '' | '8',
+    ID_OPERACION_EDITAR_NOMBRE: '' | '24'
+};
+
+const EscenariosActividadParametrosEditarPersona: AcividadParametro[] = [
+    {
+        ID_OPERACION_MODIFICA_PER: '',
+        ID_OPERACION_EDITAR_DIRECCION: '',
+        ID_OPERACION_EDITAR_TEL: '',
+        ID_OPERACION_EDITAR_EMAIL: '',
+        ID_OPERACION_EDITAR_NOMBRE: ''
+    },
+    {
+        ID_OPERACION_MODIFICA_PER: '',
+        ID_OPERACION_EDITAR_DIRECCION: '6',
+        ID_OPERACION_EDITAR_TEL: '7',
+        ID_OPERACION_EDITAR_EMAIL: '8',
+        ID_OPERACION_EDITAR_NOMBRE: '24'
+    },
+    {
+        ID_OPERACION_MODIFICA_PER: '4',
+        ID_OPERACION_EDITAR_DIRECCION: '',
+        ID_OPERACION_EDITAR_TEL: '',
+        ID_OPERACION_EDITAR_EMAIL: '',
+        ID_OPERACION_EDITAR_NOMBRE: ''
+    },
+    {
+        ID_OPERACION_MODIFICA_PER: '4',
+        ID_OPERACION_EDITAR_DIRECCION: '6',
+        ID_OPERACION_EDITAR_TEL: '7',
+        ID_OPERACION_EDITAR_EMAIL: '8',
+        ID_OPERACION_EDITAR_NOMBRE: '24'
+    }
+];
+
 // Interfaz para Cambiar Estado de Personas
 interface CambioEstadoPersonas {
-    ID_OPERACION:  "" | 1 | 25
+    ID_OPERACION:  '' | 1 | 25
 };
 
 const EscenariosCambioEstadoPersonas: CambioEstadoPersonas[] = [
     {
-        ID_OPERACION: ""
+        ID_OPERACION: ''
     },
     {
         ID_OPERACION: 1
@@ -54,7 +93,7 @@ const EscenariosCambioEstadoPersonas: CambioEstadoPersonas[] = [
 // Interfaz para Crear Cuentas
 interface CrearCuentas {
     ID_OPERACION: '' | 10 | 30
-}
+};
 
 const EscenariosPruebaCrearCuentas: CrearCuentas[] = [
     {
@@ -71,7 +110,7 @@ const EscenariosPruebaCrearCuentas: CrearCuentas[] = [
 // Interfaz para Editar Cuentas
 interface EditarCuentas {
     ID_OPERACION: '' | 10 | 31
-}
+};
 
 const EscenariosPruebaEditarCuentas: EditarCuentas[] = [
     {
@@ -154,10 +193,11 @@ export {
     EscenariosPruebaCrearPersonas,
     EscenariosPruebaEditarPersonas,
     EscenariosCambioEstadoPersonas,
+    EscenariosActividadParametrosEditarPersona,
     EscenariosPruebaCrearCuentas,
     EscenariosPruebaEditarCuentas,
     EscenariosPruebaRemoverFirmantes,
     EscenariosPruebasActivarInactivarCuentas,
     EscenariosPruebasCajaBoveda,
     EscenariosPruebasAgregarEliminarPignoracion,
-}
+};

@@ -1,7 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosPasaporte } from './utils/cedulasypasaporte';
 import { url_base, formBuscar } from './utils/dataTests';
-import { EscenariosPruebaEditarPersonas } from './utils/interfaces';
+import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
 
 // Variables globales
 let browser: Browser;
@@ -10,6 +10,13 @@ let page: Page;
 
 // Boton de Editar
 let botonEditarCuenta: Locator;
+
+// Inputs para los tests
+let inputNombre: Locator;
+let inputApellido: Locator;
+let editarDireccion: Locator;
+let editarTelefono: Locator;
+let editarEmail: Locator;
 
 // Celular de la persona
 const pasaporte = numerosPasaporte;
@@ -27,7 +34,7 @@ let telefonoEmpresa: string | null;
 // Pruebas
 
 test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los diferentes parametros', async () => {
-    for (const escenarios of EscenariosPruebaEditarPersonas) {
+    for (const escenarios of EscenariosActividadParametrosEditarPersona) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
@@ -44,16 +51,16 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 page = await context.newPage();
 
                 // Eventos para la request relation
-                await page.route(/\/relation/, async route => {
+                await page.route(/\/actividad_parametro/, async route => {
                     // Fetch a la peticion original
                     const response: APIResponse = await page.request.fetch(route.request());
 
                     // Constante con el body
                     const body = await response.json();
                     // Condicicion para cambiar los parametros del body
-                    if (Object.keys(body?.data[10]).length > 1) {
+                    if (Object.keys(body?.data).length > 1) {
                         // Reemplazar el body con la response con los datos de los escenarios
-                        body.data[10] = Object.assign(body.data[10], escenarios);
+                        body.data = Object.assign(body.data, escenarios);
                         route.fulfill({
                             response,
                             body: JSON.stringify(body)
@@ -108,14 +115,15 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             });
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
-            if (escenarios.ID_OPERACION !== 4) {
-                // Test cuando el ID_OPERACION sea diferente de 4
+            if (escenarios.ID_OPERACION_MODIFICA_PER !== '4') {
+                // Test cuando el ID_OPERACION_MODIFICA_PER sea diferente de 4
                 test('El boton de Editar no debe esatr visible', async () => {
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).not.toBeVisible();
                 });
-            } else if (escenarios.ID_OPERACION === 4) {
-                // Tests cuando el ID_OPERACION sea igual a 4
+
+            } else if (escenarios.ID_OPERACION_MODIFICA_PER === '4' && escenarios.ID_OPERACION_EDITAR_DIRECCION && escenarios.ID_OPERACION_EDITAR_EMAIL && escenarios.ID_OPERACION_EDITAR_NOMBRE && escenarios.ID_OPERACION_EDITAR_TEL === '') {
+                // Tests cuando el ID_OPERACION_MODIFICA_PER sea igual a 4 y los demas son vacios
                 test('Editar la Cuenta del Socio', async () => {
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
@@ -132,8 +140,12 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     // El nombre debe estar visible
                     await expect(page.locator('#person_NOMBRES')).toHaveValue(`${nombre}`);
 
+                    // El input del nombre debe estar deshabilitado
+
                     // El apellido debe estar visible
                     await expect(page.locator('#person_APELLIDOS')).toHaveValue(`${apellido}`);
+
+                    // El input del apellido debe estar deshabilitado
 
                     // La nacionalidad debe estar visible
                     await expect(page.locator('#person').getByTitle('DOMINICANA')).toBeVisible();
@@ -236,6 +248,12 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     const direccionRelacionado = page.getByRole('cell', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'});
                     await expect(direccionRelacionado).toBeVisible();
 
+                    // No debe permitir editar la direccion
+
+                    // No debe permitir editar el telefono
+
+                    // No debe permitir editar el email
+
                     // Click en Actualizar y continuar
                     actualizarContinuar();
                 });
@@ -259,6 +277,10 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await page1.close();
                     await page2.close();
                 });
+
+            } else if (escenarios.ID_OPERACION_MODIFICA_PER === '4' && escenarios.ID_OPERACION_EDITAR_DIRECCION === '6' && escenarios.ID_OPERACION_EDITAR_EMAIL === '8' && escenarios.ID_OPERACION_EDITAR_NOMBRE == '24' && escenarios.ID_OPERACION_EDITAR_TEL === '7') {
+                // Test cuando cada parametro es diferente de vacio
+
             };
         
             test.afterAll(async () => { // Despues de las pruebas

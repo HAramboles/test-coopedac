@@ -727,6 +727,16 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
             };
         
             test.afterAll(async () => { /* Despues de que se realizen todas las pruebas */
+                // Guardar la cedula de la personsa casada
+                await page.evaluate((cedulaPersonaCasada) => window.localStorage.setItem('cedulaPersonaCasada', cedulaPersonaCasada), cedulaPersonaCasada);
+
+                // Guardar el nombre y el apellido de la persona casada
+                await page.evaluate((nombrePersonaCasada) => window.localStorage.setItem('nombrePersonaCasada', nombrePersonaCasada), nombrePersonaCasada);
+                await page.evaluate((apellidoPersonaCasada) => window.localStorage.setItem('apellidoPersonaCasada', apellidoPersonaCasada), apellidoPersonaCasada);
+        
+                // Guardar nuevamente el Storage con los datos de la persona casada
+                await context.storageState({path: 'state.json'});
+            
                 // Cerrar la pagina
                 await page.close();
 
