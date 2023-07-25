@@ -352,7 +352,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
                     // Debe mostrarse el valor de 100, todo se depositara en la cuenta de la persona
-                    await expect(page.getByRole('cell', {name: '100'})).toBeVisible();   
+                    await expect(page.getByRole('cell', {name: '100', exact: true})).toBeVisible();   
 
                     // Distibuir el monto de intereses
 

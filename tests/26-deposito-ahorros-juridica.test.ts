@@ -83,7 +83,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     await expect(page.locator('text=No tiene un turno aperturado o este tipo de caja no permite realizar transacciones de este tipo.')).toBeVisible();
 
                     // Botones del modal
-                    await expect(page.getByRole('button', {name: 'Permancer en la pagina'})).toBeVisible();
+                    await expect(page.getByRole('button', {name: 'Permanecer en la pagina'})).toBeVisible();
                     const botonInicio = page.getByRole('button', {name: 'Ir a Inicio'});
                     await expect(botonInicio).toBeVisible();
 

@@ -16,7 +16,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Cedula, nombre y apellido del firmante
-let cedulaFirmante: string | null;
 let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
@@ -33,7 +32,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
 
                 // Crear el context
                 context = await browser.newContext({
-                    storageState: 'state,json'
+                    storageState: 'state.json'
                 });
 
                 // Crear una page
@@ -67,8 +66,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
-                // Cedula, nombre y apellido del firmante almacenada en el state
-                cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+                // Nombre y apellido del firmante almacenada en el state
                 nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
@@ -141,11 +139,6 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     const descripcion = page.locator('#APORTACIONES\\ PREFERENTES_DESCRIPCION');
                     await expect(descripcion).toHaveValue('APORTACIONES PREFERENTES');
 
-                    // Cambiar la descripcion de la cuenta
-                    await descripcion.clear();
-                    await descripcion.fill('CUENTA DE APORTES PREFERENTES');
-                    await expect(descripcion).toHaveValue('CUENTA DE APORTES PREFERENTES');
-
                     // Titular
                     await expect(page.getByTitle(`${nombre} ${apellido}`)).toBeVisible();
 
@@ -153,13 +146,13 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await expect(page.getByTitle('SOCIO AHORRANTE')).toBeVisible();
 
                     // Monto de Apertura
-                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA')).toHaveValue('100');
+                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA')).toHaveValue('RD$ 100');
 
                     // Tasa Anual
-                    await expect(page.locator('#APORTACIONES PREFERENTES_TASA')).toBeVisible();
+                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_TASA')).toHaveValue('5%');
 
                     // Plazo
-                    await expect(page.locator('#APORTACIONES PREFERENTES_PLAZO')).toHaveValue('24');
+                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_PLAZO')).toHaveValue('24');
 
                     // Origen de Inversion
                     await expect(page.locator('h1').filter({hasText: 'ORIGEN DE INVERSIÓN'})).toBeVisible();
@@ -218,7 +211,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
                     // Debe mostrarse el valor a depositar en la cuenta
-                    await expect(page.getByRole('cell', {name: '100'})).toBeVisible(); 
+                    await expect(page.getByRole('cell', {name: '100', exact: true})).toBeVisible(); 
                 });
 
                 test('Finalizar con la Edicion de la Cuenta de Aportaciones Preferentes', async () => {

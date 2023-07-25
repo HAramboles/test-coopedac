@@ -704,6 +704,10 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                     // El modal debe cerrarse
                     await expect(modalDirecciones).not.toBeVisible();
 
+                    // Debe mostrarse la direccion agregada
+                    const direccionAgregada = page.getByRole('cell', {name: 'CALLE 15, SABANETA, CASA NO. 2, LA VEGA, REPUBLICA DOMINICANA'});
+                    await expect(direccionAgregada).toBeVisible();
+
                     // Click en Finalizar
                     const finalizarRelacionado = page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'});
                     await expect(finalizarRelacionado).toBeVisible();

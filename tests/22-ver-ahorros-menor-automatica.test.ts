@@ -80,16 +80,16 @@ test.describe.serial('Pruebas en el modo solo lectura, para ver una cuenta', asy
         // Click al boton
         await botonCaptaciones.click();
 
-        // Click a la opcion de Ahorros Normales
-        const opcionAhorrosNormales = page.locator('text=AHORROS NORMALES');
-        await expect(opcionAhorrosNormales).toBeVisible();
-        await opcionAhorrosNormales.click();
+        // Click a la opcion de Ahorros Infantiles
+        const opcionAhorrosInfantiles = page.locator('text=AHORROS INFANTILES');
+        await expect(opcionAhorrosInfantiles).toBeVisible();
+        await opcionAhorrosInfantiles.click();
 
         // La URL debe de cambiar al elegir el tipo de captacion
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/18`);
 
-        // El tipo de captacion de ahorros normales debe estar visible
-        await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
+        // El tipo de captacion de ahorros infantiles debe estar visible
+        await expect(page.locator('#form').getByTitle('AHORROS INFANTILES')).toBeVisible();
     });
 
     test('Ver cuenta - Datos Generales', async () => {
@@ -165,6 +165,9 @@ test.describe.serial('Pruebas en el modo solo lectura, para ver una cuenta', asy
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
+
+        // Debe mostrarse el titular de la cuenta
+        await expect(page.getByRole('cell', {name: `${nombreMenor} ${apellidoMenor}`})).toBeVisible();
 
         // Boton Finalizar
         const botonFinalizar = page.locator('button:has-text("Finalizar")')

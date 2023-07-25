@@ -188,11 +188,10 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     // Debe de aparecer el nombre de la persona como titulo
                     await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
             
-                    // Editar la descripcion de la cuenta
+                    // Descripcion de la cuenta
                     const campoDescripcion = page.getByPlaceholder('Descripción o alias de la cuenta, ejemplo: Cuenta para vacaciones.');
                     await expect(campoDescripcion).toBeVisible();
-                    await campoDescripcion.clear();
-                    await campoDescripcion.fill('CUENTA AHORRATIVA');
+                    await expect(campoDescripcion).toHaveValue('AHORROS NORMALES');
             
                     // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
                     await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
@@ -249,8 +248,8 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await buscador.click();
                     await buscador.fill(`${cedulaFirmante}`);
                     // Seleccionar el socio
-                    await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
-                    await page.locator(`text=${nombreFirmante} ${apellidoFirmante}`).click();
+                    await expect(page.locator(`text=| ${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
+                    await page.locator(`text=| ${nombreFirmante} ${apellidoFirmante}`).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();

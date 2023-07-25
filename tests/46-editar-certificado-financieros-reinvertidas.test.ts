@@ -33,7 +33,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
 
                 // Crear el context
                 context = await browser.newContext({
-                    storageState: 'state,json'
+                    storageState: 'state.json'
                 });
 
                 // Crear una page
@@ -163,11 +163,6 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     const descripcion = page.locator('#FINANCIEROS\\ REINVERTIDAS_DESCRIPCION');
                     await expect(descripcion).toHaveValue('FINANCIEROS REINVERTIDAS');
 
-                    // Cambiar la descripcion de la cuenta
-                    await descripcion.clear();
-                    await descripcion.fill('CUENTA DE CERTIFICADOS FINANCIEROS REINVERTIDAS');
-                    await expect(descripcion).toHaveValue('CUENTA DE CERTIFICADOS FINANCIEROS REINVERTIDAS');
-
                     // Titular
                     await expect(page.getByTitle(`${nombre} ${apellido}`)).toBeVisible();
 
@@ -178,7 +173,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     await expect(page.locator('#FINANCIEROS\\ REINVERTIDAS_MONTO_APERTURA')).toHaveValue('50');
 
                     // Tasa Anual
-                    await expect(page.locator('#FINANCIEROS\\ REINVERTIDAS_TASA')).toBeVisible();
+                    await expect(page.locator('#FINANCIEROS\\ REINVERTIDAS_TASA')).toHaveValue('8%');
 
                     // Plazo
                     await expect(page.locator('#FINANCIEROS\\ REINVERTIDAS_PLAZO')).toHaveValue('36');

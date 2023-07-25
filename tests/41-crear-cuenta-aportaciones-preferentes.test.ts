@@ -331,7 +331,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
             
                 test('Crear cuenta de Aportaciones Preferentes - Paso 3 - Metodo de Interes', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=2`);
+                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=3`);
             
                     // El titulo debe estar visible
                     await expect(page.locator('text=FORMA PAGO DE INTERESES O EXCEDENTES')).toBeVisible();

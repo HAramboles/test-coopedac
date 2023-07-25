@@ -2,6 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
 import { url_base, formBuscar } from './utils/dataTests';
 import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
+import { apellidoPersonaFisica } from './00-nombresyapellidos-personas';
 
 // Variables globales
 let browser: Browser;
@@ -36,7 +37,7 @@ let correoEmpresa: string | null;
 let telefonoEmpresa: string | null;
 
 // Apellido de la persona fisica para cambiar el apellido de la persona
-let nuevoApellidoPersona: string | null;
+let nuevoApellidoPersona = apellidoPersonaFisica;
 
 // Pruebas
 
@@ -80,9 +81,6 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
 
-                // Boton de Editar Cuenta
-                botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-
                 // Cedula, nombre y apellido de la persona
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
@@ -93,11 +91,11 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 correoEmpresa = await page.evaluate(() => window.localStorage.getItem('correoEmpresa'));
                 telefonoEmpresa = await page.evaluate(() => window.localStorage.getItem('telefonoJuridica'));
 
-                // Apellido de la persona fisica, el nuevo apellido de la persona relacionada
-                nuevoApellidoPersona = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+                // Boton de Editar Cuenta
+                botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
 
                 // Direccion de la persona
-                direccionRelacionado = page.getByRole('cell', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'});
+                direccionRelacionado = page.getByRole('row', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'});
 
                 // Inputs
                 inputNombre = page.locator('#person_NOMBRES');
@@ -142,7 +140,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(botonEditarCuenta).not.toBeVisible();
                 });
 
-            } else if (escenarios.ID_OPERACION_MODIFICA_PER === '4' && escenarios.ID_OPERACION_EDITAR_DIRECCION && escenarios.ID_OPERACION_EDITAR_EMAIL && escenarios.ID_OPERACION_EDITAR_NOMBRE && escenarios.ID_OPERACION_EDITAR_TEL === '') {
+            } else if (escenarios.ID_OPERACION_MODIFICA_PER === '4' && escenarios.ID_OPERACION_EDITAR_DIRECCION, escenarios.ID_OPERACION_EDITAR_EMAIL,escenarios.ID_OPERACION_EDITAR_NOMBRE, escenarios.ID_OPERACION_EDITAR_TEL === '') {
                 // Tests cuando el ID_OPERACION_MODIFICA_PER sea igual a 4 y los demas son vacios
                 test('Editar la Cuenta del Socio', async () => {
                     // Click al boton de editar cuenta
@@ -462,6 +460,9 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             };
         
             test.afterAll(async () => { // Despues de las pruebas
+                // Sustituir el apellido de la persona relacionada guardada en el state por el nuevo apellido
+                await page.evaluate((nuevoApellidoPersona) => window.localStorage.setItem('apellidoPersonaJuridicaRelacionada', nuevoApellidoPersona), nuevoApellidoPersona);
+                
                 // Cerrar la page
                 await page.close();
 

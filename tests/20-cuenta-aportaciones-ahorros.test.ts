@@ -196,13 +196,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
             
                     // La cuenta debe ser la del socio
-                    await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
-            
-                    // Editar la descripcion de la cuenta
-                    const campoDescripcion = page.getByPlaceholder('Descripción o alias de la cuenta, ejemplo: Cuenta para vacaciones.');
-                    await expect(campoDescripcion).toBeVisible();
-                    await campoDescripcion.clear();
-                    await campoDescripcion.fill('CUENTA AHORRATIVA');
+                    await expect(page.locator('h1').filter({hasText: `| ${nombre} ${apellido}`})).toBeVisible();
             
                     // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
                     await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();

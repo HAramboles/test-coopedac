@@ -16,8 +16,3 @@ export const ariaCerrar:string = '[aria-label="close"]';
 export const formBuscar:string = '#form_search';
 export const selectBuscar:string = '#select-search';
 
-// Interfaz para Agregar Cargos a Prestamos Desembolsados
-interface AgregarCargos {
-    ID_OPERACION: '' | 10 | 32
-};
-

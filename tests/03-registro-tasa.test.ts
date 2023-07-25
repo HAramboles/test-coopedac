@@ -52,7 +52,7 @@ const testScenaries: ActivityParameters[] = [
 
 // Pruebas
 
-test.describe('Pruebas con el Registro de Tasa', async () => {
+test.describe.serial('Pruebas con el Registro de Tasa', async () => {
     for (const scenarie of testScenaries) {
         test.describe(`Test cuando el escenario es: ${Object.values(scenarie).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas

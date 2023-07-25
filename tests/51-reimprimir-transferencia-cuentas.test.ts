@@ -51,8 +51,6 @@ test.describe.serial('Pruebas con la Reimpresion de la Transferencia entre Cuent
     });
 
     test('Buscar las cuentas de un Socio', async () => {
-        test.slow();
-
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR TRANSFERENCIA ENTRE CUENTAS'})).toBeVisible();
 

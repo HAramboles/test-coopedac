@@ -79,7 +79,7 @@ test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', async
         await expect(page.getByText('Ocurrió un error al iniciar sesión, por favor verifique sus datos.').first()).toBeVisible();
 
         // Click al boton de Aceptar del modal de error
-        await page.getByRole('dialog').filter({hasText: 'ErrorOcurrió un error al iniciar sesión, por favor verifique sus datos.Aceptar'}).getByRole('button', {name: 'Aceptar'}).click();
+        await page.locator('(//BUTTON[@type="button"])[9]').click();
 
         // El modal de error debe desaparecer
         await expect(page.getByText('Error', {exact: true})).not.toBeVisible();

@@ -189,6 +189,37 @@ const EscenariosPruebasAgregarEliminarPignoracion: AgregarPignoracion[] = [
     }
 ];
 
+// Interfaz para Agregar Cargos a Prestamos Desembolsados
+interface AgregarCargos {
+    ID_OPERACION: '' | 10 | 32
+};
+
+const EscenariosAgregarCargosPrestamoDesembolsado: AgregarCargos[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 10
+    },
+    {
+        ID_OPERACION: 32
+    },
+];
+
+// Interfaz para la Reimpresion de la Resolucion Aprobatoria
+interface ReimpresionResolucionAprobatoria {
+    ESTADO_DEFECTO: 'A' | 'D'
+};
+
+const EscenariosReimpresionResolucionAprobatoria: ReimpresionResolucionAprobatoria[] = [
+    {
+        ESTADO_DEFECTO: 'A'
+    },
+    {
+        ESTADO_DEFECTO: 'D'
+    }
+];
+
 export {
     EscenariosPruebaCrearPersonas,
     EscenariosPruebaEditarPersonas,
@@ -200,4 +231,6 @@ export {
     EscenariosPruebasActivarInactivarCuentas,
     EscenariosPruebasCajaBoveda,
     EscenariosPruebasAgregarEliminarPignoracion,
+    EscenariosAgregarCargosPrestamoDesembolsado,
+    EscenariosReimpresionResolucionAprobatoria
 };

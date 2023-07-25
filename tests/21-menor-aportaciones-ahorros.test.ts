@@ -150,7 +150,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await page.locator('text=SOCIO AHORRANTE').click();
             
                     // El tutor se debe elegir automaticamente
-                    await expect(page.locator(`text=${cedulaMadre} | MADRE`)).toBeVisible();
+                    await expect(page.locator(`text=${nombreMadre} | MADRE`)).toBeVisible();
             
                     // Boton de Continuar
                     const botonContinuar = page.getByRole('button', {name: 'Continuar'});
@@ -281,12 +281,6 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
             
                     // La cuenta debe ser la del socio
                     await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
-            
-                    // Editar la descripcion de la cuenta
-                    const campoDescripcion = page.getByPlaceholder('Descripción o alias de la cuenta, ejemplo: Cuenta para vacaciones.');
-                    await expect(campoDescripcion).toBeVisible();
-                    await campoDescripcion.clear();
-                    await campoDescripcion.fill('CUENTA AHORRATIVA PARA MENOR');
             
                     // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
                     await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();

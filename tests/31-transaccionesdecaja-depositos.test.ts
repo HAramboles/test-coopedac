@@ -93,7 +93,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await expect(page.locator('text=No tiene un turno aperturado o este tipo de caja no permite realizar transacciones de este tipo.')).toBeVisible();
 
                     // Botones del modal
-                    await expect(page.getByRole('button', {name: 'Permancer en la pagina'})).toBeVisible();
+                    await expect(page.getByRole('button', {name: 'Permanecer en la pagina'})).toBeVisible();
                     const botonInicio = page.getByRole('button', {name: 'Ir a Inicio'});
                     await expect(botonInicio).toBeVisible();
 
@@ -195,10 +195,10 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
                     await expect(campoMonto).toBeVisible();
-                    await campoMonto.fill('10100');
+                    await campoMonto.fill('100100');
             
                     // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Deposito de 10100 pesos a la cuenta de Ahorros');
+                    await page.locator('#form_COMENTARIO').fill('Deposito de 100100 pesos a la cuenta de Ahorros');
             
                     // Boton Agregar
                     await page.locator('text=Agregar').click();
@@ -299,33 +299,18 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'}).first();
                     await expect(iconoAlerta).toBeVisible();
             
-                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 10100
-                    // Divididos en 1000, 500, 200, 100 y 50
+                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 100100
+                    // Divididos en 100 monedas de 1000 y una de 100
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
-                    const cant500 = page.locator('[id="2"]'); // Campo de RD 500
-                    const cant200 = page.locator('[id="3"]'); // Campo de RD 200
                     const cant100 = page.locator('[id="4"]'); // Campo de RD 100
-                    const cant50 = page.locator('[id="5"]'); // Campo de RD 50
             
-                    // Cantidad = 8 de 1000
+                    // Cantidad = 100 de 1000
                     await cant1000.click();
-                    await cant1000.fill('8');
-            
-                    // Cantidad = 3 de 500
-                    await cant500.click();
-                    await cant500.fill('3');
-            
-                    // Cantidad = 1 de 200
-                    await cant200.click();
-                    await cant200.fill('1');
-            
-                    // Cantidad = 3 de 100
+                    await cant1000.fill('100');
+
+                    // Cantidad = 1 de 100
                     await cant100.click();
-                    await cant100.fill('3');
-            
-                    // Cantidad = 2 de 50
-                    await cant50.click();
-                    await cant50.fill('2');
+                    await cant100.fill('1');
             
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();
