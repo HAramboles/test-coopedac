@@ -407,16 +407,14 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
 
                     // Boton de Finalizar
                     const botonFinalizar = page.locator('text=Finalizar');
-                    // Esperar que se abra una nueva pestaña
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonFinalizar).toBeVisible(),
-                        await botonFinalizar.click()
-                    ]);
+                    await expect(botonFinalizar).toBeVisible();
+                    await botonFinalizar.click();
                   
-                    // La pagina abierta con la solicitud se cierra
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
                     
                     // Debe de regresar a la pagina las cuentas de ahorros infantiles
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/18`);

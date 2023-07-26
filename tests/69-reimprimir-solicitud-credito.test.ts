@@ -64,16 +64,14 @@ test.describe.serial('Prueba con la Reimpresion de la Solicitud de Credito', () 
 
         // Reimprimir Credito
         const botonReimprimir = page.getByRole('row', {name: 'DESEMBOLSADO'}).locator('[aria-label="file-text"]');
-        // Esperar que se abra una nueva pestaña con la solicitud
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Reimprimir
-            await expect(botonReimprimir).toBeVisible(),
-            await botonReimprimir.click()
-        ]);
+        await expect(botonReimprimir).toBeVisible();
+        await botonReimprimir.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
         
-        // Cerrar la pagina con el credito
-        await newPage.close();
+        // Cerrar la pagina con el reporte 
+        await page1.close();
 
         // Debe volver a la pagina de la reimpresiones
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR SOLICITUD DE CRÉDITO'})).toBeVisible();

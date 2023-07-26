@@ -219,16 +219,14 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
             
                     // Click al boton de Continuar
                     const botonContinuar = page.getByRole('button', {name: 'Continuar'});
-                    // Esperar que se abra una nueva pestaña con el reporte de la nota de debito
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonContinuar).toBeVisible(),
-                        await botonContinuar.click()
-                    ]);
+                    await expect(botonContinuar).toBeVisible();
+                    await botonContinuar.click();
+                  
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
 
-                    // Cerrar la pagina con el reporte de la nota de debito
-                    await newPage.close();
+                    // Cerrar la nueva pestaña
+                    await page1.close();
                 });
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {            
@@ -305,16 +303,14 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
             
                     // Boton de Aceptar
                     const botonAceptar = page.locator('text=Aceptar');
-                    // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
                   
-                    // La pagina abierta con el reporte se cierra
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
             
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();

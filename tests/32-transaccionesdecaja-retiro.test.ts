@@ -233,26 +233,23 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
             
                     // Click en Actualizar
                     const botonActualizar = page.getByRole('button', {name: 'check Actualizar'});
-            
-                    // Se abrira una nueva pagina con la vista previa de la actualizacion de la libreta
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonActualizar).toBeVisible(),
-                        await botonActualizar.click()
-                    ]);
+                    await expect(botonActualizar).toBeVisible();
+                    await botonActualizar.click();
+
+                    // Esperar que se abra una nueva pagina con la vista previa de la libreta
+                    const page1 = await context.waitForEvent('page');
             
                     // El titulo de actualzar libreta debe estar visible
-                    await expect(newPage.locator('h1').filter({hasText: 'ACTUALIZAR LIBRETA'})).toBeVisible();
+                    await expect(page1.locator('h1').filter({hasText: 'ACTUALIZAR LIBRETA'})).toBeVisible();
             
                     // El boton de imprimir debe estar visible
-                    await expect(newPage.getByRole('button', {name: 'printer Imprimir'})).toBeVisible();
+                    await expect(page1.getByRole('button', {name: 'printer Imprimir'})).toBeVisible();
             
                     // Titulo de Vista Previa
-                    await expect(newPage.locator('text=VISTA PREVIA')).toBeVisible();
+                    await expect(page1.locator('text=VISTA PREVIA')).toBeVisible();
             
                     // La pagina abierta con la vista previa de la libreta se debe cerrar
-                    await newPage.close();
+                    await page1.close();
                 });
             };
 

@@ -284,17 +284,14 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                     // Hacer click al boton de Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
-            
-                    // Se abrira una nueva pagina con el reporte del deposito
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
                     
-                    // La pagina abierta con el reporte del deposito se debe cerrar
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
             
                     // Debe salir un modal
                     await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();

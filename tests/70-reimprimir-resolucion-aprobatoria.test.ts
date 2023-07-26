@@ -93,16 +93,14 @@ test.describe.serial('Reimpresion de resolucion aprobatoria - Pruebas con los di
 
                     // Click al boton de reimprimir
                     const botonImprimir = page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[aria-label="printer"]');
-                    // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonImprimir).toBeVisible(),
-                        await botonImprimir.click()
-                    ]);
+                    await expect(botonImprimir).toBeVisible();
+                    await botonImprimir.click();
 
-                    // Cerrar la pagina con la solicitud
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+                    
+                    // Cerrar la pagina con el reporte 
+                    await page1.close();
                 }
             });
 

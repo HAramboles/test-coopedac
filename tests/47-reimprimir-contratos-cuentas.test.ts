@@ -64,13 +64,11 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Generar contrato
         const contratoAportaciones = cuentaAportaciones.getByRole('button', {name: 'file-text'});
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [pageAportaciones] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            expect(contratoAportaciones).toBeVisible(),
-            contratoAportaciones.click()
-        ]);
+        expect(contratoAportaciones).toBeVisible();
+        contratoAportaciones.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const pageAportaciones = await context.waitForEvent('page');
 
         // Cerrar la pagina con el reporte
         await pageAportaciones.close();
@@ -109,13 +107,11 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Generar contrato
         const contratoAhorrosNormales = cuentaAhorrosNormales.locator(`${dataFile}`);
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [pageAhorros] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            expect(contratoAhorrosNormales).toBeVisible(),
-            contratoAhorrosNormales.click()
-        ]);
+        expect(contratoAhorrosNormales).toBeVisible();
+        contratoAhorrosNormales.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const pageAhorros = await context.waitForEvent('page');
 
         // Cerrar la pagina con el reporte
         await pageAhorros.close();
@@ -131,13 +127,11 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Generar contrato
         const contratoAhorrosNomina = cuentaAhorrosNomina.locator(`${dataFile}`);
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [pageAhorrosNomina] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            expect(contratoAhorrosNomina).toBeVisible(),
-            contratoAhorrosNomina.click()
-        ]);
+        expect(contratoAhorrosNomina).toBeVisible();
+        contratoAhorrosNomina.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const pageAhorrosNomina = await context.waitForEvent('page');
 
         // Cerrar la pagina con el reporte
         await pageAhorrosNomina.close();
@@ -153,13 +147,11 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Generar contrato
         const contratoAhorrosOdenPago = cuentaAhorrosOrdenPago.locator(`${dataFile}`);
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [pageAhorrosOrdenPago] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            expect(contratoAhorrosOdenPago).toBeVisible(),
-            contratoAhorrosOdenPago.click()
-        ]);
+        expect(contratoAhorrosOdenPago).toBeVisible();
+        contratoAhorrosOdenPago.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const pageAhorrosOrdenPago = await context.waitForEvent('page');
 
         // Cerrar la pagina con el reporte
         await pageAhorrosOrdenPago.close();
@@ -197,13 +189,11 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Generar contrato
         const contratoFinancierosReinvertidas = cuentaFinancierosReinvertidas.locator(`${dataFile}`);
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [pageFinancierosReinvertidas] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            expect(contratoFinancierosReinvertidas).toBeVisible(),
-            contratoFinancierosReinvertidas.click()
-        ]);
+        expect(contratoFinancierosReinvertidas).toBeVisible();
+        contratoFinancierosReinvertidas.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const pageFinancierosReinvertidas = await context.waitForEvent('page');
 
         // Cerrar la pagina con el reporte
         await pageFinancierosReinvertidas.close();
@@ -219,13 +209,11 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Generar contrato
         const contratoInversionPagaderas = cuentaInversionPagaderas.locator(`${dataFile}`);
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [pageInversionPagaderas] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            expect(contratoInversionPagaderas).toBeVisible(),
-            contratoInversionPagaderas.click()
-        ]);
+        expect(contratoInversionPagaderas).toBeVisible();
+        contratoInversionPagaderas.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const pageInversionPagaderas = await context.waitForEvent('page');
 
         // Cerrar la pagina con el reporte
         await pageInversionPagaderas.close();

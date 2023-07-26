@@ -163,16 +163,14 @@ test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes P
 
         // Boton de Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-        // Esperar que se abra una nueva pestaña con el reporte de la reprogramacion
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonAceptar).toBeVisible(),
-            await botonAceptar.click()
-        ]);
+        await expect(botonAceptar).toBeVisible();
+        await botonAceptar.click();
 
-        // Cerrar la pagina con el reporte
-        await newPage.close();
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
+        
+        // Cerrar la pagina con el reporte 
+        await page1.close();
 
         // Se debe regresar a la pagina anterior y debe estar un mensaje de confirmacion
         await expect(page.locator('text=Solicitud de cambios productos almacenado exitosamente.')).toBeVisible();

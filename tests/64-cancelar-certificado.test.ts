@@ -76,6 +76,11 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
 
         // Cuenta Deposito
         await page.locator(`${selectBuscar}`).last().click();
+
+        // Deben mostrarse las cuentas de tipo Ahorros
+        // await expect(page.getByText('ORDEN DE PAGO')).toBeVisible();
+        // await expect(page.getByText('AHORROS POR NOMINA')).toBeVisible();
+
         // Elegir la cuenta de Ahorros
         await page.getByText('AHORROS NORMALES').click();
 

@@ -82,16 +82,14 @@ test.describe.serial('Pruebas con la Reimpresion de Desembolso', () => {
 
         // Boton de Imprimir
         const botonImprimir = page.locator(`${dataPrinter}`);
-        // Se abrira una nueva pagina con el reporte del deposito
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonImprimir).toBeVisible(),
-            await botonImprimir.click()
-        ]);
+        await expect(botonImprimir).toBeVisible(),
+        await botonImprimir.click()
 
-        // Cerrar la pagina con el reporte del desembolso
-        await newPage.close();
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
+        
+        // Cerrar la pagina con el reporte 
+        await page1.close();
 
         // Debe regresar a la pagina
         await expect(page.getByRole('dialog').locator('h1').filter({hasText: 'REIMPRIMIR DESEMBOLSO'})).toBeVisible();

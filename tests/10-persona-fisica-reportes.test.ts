@@ -122,16 +122,14 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
             
                     // Boton Reporte de Admision
                     const generarReporte = page.getByRole('button', {name: 'Admisión'});
-                    // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(generarReporte).toBeVisible(),
-                        await generarReporte.click()
-                    ]);
-            
-                    // Cerrar la pagina con el reporte
-                    await newPage.close();
+                    await expect(generarReporte).toBeVisible();
+                    await generarReporte.click();
+
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
                 });
             
                 test('Imprimir Reporte de Conozca a su Socio', async () => {
@@ -140,16 +138,14 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
             
                     // Boton Reporte de Conozca a su Socio
                     const generarReporte = page.getByRole('button', {name: 'Conozca a su Socio'});
-                    // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(generarReporte).toBeVisible(),
-                        await generarReporte.click()
-                    ]);
-            
-                    // Cerrar la pagina con el reporte
-                    await newPage.close();
+                    await expect(generarReporte).toBeVisible();
+                    await generarReporte.click();
+
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar las dos paginas
+                    await page1.close();
                 });
             
                 test('Regresar a la pagina de los socios', async () => {

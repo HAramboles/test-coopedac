@@ -115,16 +115,14 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
     test('Guardar el Credito al Prestamo', async () => {
         // Boton de Finalizar
         const botonGuardar = page.getByRole('button', {name: 'Guardar'});
-        // Esperar que se abra una nueva pestaña
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonGuardar).toBeVisible(),
-            await botonGuardar.click()
-        ]);
+        await expect(botonGuardar).toBeVisible();
+        await botonGuardar.click();
         
-        // Cerrar la pagina con la solicitud
-        await newPage.close();
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
+        
+        // Cerrar la pagina con el reporte 
+        await page1.close();
 
         // Se debe mostrar un mensaje 
         await expect(page.locator('text=Nota aplicada exitosamente')).toBeVisible();

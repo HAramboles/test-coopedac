@@ -107,16 +107,14 @@ test.describe.serial('Pruebas con el Debito a la Cuenta de Certificado - Financi
     test('Realizar el Debito a la Cuenta', async () => {
         // Boton Guadar
         const botonGuadar = page.getByRole('button', {name: 'Guardar'});
-        // Esperar que se abra una nueva pestaña con el reporte del credito 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonGuadar).toBeVisible(),
-            await botonGuadar.click()
-        ]);
+        await expect(botonGuadar).toBeVisible();
+        await botonGuadar.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
 
         // Cerrar la pagina con el reporte
-        await newPage.close();
+        await page1.close();
 
         // Se deben mostrar dos mensajes de confirmacion
         await expect(page.locator('text=Captacion Movimiento almacenada exitosamente.')).toBeVisible();

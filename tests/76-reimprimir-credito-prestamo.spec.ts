@@ -86,16 +86,14 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
 
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'printer'});
-        // Esperar que se abra una nueva ventana con el reporte del credito al prestamo
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Imprimir
-            await expect(botonImprimir).toBeVisible(),
-            await botonImprimir.click()
-        ]);
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
 
-        // Cerrar la ventana con el reporte
-        await newPage.close();
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
+        
+        // Cerrar la pagina con el reporte 
+        await page1.close(); 
 
         // Debe regresar a la pagina anterior
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR CRÉDITO A PRÉSTAMOS'})).toBeVisible();

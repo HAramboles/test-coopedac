@@ -119,16 +119,14 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Debe salir el modal del historial de pagos, por lo que debe estar el boton de imprimir
         const botonImprimirTodos = page.getByRole('button', {name: 'Todos los Recibos'});
-        // Esperar que se abra una nueva ventana con el reporte de todo el historial de pagos
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de imprimir
-            await expect(botonImprimirTodos).toBeVisible(),
-            await botonImprimirTodos.click()
-        ]);
+        await expect(botonImprimirTodos).toBeVisible();
+        await botonImprimirTodos.click();
 
-        // Cerrar la pagina con el reporte
-        await newPage.close();
+        // Esperar que se abra una nueva ventana con el reporte de todo el historial de pagos
+        const page1 = await context.waitForEvent('page');
+        
+        // Cerrar la pagina con el reporte 
+        await page1.close(); 
 
         // Click en Aceptar para cerrar el modal
         await page.getByRole('button', {name: 'Aceptar'}).click();

@@ -289,15 +289,14 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     // Boton de Aceptar
                     const botonAceptar = page.locator('text=Aceptar');
                     // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
                   
-                    // La pagina abierta con el reporte se cierra
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
             
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();

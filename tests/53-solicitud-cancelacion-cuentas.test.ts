@@ -95,16 +95,17 @@ test.describe.serial('Pruebas con la Solicitud de Cancelacion de una Cuenta', ()
 
         // Boton Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-        // Esperar que se abra una nueva pestaña con el reporte de la cancelacion
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonAceptar).toBeVisible(),
-            await botonAceptar.click()
-        ]);
+        await expect(botonAceptar).toBeVisible();
+        await botonAceptar.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
+        
+        // Cerrar la pagina con el reporte 
+        await page1.close();
 
         // Cerrar la pagina con el reporte
-        await newPage.close(); 
+        await page1.close(); 
 
         // Debe regresar a la pagina
         await expect(page).toHaveURL(`${url_base}/solicitud_cancelacion/01-2-2-105/`);

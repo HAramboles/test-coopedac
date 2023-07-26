@@ -474,18 +474,16 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.getByText('APROBADO', {exact: true}).click();
         await page.getByText('¿Está seguro que desea pasar el préstamo a estado APROBADO?').click();   
         
-        // Click en Aceptar y se debe abrir otra pagina con la solicitud
+        // Click en Aceptar y se debe abrir otra pagina con el reporte de aprobacion
         const botonAceptar = page.getByRole('button', {name: 'check Aceptar'});
-        // Esperar que se abra una nueva pestaña
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonAceptar).toBeVisible(),
-            await botonAceptar.click()
-        ]);
+        await expect(botonAceptar).toBeVisible();
+        await botonAceptar.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
         
-        // Cerrar la pagina con la solicitud
-        await newPage.close();
+        // Cerrar la pagina con el reporte 
+        await page1.close();
     });
 
     test('Desembolsar la solicitud', async () => {
@@ -530,16 +528,14 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Desembolsar la solicitud
         const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
-        // Esperar que se abra una nueva pestaña
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonDesembolsar).toBeVisible(),
-            await botonDesembolsar.click()
-        ]);
+        await expect(botonDesembolsar).toBeVisible();
+        await botonDesembolsar.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
         
-        // Cerrar la pagina con la solicitud
-        await newPage.close();
+        // Cerrar la pagina con el reporte 
+        await page1.close();
     });
 
     test.afterAll(async () => { // Despues de todas las pruebas

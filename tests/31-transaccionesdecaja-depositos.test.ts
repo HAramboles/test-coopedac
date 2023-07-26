@@ -317,17 +317,14 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
             
                     // Hacer click al boton de Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
-            
-                    // Se abrira una nueva pagina con el reporte del deposito
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
-                    
-                    // La pagina abierta con el reporte del deposito se debe cerrar
-                    await newPage.close();
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
+
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
                 });
             };
         

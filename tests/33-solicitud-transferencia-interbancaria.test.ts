@@ -119,15 +119,14 @@ test.describe.serial('Pruebas con la Solicitud de Transferencia Interbancaria', 
     
         // Boton de Aceptar
         const botonAceptar = page.locator('button:has-text("Aceptar")');
-        // Al momento de hacer click al boton de aceptar se debe abrir una nueva pagina con la solicitud creada 
-        const [newPage] = await Promise.all([
-          context.waitForEvent('page'),
-          // Click al boton de Aceptar
-          await botonAceptar.click()
-        ]);
+        await expect(botonAceptar).toBeVisible();
+        await botonAceptar.click()
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
     
         // La pagina abierta con la solicitud se cierra
-        await newPage.close();
+        await page1.close();
 
         // Regresar a la pagina
         await expect(page.locator('h1').filter({hasText: 'SOLICITUD TRANSFERENCIA INTERBANCARIA'})).toBeVisible();

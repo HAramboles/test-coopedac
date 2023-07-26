@@ -195,16 +195,14 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
             
                     // Boton de Imprimir
                     const botonImprimir = page.getByRole('button', {name: 'check Imprimir'});
-                    // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonImprimir).toBeVisible(),
-                        await botonImprimir.click()
-                    ]);
+                    await expect(botonImprimir).toBeVisible();
+                    await botonImprimir.click();
             
-                    // La pagina abierta con el reporte se cierra
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
             
                     // Confirmar que se regreso a la pagina anterior
                     await expect(page).toHaveURL(/\/?step=2/);

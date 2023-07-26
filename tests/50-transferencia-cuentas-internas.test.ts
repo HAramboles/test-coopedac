@@ -136,16 +136,14 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
 
         // Boton Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-        // Esperar que se abra una nueva pestaña con el reporte de la transferencia
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonAceptar).toBeVisible(),
-            await botonAceptar.click()
-        ]);
+        await expect(botonAceptar).toBeVisible();
+        await botonAceptar.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
         
         // Cerrar la pagina con el reporte 
-        await newPage.close();
+        await page1.close();
 
         // Se debe regresar a la pagina
         await expect(page).toHaveURL(`${url_base}/transferencia_cuenta/01-2-2-104/`);

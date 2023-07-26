@@ -59,16 +59,14 @@ test.describe.serial('Pruebas con la Reimpresion de Solicitud de Transferencia I
 
         // Boton de imprimir la solicitud
         const botonImprimir = solicitudCreada.getByRole('button', {name: 'printer'});
-        // Esperar que se genere el reporte con la solicitud de transferencia interbancaria
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Imprimir
-            await expect(botonImprimir).toBeVisible(),
-            await botonImprimir.click()
-          ]);
-      
-          // Cerrar la pagina abierta con la solicitud
-          await newPage.close();
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+        
+        // Esperar que se abra una nueva pestaña con la solicitud
+        const page1 = await context.waitForEvent('page');
+
+        // Cerrar la pagina abierta con la solicitud
+        await page1.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

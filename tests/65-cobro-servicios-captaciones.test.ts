@@ -171,17 +171,14 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
 
         // Hacer click al boton de Aceptar
         const botonGuardar = page.getByRole('button', {name: 'Guardar'});
-
-        // Se abrira una nueva pagina con el reporte del deposito
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonGuardar).toBeVisible(),
-            await botonGuardar.click()
-        ]);
+        await expect(botonGuardar).toBeVisible();
+        await botonGuardar.click();
         
-        // La pagina abierta con el reporte del deposito se debe cerrar
-        await newPage.close();
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
+        
+        // Cerrar la pagina con el reporte 
+        await page1.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas
