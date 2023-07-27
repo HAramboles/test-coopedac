@@ -221,16 +221,14 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
             
                     // Click en continuar
                     const botonContinuar = page.locator('text=Continuar');
-                    // Esperar que se abra una nueva pestaña con el reporte de la nota de debito
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonContinuar).toBeVisible(),
-                        await botonContinuar.click()
-                    ]);
+                    await expect(botonContinuar).toBeVisible();
+                    await botonContinuar.click();
 
-                    // Cerrar la pagina con el reporte de la nota de debito
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
                 });
             
                 test('Crear cuenta de Aportaciones Preferentes - Paso 2 - Contacto de Firmante', async () => {
@@ -354,7 +352,6 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
 
                     // Cerrar la nueva pestaña
                     await page1.close();
-                    
                     
                     // Debe de regresar a la pagina las cuentas de ahorros
                     await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);

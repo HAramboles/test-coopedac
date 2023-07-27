@@ -12,13 +12,9 @@ let page: Page;
 // Boton de Editar
 let botonEditarCuenta: Locator;
 
-// Direccion de la persona
-let direccionRelacionado: Locator;
-
 // Inputs para los tests
 let inputNombre: Locator;
 let inputApellido: Locator;
-let editarDireccion: Locator;
 let editarTelefono: Locator;
 let editarEmail: Locator;
 
@@ -94,13 +90,9 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 // Boton de Editar Cuenta
                 botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
 
-                // Direccion de la persona
-                direccionRelacionado = page.getByRole('row', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'});
-
                 // Inputs
                 inputNombre = page.locator('#person_NOMBRES');
                 inputApellido = page.locator('#person_APELLIDOS');
-                editarDireccion = page.getByRole('row', {name: `${direccionRelacionado}`}).getByRole('button', {name: 'edit'});
                 editarTelefono = page.getByRole('row', {name: 'CELULAR'}).getByRole('button', {name: 'edit'});
                 editarEmail = page.getByRole('row', {name: 'EMAIL'}).getByRole('button', {name: 'edit'});
             });
@@ -265,10 +257,10 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(page.locator('h1').filter({hasText: 'EMAILS / REDES SOCIALES'})).toBeVisible();
 
                     // La direccion debe estar visible
-                    await expect(direccionRelacionado).toBeVisible();
+                    await expect(page.getByRole('row', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'})).toBeVisible();
 
                     // Click al boton de editar de la direccion
-                    await editarDireccion.click();
+                    await page.getByRole('row', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'}).getByRole('button', {name: 'edit'}).click();
 
                     // No debe permitir editar la direccion, debe salir un modal
                     await expect(page.locator('text=No tienes permisos para editar direcciones.')).toBeVisible();
@@ -377,7 +369,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(page.locator('h1').filter({hasText: 'EMAILS / REDES SOCIALES'})).toBeVisible(); 
 
                     // Click al boton de editar direccion
-                    await editarDireccion.click();
+                    await page.getByRole('row', {name: 'CALLE 10, EL MAMEY, CASA NO. 20, SANTIAGO, REPUBLICA DOMINICANA'}).getByRole('button', {name: 'edit'}).click();
 
                     // El modal debe de aparecer
                     await expect(page.locator('text=EDITAR DIRECCIÓN')).toBeVisible();

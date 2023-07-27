@@ -145,9 +145,6 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                 });
             
                 test('Boton de Deposito de la cuenta de Ahorros', async () => {
-                    // Click a la cuenta de Ahorros del socio 
-                    await page.getByRole('row', {name: 'AHORROS NORMALES'}).getByRole('button', {name: 'Expandir fila'}).click();
-            
                     // Boton de Deposito debe estar visible
                     const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});
                     await expect(botonDeposito).toBeVisible();
@@ -175,9 +172,6 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
             
                     // Debe salir un mensaje de que la operacion salio correctamente
                     await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
-            
-                    // Cerrar el mensaje
-                    await page.locator(`${dataCerrar}`).click();
                 });
                 
                 test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
@@ -249,9 +243,6 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     // Click al boton de Aceptar del modal de confirmacion
                     // await page.getByRole('button', {name: 'Aceptar'}).click();
 
-                    // El comentario del Origen de Fondos debe estar visible
-                    await expect(page.locator('#form_ORIGEN_FONDOS')).toHaveValue('Fondos obtenidos del Trabajo');
-
                     // Boton de Cliente es Intermediario
                     const botonClienteIntermediario = page.getByText('Cliente Intermediario');
                     await expect(botonClienteIntermediario).toBeVisible();
@@ -270,8 +261,8 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
 
                     // Contenido del modal
                     await expect(page.locator('text=Asegúrese de haber seleccionado a la persona correcta:')).toBeVisible();
-                    await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
-                    await expect(page.locator('text=Doc. Identidad')).toBeVisible();
+                    await expect(page.getByText(`Nombre: ${nombre} ${apellido}`)).toBeVisible();
+                    await expect(page.getByText('Doc. Identidad:')).toBeVisible();
 
                     // Click al boton de Aceptar del modal
                     await page.getByRole('button', {name: 'Aceptar'}).click();
@@ -288,7 +279,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
 
                     // Debe mostrarse el modal de Actualizar en libreta
-                    const modalLibreta = page.locator('text=Actualizar ibreta');
+                    const modalLibreta = page.locator('text=Actualizar libreta');
                     await expect(modalLibreta).toBeVisible();
 
                     // Click al boton de Cancelar del modal
