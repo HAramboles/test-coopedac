@@ -31,7 +31,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
             test.beforeAll(async () => { // Antes de todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

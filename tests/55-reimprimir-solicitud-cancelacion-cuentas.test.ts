@@ -16,7 +16,7 @@ test.describe.serial('Pruebas con la Reimpresion Solicitud Cancelacion', () => {
     test.beforeAll(async () => {
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context

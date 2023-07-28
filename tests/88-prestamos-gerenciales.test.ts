@@ -9,7 +9,7 @@ let page: Page;
 
 // Pruebas
 
-test.describe('Pruebas con la Impresion de Prestamos Gerenciales', () => {
+test.describe.serial('Pruebas con la Impresion de Prestamos Gerenciales', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -105,16 +105,14 @@ test.describe('Pruebas con la Impresion de Prestamos Gerenciales', () => {
     test('Imprimir los Prestamos Hipotecarios', async () => {
         // Generar Reporte 
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonImprimir).toBeVisible(),
-            await botonImprimir.click()
-        ]);
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+
+        // Esperar que se abra una nueva pagina
+        const page1 = await context.newPage();
 
         // Cerrar la pagina con el reporte
-        await newPage.close();
+        await page1.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

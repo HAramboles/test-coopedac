@@ -8,11 +8,11 @@ let page: Page;
 
 // Pruebas
 
-test.describe('Pruebas con la Transferencia Fondos de Caja', () => {
+test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
     test.beforeAll(async () => {
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -37,8 +37,8 @@ test.describe('Pruebas con la Transferencia Fondos de Caja', () => {
         // Operaciones
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
-        // Transacciones fondos de caja
-        await page.getByRole('menuitem', {name: 'Transacciones fondos de caja'}).click();
+        // Transferencia fondos de caja
+        await page.getByRole('menuitem', {name: 'Transferencia fondos de caja'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/transferencias_cajas/01-4-1-2-9/`);
@@ -58,7 +58,7 @@ test.describe('Pruebas con la Transferencia Fondos de Caja', () => {
         await expect(page.locator('h1').filter({hasText: 'DETALLE DISTRIBUCIÓN'})).toBeVisible();
 
         // Transferir 1000 pesos desde la caja a la boveda
-        const cant1000 = page.locator('[id="13"]'); // Campo de RD 1000
+        const cant1000 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[2]'); // Campo de RD 1000
 
         // Cantidad = 1 de 1000
         await cant1000.click();
@@ -66,16 +66,14 @@ test.describe('Pruebas con la Transferencia Fondos de Caja', () => {
 
         // Boton Guardar
         const botonGuardar =  page.getByRole('button', {name: 'Guardar'});
-        // Se debe abrir una nueva ventana con la factura hacia boveda
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Guardar
-            await expect(botonGuardar).toBeVisible(),
-            await botonGuardar.click()
-        ]);
+        await expect(botonGuardar).toBeVisible();
+        await botonGuardar.click();
+
+        // Esperar que se abra una nueva ventana
+        const page1 = await context.waitForEvent('page');
 
         // Cerrar la ventana
-        await newPage.close();
+        await page1.close();
 
         // Debe regresar a la pagina y debe aparecer un mensaje
         await expect(page.locator('text=Transacción caja almacenada exitosamente.')).toBeVisible();

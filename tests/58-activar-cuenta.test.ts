@@ -23,7 +23,7 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
 
                 // Crear el context
@@ -62,7 +62,7 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
                 // Boton de Inactivar Cuentas y de Aceptar
-                botonActivarInactivar = page.getByRole('row', {name: 'ONA GABRIELA ESPINOZA FLORES'}).getByRole('button', {name: 'stop'});
+                botonActivarInactivar = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'stop'});
                 botonAceptar = page.getByRole('button', {name: 'Aceptar'});
             });
 
@@ -112,10 +112,10 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
                 await radioInactivas.click();
 
                 // Ingresar el nombre del socio
-                await page.locator(`${formBuscar}`).fill('ONA GABRIELA ESPINOZA FLORES');
+                await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
                 // Debe mostrarse la cuenta del socio
-                await expect(page.getByRole('cell', {name: 'ONA GABRIELA ESPINOZA FLORES'})).toBeVisible();
+                await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             });
 
             if (escenarios.ID_OPERACION !== 23) {
@@ -165,10 +165,10 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
                     await radioInactivas.click();
 
                     // Buscar la cuenta del socio 
-                    await page.locator(`${formBuscar}`).fill('ONA GABRIELA ESPINOZA FLORES');
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
                     // Debe mostrarse la cuenta del socio
-                    await expect(page.getByRole('cell', {name: 'ONA GABRIELA ESPINOZA FLORES'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
                 });
             };
 

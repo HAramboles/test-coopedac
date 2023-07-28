@@ -19,7 +19,7 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
     test.beforeAll(async () => {
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -59,15 +59,15 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         await expect(page.locator('h1').filter({hasText: 'SOLICITUD DE ORDENES DE PAGO'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${selectBuscar}`).fill('JADE JOHNSON');
+        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
         // Elegir al socio buscado
-        await page.getByText('JADE JOHNSON').click();
+        await page.getByText(`${nombre} ${apellido}`).click();
 
         // La cedula del socio debe estar visible
-        await expect(page.locator('#form_DOCUMENTO_IDENTIDAD_SOLICITANTE')).toHaveValue('74611216343');
+        await expect(page.locator('#form_DOCUMENTO_IDENTIDAD_SOLICITANTE')).toHaveValue(`${cedula}`);
 
         // El correo del socio debe estar visible
-        await expect(page.locator('#form_CORREO_SOLICITANTE')).toHaveValue('JADE78@GMAIL.COM');
+        await expect(page.locator('#form_CORREO_SOLICITANTE')).toHaveValue(`${correo}@GMAIL.COM`);
 
         // Nombre Chequera
         await page.locator('#form_CHECKER_NAME').fill('Chequera 123');

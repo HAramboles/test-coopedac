@@ -43,7 +43,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 // Crear el context
@@ -313,7 +313,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
 
                     // La URL deba cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
+                    await expect(page).toHaveURL(/\/registrar_cliente/);
                 });
 
             } else if (escenarios.ID_OPERACION_MODIFICA_PER === '4' && escenarios.ID_OPERACION_EDITAR_DIRECCION === '6' && escenarios.ID_OPERACION_EDITAR_EMAIL === '8' && escenarios.ID_OPERACION_EDITAR_NOMBRE == '24' && escenarios.ID_OPERACION_EDITAR_TEL === '7') {

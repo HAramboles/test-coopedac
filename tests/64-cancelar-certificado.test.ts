@@ -17,7 +17,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -94,16 +94,14 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
 
         // Click en Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-        // Esperar que se abra una nueva pestaña con el reporte de cancelacion de certificado 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonAceptar).toBeVisible(),
-            await botonAceptar.click()
-        ]);
+        await expect(botonAceptar).toBeVisible();
+        await botonAceptar.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
 
         // Cerrar la pagina con el reporte de cancelacion de certificado
-        await newPage.close();
+        await page1.close();
 
         // Regresar a la pagina anterior y se debe mostrar un mensaje de que se cancelo correctamente el certificado
         await expect(page.locator('span').filter({hasText: 'Operación exitosa'})).toBeVisible();
@@ -158,7 +156,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
 
     test('Buscar al cuenta del Socio en los Certificados Cancelados', async () => {
         // Elegir el filtro de Canceladas
-        await page.getByText('Canceladas').click();
+        await page.getByText('Canceladas', {exact: true}).click();
 
         // Debe mostrarse el certificado cancelado
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();

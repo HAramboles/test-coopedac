@@ -26,7 +26,7 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 // Crear el context
@@ -90,7 +90,7 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                 await expect(page.locator('h1').filter({hasText: 'PIGNORACIÓN DE CUENTAS'})).toBeVisible();
         
                 // Buscar al socio
-                await page.locator(`${selectBuscar}`).fill('MAIRA PASCUAL');
+                await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
                 // Elegir la cuenta de Ahorro
                 await page.locator('text=AHORROS NORMALES').click();
             });

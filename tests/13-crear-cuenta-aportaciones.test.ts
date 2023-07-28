@@ -24,7 +24,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los difer
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser, con la propiedad headless
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 // Crear el context

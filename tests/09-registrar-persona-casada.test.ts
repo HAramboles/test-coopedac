@@ -58,7 +58,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

@@ -12,11 +12,11 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe('Pruebas con el Cobro de Servicios - Caja', () => {
+test.describe.serial('Pruebas con el Cobro de Servicios - Caja', () => {
     test.beforeAll(async () => {
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -82,7 +82,7 @@ test.describe('Pruebas con el Cobro de Servicios - Caja', () => {
 
     test('Distribuir un monto', async () => {
         // Titulo Entregado
-        await expect(page.locator('RECIBIDO')).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Recibido'})).toBeVisible();
 
         // Distribuir 1 de 100
         await page.locator('[id="4"]').fill('1');
@@ -97,16 +97,14 @@ test.describe('Pruebas con el Cobro de Servicios - Caja', () => {
 
     test('Guardar la distribucion', async () => {
         const botonGuardar = page.getByRole('button', {name: 'Guardar'});
-        // Debe abrir una nueva ventana con el recibo del cobro del servicio
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Guardar
-            await expect(botonGuardar).toBeVisible(),
-            await botonGuardar.click()
-        ]);
+        await expect(botonGuardar).toBeVisible();
+        await botonGuardar.click();
+
+        // Esperar a que se abra una nueva ventana
+        const page1 = await context.waitForEvent('page');
 
         // Cerrar la ventana con el recibo
-        await newPage.close();
+        await page1.close();
 
         // Debe regresar a la pagina anterior, y debe salir un mensaje
         await expect(page.locator('text=Otros ingresos almacenado exitosamente.')).toBeVisible();

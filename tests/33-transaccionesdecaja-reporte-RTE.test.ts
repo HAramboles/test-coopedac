@@ -23,7 +23,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
             test.beforeAll(async () => {
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

@@ -13,7 +13,7 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -51,16 +51,15 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
 
         // Imprimir los prestamos por vencer
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
-        // Esperar que se abra una nueva pestaña
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonImprimir).toBeVisible(),
-            await botonImprimir.click()
-        ]);
+        // Click al boton de Finalizar
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+
+        // Esperar que se abra una nueva pagina
+        const page1 = await context.newPage();
         
         // Cerrar la pagina con el reporte con los movimientos
-        await newPage.close();
+        await page1.close();
     });
 
     test('Cambiar fechas', async () => {
@@ -88,16 +87,15 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
 
         // Imprimir los prestamos por vencer
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
-        // Esperar que se abra una nueva pestaña
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonImprimir).toBeVisible(),
-            await botonImprimir.click()
-        ]);
+        // Click al boton de Finalizar
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+
+        // Esperar que se abra una nueva pagina
+        const page1 = await context.newPage();
         
         // Cerrar la pagina con el reporte con los movimientos
-        await newPage.close();
+        await page1.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

@@ -16,3 +16,5 @@ export const ariaCerrar:string = '[aria-label="close"]';
 export const formBuscar:string = '#form_search';
 export const selectBuscar:string = '#select-search';
 
+// Para que el browser se abra en la segunda pantalla
+// args: ['--window-position=-1300,100'],

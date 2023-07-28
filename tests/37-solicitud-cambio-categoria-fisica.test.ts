@@ -16,7 +16,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context

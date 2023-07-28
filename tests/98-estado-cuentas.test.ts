@@ -13,7 +13,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe('Prueba con el Estado de Cuenta', () => {
+test.describe.serial('Prueba con el Estado de Cuenta', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -32,7 +32,7 @@ test.describe('Prueba con el Estado de Cuenta', () => {
         await page.goto(`${url_base}`);
 
         // Cedula, nombre y apellido de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });

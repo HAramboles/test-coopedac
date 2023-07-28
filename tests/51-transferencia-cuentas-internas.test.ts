@@ -15,7 +15,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser= await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -30,7 +30,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await page.goto(`${url_base}`);
 
         // Cedula, nombre y apellido de la persona
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
     });
 
     test('Ir a la opcion de Transferencias Cuentas Internas', async () => {

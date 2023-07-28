@@ -18,7 +18,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             test.beforeAll(async () => {
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */
@@ -152,40 +152,10 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     // Cerrar el mensaje
                     await page.locator(`${dataCerrar}`).click();
                 });
-            
-                test('Probar el Deposito de Centavos - Boton de Deposito de la cuenta de Ahorros', async () => {
-                    // Boton de Deposito debe estar visible
-                    const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});
-                    await expect(botonDeposito).toBeVisible();
-                    // Click al boton 
-                    await botonDeposito.click();
-            
-                    // Debe aparecer un modal con las opciones para el deposito
-                    await expect(page.locator('text=DEPÓSITO A CUENTA AHORROS NORMALES')).toBeVisible();
-                });
-            
-                test('Probar el Deposito de Centavos - Datos del Deposito a la Cuenta de Ahorros', async () => {
-                    // Input del monto
-                    const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
-                    await expect(campoMonto).toBeVisible();
-                    await campoMonto.fill('200.05');
-            
-                    // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Deposito de 200.05 pesos a la cuenta de Ahorros');
-            
-                    // Boton Agregar
-                    await page.locator('text=Agregar').click();
-            
-                    // Debe salir un mensaje de que la operacion salio correctamente
-                    await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
-            
-                    // Cerrar el mensaje
-                    await page.locator(`${dataCerrar}`).click();
-                });
-            
+
                 test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
                     // Aplicar el deposito de la cuenta de ahorros
-                    await page.locator('text=Aplicar').first().click();
+                    await page.locator('text=Aplicar').click();
             
                     // Debe salir un modal para la distribucion de ingresos
                     await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();
@@ -222,23 +192,47 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                     // Hacer click al boton de Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
-            
-                    // Se abrira una nueva pagina con el reporte del deposito
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
-                    
-                    // La pagina abierta con el reporte del deposito se debe cerrar
-                    await newPage.close();
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
+
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
             
                     // Debe salir un modal
                     await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
             
                     // Click en Cancelar
                     await page.locator('text=Cancelar').click();
+                });
+            
+                test('Probar el Deposito de Centavos - Boton de Deposito de la cuenta de Ahorros', async () => {
+                    // Boton de Deposito debe estar visible
+                    const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});
+                    await expect(botonDeposito).toBeVisible();
+                    // Click al boton 
+                    await botonDeposito.click();
+            
+                    // Debe aparecer un modal con las opciones para el deposito
+                    await expect(page.locator('text=DEPÓSITO A CUENTA AHORROS NORMALES')).toBeVisible();
+                });
+            
+                test('Probar el Deposito de Centavos - Datos del Deposito a la Cuenta de Ahorros', async () => {
+                    // Input del monto
+                    const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
+                    await expect(campoMonto).toBeVisible();
+                    await campoMonto.fill('200.05');
+            
+                    // Agregar un comentario
+                    await page.locator('#form_COMENTARIO').fill('Deposito de 200.05 pesos a la cuenta de Ahorros');
+            
+                    // Boton Agregar
+                    await page.locator('text=Agregar').click();
+            
+                    // Debe salir un mensaje de que la operacion salio correctamente
+                    await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
                 });
             
                 test('Probar el Deposito de Centavos - Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {

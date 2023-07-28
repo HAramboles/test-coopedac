@@ -18,7 +18,7 @@ test.describe.serial('Pruebas con el Debito a la Cuenta de Certificado - Financi
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context

@@ -31,7 +31,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser, con la propiedad headless
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 // Crear el context

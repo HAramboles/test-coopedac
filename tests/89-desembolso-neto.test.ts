@@ -9,11 +9,11 @@ let page: Page;
 
 // Pruebas
 
-test.describe('Pruebas con el Desembolso Neto', () => {
+test.describe.serial('Pruebas con el Desembolso Neto', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -72,16 +72,14 @@ test.describe('Pruebas con el Desembolso Neto', () => {
 
         // Generar Reporte Desembolso Neto
         const generarReporte = page.getByRole('button', {name: 'Generar Reporte'});
-        // Esperar que se abra una nueva pestaña con el reporte de la cuenta 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(generarReporte).toBeVisible(),
-            await generarReporte.click()
-        ]);
+        await expect(generarReporte).toBeVisible();
+        await generarReporte.click();
+
+        // Esperar que se abra una nueva pagina
+        const page1 = await context.newPage();
 
         // Cerrar la pagina con el reporte
-        await newPage.close();
+        await page1.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

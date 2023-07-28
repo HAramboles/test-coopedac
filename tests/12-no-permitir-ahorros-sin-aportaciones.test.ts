@@ -21,7 +21,7 @@ test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 // Crear el context

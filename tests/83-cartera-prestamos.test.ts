@@ -13,7 +13,7 @@ test.describe('Pruebas con la Cartera de Prestamos', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -57,16 +57,14 @@ test.describe('Pruebas con la Cartera de Prestamos', () => {
 
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
-        // Esperar que se abra una nueva ventana con el reporte 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Imprimir
-            await expect(botonImprimir).toBeVisible(),
-            await botonImprimir.click()
-        ]);
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte
+        const page1 = await context.newPage();
 
         // Cerrar la ventana con el reporte
-        await newPage.close();
+        await page1.close();
 
         // Debe regresar a la ventana anterior
         await expect(tituloPrincipal).toBeVisible();

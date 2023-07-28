@@ -20,7 +20,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -134,7 +134,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await expect(page.getByRole('cell', {name: '5.00'})).toBeVisible();
 
         // Nueva Tasa
-        await expect(page.getByRole('cell', {name: '10.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '10', exact: true})).toBeVisible();
         
         // Plazo
         await expect(page.getByRole('cell', {name: '24'})).toBeVisible();
@@ -164,7 +164,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
 
     test('Firmantes del Certificado - Financieros Reinvertidas', async () => {
         // Nombre del titular
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido} TITULAR`})).toBeVisible();
 
         // Debe mostarse el tipo de firmante
         await expect(page.getByRole('cell', {name: 'TITULAR'})).toBeVisible();

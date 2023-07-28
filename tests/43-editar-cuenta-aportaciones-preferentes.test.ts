@@ -27,7 +27,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
 
                 // Crear el context

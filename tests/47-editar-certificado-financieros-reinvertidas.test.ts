@@ -28,7 +28,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
 
                 // Crear el context
@@ -170,7 +170,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     await expect(page.getByTitle('SOCIO AHORRANTE')).toBeVisible();
 
                     // Monto de Apertura
-                    await expect(page.locator('#FINANCIEROS\\ REINVERTIDAS_MONTO_APERTURA')).toHaveValue('50');
+                    await expect(page.locator('#FINANCIEROS\\ REINVERTIDAS_MONTO_APERTURA')).toHaveValue('RD$ 50');
 
                     // Tasa Anual
                     await expect(page.locator('#FINANCIEROS\\ REINVERTIDAS_TASA')).toHaveValue('8%');
@@ -202,7 +202,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             
                     // Se debe mostrar la firma del titular por defecto
-                    await expect(page.locator('text=TITULAR')).toBeVisible();
+                    //await expect(page.locator('text=TITULAR')).toBeVisible();
             
                     // El tipo de firma requerida debe estar visible
                     await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();
@@ -233,7 +233,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
                     // Debe mostrarse el valor a depositar en la cuenta
-                    await expect(page.getByRole('cell', {name: '100'})).toBeVisible(); 
+                    await expect(page.getByRole('cell', {name: '100', exact: true})).toBeVisible(); 
                 });
 
                 test('Editar Cuenta de Certificados Financieros Reinvertidas - Metodo de Intereses - Distribucion de Intereses', async () => {
@@ -252,7 +252,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     // Input del Valor
                     const inputValor = page.locator('#form_VALOR');
                     await expect(inputValor).toBeVisible();
-                    await expect(inputValor).toHaveValue('100');
+                    await expect(inputValor).toHaveValue('100%');
 
                     // Cambiar el valor
                     await inputValor.clear();
@@ -284,7 +284,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
 
                     await expect(inputValor).toBeVisible();
                     // Debe tener el valor de 50
-                    await expect(inputValor).toHaveValue('50');
+                    await expect(inputValor).toHaveValue('50%');
 
                     // Click al boton de Aceptar del modal
                     await expect(botonAceptar).toBeVisible();

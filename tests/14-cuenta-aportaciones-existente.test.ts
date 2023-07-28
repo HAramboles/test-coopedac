@@ -21,7 +21,7 @@ test.describe.serial('No permitir Crear una Nueva Cuenta de Aportaciones al mism
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser, con la propiedad headless
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 // Crear el context

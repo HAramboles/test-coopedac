@@ -22,7 +22,7 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
         
                 // Crear el context
@@ -83,26 +83,26 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                 await expect(page.locator('h1').filter({hasText: 'PIGNORACIÓN DE CUENTAS'})).toBeVisible();
         
                 // Buscar al socio
-                await page.locator(`${selectBuscar}`).fill('MAIRA PASCUAL');
+                await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
                 // Elegir la cuenta de Ahorro
                 await page.locator('text=AHORROS NORMALES').click();
             });
 
-            test.skip('Datos de la cuenta', async () => {
+            test('Datos de la cuenta', async () => {
                 // Tipo de cuenta
                 await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('AHORROS NORMALES');
         
                 // Balance
-                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 24,100');
+                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 2,073,700');
         
                 // Transito
                 await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('RD$ 0');
         
                 // Pignorado
-                await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 100');
+                await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 250');
         
                 // Disponible
-                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 23,900');
+                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 2,073,250');
         
                 // Estado de Cuenta
                 await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');
@@ -123,8 +123,7 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                     await expect(page.locator('h1').filter({hasText: 'RAZÓN DE LIBERACIÓN'})).toBeVisible();
             
                     // Razon
-                    await expect(page.getByText('RAZON DE DESPINORACION')).toBeVisible();
-                    // await expect(page.getByText('RAZON DE DESPIGNORACION')).toBeVisible();
+                    await expect(page.getByText('RAZON DE DESPIGNORACION')).toBeVisible();
             
                     // Comentario
                     await page.locator('#form_DESC_RAZON_DESPIGNORACION').fill('Despignorar los 150 pesos pignorados anteriormente');

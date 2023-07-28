@@ -20,7 +20,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser= await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -35,7 +35,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await page.goto(`${url_base}`);
 
         // Cedula de la persona alamcenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
 
         // Cedula, nombre y apellido de la persona relacionada almacenada en el state
         cedulaRelacionada = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
@@ -85,7 +85,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await expect(page.getByText('AHORROS NORMALES')).toBeVisible();
 
         // Seleccionar la cuenta de Aportaciones del socio
-        await page.getByText('AHORROS NORMALES').click();
+        await page.getByText(`| ${nombreRelacionada} ${apellidoRelacionada}`).last().click();
 
         // Titulo detalle de la transaccion
         await expect(page.locator('h1').filter({hasText: 'Detalle De La Transacción'})).toBeVisible();

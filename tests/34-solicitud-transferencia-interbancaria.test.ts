@@ -16,7 +16,7 @@ let apellido: string | null;
 test.describe.serial('Pruebas con la Solicitud de Transferencia Interbancaria', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         browser = await chromium.launch({ 
-          headless: false
+          headless: false,
         });
     
         // Crear el context

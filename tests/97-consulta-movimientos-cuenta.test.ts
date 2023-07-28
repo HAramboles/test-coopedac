@@ -15,7 +15,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe('Pueba con el Historial de los Movimientos de una Cuenta', () => {
+test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({

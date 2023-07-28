@@ -8,11 +8,11 @@ let page: Page;
 
 // Pruebas
 
-test.describe('Pruebas con las Denominaciones por Caja', () => {
+test.describe.serial('Pruebas con las Denominaciones por Caja', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -50,7 +50,7 @@ test.describe('Pruebas con las Denominaciones por Caja', () => {
 
         // Debe mostrare otro titulo de denominaciones
         // Como no hay una caja seleccionada solo debe mostrarse la palabra denominaciones
-        await expect(page.getByRole('heading', {name: 'DENOMINACIONES', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Denominaciones', exact: true })).toBeVisible();
 
         // La sucursal por defecto debe ser todas las sucursales
         const todasSucursales = page.getByText('TODAS LAS SUCURSALES');
@@ -72,22 +72,22 @@ test.describe('Pruebas con las Denominaciones por Caja', () => {
         await expect(page.locator('h1').filter({hasText: 'DENOMINACIONES CAJA DE TESTING'})).toBeVisible();
 
         // Cambiar de sucursal
-        await page.getByText('INFORMES').click();
+        await page.locator('#root').getByText('INFORMES').click();
         // Elegir oficina empo
         await page.getByText('OFICINA EMPO').click();
 
-        // Debe mostrarse la caja aperdomo
-        const cajaAperdomo = page.getByText('APERDOMO');
+        // Debe mostrarse  aperdomo
+        const cajaAperdomo = page.getByText('APERDOMO', {exact: true});
         await expect(cajaAperdomo).toBeVisible();
 
-        // Seleccionar la caja de aperdomo, y el titulo debe cambiar
+        // Seleccionar aperdomo, y el titulo debe cambiar
         await cajaAperdomo.click();
         await expect(page.locator('h1').filter({hasText: 'DENOMINACIONES APERDOMO'})).toBeVisible();
 
         // Cambiar de sucursal
-        await page.getByText('OFICINA EMPO').click();
+        await page.locator('#root').getByText('OFICINA EMPO').click();
         // Elegir oficina principal
-        await page.getByText('OFICINA PRINCIPAL').click();
+        await page.getByText('OFICINA PRINCIPAL', {exact: true}).click();
 
         // Debe mostrarse la caja bpsharamboles
         const cajaBPSH = page.getByText('CAJA BPSHARAMBOLES');

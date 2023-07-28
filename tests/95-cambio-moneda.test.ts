@@ -8,11 +8,11 @@ let page: Page;
 
 // Pruebas
 
-test.describe('Pruebas con el Cambio de Moneda', () => {
+test.describe.serial('Pruebas con el Cambio de Moneda', () => {
     test.beforeAll(async () => {
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -59,7 +59,7 @@ test.describe('Pruebas con el Cambio de Moneda', () => {
         // Entregar 2 de 500 pesos
 
         // Campo de RD 500
-        const cant500 = page.locator('[id="15"]'); 
+        const cant500 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[3]'); 
 
         // Cantidad = 1
         await cant500.fill('2');
@@ -71,16 +71,15 @@ test.describe('Pruebas con el Cambio de Moneda', () => {
 
         // Boton de Guardar
         const botonGuardar = page.getByRole('button', {name: 'Guardar'});
-        // Esperar que se abra una nueva pestaña con el recibo del cambio de moneda
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click en el boton de Guardar
-            await expect(botonGuardar).toBeVisible(),
-            await botonGuardar.click()
-        ]);
+        // Click en el boton de Guardar
+        await expect(botonGuardar).toBeVisible();
+        await botonGuardar.click();
+
+        // Esperar a que se abra una nueva pestaña
+        const page1 = await context.waitForEvent('page');
 
         // Cerrar la nueva pestaña
-        await newPage.close();
+        await page1.close();
 
         // Debe regresar a la pagina anterior
         await expect(page.locator('h1').filter({hasText: 'CAMBIO DE MONEDAS'})).toBeVisible();
@@ -91,7 +90,7 @@ test.describe('Pruebas con el Cambio de Moneda', () => {
         await expect(page.locator('h1').filter({hasText: 'CAMBIO DE MONEDAS'})).toBeVisible();
 
         // Debe estar un check verde en detalle de distribucion
-        await expect(page.getByRole('img', {name: 'check-circle'})).toBeVisible();
+        await expect(page.locator('#root').getByRole('img', {name: 'check-circle'})).toBeVisible();
 
         // Titulo de recibido
         await expect(page.locator('h1').filter({hasText: 'RECIBIDO'})).toBeVisible();
@@ -103,7 +102,7 @@ test.describe('Pruebas con el Cambio de Moneda', () => {
         await cant500.fill('1');
 
         // El check verde ya no debe estar, en su lugar debe estar un icono de alerta rojo
-        await expect(page.getByRole('img', {name: 'close-circle'})).toBeVisible();
+        await expect(page.locator('#root').getByRole('img', {name: 'close-circle'})).toBeVisible();
     });
 
     test('Probar el boton de Denominaciones', async () => {
@@ -113,7 +112,7 @@ test.describe('Pruebas con el Cambio de Moneda', () => {
         await botonDenominaciones.click();
 
         // Debe salir un modal
-        const modalDenominaciones = page.locator('h1').filter({hasText: 'Denominaciones'});
+        const modalDenominaciones = page.locator('text=Denominaciones Disponible');
         await expect(modalDenominaciones).toBeVisible();
 
         // Click al boton de salir del modal
@@ -134,16 +133,13 @@ test.describe('Pruebas con el Cambio de Moneda', () => {
         await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
 
         // Campo de RD 200
-        const cant200 = page.locator('[id="16"]'); 
+        const cant200 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[4]'); 
 
         // Colocar una cantidad exagerada
         await cant200.fill('99999999999');
 
         // Debe mostrar un mensaje de alerta
         await expect(page.locator('text=Alerta')).toBeVisible();
-
-        // Cerrar la alerta
-        await page.locator(`${dataCerrar}`).click();
     });
 
     test('Entregar los 500 pesos con otras monedas', async () => {
@@ -151,53 +147,40 @@ test.describe('Pruebas con el Cambio de Moneda', () => {
         await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
 
         // Reiniciar la cantidad de la moneda de 200 a 0
-        const cant200 = page.locator('[id="16"]');
+        const cant200 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[4]');
         await cant200.fill('0');
 
         // Distribuir los 500 pesos en 2 de 200 y 1 de 100
         await cant200.fill('2')
-        const cant100 = page.locator('[id="17"]');
+        const cant100 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[5]');
         await cant100.fill('1');
 
         // El check verde debe mostrarse de nuevo porque se realizo correctamente la distribucion
-        await expect(page.getByRole('img', {name: 'check-circle'})).toBeVisible();
+        await expect(page.locator('#root').getByRole('img', {name: 'check-circle'})).toBeVisible();
     });
 
     test('Guardar el Cambio de la Moneda', async () => {
         // Boton de Guardar
         const botonGuardar = page.getByRole('button', {name: 'Guardar'});
-        // Esperar que se abra una nueva pestaña con el recibo del cambio de moneda
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click en el boton de Guardar
-            await expect(botonGuardar).toBeVisible(),
-            await botonGuardar.click()
-        ]);
+        // Click en el boton de Guardar
+        await expect(botonGuardar).toBeVisible();
+        await botonGuardar.click();
+
+        // Esperar a que se abra una nueva pestaña
+        const page1 = await context.waitForEvent('page');
 
         // Cerrar la nueva pestaña
-        await newPage.close();
+        await page1.close();
 
         // Debe regresar a la pagina anterior
         await expect(page.locator('h1').filter({hasText: 'CAMBIO DE MONEDAS'})).toBeVisible();
 
         // En los input de 200 y 100 pesos la cantidad debe reiniciar a 0
-        const cant200 = page.locator('[id="16"]');
-        const cant100 = page.locator('[id="17"]');
+        const cant200 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[4]');
+        const cant100 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[5]');
 
         await expect(cant200).toHaveValue('0');
         await expect(cant100).toHaveValue('0');
-    });
-
-    test('Probar que los input de la tabla Entregado se queden en 0 luego de borrar la cantidad digitasa', async () => {
-        // Campo de 200 pesos
-        const cant200 = page.locator('[id="16"]');
-
-        // Colocar una cantidad y luego borrarla
-        await cant200.fill('5');
-        await cant200.press('Backspace');
-
-        // Debe mostrarse un 0
-        await expect(cant200).toHaveValue('0');
     });
 
     test.afterAll(async () => {

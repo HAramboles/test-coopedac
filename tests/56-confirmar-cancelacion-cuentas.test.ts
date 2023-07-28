@@ -16,7 +16,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context 

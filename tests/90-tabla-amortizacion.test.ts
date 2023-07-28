@@ -34,11 +34,11 @@ mes12.setMonth(mes12.getMonth() + 12);
 
 // Pruebas
 
-test.describe('Pruebas con la Tabla de Amortizacion', () => {
+test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -53,7 +53,7 @@ test.describe('Pruebas con la Tabla de Amortizacion', () => {
         await page.goto(`${url_base}`);
 
         // Cedula, nombre ya apellido de la persona
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });

@@ -17,7 +17,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false
+            headless: false,
         });
 
         // Crear el context
@@ -75,7 +75,8 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         await page.locator('#form_MONTO').fill('500');
 
         // Click al selector de cajero
-        const selectorCajero = page.locator('#form_ID_PERSONAL_ASIGNADO')
+        // const selectorCajero = page.locator('#form_ID_PERSONAL_ASIGNADO');
+        const selectorCajero = page.getByText('TODOS', {exact: true});
         await selectorCajero.click();
 
         // Seleccionar la primera opcion con el nombre del cajero
@@ -106,7 +107,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Sesiones en Transito
-        await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
+        await page.getByRole('menuitem', {name: 'Sesiones en Tránsito', exact: true}).click();
 
         // Debe salir un modal de confirmacion
         await expect(page.locator('text=Si cambia de página es posible que pierda la información de la página actual.')).toBeVisible();
@@ -130,8 +131,8 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         // Buscar al socio
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
-        // Debe aparecer el nombre del socio
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        // Debe aparecer el concepto
+        await expect(page.getByRole('cell', {name: 'COBRO DE SERVICIOS DE OTROS INGRESOS'})).toBeVisible();
 
         // Boton de Seleccinar
         const botonSeleccionar = page.getByRole('button', {name: 'Seleccionar'});

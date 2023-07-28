@@ -23,7 +23,7 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
                 });
 
                 // Crear el context

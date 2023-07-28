@@ -367,7 +367,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     // Input del Valor
                     const inputValor = page.locator('#form_VALOR');
                     await expect(inputValor).toBeVisible();
-                    await expect(inputValor).toHaveValue('100');
+                    await expect(inputValor).toHaveValue('100%');
 
                     // Cambiar el valor
                     await inputValor.clear();
@@ -399,7 +399,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
 
                     await expect(inputValor).toBeVisible();
                     // Debe tener el valor de 50
-                    await expect(inputValor).toHaveValue('50');
+                    await expect(inputValor).toHaveValue('50%');
 
                     // Click al boton de Aceptar del modal
                     await expect(botonAceptar).toBeVisible();
