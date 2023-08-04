@@ -25,6 +25,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los difer
                 // Crear el browser, con la propiedad headless
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

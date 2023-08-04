@@ -24,6 +24,7 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

@@ -17,6 +17,7 @@ test.describe.serial('Pruebas con la Reimpresion de Solicitud de Transferencia I
         // Crear el browser
         browser = await chromium.launch({
             headless: false,
+            args: ['--window-position=-1300,100'],
         });
 
         // Crear el context

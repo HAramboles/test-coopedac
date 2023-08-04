@@ -2,7 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
 import { url_base, ariaCerrar } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
-import { nombrePersonaFisica, apellidoPersonaFisica } from './00-nombresyapellidos-personas';
+import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 
 // Variables globales
 let browser: Browser;
@@ -33,7 +33,8 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

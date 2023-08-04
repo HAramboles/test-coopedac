@@ -15,7 +15,15 @@ const formatDate = (inputDate: Date) => {
 const diaActual = new Date();
 const primerDiaMes = formatDate(new Date(diaActual.getFullYear(), diaActual.getMonth(), 1));
 
+// Dia anterior al dia actual
+const diaAnterior = formatDate(new Date(diaActual.setDate(diaActual.getDate() - 1)));
+
+// Dia siguiente al dia actual
+const diaSiguiente = formatDate(new Date(diaActual.setDate(diaActual.getDate() - 1)));
+
 export {
   formatDate,
-  primerDiaMes
+  primerDiaMes,
+  diaAnterior,
+  diaSiguiente
 }

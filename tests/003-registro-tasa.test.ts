@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/utils';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, dataGuardar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -59,6 +59,7 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
 
                 // Crear el context
@@ -142,7 +143,7 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
                     await page.locator('input[role="spinbutton"]').fill('56');
 
                     // Click en guardar tasa
-                    await page.locator('[data-icon="save"]').click();
+                    await page.locator(`${dataGuardar}`).click();
 
                     // Debe aparecer un mensaje preguntando si se guardara la tasa o no
                     const mensajeConfirmacion = page.locator('text=¿Deseas guardar la operación?');

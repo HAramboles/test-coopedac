@@ -3,7 +3,7 @@ import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulas
 import { formatDate } from './utils/utils';
 import { url_base, ariaCerrar } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
-import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './00-nombresyapellidos-personas';
+import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './000-nombresyapellidos-personas';
 
 // Vaiables globales 
 let browser: Browser;
@@ -36,6 +36,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

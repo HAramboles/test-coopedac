@@ -28,6 +28,7 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

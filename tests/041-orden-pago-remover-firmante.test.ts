@@ -29,6 +29,7 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

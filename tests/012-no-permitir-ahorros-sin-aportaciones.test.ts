@@ -22,6 +22,7 @@ test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

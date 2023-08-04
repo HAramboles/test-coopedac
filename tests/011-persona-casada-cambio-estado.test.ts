@@ -23,7 +23,8 @@ test.describe.serial('Cambio de Estado de la Persona Casada - Pruebas con los di
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false
+                    headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

@@ -10,6 +10,7 @@ export const dataCerrar:string = '[data-icon="close"]';
 export const dataPrinter:string = '[data-icon="printer"]';
 export const dataExport:string = '[data-icon="export"]';
 export const dataFile:string = '[data-icon="file-text"]';
+export const dataGuardar:string = '[data-icon="save"]';
 
 export const ariaCerrar:string = '[aria-label="close"]';
 

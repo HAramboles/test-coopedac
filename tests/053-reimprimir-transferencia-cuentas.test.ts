@@ -18,6 +18,7 @@ test.describe.serial('Pruebas con la Reimpresion de la Transferencia entre Cuent
         // Crear el browser
         browser = await chromium.launch({
             headless: false,
+            args: ['--window-position=-1300,100'],
         });
 
         // Crear el context

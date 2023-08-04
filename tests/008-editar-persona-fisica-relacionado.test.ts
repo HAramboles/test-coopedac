@@ -2,7 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
 import { url_base, formBuscar } from './utils/dataTests';
 import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
-import { apellidoPersonaFisica } from './00-nombresyapellidos-personas';
+import { apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 
 // Variables globales
 let browser: Browser;
@@ -44,6 +44,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context
@@ -101,6 +102,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             const actualizarContinuar = async () => {
                 // continuar
                 const botonContinuar = page.locator('button:has-text("Actualizar y continuar")');
+                await expect(botonContinuar).toBeVisible();
                 // presionar el boton
                 await botonContinuar.click();
             };
@@ -454,6 +456,9 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             test.afterAll(async () => { // Despues de las pruebas
                 // Sustituir el apellido de la persona relacionada guardada en el state por el nuevo apellido
                 await page.evaluate((nuevoApellidoPersona) => window.localStorage.setItem('apellidoPersonaJuridicaRelacionada', nuevoApellidoPersona), nuevoApellidoPersona);
+
+                // Guardar nuevamente el Storage con el apellido actualizado de la persona
+                await context.storageState({path: 'state.json'});
                 
                 // Cerrar la page
                 await page.close();

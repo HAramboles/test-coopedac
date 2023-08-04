@@ -17,6 +17,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la P
         // Crear el browser
         browser = await chromium.launch({
             headless: false,
+            args: ['--window-position=-1300,100'],
         });
         
         // Crear el context

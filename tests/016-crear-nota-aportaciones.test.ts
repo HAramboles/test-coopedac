@@ -21,6 +21,7 @@ test.describe.serial('Pruebas agregando y completando notas', async () => {
         // Crear el browser
         browser = await chromium.launch({
             headless: false,
+            args: ['--window-position=-1300,100'],
         });
 
         // Crear el context

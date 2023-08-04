@@ -22,6 +22,7 @@ test.describe.serial('No permitir Crear una Nueva Cuenta de Aportaciones al mism
                 // Crear el browser, con la propiedad headless
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

@@ -32,6 +32,7 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

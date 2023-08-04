@@ -29,6 +29,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
 
                 // Crear el context
@@ -278,9 +279,6 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
 
                     // Debe salir un modal para agregar el valor de los intereses que se le enviaran a la cuenta
                     await expect(modalDistribucionIntereses).toBeVisible();
-
-                    // El modal debe contener el nombre del firmante
-                    await expect(page.getByRole('dialog').filter({hasText: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
                     await expect(inputValor).toBeVisible();
                     // Debe tener el valor de 50

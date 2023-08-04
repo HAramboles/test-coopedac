@@ -9,7 +9,7 @@ import {
 } from './utils/cedulasypasaporte';
 import { url_base, ariaCerrar } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
-import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './00-nombresyapellidos-personas';
+import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './000-nombresyapellidos-personas';
 
 // Variables Globales
 let browser: Browser;
@@ -53,6 +53,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

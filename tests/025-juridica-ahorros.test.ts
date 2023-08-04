@@ -31,6 +31,7 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

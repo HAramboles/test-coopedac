@@ -15,6 +15,7 @@ test.describe.serial('No permitir una Transferencia Interbancaria si la cuenta d
     test.beforeAll(async () => { // Antes de las pruebas
         browser = await chromium.launch({
           headless: false,
+          args: ['--window-position=-1300,100'],
         });
     
         // Crear el context

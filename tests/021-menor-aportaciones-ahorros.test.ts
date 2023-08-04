@@ -32,6 +32,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context
@@ -313,15 +314,15 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // Debe estar la firma del titular por defecto
                     await expect(page.getByText('TITULAR')).toBeVisible();
 
-                    // // Boton de Guardar y Continuar, probar que no se pueda continuar sin agregar un representante
+                    // Boton de Guardar y Continuar, probar que no se pueda continuar sin agregar un representante
                     const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
                     await expect(botonGuardaryContinuar).toBeVisible();
                     // await botonGuardaryContinuar.click();
 
-                    // // Se debe mostrar un mensaje
-                    // await expect(page.locator('text=Debe agregar como firmante al representante legal del socio.')).toBeVisible();
-                    // // Click en Aceptar
-                    // await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // Se debe mostrar un mensaje
+                    await expect(page.locator('text=Debe agregar como firmante al representante legal del socio.')).toBeVisible();
+                    // Click en Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
             
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.getByRole('button', {name: 'plus Agregar Firmante'});

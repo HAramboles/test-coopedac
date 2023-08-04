@@ -24,6 +24,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context
@@ -237,7 +238,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     await botonActualizar.click();
 
                     // Esperar que se abra una nueva pagina con la vista previa de la libreta
-                    const page1 = await context.newPage();
+                    const page1 = await context.waitForEvent('page');
             
                     // El titulo de actualzar libreta debe estar visible
                     await expect(page1.locator('h1').filter({hasText: 'ACTUALIZAR LIBRETA'})).toBeVisible();

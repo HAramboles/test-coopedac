@@ -22,6 +22,7 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
         /* Crear el browser, en este caso el chromiun */
         browser = await chromium.launch({
             headless: false,
+            args: ['--window-position=-1300,100'],
         });
 
         /* Crear un context */

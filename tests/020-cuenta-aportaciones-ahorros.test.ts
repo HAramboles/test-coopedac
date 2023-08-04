@@ -32,6 +32,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                 // Crear el browser, con la propiedad headless
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 // Crear el context

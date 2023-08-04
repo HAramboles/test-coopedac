@@ -21,6 +21,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         // Crear el browser
         browser= await chromium.launch({
             headless: false,
+            args: ['--window-position=-1300,100'],
         });
 
         // Crear el context

@@ -19,6 +19,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

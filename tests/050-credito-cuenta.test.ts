@@ -19,6 +19,7 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
         // Crear el browser
         browser = await chromium.launch({
             headless: false,
+            args: ['--window-position=-1300,100'],
         });
 
         // Crear el context

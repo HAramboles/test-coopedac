@@ -17,6 +17,7 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         // Crear el browser
         browser = await chromium.launch({
             headless: false,
+            args: ['--window-position=-1300,100'],
         });
 
         // Crear el context

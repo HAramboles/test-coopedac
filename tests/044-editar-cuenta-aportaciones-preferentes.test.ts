@@ -28,6 +28,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: false,
+                    args: ['--window-position=-1300,100'],
                 });
 
                 // Crear el context
