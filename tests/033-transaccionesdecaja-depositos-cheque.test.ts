@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, dataGuardar } from './utils/dataTests';
-import { diaAnterior } from './utils/utils';
+import { url_base, ariaCerrar, selectBuscar, dataGuardar, dataCerrar } from './utils/dataTests';
+import { diaAnterior } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 
 // Variables globales
@@ -259,6 +259,12 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                     const botonCancelar = page.getByRole('button', {name: 'Cancelar'});
                     await expect(botonCancelar).toBeVisible();
                     await botonCancelar.click();
+
+                    // Cerrar las alertas que aparecen
+                    await page.locator(`${dataCerrar}`).first().click();
+                    await page.locator(`${dataCerrar}`).first().click();
+                    await page.locator(`${dataCerrar}`).first().click();
+                    await page.locator(`${dataCerrar}`).last().click();
 
                     // Click al boton de liberaar sesion
                     const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});

@@ -167,7 +167,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await expect(botonActualizar).toBeVisible();
 
                     // Click al boton de Actualizar
-                    await botonActualizar.click();
+                    await page.getByRole('button', {name: 'Omitir'}).click();
                 });
 
                 test('Editar Cuenta de Aportaciones Preferentes - Firmantes y Contactos', async () => {

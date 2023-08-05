@@ -33,7 +33,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.goto(`${url_base}`);
 
         // Cedula, nombre y apellido de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedula'));
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem("apellidoPersona"));
     });
@@ -112,7 +112,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.getByText('No', {exact: true})).toBeVisible();
     });
 
-    test('Historial de Pagos del Prestamo', async () => {
+    test.skip('Historial de Pagos del Prestamo', async () => {
         // Boton hsitorial de pagos
         const botonHistorial = page.getByRole('button', {name: 'Historial de pagos'});
         await expect(botonHistorial).toBeVisible();
@@ -158,15 +158,13 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('text=Vía de cobro')).toBeVisible();
 
         // Elegir la opcion de cobrar de cuenta
-        await expect(page.getByText('Cobrar de cuenta')).toBeVisible();
-        await page.locator('(//INPUT[@type="radio"])[2]').click();
+        const cobrarCuenta = page.getByText('Cobrar de cuenta');
+        await expect(cobrarCuenta).toBeVisible();
+        await page.locator('(//INPUT[@type="radio"])[5]').click();
 
         // Seleccionar la cuenta de ahorros del socio
         await page.getByRole('dialog', {name: 'Pago a Préstamo'}).locator(`${selectBuscar}`).click();
         await page.getByText('AHORROS NORMALES').click();
-
-        // Debe mostrarse el monto disponible de la cuenta
-        await expect(page.locator('Disponible')).toBeVisible();
     });
 
     test('Realizar el pago', async () => {

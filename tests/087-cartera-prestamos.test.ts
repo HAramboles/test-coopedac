@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base } from './utils/dataTests';
-import { formatDate } from './utils/utils';
+import { formatDate } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;

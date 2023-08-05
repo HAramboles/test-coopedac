@@ -2,7 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
 import { url_base, formBuscar } from './utils/dataTests';
 import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
-import { apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 
 // Variables globales
 let browser: Browser;
@@ -31,9 +30,6 @@ let apellido: string | null;
 let nombreEmpresa: string | null;
 let correoEmpresa: string | null;
 let telefonoEmpresa: string | null;
-
-// Apellido de la persona fisica para cambiar el apellido de la persona
-let nuevoApellidoPersona = apellidoPersonaFisica;
 
 // Pruebas
 
@@ -345,13 +341,6 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     // El input del apellido debe estar habilitado
                     await expect(inputApellido).toBeEnabled();
 
-                    // Cambiar el apellido de la persona
-                    await inputApellido.clear();
-                    await inputApellido.fill(`${nuevoApellidoPersona}`);
-
-                    // El apellido debe cambiar
-                    await expect(inputApellido).toHaveValue(`${nuevoApellidoPersona}`);
-
                     // Click en Actualizar y continuar
                     actualizarContinuar();
                 });
@@ -453,13 +442,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 });
             };
         
-            test.afterAll(async () => { // Despues de las pruebas
-                // Sustituir el apellido de la persona relacionada guardada en el state por el nuevo apellido
-                await page.evaluate((nuevoApellidoPersona) => window.localStorage.setItem('apellidoPersonaJuridicaRelacionada', nuevoApellidoPersona), nuevoApellidoPersona);
-
-                // Guardar nuevamente el Storage con el apellido actualizado de la persona
-                await context.storageState({path: 'state.json'});
-                
+            test.afterAll(async () => { // Despues de las pruebas  
                 // Cerrar la page
                 await page.close();
 

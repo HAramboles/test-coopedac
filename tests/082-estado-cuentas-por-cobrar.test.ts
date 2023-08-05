@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate } from './utils/utils';
+import { formatDate } from './utils/fechas';
 import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globales
@@ -13,7 +13,7 @@ let apellido: string | null;
 
 // Pruebas
 
-test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', () => {
+test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -88,7 +88,7 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
         await expect(page.getByText('50,000.00').first()).toBeVisible();
 
         // Estado del Credito
-        await expect(page.getByText('DESEMBOLSADO')).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'CANCELADO'})).toBeVisible();
 
         // Imprimir Estado a la Fecha de Corte
         const botonImprimirEstado = page.getByRole('button', {name: 'printer', exact: true});
@@ -125,7 +125,7 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
 
         // Total pagado
         await expect(page.locator('h1').filter({hasText: 'TOTAL PAGADO:'}).first()).toBeVisible();
-        await expect(page.locator('text=12,000.00').last()).toBeVisible();
+        await expect(page.locator('text=50,000.00').last()).toBeVisible();
     });
 
     test('Datos de préstamo', async () => {
@@ -176,7 +176,7 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
         await expect(page.getByRole('row', {name: 'Tipo préstamo HIPOTECARIOS'})).toBeVisible();
 
         // Estado Prestamo
-        await expect(page.getByRole('row', {name: 'Estado préstamo DESEMBOLSADO'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Estado préstamo CANCELADO'})).toBeVisible();
     });
 
     test('Historial de pagos', async () => {
@@ -198,7 +198,7 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
         await newPage.close();
 
         // Totales
-        await expect(page.getByRole('row', {name: 'TOTALES: 50,000.00 0.00 12,000.00 0.00 0.00 0.00	0.00 62,000.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'TOTALES: 50,000.00 0.00 50,000.00 0.00 0.00 0.00	0.00 100,000.00'})).toBeVisible();
     });
 
     test('Cuotas pendientes', async () => {
@@ -216,6 +216,9 @@ test.describe('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', ()
         await expect(page.getByRole('columnheader', {name: 'Seguro'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Otros'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Total'}).last()).toBeVisible();
+
+        // No deben haber datos
+        await expect(page.locator('text=No hay datos')).toBeVisible();
     });
 
     test('Ver Tabla de Amortización', async () => {

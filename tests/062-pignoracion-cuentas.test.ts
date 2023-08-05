@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { formatDate } from './utils/utils';
+import { formatDate } from './utils/fechas';
 import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/interfaces';
 

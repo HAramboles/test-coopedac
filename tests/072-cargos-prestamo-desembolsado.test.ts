@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, ariaCerrar } from './utils/dataTests';
+import { url_base, formBuscar } from './utils/dataTests';
 import { EscenariosAgregarCargosPrestamoDesembolsado } from './utils/interfaces';
 
 // Variables globales
@@ -60,22 +60,20 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
             });
         
             test('Ir a la opcion de Solicitud de Credito', async () => {
-                test('Ir a la opcion de Solicitud de Credito', async () => {
-                    // Negocios
-                    await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
-            
-                    // Procesos
-                    await page.getByRole('menuitem', {name: 'PROCESOS'}).click();
-                    
-                    // Solicitud de Credito
-                    await page.getByRole('menuitem', {name: 'Solicitud de Crédito'}).click();
-            
-                    // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
-            
-                    // El titulo debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
-                });
+                // Negocios
+                await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
+        
+                // Procesos
+                await page.getByRole('menuitem', {name: 'PROCESOS'}).click();
+                
+                // Solicitud de Credito
+                await page.getByRole('menuitem', {name: 'Solicitud de Crédito'}).click();
+        
+                // La URL debe de cambiar
+                await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+        
+                // El titulo debe estar visible
+                await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
             });
         
             test('Cambiar el estado de las solicitudes a Desembolsado', async () => {
@@ -113,21 +111,8 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                 await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
             });
 
-            if (escenario.ID_OPERACION === '') {
+            if (escenario.ID_OPERACION !== 32) {
                 // Tests cuando el escenario es vacio
-                test('No debe permitir agregar Cargos a la Solicitud', async () => {
-                    // Ir a la opcion de los cargos
-                    const seccionCargos = page.getByRole('button', {name: '3 Cargos Del Préstamo'});
-                    await expect(seccionCargos).toBeVisible();
-                    await seccionCargos.click();
-
-                    // Boton de agregar cargos 
-                    const agregarCuota = page.locator('[aria-label="plus"]');
-                    await expect(agregarCuota).toBeDisabled();
-                });
-
-            } else if (escenario.ID_OPERACION === 10) {
-                // Tests cuando el escenario es diferenete a 32
                 test('No debe permitir agregar Cargos a la Solicitud', async () => {
                     // Ir a la opcion de los cargos
                     const seccionCargos = page.getByRole('button', {name: '3 Cargos Del Préstamo'});
@@ -162,7 +147,7 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                     // Buscar un seguro
                     await page.locator('#form_DESC_CARGO').fill('SEGURO DE');
                     // Elegir el seguro de vida
-                    await page.locator('text=SEGURO DE VIDA').click();
+                    await page.getByRole('option', {name: 'SEGURO DE VIDA'}).click();
                 
                     // Debe de colocarse automaticamente que es un seguro
                     await expect(page.locator('(//INPUT[@type="radio"])[1]')).toBeChecked();
@@ -178,7 +163,7 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                     await campoValor.fill('50');
                 
                     // La via de cobro por defecto debe ser cobro en desembolso
-                    await expect(page.getByText('FIJO EN CUOTAS')).toBeVisible();
+                    await expect(page.getByText('COBRO EN DESEMBOLSO')).toBeVisible();
                 
                     // Guardar el cargo agregado
                     await page.getByRole('button', {name: 'save Guardar'}).click();
@@ -188,9 +173,6 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
             
                     // Se debe mostrar un mensaje de que la operacion fue exitosa
                     await expect(page.locator('text=Cargos del préstamo guardados exitosamente.')).toBeVisible();
-            
-                    // Cerrar el mensaje
-                    await page.locator(`${ariaCerrar}`).click();
                 
                     // Click en Siguiente
                     await page.getByRole('button', {name: 'Siguiente'}).click();

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, ariaCerrar, formBuscar } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, formBuscar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;

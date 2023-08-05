@@ -386,6 +386,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     await expect(page.locator('text=El total de la columna VALOR debe sumar 100')).toBeVisible();
 
                     // Digitar el nombre del firmante en el buscador de socio
+                    await page.locator(`${selectBuscar}`).click();
                     await page.locator(`${selectBuscar}`).fill(`${nombreFirmante} ${apellidoFirmante}`);
 
                     // Deben salir todas las cuentas que posee la persona, elegir la cuenta de ahorros normales

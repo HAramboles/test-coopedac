@@ -234,11 +234,12 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
             
                     // Click en Actualizar
                     const botonActualizar = page.getByRole('button', {name: 'check Actualizar'});
-                    await expect(botonActualizar).toBeVisible();
-                    await botonActualizar.click();
-
-                    // Esperar que se abra una nueva pagina con la vista previa de la libreta
-                    const page1 = await context.waitForEvent('page');
+                    const [page1] = await Promise.all([
+                        context.waitForEvent('page'),
+                        // Click al boton de Aceptar
+                        await expect(botonActualizar).toBeVisible(),
+                        await botonActualizar.click()
+                    ]);
             
                     // El titulo de actualzar libreta debe estar visible
                     await expect(page1.locator('h1').filter({hasText: 'ACTUALIZAR LIBRETA'})).toBeVisible();

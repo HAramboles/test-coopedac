@@ -1,7 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
-import { formatDate } from './utils/utils';
+import { formatDate } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;

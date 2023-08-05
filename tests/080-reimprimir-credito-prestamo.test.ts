@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate, primerDiaMes } from './utils/utils';
+import { formatDate, primerDiaMes } from './utils/fechas';
 import { url_base, selectBuscar } from './utils/dataTests';
 
 // Variables globles

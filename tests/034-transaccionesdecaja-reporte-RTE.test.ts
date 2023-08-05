@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, formBuscar } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, formBuscar, dataCerrar } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 
 // Variables globales
@@ -288,6 +288,10 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
 
                     // El modal no debe estar visible
                     await expect(modalLibreta).not.toBeVisible();
+
+                    // Cerrar las alertas que aparecen
+                    await page.locator(`${dataCerrar}`).first().click();
+                    await page.locator(`${dataCerrar}`).last().click();
 
                     // Click al boton de Liberar Sesion
                     await page.locator('text=Liberar Sesión').click();

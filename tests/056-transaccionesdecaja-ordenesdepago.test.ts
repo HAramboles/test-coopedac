@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar, } from './utils/dataTests';
-import { diaSiguiente, formatDate } from './utils/utils';
+import { url_base, dataCerrar, ariaCerrar, selectBuscar, formBuscar } from './utils/dataTests';
+import { diaSiguiente, formatDate } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 
 // Variables Globales
@@ -173,10 +173,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
                 });
 
-                test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Orden de Pago', async () => {
-                    // Aplicar el deposito de la cuenta de ahorros
-                    await page.getByRole('cell', {name: 'Aplicar'}).click();
-            
+                test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Orden de Pago', async () => {            
                     // Debe salir un modal para la distribucion de ingresos
                     await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();
             
@@ -217,18 +214,67 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();
+                });
 
-                    // Esperar que se abra una nueva pestaña con el reporte
+                test('Datos para el Reporte RTE', async () => {
+                    // Debe salir otro modal para colocar la informacion para el reporte RTE
+                    await expect(page.locator('text=CAPTURA DE DATOS. LAVADO DE EFECTIVO')).toBeVisible();
+
+                    // El modal debe contener un aviso
+                    await expect(page.getByText('Se requiere información de la persona que realiza la transacción. Puede buscar o crear la persona en las opciones de más abajo.')).toBeVisible();
+
+                    // Colocar una explicacion para el Origen de Fondos
+                    await page.locator('#form_ORIGEN_FONDOS').fill('Fondos obtenidos del Trabajo');
+
+                    // Subtitulo del modal
+                    await expect(page.locator('text=BUSCAR INTERMEDIARIO')).toBeVisible();
+
+                    // Debe mostrarse un input para buscar un intermediario
+                    await expect(page.locator(`${formBuscar}`)).toBeVisible();
+
+                    // Debe mostrarse un boton para crear un intermediario
+                    const botonCrearIntermediario = page.getByRole('button', {name: 'Crear Intermediario'});
+                    await expect(botonCrearIntermediario).toBeVisible();
+                    // await botonCrearIntermediario.click();
+
+                    // Boton de Cliente es Intermediario
+                    const botonClienteIntermediario = page.getByText('Cliente Intermediario');
+                    await expect(botonClienteIntermediario).toBeVisible();
+
+                    // Click al boton de Cliente Intermediario
+                    await botonClienteIntermediario.click();
+
+                    // Los datos del socio deben agregarse
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+                    // Click al boton de Seleccionar
+                    await page.getByText('Seleccionar').click();
+
+                    // Debe salir otro modal para confirmar la informacion
+                    await expect(page.locator('text=Confirmar')).toBeVisible();
+
+                    // Contenido del modal
+                    await expect(page.locator('text=Asegúrese de haber seleccionado a la persona correcta:')).toBeVisible();
+                    await expect(page.getByText(`Nombre: ${nombre} ${apellido}`)).toBeVisible();
+                    await expect(page.getByText('Doc. Identidad:')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Esperar que se abran dos nuevas pestañas con el recibo y el Reporte RTE
                     const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
 
-                    // Cerrar la nueva pestaña
+                    // Cerrar las nuevas pestañas con el recibo y el reporte RTE
                     await page1.close();
-            
-                    // Debe salir un modal
-                    await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
-            
-                    // Click en Cancelar
-                    await page.locator('text=Cancelar').click();
+                    await page2.close();
+
+                    // Debe regresar a la pagina
+                    await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
+
+                    // Cerrar las alertas que aparecen
+                    await page.locator(`${dataCerrar}`).first().click();
+                    await page.locator(`${dataCerrar}`).last().click();
                 });
             
                 test('Boton de Ordenes', async () => {
@@ -263,7 +309,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
 
                     // Colocar una fecha de orden invalida
                     const fechaOrden = page.locator('#form_FECHA_ORDEN');
-                    await fechaOrden.fill(`#${diaSiguiente}`);
+                    await fechaOrden.fill(`${diaSiguiente}`);
                     // Click fuera del input
                     await page.locator('text=FIRMANTES').click();
 
@@ -271,7 +317,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await expect(page.locator('text=Rango de Fecha inválido.')).toBeVisible();
 
                     // Colocar una fecha de orden valida
-                    await fechaOrden.fill(`#${formatDate(new Date())}`);
+                    await fechaOrden.fill(`${formatDate(new Date())}`);
 
                     // Click al boton Titular es Beneficiario
                     await page.getByText('Titular es Beneficiario').click();

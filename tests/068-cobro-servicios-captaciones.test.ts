@@ -136,7 +136,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         await expect(page.getByRole('cell', {name: 'COBRO DE SERVICIOS DE OTROS INGRESOS'})).toBeVisible();
 
         // Boton de Seleccinar
-        const botonSeleccionar = page.getByRole('button', {name: 'Seleccionar'});
+        const botonSeleccionar = page.getByRole('row', {name: 'COBRO DE SERVICIOS DE OTROS INGRESOS'}).getByRole('button', {name: 'Seleccionar'});
         await expect(botonSeleccionar).toBeVisible();
         // Click al boton de Seleccionar
         await botonSeleccionar.click();
@@ -156,7 +156,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         await expect(page.locator('#form_MONTO')).toHaveValue('RD$ 500');
 
         // Titulo de la tabla Recibido
-        await expect(page.locator('text=RECIBIDO')).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'RECIBIDO'})).toBeVisible();
         
         // Colocar una moneda de 500
         const cant500 = page.locator('[id="2"]');

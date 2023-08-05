@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { formatDate } from './utils/utils';
+import { dosMesDespues } from './utils/fechas';
 import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
 
 // Variables globales
@@ -146,12 +146,8 @@ test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes P
         // Cerrar el mensaje de aviso
         await page.locator(`${ariaCerrar}`).last().click();
 
-        // Mismo dia pero en un mes diferente
-        const diaActual = new Date();
-        const otroMes = new Date(diaActual.setMonth(diaActual.getMonth() + 2)); 
-
         // Ingresar una fecha
-        await page.locator('#form_CAMB_FECHA').fill(`${formatDate(otroMes)}`);
+        await page.locator('#form_CAMB_FECHA').fill(`${dosMesDespues}`);
 
         // Clickear fuera del input de la fecha
         await page.getByText('Cambio de Fecha', {exact: true}).click();

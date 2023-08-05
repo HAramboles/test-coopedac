@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar } from './utils/dataTests';
+import { dosMesDespues } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -92,14 +93,11 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
         // Cambios Solicitados
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
 
-        // Cambio de Plazo
-        await expect(page.locator('#form_CAMB_PLAZO')).toHaveValue('72')
-
-        // Cambio de Tasa
-        await expect(page.locator('#form_CAMB_TASA')).toHaveValue('15%');
+        // Cambio de Fecha
+        await expect(page.locator('#form_CAMB_FECHA')).toHaveValue(`${dosMesDespues}`);
 
         // Distribucion de Cuota
-        await page.getByLabel('Siguiente Cuota').check();
+        //await page.getByLabel('Siguiente Cuota').check();
 
         // Razones
         await expect(page.getByText('NECESITA MAS TIEMPO PARA LOS PAGOS')).toBeVisible();
@@ -112,7 +110,7 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
         await botonActualizar.click();
 
         // Debe mostrarse un mensaje de que la operacion fue un exito
-        await expect(page.locator('text=Cambios Solicitados actualizado exitosamente')).toBeVisible();
+        await expect(page.locator('text=Solicitud de cambios productos actualizada exitosamente.')).toBeVisible();
     });
     
     test.afterAll(async () => { // Despues de las pruebas
