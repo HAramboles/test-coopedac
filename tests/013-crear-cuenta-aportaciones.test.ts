@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, selectBuscar } from './utils/dataTests';
-import { formatDate } from './utils/utils'; './utils/utils';
+import { formatDate } from './utils/fechas';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 
 // Variables globales
@@ -17,7 +17,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaCrearCuentas) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {

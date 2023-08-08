@@ -7,11 +7,11 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre de la presona juridica
+// Cedula, nombre de la presona juridica
+let cedulaEmpresa: string | null;
 let nombreEmpresa: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la Persona Juridica', async() => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -31,7 +31,8 @@ test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la P
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre de la empresa almacenada en el state
+        // Cedula y nombre de la persona juridica almacenada en el state
+        cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
 

@@ -10,7 +10,6 @@ let page: Page;
 let cedula: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

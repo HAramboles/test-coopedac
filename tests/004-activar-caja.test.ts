@@ -6,8 +6,7 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-/* Pruebas */
-
+// Pruebas
 test.describe.serial('Activar Caja - Pruebas con los diferentes parametros', async () => {
     test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
         /* Crear el browser, con la propiedad headless */

@@ -6,12 +6,12 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe('Pruebas con la Carta de Saldo', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -31,7 +31,8 @@ test.describe('Pruebas con la Carta de Saldo', () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona alamacenada en el state
+        // Cedula, nombre y apellido de la persona alamacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -63,7 +64,7 @@ test.describe('Pruebas con la Carta de Saldo', () => {
         await expect(page.locator('h1').filter({hasText: 'CARTA DE SALDO'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+        await page.locator(`${formBuscar}`).fill(`${cedula}`);
         
         // Financiamiento
         await expect(page.getByRole('cell', {name: 'CRÉDITO HIPOTECARIO'})).toBeVisible();
@@ -87,8 +88,6 @@ test.describe('Pruebas con la Carta de Saldo', () => {
     });
 
     test('Ver los datos del prestamo', async () => {
-        test.slow();
-
         // Ver el prestamo
         await page.locator('[data-icon="eye"]').click();
 

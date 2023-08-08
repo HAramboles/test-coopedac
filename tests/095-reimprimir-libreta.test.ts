@@ -7,12 +7,12 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Reimpresion en Libreta', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -32,7 +32,8 @@ test.describe.serial('Pruebas con la Reimpresion en Libreta', () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona almacenada en el state
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -52,10 +53,6 @@ test.describe.serial('Pruebas con la Reimpresion en Libreta', () => {
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/reimp_libreta/01-4-1-5-1/`);
-
-        // Nombre y apellido de la persona almacenada en el state
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Cuenta de Aportaciones - Datos del Socio', async () => {
@@ -63,7 +60,7 @@ test.describe.serial('Pruebas con la Reimpresion en Libreta', () => {
         await expect(page.locator('h1').filter({hasText: 'ACTUALIZAR LIBRETA'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir la cuenta de aportaciones del socio
         await page.locator('text=APORTACIONES').click();
 
@@ -100,7 +97,7 @@ test.describe.serial('Pruebas con la Reimpresion en Libreta', () => {
 
     test('Cuenta de Ahorros - Datos del Socio', async () => {
         // Click en el buscador para elegir otra cuenta del mismo socio
-        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir la cuenta de Ahorros del socio
         await page.locator('text=AHORROS NORMALES').click();
 

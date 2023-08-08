@@ -13,7 +13,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con el Debito a la Cuenta de Certificado - Financieros Pagaderas', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

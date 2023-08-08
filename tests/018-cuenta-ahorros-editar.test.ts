@@ -24,7 +24,6 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Pruebas
-
 test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaEditarCuentas) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {

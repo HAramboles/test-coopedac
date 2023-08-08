@@ -14,7 +14,6 @@ let botonNuevaCuenta: Locator;
 let cedula: string | null;
 
 // Pruebas
-
 test.describe.serial('No permitir Crear una Nueva Cuenta de Aportaciones al mismo Socio - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaCrearCuentas) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {

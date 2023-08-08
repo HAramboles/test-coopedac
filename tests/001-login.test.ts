@@ -15,8 +15,7 @@ let botonLogin: Locator;
 const user:string = 'hector';
 const pass:string = 'abc';
 
-/* Pruebas */
-
+// Pruebas 
 test.describe.serial('Pruebas con el Login de Coopedac', async () => {
     test.beforeAll(async () => { /* Antes de las pruebas */
         /* Crear el browser, en este caso el chromiun */

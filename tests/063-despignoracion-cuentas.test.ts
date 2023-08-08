@@ -10,12 +10,10 @@ let page: Page;
 // Boton Liberar monto
 let botonDespignorar: Locator;
 
-// Nombre y apellido de la persona
-let nombre: string | null;
-let apellido: string | null;
+// Cedula de la persona
+let cedula: string | null;
 
 // Pruebas
-
 test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebasAgregarEliminarPignoracion) {
         test.describe(`Tests cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
@@ -57,9 +55,8 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
         
-                // Nombre y apellido de la persona almacenados en el state
-                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+                // Cedula de la persona almacenados en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
 
                 // Boton para liberar un monto
                 botonDespignorar = page.getByRole('row', {name: 'CONGELADO RD$ 150.00'}).locator('[data-icon="check-circle"]');
@@ -84,7 +81,7 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                 await expect(page.locator('h1').filter({hasText: 'PIGNORACIÓN DE CUENTAS'})).toBeVisible();
         
                 // Buscar al socio
-                await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
+                await page.locator(`${selectBuscar}`).fill(`${cedula}`);
                 // Elegir la cuenta de Ahorro
                 await page.locator('text=AHORROS NORMALES').click();
             });

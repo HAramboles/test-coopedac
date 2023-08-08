@@ -73,23 +73,6 @@ const EscenariosActividadParametrosEditarPersona: AcividadParametro[] = [
     }
 ];
 
-// Interfaz para Cambiar Estado de Personas
-interface CambioEstadoPersonas {
-    ID_OPERACION:  '' | 1 | 25
-};
-
-const EscenariosCambioEstadoPersonas: CambioEstadoPersonas[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 1
-    },
-    {
-        ID_OPERACION: 25
-    }
-];
-
 // Interfaz para Crear Cuentas
 interface CrearCuentas {
     ID_OPERACION: '' | 10 | 30
@@ -223,7 +206,6 @@ const EscenariosReimpresionResolucionAprobatoria: ReimpresionResolucionAprobator
 export {
     EscenariosPruebaCrearPersonas,
     EscenariosPruebaEditarPersonas,
-    EscenariosCambioEstadoPersonas,
     EscenariosActividadParametrosEditarPersona,
     EscenariosPruebaCrearCuentas,
     EscenariosPruebaEditarCuentas,

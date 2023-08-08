@@ -7,12 +7,12 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con los diferentes parametros', () => {
     for (const escenario of EscenariosAgregarCargosPrestamoDesembolsado) {
         test.describe(`Test cuando el escenario es: ${Object.values(escenario).toString()}`, () => {
@@ -54,7 +54,8 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
         
-                // Nombre y apellidos de la persona almacenada en el state
+                // Cedula, nombre y apellidos de la persona almacenada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
@@ -96,7 +97,7 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
         
             test('Buscar el Prestamo de un Socio', async () => {
                 // Buscar un socio
-                await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+                await page.locator(`${formBuscar}`).fill(`${cedula}`);
         
                 // Click al boton de ver solicitud
                 await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();

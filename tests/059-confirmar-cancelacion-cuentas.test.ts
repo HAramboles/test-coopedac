@@ -6,12 +6,12 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -31,7 +31,8 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona almacenada en el state
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -55,7 +56,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+        await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
         // Click en buscar
         await page.locator('[data-icon="search"]').click();

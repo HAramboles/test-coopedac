@@ -7,7 +7,6 @@ let context: BrowserContext;
 let page: Page;
 
 // Pruebas
-
 test.describe.serial('Pruebas con el Cambio de Moneda', () => {
     test.beforeAll(async () => {
         // Crear el browser

@@ -23,7 +23,6 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Pruebas
-
 test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaCrearCuentas) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {

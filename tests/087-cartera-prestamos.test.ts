@@ -8,7 +8,6 @@ let context: BrowserContext;
 let page: Page;
 
 // Pruebas
-
 test.describe('Pruebas con la Cartera de Prestamos', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

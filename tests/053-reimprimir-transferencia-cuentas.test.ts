@@ -12,7 +12,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Reimpresion de la Transferencia entre Cuentas Internas', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -32,7 +31,7 @@ test.describe.serial('Pruebas con la Reimpresion de la Transferencia entre Cuent
         // URL de la pagina
         await page.goto(`${url_base}`);
 
-        // Nombres y apellidos del socio
+        // Nombres y apellidos de la persona almacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });

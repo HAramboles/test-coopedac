@@ -9,12 +9,10 @@ let page: Page;
 // Variable con el input para buscar los socios 
 let buscador: Locator;
 
-// Nombre y apellido de la persona
-let nombre: string | null;
-let apellido: string | null;
+// Cedula de la persona
+let cedula: string | null;
 
 // Pruebas
-
 test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -34,9 +32,8 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona almacenados en el state
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        // Cedula de la persona almacenados en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
 
         // Input para buscar las cuentas del socio
         buscador = page.locator(`${selectBuscar}`);
@@ -55,7 +52,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
     test('Cuenta de Aportaciones del Socio', async () => {
         // Buscar un socio
-        await buscador.fill(`${nombre} ${apellido}`);
+        await buscador.fill(`${cedula}`);
         // Elegir la Cuenta de Aportaciones del Socio
         await page.getByText('| APORTACIONES |').click();
 
@@ -94,7 +91,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
     test('Cuenta de Aportaciones Preferentes del Socio', async () => {
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${nombre} ${apellido}`);
+        await buscador.fill(`${cedula}`);
         // Elegir la Cuenta de Aportaciones Preferentes del Socio
         await page.getByText('APORTACIONES PREFERENTES').click();
 
@@ -133,7 +130,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
     test('Cuenta de Ahorros Normales del Socio', async () => {
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${nombre} ${apellido}`);
+        await buscador.fill(`${cedula}`);
         // Elegir la Cuenta de Ahorros Normales del Socio
         await page.getByText('AHORROS NORMALES').click();
 
@@ -194,7 +191,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
     test('Cuenta de Ahorros por Nomina del Socio', async () => {
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${nombre} ${apellido}`);
+        await buscador.fill(`${cedula}`);
         // Elegir la Cuenta de Ahorros por Nomina del Socio
         await page.getByText('AHORROS POR NOMINA').click();
 
@@ -232,7 +229,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
     test('Cuenta de Ahorros - Orden de Pago del Socio', async () => {
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${nombre} ${apellido}`);
+        await buscador.fill(`${cedula}`);
         // Elegir la Cuenta de Orden de Pago del Socio
         await page.getByText('ORDEN DE PAGO').click();
 
@@ -273,7 +270,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${nombre} ${apellido}`);
+        await buscador.fill(`${cedula}`);
         // Elegir la Cuenta de Certificado - Financieros Pagaderos
         await page.getByText('| FINANCIEROS PAGADERAS |').click();
 
@@ -314,7 +311,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${nombre} ${apellido}`);
+        await buscador.fill(`${cedula}`);
         // Elegir la Cuenta de Certificado - Financieros Reinvertidas
         await page.getByText('| FINANCIEROS REINVERTIDAS |').click();
 
@@ -352,7 +349,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${nombre} ${apellido}`);
+        await buscador.fill(`${cedula}`);
         // Elegir la Cuenta de Certificado - Inversion Pagaderas
         await page.getByText('| INVERSION PAGADERAS |').click();
 

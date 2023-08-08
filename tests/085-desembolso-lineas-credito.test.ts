@@ -6,12 +6,12 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -31,7 +31,8 @@ test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona almacenada en el state
+        // Cedula, ombre y apellido de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -60,7 +61,7 @@ test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
         await expect(page.getByText('DESEMBOLSADO')).toBeVisible();
 
         // Buscar a un socio
-        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+        await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
         // Click al boton de buscar
         await page.locator('[data-icon="search"]').click();

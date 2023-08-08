@@ -11,7 +11,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Confirmacion de Transferencia Interbancaria', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

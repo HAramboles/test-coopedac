@@ -33,7 +33,6 @@ mes10.setMonth(mes10.getMonth() + 10)
 mes12.setMonth(mes12.getMonth() + 12);
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

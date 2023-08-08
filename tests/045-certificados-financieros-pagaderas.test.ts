@@ -24,7 +24,6 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Pruebas
-
 test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaCrearCuentas) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
@@ -345,6 +344,11 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
 
+                    // Cerrar las alertas
+                    await page.locator(`${ariaCerrar}`).first().click();
+                    await page.locator(`${ariaCerrar}`).first().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
+
                     // Debe mostrarse la cuenta que se esta creando, y el titular
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
@@ -385,9 +389,12 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     // Debe mostrar un mensaje de aviso
                     await expect(page.locator('text=El total de la columna VALOR debe sumar 100')).toBeVisible();
 
-                    // Digitar el nombre del firmante en el buscador de socio
+                    // Digitar la cedula del firmante en el buscador de socio
                     await page.locator(`${selectBuscar}`).click();
-                    await page.locator(`${selectBuscar}`).fill(`${nombreFirmante} ${apellidoFirmante}`);
+                    await page.locator(`${selectBuscar}`).fill(`${cedulaFirmante}`);
+
+                    // Esperar a que se vean las cuentas de la persona buscada
+                    await expect(page.getByRole('option', {name: `${nombreFirmante} ${apellidoFirmante}`}).first()).toBeVisible();
 
                     // Deben salir todas las cuentas que posee la persona, elegir la cuenta de ahorros normales
                     await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();

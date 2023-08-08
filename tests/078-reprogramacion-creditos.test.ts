@@ -7,12 +7,12 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Creditos', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -32,7 +32,8 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona almacenada en el state
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem("apellidoPersona"));
     });
@@ -59,7 +60,7 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
         await expect(page.getByText('PENDIENTES', {exact: true})).toBeVisible();
 
         // Buscar al socio
-        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+        await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
         // Boton confirmar
         const botonConfirmar = page.getByRole('row', {name: `${nombre} ${apellido} CRÉDITO HIPOTECARIO`}).getByRole('button', {name: 'check-circle'});

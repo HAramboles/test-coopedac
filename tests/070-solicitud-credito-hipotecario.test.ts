@@ -15,8 +15,7 @@ let apellido: string | null;
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
 // Pruebas
-
-test.describe.serial('Prueba con la Solicitud de Credito', () => {
+test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona Fisica', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({

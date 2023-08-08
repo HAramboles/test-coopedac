@@ -12,7 +12,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Solicitud de Cancelacion de una Cuenta', () =>{
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

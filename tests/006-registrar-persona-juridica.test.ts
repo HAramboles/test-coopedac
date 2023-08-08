@@ -45,7 +45,6 @@ const nombreRelacionado = nombreRelacionadoJuridica;
 const apellidoRelacionado = apellidoRelacionadoJuridica;
 
 // Pruebas
-
 test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {

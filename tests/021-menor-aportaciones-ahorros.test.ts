@@ -24,7 +24,6 @@ let nombreMadre: string | null;
 let apellidoMadre: string | null;
 
 // Pruebas
-
 test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros - Menor de Edad - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearCuentas) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {

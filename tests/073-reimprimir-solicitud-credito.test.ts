@@ -6,12 +6,10 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
-let nombre: string | null;
-let apellido: string | null;
+// Cedula de la persona
+let cedula: string | null;
 
 // Pruebas
-
 test.describe.serial('Prueba con la Reimpresion de la Solicitud de Credito', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -31,9 +29,8 @@ test.describe.serial('Prueba con la Reimpresion de la Solicitud de Credito', () 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellidos de la persona almacenada en el state
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        // Cedula de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
     });
 
     test('Ir a la opcion de Reimpresion de Solicitud de Credito', async () => {
@@ -51,12 +48,11 @@ test.describe.serial('Prueba con la Reimpresion de la Solicitud de Credito', () 
     });
 
     test('Buscar un socio', async () => {
-        // Ingresar un socio
-        const buscador = page.locator(`${formBuscar}`);
-        await buscador.fill(`${nombre} ${apellido}`);
-
         // El titulo debe estar presente
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR SOLICITUD DE CRÉDITO'})).toBeVisible();
+
+        // Ingresar un socio
+        await page.locator(`${formBuscar}`).fill(`${cedula}`);
     });
 
     test('Reimprimir el Credito Hipotecario Desembolsado', async () => {

@@ -6,11 +6,11 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page
 
-// Nombre de la presona juridica
+// Cedula, nombre de la presona juridica
+let cedulaEmpresa: string | null;
 let nombreEmpresa: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Persona Juridica', async() => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -30,7 +30,8 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre de la empresa
+        // Cedula y ombre de la persona juridica alamcenada en el state
+        cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
 
@@ -61,7 +62,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
         await expect(page.locator('h1').filter({hasText: 'AGREGAR SOLICITUD PARA CAMBIO DE CATEGORÍA'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${selectBuscar}`).fill(`${nombreEmpresa}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedulaEmpresa}`);
         // Elegir al socio
         await page.getByText(`${nombreEmpresa}`).click();
 

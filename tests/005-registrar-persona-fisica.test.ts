@@ -25,8 +25,7 @@ const apellidoPersona = apellidoPersonaFisica;
 // Correo de la persona
 const correoPersona = nombrePersona.split(' ').join('') + numerosparaCorreo;
 
-/* Pruebas */
-
+// Pruebas
 test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {

@@ -21,7 +21,6 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Pruebas
-
 test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaRemoverFirmantes) {
         test.describe(`Tests cuando el pamaetro es: ${Object.values(escenarios).toString()}`, async () => {

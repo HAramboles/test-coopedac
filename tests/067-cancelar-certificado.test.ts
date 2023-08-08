@@ -12,7 +12,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe('Pruebas con la Cancelacion de Certificados', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

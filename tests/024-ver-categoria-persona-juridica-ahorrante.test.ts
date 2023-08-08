@@ -7,10 +7,10 @@ let context: BrowserContext;
 let page: Page;
 
 // Nombre de la empresa
+let cedulaEmpresa: string | null;
 let nombreEmpresa: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Categoria del Socio', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
@@ -30,7 +30,8 @@ test.describe.serial('Pruebas con la Categoria del Socio', async () => {
         // Ir a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona alamacenados en el state
+        // Cedula y nombre de la persona juridica alamacenados en el state
+        cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
 
@@ -53,7 +54,7 @@ test.describe.serial('Pruebas con la Categoria del Socio', async () => {
         await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
+        await page.locator(`${formBuscar}`).fill(`${cedulaEmpresa}`);
 
         // El socio buscado debe estar visible
         await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();

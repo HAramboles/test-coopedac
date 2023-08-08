@@ -13,7 +13,6 @@ let apellido: string | null;
 let correo: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => {
     test.beforeAll(async () => {
         // Crear el browser
@@ -59,7 +58,7 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         await expect(page.locator('h1').filter({hasText: 'SOLICITUD DE ORDENES DE PAGO'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir al socio buscado
         await page.getByText(`${nombre} ${apellido}`).click();
 

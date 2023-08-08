@@ -13,12 +13,12 @@ let cambioFecha: Locator;
 let cambioTasa: Locator;
 let cambioPlazo: Locator;
 
-// Nombre y apellido de la persona
+// Cedula, nombre y apellido de la persona
+let cedula: string|null;
 let nombre: string|null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes Parametros', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -38,7 +38,8 @@ test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes P
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona almacenada en el state
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
@@ -78,7 +79,7 @@ test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes P
         await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN DE PRÉSTAMOS'})).toBeVisible();
 
         // Buscar a la persona
-        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Seleccionar a la persona buscada
         await page.locator(`text=${nombre} ${apellido}`).click();
 

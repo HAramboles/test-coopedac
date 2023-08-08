@@ -11,12 +11,12 @@ let page: Page;
 let botonActivarInactivar: Locator;
 let botonAceptar: Locator;
 
-// Nombre y apellido de la persona
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebasActivarInactivarCuentas) {
         test.describe(`Test cuando el parametro sea: ${Object.values(escenarios).toString()}`, () => {
@@ -58,7 +58,8 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
 
-                // Nombre y apellido de la persona guardada en el state
+                // Cedula, nombre y apellido de la persona guardada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
@@ -113,7 +114,7 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
                 await radioInactivas.click();
 
                 // Ingresar el nombre del socio
-                await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+                await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
                 // Debe mostrarse la cuenta del socio
                 await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();

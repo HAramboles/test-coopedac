@@ -21,7 +21,6 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Pruebas
-
 test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', async () => {
     for (const escenario of EscenariosPruebaEditarCuentas) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
@@ -270,8 +269,11 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     // Debe mostrar un mensaje de aviso
                     await expect(page.locator('text=El total de la columna VALOR debe sumar 100')).toBeVisible();
 
-                    // Digitar el nombre del firmante en el buscador de socio
-                    await page.locator(`${selectBuscar}`).fill(`${nombreFirmante} ${apellidoFirmante}`);
+                    // Digitar la cedula del firmante en el buscador de socio
+                    await page.locator(`${selectBuscar}`).fill(`${cedulaFirmante}`);
+
+                    // Esperar a que se vean las cuentas de la persona buscada
+                    await expect(page.getByRole('option', {name: `${nombreFirmante} ${apellidoFirmante}`}).first()).toBeVisible();
 
                     // Deben salir todas las cuentas que posee la persona, elegir la cuenta de ahorros normales
                     await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();

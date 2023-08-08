@@ -11,7 +11,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con el Cobro de Servicios - Caja', () => {
     test.beforeAll(async () => {
         // Crear el browser

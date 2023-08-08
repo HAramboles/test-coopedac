@@ -22,7 +22,6 @@ let apellidoFirmante: string | null;
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
 // Pruebas
-
 test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaCrearCuentas) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {

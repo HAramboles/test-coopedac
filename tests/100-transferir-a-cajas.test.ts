@@ -7,7 +7,6 @@ let context: BrowserContext;
 let page: Page;
 
 // Pruebas
-
 test.describe.serial('Tranferir desde Boveda a Caja', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

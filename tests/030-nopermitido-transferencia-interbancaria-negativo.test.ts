@@ -10,7 +10,6 @@ let page: Page;
 let cedula: string | null;
 
 // Pruebas
-
 test.describe.serial('No permitir una Transferencia Interbancaria si la cuenta de Ahorros no tiene un monto', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         browser = await chromium.launch({

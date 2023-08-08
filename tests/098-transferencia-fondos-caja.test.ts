@@ -58,12 +58,12 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
         await expect(page.locator('h1').filter({hasText: 'DETALLE DISTRIBUCIÓN'})).toBeVisible();
 
-        // Transferir 1000 pesos desde la caja a la boveda
+        // Transferir un millon de pesos desde la caja a la boveda
         const cant1000 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[2]'); // Campo de RD 1000
 
         // Cantidad = 1 de 1000
         await cant1000.click();
-        await cant1000.fill('1');
+        await cant1000.fill('1000');
 
         // Boton Guardar
         const botonGuardar =  page.getByRole('button', {name: 'Guardar'});
@@ -81,9 +81,6 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
 
         // Cerrar el mensaje
         await page.locator(`${ariaCerrar}`).click();
-
-        // Los datos no deben desaparecer, el campo de 1000 debe ser diferente de 0
-        //await expect(page.locator('[id="1"]')).not.toHaveValue('0');
     });
 
     test.afterAll(async () => {

@@ -21,7 +21,7 @@ const primerDiaMes = formatDate(new Date(diaActual.getFullYear(), diaActual.getM
 const diaAnterior = formatDate(new Date(diaActual.setDate(diaActual.getDate() - 1)));
 
 // Dia siguiente al dia actual
-const diaSiguiente = formatDate(new Date(diaActual.setDate(diaActual.getDate() - 1)));
+const diaSiguiente = formatDate(new Date(diaActual.setDate(diaActual.getDate() + 1)));
 
 // Mismo dia pero dos meses despues
 const dosMesDespues = formatDate(new Date(diaActual.setMonth(diaActual.getMonth() + 2)));

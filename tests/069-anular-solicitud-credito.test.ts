@@ -15,7 +15,6 @@ let apellido: string | null;
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
 // Pruebas
-
 test.describe.serial('Prueba con la Solicitud de Credito', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
@@ -301,24 +300,22 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(botonFinalizar).toBeVisible();
         await botonFinalizar.click();
 
-        // Se deben abrir tres nuevas ventanas con diferentes reportes
+        // Luego no debe sair ningun reporte
+
+        // Por ahora se abre una ventana con el reporte de Aprobado
         const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page'); 
-        const page3 = await context.waitForEvent('page');
         
         // Cerrar la pagina con la solicitud
         await page1.close();
-
-        // Cerrar la pagina con la tabla de amortizacion
-        await page2.close();
-
-        // Cerrar la pagina con el tercer reporte
-        await page3.close();
     });
 
     test('Anular la Solicitud Creada', async () => {
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+
+        // Cambiar el estado de las solicitudes a Aprobado
+        await page.locator('text=SOLICITADO').click();
+        await page.locator('text=APROBADO').click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);

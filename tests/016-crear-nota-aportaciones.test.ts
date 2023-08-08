@@ -15,7 +15,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas agregando y completando notas', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

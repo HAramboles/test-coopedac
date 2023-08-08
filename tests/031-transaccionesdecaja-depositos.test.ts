@@ -16,7 +16,6 @@ let apellido: string | null;
 let nota: string | null;
 
 // Pruebas
-
 test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones y Ahorros - Pruebas con los diferentes Parametros', async () => {
     for (const escenarios of EscenariosPruebasCajaBoveda) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, async () => {

@@ -14,7 +14,6 @@ let botonAceptar: Locator;
 let campoContraseña: Locator;
 
 // Pruebas
-
 test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser

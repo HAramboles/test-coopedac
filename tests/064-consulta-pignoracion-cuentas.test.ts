@@ -6,12 +6,10 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
-let nombre: string | null;
-let apellido: string | null;
+// Cedula de la persona
+let cedula: string | null;
 
 // Pruebas
-
 test.describe.serial('Pruebas con el Historial de Pignoracion de Cuentas', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
@@ -31,9 +29,8 @@ test.describe.serial('Pruebas con el Historial de Pignoracion de Cuentas', () =>
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona almacenada en el state
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        // Cedula de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
     });
 
     test('Ir a la opcion del Historial de Pignoracion de Cuentas', async () => {
@@ -55,7 +52,7 @@ test.describe.serial('Pruebas con el Historial de Pignoracion de Cuentas', () =>
         await expect(page.locator('h1').filter({hasText: 'PIGNORACIÓN DE CUENTAS'})).toBeVisible();
 
         // Buscar la cuenta de un socio
-        await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir la cuenta de Ahorros Normales
         await page.locator('text=AHORROS NORMALES').click();
 

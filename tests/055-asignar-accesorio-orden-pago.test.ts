@@ -12,7 +12,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Asignar una Secuencia de Orden de Pago a la cuenta de Orden de Pago de la persona', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser

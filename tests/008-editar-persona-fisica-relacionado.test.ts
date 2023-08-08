@@ -32,7 +32,6 @@ let correoEmpresa: string | null;
 let telefonoEmpresa: string | null;
 
 // Pruebas
-
 test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosActividadParametrosEditarPersona) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
@@ -340,9 +339,6 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
 
                     // El input del apellido debe estar habilitado
                     await expect(inputApellido).toBeEnabled();
-
-                    // Click en Actualizar y continuar
-                    actualizarContinuar();
                 });
 
                 test('Dirigirse al Quinto paso del Formulario', async () => {
@@ -371,7 +367,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await campoCalle?.fill('Calle 15');
 
                     // Hacer click al boton de Actualizar
-                    const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+                    const botonActualizar = page.getByRole('button', {name: 'check Actualizar'});
                     await expect(botonActualizar).toBeVisible();
                     await botonActualizar.click();
 

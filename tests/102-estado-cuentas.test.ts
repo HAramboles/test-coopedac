@@ -12,7 +12,6 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-
 test.describe.serial('Prueba con el Estado de Cuenta', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
