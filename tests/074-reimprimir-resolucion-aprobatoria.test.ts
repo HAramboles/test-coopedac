@@ -7,8 +7,7 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre y apellido de la persona
-let cedula: string | null;
+// Nombre y apellido de la persona
 let nombre: string | null;
 let apellido: string | null;
 
@@ -53,8 +52,7 @@ test.describe.serial('Reimpresion de resolucion aprobatoria - Pruebas con los di
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
 
-                // Cedula, nombre y apellido de la persona almacenada en el state
-                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+                // Nombre y apellido de la persona almacenada en el state
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
@@ -82,7 +80,7 @@ test.describe.serial('Reimpresion de resolucion aprobatoria - Pruebas con los di
                     await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="APROBADO"])')).toBeVisible();
 
                     // Buscar un socio
-                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
                     // No se deben mostrar ningun resultado, porque el socio no tiene ninguna solicitud en aprobado
                     await expect(page.getByText('No hay datos')).toBeVisible();
@@ -91,7 +89,7 @@ test.describe.serial('Reimpresion de resolucion aprobatoria - Pruebas con los di
                     await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="DESEMBOLSADO"])')).toBeVisible();
 
                     // Buscar un socio
-                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
                     // Click al boton de reimprimir
                     const botonImprimir = page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[aria-label="printer"]');

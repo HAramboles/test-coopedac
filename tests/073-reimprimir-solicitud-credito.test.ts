@@ -6,8 +6,9 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula de la persona
-let cedula: string | null;
+// Nombre y apellido de la persona
+let nombre: string | null;
+let apellido: string | null;
 
 // Pruebas
 test.describe.serial('Prueba con la Reimpresion de la Solicitud de Credito', () => {
@@ -29,8 +30,9 @@ test.describe.serial('Prueba con la Reimpresion de la Solicitud de Credito', () 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        // Nombre y apellido de la persona almacenada en el state
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Reimpresion de Solicitud de Credito', async () => {
@@ -52,7 +54,7 @@ test.describe.serial('Prueba con la Reimpresion de la Solicitud de Credito', () 
         await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR SOLICITUD DE CRÉDITO'})).toBeVisible();
 
         // Ingresar un socio
-        await page.locator(`${formBuscar}`).fill(`${cedula}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
     });
 
     test('Reimprimir el Credito Hipotecario Desembolsado', async () => {

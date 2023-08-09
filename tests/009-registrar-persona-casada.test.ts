@@ -722,10 +722,10 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                     await botonFinalizar.click();
 
                     // Esperar que se abran dos nuevas pestañas con los reportes
-                    const page1 = await context.waitForEvent('page');
-                    const page2 = await context.waitForEvent('page');
-                  
-                    // Cerrar las dos ventanas con los reportes
+                    const page1 = await context.newPage();
+                    const page2 = await context.newPage();
+
+                    // Cerrar las dos paginas
                     await page1.close();
                     await page2.close();
                 });

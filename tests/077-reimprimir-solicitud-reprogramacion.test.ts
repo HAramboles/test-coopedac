@@ -53,7 +53,7 @@ test.describe.serial('Pruebas con la Reimpresion de la Solicitud de Reprogramaci
 
     test('Buscar un Socio', async () => {
         // El titulo principal debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN SOLICITUD REPROGRAMACION'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'REIMPRIMIR SOLICITUD REPROGRAMACION'})).toBeVisible();
 
         // El estado de las solicitudes debe estar en Pendiente
         const estadoSolicitud = page.getByText('PENDIENTES', {exact: true});

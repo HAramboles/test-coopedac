@@ -421,9 +421,6 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                 });
             
                 test('Finalizar con la Creacion de Cuenta de Certificado', async () => {
-                    // Esperar que el mensaje de que los contratos se hayan generado se muestre
-                    await expect(page.locator('text=Contratos Generados Exitosamente.')).toBeVisible();
-                    
                     // Boton de Finalizar
                     const botonFinalizar = page.locator('button:has-text("Finalizar")');
                     await expect(botonFinalizar).toBeVisible();

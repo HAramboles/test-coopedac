@@ -278,6 +278,11 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
             
                     // Titulo de editar cuenta, ya que se crea automaticamente
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
+
+                    // Cerrar las alertas
+                    await page.locator(`${ariaCerrar}`).first().click();
+                    await page.locator(`${ariaCerrar}`).first().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
             
                     // La cuenta debe ser la del socio
                     await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
@@ -312,6 +317,10 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
 
                     // Debe estar la firma del titular por defecto
                     await expect(page.getByText('TITULAR')).toBeVisible();
+
+                    // Cerrar las alertas
+                    await page.locator(`${ariaCerrar}`).first().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
 
                     // Boton de Guardar y Continuar, probar que no se pueda continuar sin agregar un representante
                     const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});

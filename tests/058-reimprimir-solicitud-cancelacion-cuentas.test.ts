@@ -6,8 +6,7 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre y apellido de la persona
-let cedula: string | null;
+// Nombre y apellido de la persona
 let nombre: string | null;
 let apellido: string | null;
 
@@ -31,8 +30,7 @@ test.describe.serial('Pruebas con la Reimpresion Solicitud Cancelacion', () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula, nombre y apellido de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        // Nombre y apellido de la persona almacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -53,7 +51,7 @@ test.describe.serial('Pruebas con la Reimpresion Solicitud Cancelacion', () => {
 
     test('Buscar la Solicitud de un Socio', async () => {
         // Buscar un socio
-        await page.locator(`${formBuscar}`).fill(`${cedula}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
         
         // El estado solicitud debe estar en pendiente
         await expect(page.locator('text=PENDIENTE')).toBeVisible();

@@ -6,13 +6,12 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre y apellido de la persona
-let cedula: string | null;
+// Nombre y apellido de la persona
 let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-test.describe('Pruebas con la Carta de Saldo', () => {
+test.describe.serial('Pruebas con la Carta de Saldo', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -31,8 +30,7 @@ test.describe('Pruebas con la Carta de Saldo', () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula, nombre y apellido de la persona alamacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        // Nombre y apellido de la persona alamacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -56,7 +54,7 @@ test.describe('Pruebas con la Carta de Saldo', () => {
         await page.getByRole('menuitem', {name: 'Carta de Saldo'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/carta_saldo/01-3-2-5?step=1`);
+        await expect(page).toHaveURL(`${url_base}/carta_saldo/01-3-2-5/`);
     });
 
     test('Buscar prestamo de un socio', async () => {
@@ -64,7 +62,10 @@ test.describe('Pruebas con la Carta de Saldo', () => {
         await expect(page.locator('h1').filter({hasText: 'CARTA DE SALDO'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${formBuscar}`).fill(`${cedula}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+        // Debe mostrarse el prestamo del socio buscado
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
         
         // Financiamiento
         await expect(page.getByRole('cell', {name: 'CRÉDITO HIPOTECARIO'})).toBeVisible();

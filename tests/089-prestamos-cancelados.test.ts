@@ -9,7 +9,7 @@ let page: Page;
 
 // Pruebas
 
-test.describe.serial('', async () => {
+test.describe.serial('Pruebas con el Reporte de Prestamos Cancelados', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({

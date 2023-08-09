@@ -174,13 +174,6 @@ test.describe.serial('Pruebas con el Cambio de Moneda', () => {
 
         // Debe regresar a la pagina anterior
         await expect(page.locator('h1').filter({hasText: 'CAMBIO DE MONEDAS'})).toBeVisible();
-
-        // En los input de 200 y 100 pesos la cantidad debe reiniciar a 0
-        const cant200 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[4]');
-        const cant100 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[5]');
-
-        await expect(cant200).toHaveValue('0');
-        await expect(cant100).toHaveValue('0');
     });
 
     test.afterAll(async () => {

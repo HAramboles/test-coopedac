@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, formBuscar } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, formBuscar, ariaCerrar } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -250,7 +250,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.locator(`${selectBuscar}`).nth(1).click();
 
         // Debe mostrarse la cuenta de Ahorros Normales de la persona
-        const cuentaAhorros = page.getByText(`| ${nombre} ${apellido}`);
+        const cuentaAhorros = page.getByRole('option', {name: 'AHORROS NORMALES'});
         await expect(cuentaAhorros).toBeVisible();
         // Click a la opcion de la cuenta de ahorros de la persona
         await cuentaAhorros.click();
@@ -317,6 +317,10 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=APROBADO').click();
 
+        // Cerrar las alertas
+        await page.locator(`${ariaCerrar}`).first().click();
+        await page.locator(`${ariaCerrar}`).last().click();
+
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
@@ -324,7 +328,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'delete'}).click();
 
         // Aparece un mensaje de confirmacion
-        await expect(page.locator('text=Anular solicitud')).toBeVisible();
+        await expect(page.getByText('Anular solicitud', {exact: true})).toBeVisible();
 
         // Click al boton de Aceptar
         await page.getByRole('button', {name: 'check Aceptar'}).click();
@@ -333,10 +337,10 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('text=Escriba una razón de anulación')).toBeVisible();
 
         // Ingresar la razon de la anulacion
-        await page.locator('form_RAZON_ANULACION').fill('El socio necesita otro tipo de prestamo');
+        await page.locator('#form_RAZON_ANULACION').fill('El socio necesita otro tipo de prestamo');
 
         // Click al boton de Aceptar
-        await page.getByRole('button', {name: 'check Aceptar'}).click();
+        await page.getByRole('dialog', { name: 'Escriba una razón de anulación' }).getByRole('button', {name: 'check Aceptar'}).click();
 
         // Aparece una alerta de que la solicitud fue anulada
         await expect(page.locator('text=Prestamo actualizado exitosamente')).toBeVisible();

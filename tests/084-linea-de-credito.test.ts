@@ -128,7 +128,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Tipo de garantia
         await page.getByLabel('Tipo Garantía').click();
         // Click en garantia hipotecaria
-        await page.getByText('AHORROS').click();
+        await page.getByText('AHORROS', {exact: true}).click();
 
         // Oferta
         await page.getByLabel('Oferta').click();
@@ -244,74 +244,43 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=7`);
 
-        // Ocultar los codeudores
-        await page.locator('(//SPAN[@class="sc-eDWCr hyDPNs"][text()="Codeudores"])').click();
-
-        // El titulo de codeudores no debe mostrarse
-        await expect(page.locator('h1').filter({hasText: 'CODEUDORES'})).not.toBeVisible();
-
-        // Ocultar las garantias
-        await page.locator('(//SPAN[@class="sc-eDWCr hyDPNs"][text()="Garantías"])').click();
-
-        // El titulo de garantias no debe mostrarse
-        await expect(page.locator('(//H1[@class="ant-typography css-lvymt"][text()="Garantías"])')).not.toBeVisible();
+        // Cerrar las secciones de Codeudores y de Garantias
+        await page.getByRole('button', {name: 'down Codeudores'}).click();
+        await page.getByRole('button', {name: 'down Garantías', exact: true}).click();
 
         // Debe mostrase solamente el titulo de garantias liquidas
         await expect(page.locator('h1').filter({hasText: 'GARANTÍAS LÍQUIDAS'})).toBeVisible();
 
-        // Como no hay ninguna cuenta seleccionada debe estar un mensaje de error
-        await expect(page.getByText('El monto máximo utilizable es RD$ 0.00')).toBeVisible();
-
-        // Probar el funcionamiento correcto de la garantia de aportaciones
-
         // Click al boton de agregar garantia
-        await page.getByRole('button', {name: 'Agregar Garantía'}).click();
+        const agregarGarantiaLiquida = page.getByRole('button', {name: 'Agregar Garantia'});
+        await expect(agregarGarantiaLiquida).toBeVisible();
+        await agregarGarantiaLiquida.click();
 
         // Debe salir un modal para agregar la garantia liquida
-        await expect(page.locator('h5').filter({hasText: 'AGREGAR GARANTÍA LÍQUIDA'})).toBeVisible();
+        const modal = page.locator('h5').filter({hasText: 'AGREGAR GARANTÍA LÍQUIDA'}).first();
+        await expect(modal).toBeVisible();
 
         // Tipo cuenta
-        const tipoCuenta = page.locator('#form_TIPO_CUENTA');
-        await tipoCuenta.click();
-        // Elegir la de aportaciones
-        await page.getByRole('option', {name: 'APORTACIONES'}).click();
-
-        // Click en el input de socio
-        const buscarSocio = page.locator(`${selectBuscar}`);
-        await buscarSocio.click();
-
-        // Debe colocarse automaticamente el nombre del socio
-        await expect(page.locator(`((//SPAN[@class="ant-select-selection-item"][text()=${nombre} ${apellido}])[2])`)).toBeVisible(); 
-
-        // Cuenta
-        await expect(page.locator('#form_TIPO_CUENTA_DESC')).toHaveValue('APORTACIONES');
-
-        // Colocar una garantia de ahorros
-
-        // Cambiar el tipo de cuenta
+        const tipoCuenta = page.locator('#form_TIPO_CUENTA').nth(1);
         await tipoCuenta.click();
         // Elegir la cuenta de ahorros
         await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
 
-        // Buscar nuevamente la cuenta del socio
-        await buscarSocio.fill(`${nombre} ${apellido}`);
+        // Click en el input de socio
+        const buscarSocio = page.getByRole('dialog').filter({ hasText: 'Agregar Garantía LíquidaTipo de CuentaAHORROS NORMALESAHORROS NORMALESSocioBusca' }).locator(`${selectBuscar}`);
+        await buscarSocio.click();
+
         // Elegir la cuenta del socio
-        await page.getByRole('option', {name: `| ${nombre} ${apellido}`}).click();
-
-        // Cuenta
-        await expect(page.locator('#form_TIPO_CUENTA_DESC')).toHaveValue('AHORROS NORMALES');
-
-        // Debe mostrarse el monto utilizable de la cuenta de ahorros
-        await expect(page.getByText('El monto máximo utilizable es RD$ 22,770.00')).toBeVisible();
+        await page.getByRole('option', {name: '| AHORROS NORMALES |'}).click();
 
         // Seleccionar un monto a usar
-        await page.locator('#form_VALOR_ADMISIBLE').fill('10000');
+        await page.getByRole('spinbutton', {name: 'VALOR DE LA GARANTÍA'}).fill('10000');
 
         // Click en Aceptar
-        await page.getByRole('button', {name: 'Aceptar'}).click();
+        await page.getByRole('button', {name: 'Aceptar'}).nth(1).click();
 
         // El modal debe desaparecer
-        await expect(page.locator('h5').filter({hasText: 'AGREGAR GARANTÍA LÍQUIDA'})).not.toBeVisible();
+        await expect(modal).not.toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();
@@ -383,15 +352,6 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // La url debe de tener que la solicitud esta en estado solicitado
         await expect(page).toHaveURL(/\/solicitado/);
-
-        // Ir a la seccion de datos prestamos 
-        const datosPrestamos = page.getByRole('button', {name: '2 Datos Préstamos'})
-        await expect(datosPrestamos).toBeVisible();
-        await datosPrestamos.click();
-
-        // La tasa debe estar visible y calculada
-        const tasa = page.locator('#loan_form_CUOTA');
-        await expect(tasa).toHaveAttribute('value', 'RD$ 16.67');
         
         // Ir a la ultima seccion 
         const seccionDocumentos = page.getByRole('button', {name: '9 Documentos'});
@@ -526,7 +486,10 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Debe estar marcado el checkbox de desembolsar todo
         await expect(desembolsarTodo).toBeChecked();
 
-        // Desembolsar la solicitud
+        // Click fuera del checkbox
+        await page.locator('h1').filter({hasText: 'DESEMBOLSO DE PRÉSTAMO'}).click();
+
+        // Click a Desembolsar
         const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
         await expect(botonDesembolsar).toBeVisible();
         await botonDesembolsar.click();

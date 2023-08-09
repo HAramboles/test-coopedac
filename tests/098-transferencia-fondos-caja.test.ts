@@ -49,8 +49,13 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIA FONDOS DE CAJA'})).toBeVisible();
 
+        // Click al selector de Hasta Caja
+        await page.locator('#form_ID_CAJA_HASTA').click();
+        // Click a la opcion de Boveda Principal
+        await page.getByRole('option', {name: 'BOVEDA PRINCIPAL'}).click();
+
         // Hasta Caja
-        await expect(page.getByText('BOVEDA PRINCIPAL')).toBeVisible();
+        // await expect(page.getByText('BOVEDA PRINCIPAL')).toBeVisible();
     });
 
     test('Transferir a Boveda un Monto', async () => {

@@ -52,8 +52,6 @@ test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
     });
 
     test('Linea de Credito de un Socio', async () => {
-        test.slow();
-
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'DESEMBOLSO LÍNEAS CRÉDITO'})).toBeVisible();
 
@@ -73,16 +71,16 @@ test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
         await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('LÍNEA DE CRÉDITO')).toBeVisible();
 
         // Monto
-        await expect(page.getByRole('cell', {name: 'RD$ 20,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RD$ 10,000.00'})).toBeVisible();
 
         // Plazo 
-        await expect(page.getByRole('cell', {name: '12'})).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('24')).toBeVisible();
 
         // Cuota
-        await expect(page.getByRole('cell', {name: 'RD$ 16.67'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RD$ 83.33'})).toBeVisible();
 
         // Click al boton de desembolsar
-        await page.locator('[aria-label="dollar-circle"]').click();
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[aria-label="dollar-circle"]').click();
 
         // Se debe abrir un modal para desembolsar la solicitud
         // Como la solicitud fue desembolsada no tiene un monto disponible

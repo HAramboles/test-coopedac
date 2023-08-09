@@ -586,11 +586,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Esperar que se abra una nueva pestaña con el reporte
         const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
         
         // Cerrar la pagina con el reporte 
         await page1.close();
-        await page2.close();
     });
 
     test('Cambiar de estado la solicitud de Aprobado a En Proceso y viceversa', async () => {
@@ -663,11 +661,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         
        // Esperar que se abra una nueva pestaña con la solicitud
        const page1 = await context.waitForEvent('page');
-       const page2 = await context.waitForEvent('page');
         
        // Cerrar la pagina con la solicitud 
        await page1.close();
-       await page2.close();
     });
 
     test('Desembolsar la solicitud', async () => {

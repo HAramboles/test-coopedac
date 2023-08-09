@@ -6,8 +6,7 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre de la presona juridica
-let cedula: string | null;
+// Nombre de la presona fisica
 let nombre: string | null;
 let apellido: string | null;
 
@@ -31,8 +30,7 @@ test.describe.serial('Pruebas con el Rechazo de Cambio de Categoria de la Person
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula, nombre y apellido de la pesona alamacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        // Nombre y apellido de la pesona alamacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -56,7 +54,7 @@ test.describe.serial('Pruebas con el Rechazo de Cambio de Categoria de la Person
         await expect(page.locator('h1').filter({hasText: 'AUTORIZACIÓN CAMBIO CATEGORÍA'})).toBeVisible();
 
         // Buscar al socio
-        await page.locator(`${formBuscar}`).fill(`${cedula} ${apellido}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
         // Click al boton de buscar
         await page.locator('[aria-label="search"]').click();
 

@@ -39,8 +39,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
 
         // Nombre y apellido de la persona fisica almacenada en el state
-        nombrePersona = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellidoPersona = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        nombrePersona = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        apellidoPersona = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
     // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -237,12 +237,13 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(page.locator('text=FLUJO DE EFECTIVO')).toBeVisible();
 
         // Colocar un monto en el campo de Total Ingresos
-        //await page.getByRole('img', { name: 'edit' }).locator('svg').click();
         await page.getByText('RD$ 0.00').first().click();
         await page.getByPlaceholder('MONTO').fill('RD$ 5,0000');
 
+        // Click fuera del input
+        await page.getByText('TOTAL INGRESOS').click();
+
         // Colocar un monto en el campo de Total Gastos
-        // await page.getByRole('img', { name: 'edit' }).locator('svg').click();
         await page.getByText('RD$ 0.00').click();
         await page.getByPlaceholder('MONTO').fill('RD$ 1,5000');
 
@@ -287,25 +288,22 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.locator(`${formBuscar}`).fill(`${nombrePersona} ${apellidoPersona}`);
 
         // Click a la opcion de la persona buscada
-        await page.getByRole('option', {name: `${nombrePersona} ${apellidoPersona}`}).click();
+        await page.getByText(`${nombrePersona} ${apellidoPersona}`).click();
 
         // Se abre un modal colocar el tipo de relacion
         await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
 
         // Click al tipo de relacion
-        await page.locator('#rc_select_57').click();
+        await page.getByRole('combobox').click();
 
         // Elegir la opcion de codeudor
-        await page.getByRole('option', {name: 'CODEUDOR(A)'}).click();
+        await page.getByRole('option', {name: 'CO-DEUDOR(A)'}).click();
 
         // Click al boton de Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
         // Debe aparecer una alerta de operacion exitosa
         await expect(page.locator('text=Relacionados guardados exitosamente.')).toBeVisible();
-
-        // Cerrar el modal
-        await page.locator(`${dataCerrar}`).click();
 
         // El modal se cierra
         await expect(modal).not.toBeVisible();
