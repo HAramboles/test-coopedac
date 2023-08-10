@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar } from './utils/dataTests';
+import { url_base, browserConfig } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -11,8 +11,8 @@ test.describe.serial('Pruebas con el Cambio de Moneda', () => {
     test.beforeAll(async () => {
         // Crear el browser
         browser = await chromium.launch({
-            headless: false,
-            args: ['--window-position=-1300,100'],
+            headless: browserConfig.headless,
+            args: browserConfig.args
         });
 
         // Crear el context

@@ -1,7 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
 import { formatDate } from './utils/fechas';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './000-nombresyapellidos-personas';
 
@@ -34,8 +34,8 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 // Crear el context

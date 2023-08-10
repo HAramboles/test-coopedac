@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, Page, expect, Locator, test } from '@playwright/test';
-import { url_base, formBuscar, selectBuscar } from './utils/dataTests';
+import { url_base, formBuscar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 
 // Variables globales
@@ -27,8 +27,8 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
 
                 // Crear el context

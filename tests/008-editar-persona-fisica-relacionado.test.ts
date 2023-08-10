@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, formBuscar } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
 
 // Variables globales
@@ -38,8 +38,8 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 // Crear el context
@@ -392,7 +392,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await editarEmail.click();
 
                     // El input del email debe estar habilitado para editar
-                    const campoNombreEmail = page.getByPlaceholder('USUARIO');
+                    const campoNombreEmail = page.getByPlaceholder('Descripción');
                     await campoNombreEmail.click();
 
                     // Click al boton de Cancelar

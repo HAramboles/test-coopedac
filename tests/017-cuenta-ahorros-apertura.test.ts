@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { formatDate } from './utils/fechas';
 
@@ -26,8 +26,8 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con l
             test.beforeAll(async () => { // Antes de todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

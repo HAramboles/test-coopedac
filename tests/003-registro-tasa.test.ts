@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, ariaCerrar, dataGuardar } from './utils/dataTests';
+import { url_base, ariaCerrar, dataGuardar, browserConfig } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -57,8 +57,8 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
 
                 // Crear el context

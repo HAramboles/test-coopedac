@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, dataPrinter, formBuscar } from './utils/dataTests';
+import { url_base, dataPrinter, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 
 // Variables Globales
@@ -26,8 +26,8 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 // Crear el context

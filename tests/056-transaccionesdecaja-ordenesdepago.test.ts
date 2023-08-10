@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar, formBuscar } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar, selectBuscar, formBuscar, browserConfig } from './utils/dataTests';
 import { diaSiguiente, formatDate } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 
@@ -23,8 +23,8 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 // Crear el context

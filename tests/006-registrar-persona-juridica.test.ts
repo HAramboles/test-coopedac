@@ -7,7 +7,7 @@ import {
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './000-nombresyapellidos-personas';
 
@@ -51,8 +51,8 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 // Crear el context
@@ -528,7 +528,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     const provincia = page.locator('#addressesForm_DESCPROVINCIA');
                     await provincia.fill('Sant');
                     // Seleccionar Santiago
-                    await page.locator('text=SANTIAGO').first().click();
+                    await page.getByRole('option', {name: 'SANTIAGO'}).first().click();
             
                     // Municipio o Ciudad
                     await page.locator('#addressesForm_DESCMUNICIPIO').click();

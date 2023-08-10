@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base } from './utils/dataTests';
+import { url_base, browserConfig } from './utils/dataTests';
 import { formatDate, diaAnterior } from './utils/fechas';
 
 // Variables Globales
@@ -13,7 +13,8 @@ test.describe.serial('Pruebas con el Reporte de Prestamos Cancelados', async () 
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false,
+            headless: browserConfig.headless,
+            args: browserConfig.args
         });
 
         // Crear el context

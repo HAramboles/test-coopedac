@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate, primerDiaMes } from './utils/fechas';
-import { url_base, selectBuscar } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 
 // Variables globles
 let browser: Browser;
@@ -17,8 +17,8 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false,
-            args: ['--window-position=-1300,100'],
+            headless: browserConfig.headless,
+            args: browserConfig.args
         });
 
         // Crear el context

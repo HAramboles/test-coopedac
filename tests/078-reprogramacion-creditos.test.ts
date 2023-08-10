@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { dosMesDespues } from './utils/fechas';
 
 // Variables globales
@@ -17,8 +17,8 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false,
-            args: ['--window-position=-1300,100'],
+            headless: browserConfig.headless,
+            args: browserConfig.args
         });
 
         // Crear el context

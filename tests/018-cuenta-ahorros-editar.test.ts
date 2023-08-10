@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, formBuscar, selectBuscar, ariaCerrar } from './utils/dataTests';
+import { url_base, formBuscar, selectBuscar, ariaCerrar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 
 // Variables Globales
@@ -30,8 +30,8 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 // Crear el context

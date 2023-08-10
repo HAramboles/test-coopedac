@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, Cookie, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, userCorrecto, passCorrecto } from './utils/dataTests';
+import { url_base, userCorrecto, passCorrecto, browserConfig } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -18,8 +18,8 @@ test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', async
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false,
-            args: ['--window-position=-1300,100'],
+            headless: browserConfig.headless,
+            args: browserConfig.args
         });
 
         // Crear el context

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -16,8 +16,8 @@ test.describe.serial('Pruebas con la Categoria del Socio', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false,
-            args: ['--window-position=-1300,100'],
+            headless: browserConfig.headless,
+            args: browserConfig.args
         });
 
         // Crear el context 

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base } from './utils/dataTests';
+import { url_base, browserConfig } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -12,8 +12,8 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false,
-            args: ['--window-position=-1300,100'],
+            headless: browserConfig.headless,
+            args: browserConfig.args
         });
 
         // Crear el context

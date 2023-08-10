@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, selectBuscar } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 
 // Variables globales
@@ -20,8 +20,8 @@ test.describe.serial('No permitir Crear una Nueva Cuenta de Aportaciones al mism
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser, con la propiedad headless
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 // Crear el context

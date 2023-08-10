@@ -12,7 +12,7 @@ import {
     nombrePersonaFisicaConyuge, 
     apellidoPersonaFisicaConyuge  
 } from './000-nombresyapellidos-personas';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 
 // Variables globales
@@ -58,8 +58,8 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

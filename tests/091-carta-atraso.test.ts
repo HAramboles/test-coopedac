@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataFile } from './utils/dataTests';
+import { url_base, dataFile, browserConfig } from './utils/dataTests';
 
 // Variables Globales
 let browser: Browser;
@@ -11,7 +11,8 @@ test.describe.serial('Prueba con la Carta de Atraso', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
-            headless: false,
+            headless: browserConfig.headless,
+            args: browserConfig.args
         });
 
         // Crear el context

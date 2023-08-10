@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 
 // Variables globales
@@ -22,8 +22,8 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
             test.beforeAll(async () => {
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */

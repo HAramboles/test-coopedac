@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, userCorrecto, passCorrecto } from './utils/dataTests';
+import { url_base, userCorrecto, passCorrecto, browserConfig } from './utils/dataTests';
 
 /* Variables globales */
 let browser: Browser;
@@ -20,8 +20,8 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
     test.beforeAll(async () => { /* Antes de las pruebas */
         /* Crear el browser, en este caso el chromiun */
         browser = await chromium.launch({
-            headless: false,
-            args: ['--window-position=-1300,100'],
+            headless: browserConfig.headless,
+            args: browserConfig.args
         });
 
         /* Crear un context */

@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 
@@ -32,8 +32,8 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
                 browser = await chromium.launch({
-                    headless: false,
-                    args: ['--window-position=-1300,100'],
+                    headless: browserConfig.headless,
+                    args: browserConfig.args
                 });
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */
