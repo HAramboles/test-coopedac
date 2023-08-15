@@ -10,7 +10,7 @@ let page: Page;
 let cedulaEmpresa: string | null;
 let nombreEmpresa: string | null;
 
-// Nombre, apellido de la persona fisica
+// Nombre, apellido de la persona fisica relacionada
 let nombrePersona: string | null;
 let apellidoPersona: string | null;
 
@@ -38,7 +38,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
 
-        // Nombre y apellido de la persona fisica almacenada en el state
+        // Nombre y apellido de la persona fisica relacionada almacenada en el state
         nombrePersona = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
         apellidoPersona = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
@@ -288,7 +288,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.locator(`${formBuscar}`).fill(`${nombrePersona} ${apellidoPersona}`);
 
         // Click a la opcion de la persona buscada
-        await page.getByText(`${nombrePersona} ${apellidoPersona}`).click();
+        await page.getByText(`${nombrePersona} ${apellidoPersona}`).first(  ).click();
 
         // Se abre un modal colocar el tipo de relacion
         await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
@@ -305,7 +305,10 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         // Debe aparecer una alerta de operacion exitosa
         await expect(page.locator('text=Relacionados guardados exitosamente.')).toBeVisible();
 
-        // El modal se cierra
+        // Cerrar el modal
+        await page.locator(`${dataCerrar}`).click();
+
+        // El modal no debe estar visible
         await expect(modal).not.toBeVisible();
 
         // Click al boton de agregar garantia
@@ -325,7 +328,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.getByRole('checkbox').click();
 
         // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
-        await expect(page.locator(`text=${nombrePersona} ${apellidoPersona}`)).toBeVisible();
+        await expect(page.locator(`text=${nombreEmpresa}`)).toBeVisible();
 
         // Valor tasado
         const valorTasado = page.getByPlaceholder('VALOR TASADO');

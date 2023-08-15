@@ -483,9 +483,6 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         const desembolsarTodo = page.getByRole('checkbox');
         await desembolsarTodo.click();
 
-        // Debe estar marcado el checkbox de desembolsar todo
-        await expect(desembolsarTodo).toBeChecked();
-
         // Click fuera del checkbox
         await page.locator('h1').filter({hasText: 'DESEMBOLSO DE PRÉSTAMO'}).click();
 

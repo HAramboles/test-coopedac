@@ -6,8 +6,7 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre y apellido de la persona
-let cedula: string | null;
+// Nombre y apellido de la persona
 let nombre: string | null;
 let apellido: string | null;
 
@@ -31,8 +30,7 @@ test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula, ombre y apellido de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        // Nombre y apellido de la persona almacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -59,7 +57,7 @@ test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
         await expect(page.getByText('DESEMBOLSADO')).toBeVisible();
 
         // Buscar a un socio
-        await page.locator(`${formBuscar}`).fill(`${cedula}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Click al boton de buscar
         await page.locator('[data-icon="search"]').click();
@@ -71,13 +69,13 @@ test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
         await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('LÍNEA DE CRÉDITO')).toBeVisible();
 
         // Monto
-        await expect(page.getByRole('cell', {name: 'RD$ 10,000.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 10,000.00')).toBeVisible();
 
         // Plazo 
         await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('24')).toBeVisible();
 
         // Cuota
-        await expect(page.getByRole('cell', {name: 'RD$ 83.33'})).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 83.33')).toBeVisible();
 
         // Click al boton de desembolsar
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator('[aria-label="dollar-circle"]').click();

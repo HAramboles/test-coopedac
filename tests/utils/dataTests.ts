@@ -2,6 +2,10 @@
 export const userCorrecto = process.env.REACT_APP_WEB_SERVICE_API_USER;
 export const passCorrecto = process.env.REACT_APP_WEB_SERVICE_API_PASS;
 
+// Usuario y password para realizar el cuadre de caja
+export const userCuadreCaja = process.env.REACT_APP_WEB_SERVICE_API_USER_CUADRE_CAJA;
+export const passCuadreCaja = process.env.REACT_APP_WEB_SERVICE_API_PASS_CUADRE_CAJA;
+
 // URL de la pagina
 export const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
@@ -18,11 +22,11 @@ export const formBuscar:string = '#form_search';
 export const selectBuscar:string = '#select-search';
 
 // Abrir el browser en una pantalla u otra
-const browserOneScreen = ['--window-position=0,0'];
-const browserSecondScreen = ['--window-position=-1300,100'];
+const browserOneScreen = ['--window-position=100,0'];
+const browserSecondScreen = ['--window-position=-1400,100'];
 
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserOneScreen,
+    args: browserSecondScreen,
 }

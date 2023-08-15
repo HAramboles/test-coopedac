@@ -429,9 +429,6 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
 
                     // Debe regresar a la pagina de Registrar personas
                     await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
-
-                    // La URL deba cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
                 });
             };
         

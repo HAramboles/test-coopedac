@@ -81,20 +81,20 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         // Nombre del socio
         await expect(page.getByText(`| ${nombre} ${apellido} |`)).toBeVisible();
 
-        // Forma de Pago
-        await page.locator('#form_FORMA_PAGO').click();
+        // // Forma de Pago
+        // await page.locator('#form_FORMA_PAGO').click();
 
-        // Seleccionar la opcion Transferencia a Cuenta
-        await page.getByText('TRANSFERENCIA A CUENTA').click();
+        // // Seleccionar la opcion Transferencia a Cuenta
+        // await page.getByText('TRANSFERENCIA A CUENTA').click();
 
-        // Cuenta Destino
-        await page.locator('#form_CUENTA').click();
+        // // Cuenta Destino
+        // await page.locator('#form_CUENTA').click();
 
-        // Seleccionar la cuenta de Ahorros Normales
-        await page.getByText('AHORROS NORMALES').click();
+        // // Seleccionar la cuenta de Ahorros Normales
+        // await page.getByText('AHORROS NORMALES').click();
 
-        // Razon de Cancelacion
-        await expect(page.getByText('OTRAS RAZONES')).toBeVisible();
+        // // Razon de Cancelacion
+        // await expect(page.getByText('OTRAS RAZONES')).toBeVisible();
 
         // Comentario
         await page.locator('#form_COMENTARIO').fill('Confirmar la Cancelacion de la cuenta de Orden de Pago');

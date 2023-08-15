@@ -162,7 +162,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // El estado debe ser Cancelado
-        await expect(page.getByRole('cell', {name: 'CANCELADO'})).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('cell', {name: 'CANCELADO'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas
