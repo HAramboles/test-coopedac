@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, dataCheck } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -60,7 +60,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la P
         await page.locator('[aria-label="search"]').click();
 
         // Click a confirmar cambio de categoria
-        await page.getByRole('row', {name: `${nombreEmpresa} SOCIO EMPRESARIAL`}).locator('[data-icon="check-circle"]').click();
+        await page.getByRole('row', {name: `${nombreEmpresa} SOCIO EMPRESARIAL`}).locator(`${dataCheck}`).click();
 
         // Debe salir un modal
         await expect(page.locator('text=¿Seguro que desea aprobar el cambio de categoria?')).toBeVisible();

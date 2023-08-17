@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, dataCheck } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 
@@ -452,7 +452,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await expect(estadoActivo).toBeVisible();
 
                     // Boton de inhabilitar
-                    const botonInhabilitar = page.locator('[data-icon="check-circle"]');
+                    const botonInhabilitar = page.locator(`${dataCheck}`);
                     await expect(botonInhabilitar).toBeVisible();
                     await botonInhabilitar.click();
 

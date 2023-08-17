@@ -15,6 +15,7 @@ export const dataPrinter:string = '[data-icon="printer"]';
 export const dataExport:string = '[data-icon="export"]';
 export const dataFile:string = '[data-icon="file-text"]';
 export const dataGuardar:string = '[data-icon="save"]';
+export const dataCheck:string = '[data-icon="check-circle"]';
 
 export const ariaCerrar:string = '[aria-label="close"]';
 
@@ -28,5 +29,5 @@ const browserSecondScreen = ['--window-position=-1400,100'];
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserSecondScreen,
+    args: browserOneScreen,
 }

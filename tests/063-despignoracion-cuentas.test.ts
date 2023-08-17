@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, dataCheck } from './utils/dataTests';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/interfaces'
 
 // Variables globales
@@ -59,7 +59,7 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
 
                 // Boton para liberar un monto
-                botonDespignorar = page.getByRole('row', {name: 'CONGELADO RD$ 150.00'}).locator('[data-icon="check-circle"]');
+                botonDespignorar = page.getByRole('row', {name: 'CONGELADO RD$ 150.00'}).locator(`${dataCheck}`);
             });
         
             test('Ir a la opcion de Pignoracion de Cuentas', async () => {
