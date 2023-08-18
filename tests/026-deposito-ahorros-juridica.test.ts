@@ -138,10 +138,10 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
                     await expect(campoMonto).toBeVisible();
-                    await campoMonto.fill('40000');
+                    await campoMonto.fill('500000');
             
                     // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Deposito de 40000 pesos a la cuenta de Ahorros');
+                    await page.locator('#form_COMENTARIO').fill('Deposito de 500000 pesos a la cuenta de Ahorros');
             
                     // Boton Agregar
                     await page.locator('text=Agregar').click();
@@ -172,12 +172,12 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                     // El monto para el cambio de categoria de Ahorrante a Empresarial es de 25000, colocar un monto mayor
             
-                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 40000. Divididos en 1000
+                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 500000. Divididos en 1000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
             
-                    // Cantidad = 40 de 1000
+                    // Cantidad = 5000 de 1000
                     await cant1000.click();
-                    await cant1000.fill('40');
+                    await cant1000.fill('500');
             
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();

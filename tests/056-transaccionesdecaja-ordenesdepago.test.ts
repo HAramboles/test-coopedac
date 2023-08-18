@@ -106,7 +106,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                 });
             } else if (escenarios.ES_BOVEDA === '0') {
                 // Tests cuando el ES_BOVEDA sea igual a 0
-                test('Transacciones de Caja - Retiro', async () => {        
+                test('Transacciones de Caja - Deposito a la cuenta de Orden de Pago', async () => {        
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'TRANSACCIONES DE CAJA'})).toBeVisible();
             
@@ -299,7 +299,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await expect(page.getByRole('heading', {name: 'Firmas Autorizadas'})).toBeVisible();
 
                     // Numero de orden
-                    await page.locator('#form_NUM_ORDEN').fill('21');
+                    await page.locator('#form_NUM_ORDEN').fill('69');
             
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
@@ -346,7 +346,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
             
                     // Hacer la distribucion del dinero a retirar, en el caso de la prueba RD 100
                     // Divididos en 50 y 50
-                    const cant100 = page.locator('[id="11"]');
+                    const cant100 = page.locator('[id="16"]');
             
                     // Cantidad = 2 de 50
                     await cant100.click();
@@ -360,26 +360,53 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();
 
-                    // Se abre una nueva ventana con e recibo
-                    const page1 = await context.newPage();
-                    
-                    // La pagina abierta con el reporte del retiro se debe cerrar
+                    // Aparece un modal para colocar el destino de los fondos retirados
+                    await expect(page.locator('h1').filter({hasText: 'CAPTURA DE DATOS. LAVADO DE EFECTIVO'})).toBeVisible();
+
+                    // Mensaje de aviso del modal
+                    await expect(page.locator('text=Aviso - Información Requerida')).toBeVisible();
+
+                    // Colocar un destino de los fondos
+                    await page.locator('#form_ORIGEN_FONDOS').fill('Retiro para uso personal');
+
+                    // Boton de Cliente es Intermediario
+                    const botonClienteIntermediario = page.getByText('Cliente Intermediario');
+                    await expect(botonClienteIntermediario).toBeVisible();
+
+                    // Click al boton de Cliente Intermediario
+                    await botonClienteIntermediario.click();
+
+                    // Los datos del socio deben agregarse
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+                    // Click al boton de Seleccionar
+                    await page.getByText('Seleccionar').click();
+
+                    // Debe salir otro modal para confirmar la informacion
+                    await expect(page.locator('text=Confirmar')).toBeVisible();
+
+                    // Contenido del modal
+                    await expect(page.locator('text=Asegúrese de haber seleccionado a la persona correcta:')).toBeVisible();
+                    await expect(page.getByText(`Nombre: ${nombre} ${apellido}`)).toBeVisible();
+                    await expect(page.getByText('Doc. Identidad:')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Esperar que se abran dos nuevas pestañas con el recibo de la orden y el Reporte RTE
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
+
+                    // Cerrar las nuevas pestañas con el recibo de la orden y el reporte RTE
                     await page1.close();
+                    await page2.close();
                 });
             
                 test('Cerrar la Sesion', async () => {
-                    // Luego de que se cierre la nueva pestaña, se debe regresar a la pagina anterior
+                    // Luego de que se cierre las nuevas pestañas, se debe regresar a la pagina anterior
                     await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
-            
-                    // Debe aparecer un modal con el mensaje de actualizar la libreta
-                    await expect(page.locator('text=Actualizar libreta')).toBeVisible();
-            
-                    // Click en Cancelar
-                    const botonCancelar = page.getByRole('button', {name: 'Cancelar'});
-                    await expect(botonCancelar).toBeVisible();
-                    await botonCancelar.click();
 
-                    // Click al boton de liberaar sesion
+                    // Click al boton de liberar sesion
                     const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});
                     await expect(botonLiberarSesion).toBeVisible();
                     await botonLiberarSesion.click();

@@ -9,27 +9,35 @@ const formatDate = (inputDate: Date) => {
     .padStart(2, '0')}/${month
       .toString()
       .padStart(2, '0')}/${year}`;
-}
+  }
 
-// Dia Actual
-const diaActual = new Date();
+  // Dia Actual
+  const diaActual = new Date();
 
-// Primer dia del mes actual
-const primerDiaMes = formatDate(new Date(diaActual.getFullYear(), diaActual.getMonth(), 1));
+  // Variables con los dias sin formato
+  let diaAnteriorNoFormato = new Date();
+  let diaSiguienteNoFormato = new Date();
+  
+  // Primer dia del mes actual
+  const primerDiaMes = formatDate(new Date(diaActual.getFullYear(), diaActual.getMonth(), 1));
+  console.log(primerDiaMes)
 
-// Dia anterior al dia actual
-const diaAnterior = formatDate(new Date(diaActual.setDate(diaActual.getDate() - 1)));
+  // Mismo dia pero dos meses despues
+  const dosMesDespues = formatDate(new Date(diaActual.setMonth(diaActual.getMonth() + 2)));
+  console.log(dosMesDespues);
 
-// Dia siguiente al dia actual
-const diaSiguiente = formatDate(new Date(diaActual.setDate(diaActual.getDate() + 1)));
+  // Dia anterior al dia actual
+  diaAnteriorNoFormato = new Date(diaAnteriorNoFormato.setDate(diaAnteriorNoFormato.getDate() - 1));
+  const diaAnterior = formatDate(diaAnteriorNoFormato);
 
-// Mismo dia pero dos meses despues
-const dosMesDespues = formatDate(new Date(diaActual.setMonth(diaActual.getMonth() + 2)));
-
-export {
-  formatDate,
-  primerDiaMes,
-  diaAnterior,
-  diaSiguiente,
-  dosMesDespues
-}
+  // Dia siguiente al dia actual
+  diaSiguienteNoFormato = new Date(diaSiguienteNoFormato.setDate(diaSiguienteNoFormato.getDate() + 1));
+  const diaSiguiente= formatDate(diaSiguienteNoFormato);
+  
+  export {
+    formatDate,
+    primerDiaMes,
+    diaAnterior,
+    diaSiguiente,
+    dosMesDespues
+  }

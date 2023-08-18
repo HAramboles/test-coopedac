@@ -269,19 +269,20 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await editarTelefono.click();
 
                     // No debe permitir editar el telefono, debe salir un modal
-                    await expect(page.locator('text=No tiene permiso para editar eMails / redes sociales.')).toBeVisible();
+                    const noPermisoEditar = page.locator('text=No tiene permiso para editar eMails / redes sociales.');
+                    await expect(noPermisoEditar).toBeVisible();
 
                     // Click al boton de Aceptar del modal de telefono
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    await noPermisoEditar.getByRole('button', {name: 'Aceptar'}).click();
 
                     // Click al boton de editar del email
                     await editarEmail.click();
 
                     // No debe permitir editar el email, debe salir un modal
-                    await expect(page.locator('text=No tiene permiso para editar eMails / redes sociales.')).toBeVisible();
+                    await expect(noPermisoEditar).toBeVisible();
 
                     // Click al boton de Aceptar del modal de email
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    await noPermisoEditar.getByRole('button', {name: 'Aceptar'}).click();
 
                     // Click en Actualizar y continuar
                     actualizarContinuar();

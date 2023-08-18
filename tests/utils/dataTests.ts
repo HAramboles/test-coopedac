@@ -24,10 +24,10 @@ export const selectBuscar:string = '#select-search';
 
 // Abrir el browser en una pantalla u otra
 const browserOneScreen = ['--window-position=100,0'];
-const browserSecondScreen = ['--window-position=-1400,100'];
+const browserSecondScreen = ['--window-position=-1350,100'];
 
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserOneScreen,
+    args: browserSecondScreen,
 }

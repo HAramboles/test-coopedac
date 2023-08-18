@@ -62,8 +62,8 @@ test.describe.serial('Pruebas con el Historial de Pignoracion de la Cuenta usada
         // Estado de Cuenta
         await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');
 
-        // Debe estar el monto pignorado usado como garantia para el prestamo Hipotecario
-        await expect(page.getByRole('row', {name: 'CONGELADO RD$ 50,000.00'})).toBeVisible(); 
+        // Debe estar el monto pignorado usado como garantia para la Linea de Credito
+        await expect(page.getByRole('row', {name: 'CONGELADO RD$ 10,000.00'})).toBeVisible(); 
 
         // Y la Razon Pignoracion debe ser que es usada como garantia de prestamos
         await expect(page.getByRole('row', {name: 'GARANTIA DE PRESTAMO'})).toBeVisible();
