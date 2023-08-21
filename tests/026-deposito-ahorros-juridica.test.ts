@@ -295,6 +295,22 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     await expect(botonCancelarr).toBeVisible();
                     await botonCancelarr.click();
                 });
+
+                test('Liberar la Sesion', async () => {
+                    // Click al boton de Liberar Sesion
+                    const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});
+                    await expect(botonLiberarSesion).toBeVisible();
+                    await botonLiberarSesion.click();
+
+                    // Debe salir un mensaje de Confirmacion
+                    await expect(page.locator('text=¿Está seguro que desea proceder con esta acción?')).toBeVisible();
+
+                    // Click al boton de Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Debe salir un mensaje de Operacion Exitosa
+                    await expect(page.locator('text=Sesiones en transito actualizada exitosamente.')).toBeVisible();
+                });
             };
         
             test.afterAll(async () => {

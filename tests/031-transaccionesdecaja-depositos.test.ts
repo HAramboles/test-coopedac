@@ -325,6 +325,12 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
 
                     // Cerrar la nueva pestaña
                     await page1.close();
+
+                    // Debe salir un modal
+                    await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
+            
+                    // Click al boton de Cancelar
+                    await page.locator('text=Cancelar').click();
                 });
             };
         

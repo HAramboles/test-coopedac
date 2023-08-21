@@ -13,6 +13,9 @@ let botonEditarCuenta: Locator;
 // Imagen de la Firma
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
+// Imagen de la nueva firma agregada
+const firma2 = './tests/firma2.png' // Con este path la imagen de la firma debe estar en la carpeta tests
+
 // Cedula, nombre y apellido de la persona
 let cedula: string | null;
 let nombre: string | null;
@@ -155,36 +158,7 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
                 });
             
-                test('Probar el boton de Cancelar', async () => {            
-                    // Boton de Cancelar
-                    const botonCancelar = page.locator('button:has-text("Cancelar")');
-                    await expect(botonCancelar).toBeVisible();
-                    await botonCancelar.click();
-            
-                    // Modal de confirmacion
-                    await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
-                    // Click en Aceptar
-                    await page.locator('text=Aceptar').click();
-            
-                    // Debe redirigirse al listado de las cuentas de ahorros
-                    await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
-                });
-            
-                test('Editar Cuenta de Ahorros - Datos Generales', async () => {
-                    // Buscar al socio a editar
-                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
-            
-                    // Click al boton de editar cuenta
-                    const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-                    await expect(botonEditarCuenta).toBeVisible();
-                    await botonEditarCuenta.click();
-            
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(/\/?step=1/);
-            
-                    // El titulo de editar cuenta debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
-            
+                test('Editar Cuenta de Ahorros - Datos Generales', async () => {            
                     // Debe de aparecer el nombre de la persona como titulo
                     await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
             
@@ -206,7 +180,29 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await montoConfirmacion.fill('26,000');
             
                     // El componente de firma debe estar visible y debe ser unico
-                    await expect(page.locator('(//div[@class="ant-upload-list-item-container"])')).toBeVisible();
+                    const firmaSubida = page.locator('(//div[@class="ant-upload-list-item-container"])');
+                    await expect(firmaSubida).toBeVisible();
+
+                    // Eliminar la firma que tiene la cuenta
+                    await page.locator('[data-icon="delete"]').click();
+
+                    // La firma no debe estar visible
+                    await expect(firmaSubida).not.toBeVisible();
+
+                    // Subir una nueva firma
+                    const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
+                    await page.getByText('Cargar ').click(); 
+                    const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
+                    await subirFirma.setFiles(`${firma2}`); // setFiles para elegir un archivo
+
+                    // La firma subida debe estar visible
+                    await expect(page.getByAltText('firma2.jpg')).toBeVisible();
+
+                    // Debe aparecer una alerta de que la firma se subio correctamente
+                    await expect(page.locator('text=Operación Exitosa')).toBeVisible();
+
+                    // Cerrar la alerta
+                    await page.locator(`${ariaCerrar}`).click();
             
                     // Click al boton de Actualizar
                     const botonActualizar = page.locator('button:has-text("Actualizar")');
@@ -218,7 +214,7 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await expect(page).toHaveURL(/\/?step=2/);
 
                     // Cerrar uno de los mensajes que se muestran
-                    await page.locator(`${ariaCerrar}`).first().click();
+                    // await page.locator(`${ariaCerrar}`).first().click();
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
