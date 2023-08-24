@@ -14,7 +14,7 @@ let botonEditarCuenta: Locator;
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
 // Imagen de la nueva firma agregada
-const firma2 = './tests/firma2.png' // Con este path la imagen de la firma debe estar en la carpeta tests
+const firma2 = './tests/firma2.jpg' // Con este path la imagen de la nueva firma debe estar en la carpeta tests
 
 // Cedula, nombre y apellido de la persona
 let cedula: string | null;

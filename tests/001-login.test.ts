@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, userCorrecto, passCorrecto, browserConfig } from './utils/dataTests';
+import { url_base, userCorrecto, passCorrecto, browserConfig, dataVer } from './utils/dataTests';
+import { formatDate } from './utils/fechas';
 
 /* Variables globales */
 let browser: Browser;
@@ -11,7 +12,7 @@ let usernameCampo: Locator;
 let passCampo: Locator;
 let botonLogin: Locator;
 
-// Usuario y contraseña erronea 
+// Usuario y contraseña erroneos 
 const user:string = 'hector';
 const pass:string = 'abc';
 
@@ -101,7 +102,7 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
         await expect(passCampo).toHaveValue(pass);
 
         // Ocultar la contraseña
-        const botonOcultarPass = page.locator('[data-icon="eye"]');
+        const botonOcultarPass = page.locator(`${dataVer}`);
         await expect(botonOcultarPass).toBeVisible();
         await botonOcultarPass.click();
 
@@ -159,6 +160,11 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
 
         // Debe de redirigir al usuario al inicio
         await expect(page).toHaveURL(`${url_base}`);
+    });
+
+    test('La Fecha del Dia debe estar visible', async () => {
+        // Fecha del dia actual en el Header
+        await expect(page.getByText(`${formatDate(new Date())}`)).toBeVisible();
     });
 
     test('Menu de Navegacion de la pagina', async () => {

@@ -16,6 +16,7 @@ export const dataExport:string = '[data-icon="export"]';
 export const dataFile:string = '[data-icon="file-text"]';
 export const dataGuardar:string = '[data-icon="save"]';
 export const dataCheck:string = '[data-icon="check-circle"]';
+export const dataVer:string = '[data-icon="eye"]';
 
 export const ariaCerrar:string = '[aria-label="close"]';
 
