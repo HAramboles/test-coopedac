@@ -6,8 +6,10 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula de la persona
+// Cedula, nombre y apellido de la persona
 let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con la Reimpresion de Desembolso', () => {
@@ -29,8 +31,10 @@ test.describe.serial('Pruebas con la Reimpresion de Desembolso', () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula de la persona almacenada en el state
+        // Cedula, nombre y apellido de la persona almacenada en el state
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Reimprimir Desembolso', async () => {
@@ -54,8 +58,12 @@ test.describe.serial('Pruebas con la Reimpresion de Desembolso', () => {
         // Buscar un socio
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
         
+        // Socio
+        const socio = page.getByRole('row', {name: `${nombre} ${apellido}`});
+        await expect(socio).toBeVisible();
+        
         // Estado
-        await expect(page.getByText('DESEMBOLSADO')).toBeVisible();
+        await expect(socio.getByRole('cell', {name: 'DESEMBOLSADO'})).toBeVisible();
 
         // Financiamiento
         await expect(page.getByText('CRÉDITO HIPOTECARIO')).toBeVisible();
@@ -71,17 +79,17 @@ test.describe.serial('Pruebas con la Reimpresion de Desembolso', () => {
     });
 
     test('Reimprimir el Desembolso de una Solicitud de un Socio', async () => {
-        // Boton Seleccionar
-        const botonSeleccionar = page.getByText('Seleccionar');
-        await botonSeleccionar.click();
+        // Boton Imprimir de la pagina
+        const botonImprimir = page.locator(`${dataPrinter}`);
+        await botonImprimir.click();
 
         // Debe abrirse un modal
         await expect(page.getByRole('dialog').locator('h1').filter({hasText: 'REIMPRIMIR DESEMBOLSO'})).toBeVisible();
 
-        // Boton de Imprimir
-        const botonImprimir = page.locator(`${dataPrinter}`);
-        await expect(botonImprimir).toBeVisible(),
-        await botonImprimir.click()
+        // Boton de Imprimir del modal
+        const botonImprimir2 = page.getByRole('dialog', {name: 'Reimprimir Desembolso'}).getByRole('button', {name: 'printer'});
+        await expect(botonImprimir2).toBeVisible(),
+        await botonImprimir2.click()
 
         // Esperar que se abra una nueva pestaña con el reporte
         const page1 = await context.waitForEvent('page');
