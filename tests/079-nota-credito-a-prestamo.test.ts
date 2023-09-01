@@ -45,7 +45,7 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Credito a Prestamos
-        await page.getByRole('menuitem', {name: 'Crédito a Préstamos'}).click();
+        await page.getByRole('menuitem', {name: 'Nota Crédito a Préstamos'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/notas_prestamos/01-3-2-4/`);
@@ -53,7 +53,7 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
 
     test('Buscar un socio', async () => {
         // El titulo principal debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'CRÉDITO A PRÉSTAMOS'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'NOTA CRÉDITO A PRÉSTAMOS'})).toBeVisible();
 
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);

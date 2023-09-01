@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataPrinter, selectBuscar, browserConfig } from './utils/dataTests';
+import { formatDate } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -74,6 +75,12 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
 
         // Tasa de Moneda
         await expect(page.locator('#form_TASA_MONEDA')).toHaveValue('RD$ 1');
+
+        // Fecha corte
+        await expect(page.locator('#form_FECHA_CORTE')).toHaveValue(`${formatDate(new Date())}`);
+
+        // Estado prestamo
+        await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('CANCELADO');
     });
 
     test('Imprimir los Movimientos del Prestamo', async () => {

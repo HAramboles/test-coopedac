@@ -66,7 +66,10 @@ test.describe.serial('Activar Caja - Pruebas con los diferentes parametros', asy
         await turnoCaja.fill('TURNO DEL MEDI');
         await page.locator('text=TURNO DEL MEDIO DIA').click();
         await turnoCaja.fill('TURNO DIA COMPL');
-        await page.locator('(//div[@class="ant-select-item-option-content"])').filter({hasText: 'TURNO DIA COMPLETO'}).click(); 
+        await page.locator('(//div[@class="ant-select-item-option-content"])').filter({hasText: 'TURNO DIA COMPLETO'}).click();
+        
+        // Fondo de la caja
+        await expect(page.locator('#FormNewShifts_FONDO')).toHaveValue('RD$ 300,000');
 
         // Click en Aceptar
         await page.locator('text=Aceptar').click();
@@ -80,7 +83,7 @@ test.describe.serial('Activar Caja - Pruebas con los diferentes parametros', asy
         await botonAceptarConfirmacion.click();  
 
         /* Mensaje si ya existia un turno con esa caja, por lo que dio error */
-        const error = page.locator('text=Error'); 
+        const error = page.locator('text=ya tiene un turno abierto'); 
         /* Mensaje si no existia un turno con esa caja, por lo que se realizo correctamenta la operacion */
         const exito = page.locator('text=Operación Exitosa'); 
 
