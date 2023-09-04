@@ -1,18 +1,16 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, formBuscar, browserConfig, inputFechaSolicitud, inputPrimerPago } from './utils/dataTests';
+import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre de la persona juridica
-let cedulaEmpresa: string | null;
-let nombreEmpresa: string | null;
-
-// Nombre, apellido de la persona fisica relacionada
-let nombrePersona: string | null;
-let apellidoPersona: string | null;
+// Cedula, nombre y apellido de la persona
+let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
 
 // Imagen de los documentos
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
@@ -36,13 +34,10 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula y nombre de la persona juridica almacenada en el state
-        cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
-        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
-
-        // Nombre y apellido de la persona fisica relacionada almacenada en el state
-        nombrePersona = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        apellidoPersona = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+        // Cedula, nombre y apellidos de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -92,12 +87,12 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
 
         // Buscar al socio
-        await page.locator(`${selectBuscar}`).fill(`${cedulaEmpresa}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Seleccionar al socio
-        await page.locator(`text=${nombreEmpresa}`).click();
+        await page.locator(`text=${nombre} ${apellido}`).click();
 
         // El nombre de la persona debe estar visible
-        await expect(page.locator('h1').filter({hasText: `${nombreEmpresa}`})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: `${nombre} $${apellido}`})).toBeVisible();
 
         // Ver la firma del solicitante
         const botonVerFirmas = page.locator('text=Ver firmas');
@@ -119,7 +114,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
 
         // El titulo principal debe estar visible
-        await expect(page.getByRole('heading', {name: 'Generales del Crédito'})).toBeVisible();
+        const tituloPrincipal = page.getByRole('heading', {name: 'Generales del Crédito'});
+        await expect(tituloPrincipal).toBeVisible();
 
         // Tipo de credito
         await page.getByLabel('Tipo Crédito').click();
@@ -142,6 +138,40 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Elegir grupo sin garantia
         await page.getByRole('option', {name: 'VEGAMOVIL', exact: true}).click();
 
+        // Fecha Solicitud debe ser el dia actual
+        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${formatDate(new Date())}`);
+
+        // Fecha Primer Pago debe ser 31 dias despues de la fecha de solicitud
+        await expect(page.locator(`${inputPrimerPago}`)).toHaveValue(`${unMesDespues}`);
+
+        // Colocar el dia siguiente como fecha solicitud
+        await page.locator(`${inputFechaSolicitud}`).clear();
+        await page.locator(`${inputFechaSolicitud}`).fill(`${diaSiguiente}`);
+
+        // Click fuera del input
+        await tituloPrincipal.click();
+
+        // Debe aparecer un mensaje de error
+        await expect(page.locator('#loan_form_FECHA_APERTURA_help').getByText('Rango de Fecha inválido.')).toBeVisible();
+
+        // Colocar la fecha de solicitud correcta
+        await page.locator(`${inputFechaSolicitud}`).clear();
+        await page.locator(`${inputFechaSolicitud}`).fill(`${formatDate(new Date())}`);
+
+        // Colocar en la fecha de primer pago una fecha anterior a la de solicitud
+        await page.locator(`${inputPrimerPago}`).clear();
+        await page.locator(`${inputPrimerPago}`).fill(`${diaAnterior}`);
+
+        // Click fuera del input
+        await tituloPrincipal.click();
+
+        // Debe aparecer un mensaje de error
+        await expect(page.locator('#loan_form_DIA_PAGO_help').getByText('Rango de Fecha inválido.')).toBeVisible();
+
+        // Colocar la fecha de primer pago correcta
+        await page.locator(`${inputPrimerPago}`).clear();
+        await page.locator(`${inputPrimerPago}`).fill(`${unMesDespues}`);
+
         // El tipo de cuota debe ser Insoluto
         await expect(page.getByText('INSOLUTO')).toBeVisible();
 
@@ -151,11 +181,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // Tasa
         const campoTasa = page.getByLabel('Tasa');
-        await campoTasa.click();
-        await campoTasa.clear();;
-
-        // Ingresar una Tasa
-        await campoTasa.fill('5');
+        await expect(campoTasa).toHaveValue('15.64%');
 
         // Plazo
         await page.getByPlaceholder('CANTIDAD').click();
@@ -173,14 +199,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator(`${selectBuscar}`).first().click();
         // Seleccionar una cuenta de ahorros del proveedor
         await page.getByText('AHORROS NORMALES').first().click();
-
-        // Agregar un cuenta para cobrar
-        await page.locator(`${selectBuscar}`).last().click();
-        // La cuenta de aportaciones no debe estar visible
-        await expect(page.locator('span').filter({hasText: 'APORTACIONES'})).not.toBeVisible(); 
-        
-        // Seleccionar la cueta de ahorros
-        await page.getByText('AHORROS NORMALES').last().click();
 
         // Finalidad
         await page.getByLabel('Finalidad').click();
@@ -200,11 +218,71 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.getByText('Vía Desembolso')).toBeVisible();
 
         // El monto de la cuota debe estar visible
-        await expect(page.locator('#loan_form_CUOTA')).toHaveValue('RD$ 2,358.9');
+        const inputCuota = page.locator('#loan_form_CUOTA');
+        await expect(inputCuota).toHaveValue('RD$ 3,015.9');
+
+        // Seccion Cuentas de Cobros
+        await expect(page.locator('text=Cuentas de cobro')).toBeVisible();
+        
+        // Agregar una cuenta de Cobro
+        await page.locator(`${selectBuscar}`).last().click();
+
+        // Seleccionar la cuenta de ahorros
+        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
+
+        // Click al boton de Agregar Cuenta
+        const botonAgregarCuenta = page.getByRole('button', {name: 'Agregar cuenta'});
+        await expect(botonAgregarCuenta).toBeVisible();
+        await botonAgregarCuenta.click();
+
+        // Click en el input para colocar el porcentaje que se usara de la cuenta de cobro
+        await page.locator('#PORC_COBRO').click();
+        // Click fuera del input
+        await page.getByRole('heading', { name: 'Generales del Crédito' }).click();
+
+        // Se deben agregar los datos a la tabla de las cuentas
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '100.00%'})).toBeVisible();
+
+        // Agregar Abonos Programados
+        const seccionAbonosProgramados = page.locator('text=Abonos Programados');
+        await expect(seccionAbonosProgramados).toBeVisible();
+        await seccionAbonosProgramados.click();
+
+        // Tipo de Abono
+        await expect(page.locator('text=Recurrente')).toBeVisible();
+        const abonoParcial = page.locator('text=Parcial');
+        await expect(abonoParcial).toBeVisible();
+
+        // Click a la opcion de abono parcial
+        await abonoParcial.click();
+
+        // No. Cuota
+        await page.locator('#form_NO_CUOTA').fill('60');
+
+        // Monto del abono
+        await page.locator('#form_MONTO_ABONOS').fill('50000');
+
+        // Click al boton de Agregar Abono
+        const botonAgregarAbono = page.getByRole('button', {name: 'Agregar', exact: true});
+        await expect(botonAgregarAbono).toBeVisible();
+        await botonAgregarAbono.click();
+
+        // Se debe agregar el abono en la tabla de abonos
+        await expect(page.getByRole('cell', {name: '60'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '50,000'})).toBeVisible();
+
+        // La cuota debe calcularse nuevamente
+        await expect(page.getByText('Calculando Cuotas')).toBeVisible();
+
+        // La cuota debe cambiar al agregarse un abono programado
+        await expect(inputCuota).toHaveValue('RD$ 2,461.21');
 
         // Click en guardar y continuar
         GuardaryContinuar();
     });
+
     test('Paso 3 - Cargos del prestamo', async () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
@@ -248,20 +326,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.locator('text=ESTADO DE RESULTADOS')).toBeVisible();
         await expect(page.locator('text=FLUJO DE EFECTIVO')).toBeVisible();
 
-        // Colocar un monto en el campo de Total Ingresos
-        await page.getByText('RD$ 0.00').first().click();
-        await page.getByPlaceholder('MONTO').fill('RD$ 5,0000');
-
-        // Click fuera del input
-        await page.getByText('TOTAL INGRESOS').click();
-
-        // Colocar un monto en el campo de Total Gastos
-        await page.getByText('RD$ 0.00').click();
-        await page.getByPlaceholder('MONTO').fill('RD$ 1,5000');
-
-        // Click fuera del input
-        await page.getByText('TOTAL INGRESOS').click();
-
         // Click en actualizar y continuar
         GuardaryContinuar();
     });
@@ -298,12 +362,12 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.getByRole('checkbox').click();
 
         // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
-        await expect(page.locator(`text=${nombreEmpresa}`)).toBeVisible();
+        await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
 
         // Valor tasado
         const valorTasado = page.getByPlaceholder('VALOR TASADO');
         await valorTasado.click();
-        await valorTasado.fill('RD$ 125000');
+        await valorTasado.fill('RD$ 200000');
 
         // Agregar atributos a la garantia
         await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
@@ -360,53 +424,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=9`);
 
-        // El titulo principal debe esatr visible
-        await expect(page.getByRole('heading', {name: 'Lista de documentos'})).toBeVisible();
+        // Subir Tabla de amortizacion
+        const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');
+        await page.getByRole('row', {name: '10 TABLA AMORTIZACION upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
+        const subirTablaAmortizacion = await subirTablaAmortizacionPromesa;
+        await subirTablaAmortizacion.setFiles(`${firma}`);
 
-        // Subir Solicitud de Prestamo Llena y Firmada
-        const subirSolicitudPrestamoPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', {name: '5 SOLICTUD DE PRESTAMO LLENA Y FIRMADA upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
-        const subirSolicitudPrestamo = await subirSolicitudPrestamoPromesa;
-        await subirSolicitudPrestamo.setFiles(`${firma}`);
-
-        // Esperar que la Solicitud de Prestamo Llena y Firmada se haya subido
-        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])')).toBeVisible();
-
-        // Subir Evidencia de Ingresos
-        const subirEvidenciaIngresosPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', {name: '4 EVIDENCIA DE INGRESOS upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
-        const subirEvidenciaIngresos = await subirEvidenciaIngresosPromesa;
-        await subirEvidenciaIngresos.setFiles(`${firma}`);
-
-        // Esperar que la Evidencia de Ingresos se haya subido
-        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(1)).toBeVisible();
-
-        // Subir Informe de Buro Credito
-        const subirBuroCreditoPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', {name: '3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
-        const subirBuroCredito = await subirBuroCreditoPromesa;
-        await subirBuroCredito.setFiles(`${firma}`);
-
-        // Esperar que el Informe de Buro Credito se haya subido
-        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(2)).toBeVisible();
-
-        // Subir Instancia de credito llena y firmada
-        const subirInstanciaCreditoPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', {name: '13 INSTANCIA DE CREDITO LLENA Y FIRMADA upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
-        const subirInstanciaCredito = await subirInstanciaCreditoPromesa;
-        await subirInstanciaCredito.setFiles(`${firma}`);
-
-        // Esperar que la Instancia de credito llena y firmada se haya subido
-        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(3)).toBeVisible();
-
-        // Subir Pagare Notarial
-        const subirPagareNotarialPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', {name: '12 PAGARE NOTARIAL upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
-        const subirPagareNotarial = await subirPagareNotarialPromesa;
-        await subirPagareNotarial.setFiles(`${firma}`);
-
-        // Esperar que el Pagare Notarial se haya subido
-        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(4)).toBeVisible();
+        // Esperar que la Tabla de Amortizacion se haya subido
+        await expect(page.getByRole('link', {name: 'TABLA AMORTIZACION'})).toBeVisible();
 
         // Subir Contrato
         const subirContratoPromesa = page.waitForEvent('filechooser');
@@ -415,7 +440,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await subirContrato.setFiles(`${firma}`);
 
         // Esperar que el Contrato se haya subido
-        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(5)).toBeVisible();
+        await expect(page.getByRole('link', {name: 'CONTRATO'})).toBeVisible();
 
         // Subir Cedula del Deudor
         const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');
@@ -424,7 +449,16 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await subirCedulaDeudor.setFiles(`${firma}`);
 
         // Esperar que la Cedula se haya subido
-        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])').nth(6)).toBeVisible();
+        await expect(page.getByRole('link', {name: 'CEDULA DEUDOR'})).toBeVisible();
+
+        // Click en la firma de la Cedula deudor para visualizar
+        await page.getByRole('link', {name: 'CEDULA DEUDOR'}).click();
+
+        // Aprece un modal con la imagen de la firma
+        await expect(page.getByRole('dialog', {name: 'CEDULA DEUDOR'})).toBeVisible();
+
+        // Cerrar la imagen de la firma
+        await page.locator(`${dataCerrar}`).click();
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
@@ -453,7 +487,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
         // Elegir la solicitud creada anteriormente
-        await page.getByRole('row', {name: `${nombreEmpresa}`}).getByRole('button', {name: 'edit'}).click();
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
         // La url debe de tener que la solicitud esta en estado solicitado
         await expect(page).toHaveURL(/\/solicitado/);
@@ -502,7 +536,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator('text=EN PROCESO (ANALISIS)').click();
 
         // Elegir la solicitud creada anteriormente
-        await page.getByRole('row', {name: `${nombreEmpresa}`}).getByRole('button', {name: 'edit'}).click();
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
         // Dirigirse a la ultima seccion
         const seccionAnalisis = page.getByRole('button', {name: '10 Análisis'});
@@ -513,7 +547,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.getByRole('heading', {name: '(EN PROCESO (ANALISIS))'})).toBeVisible();
 
         // El nombre de la persona debe estar visible en un titulo
-        await expect(page.getByRole('heading', {name: `${nombreEmpresa}`})).toBeVisible();
+        await expect(page.getByRole('heading', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
@@ -559,7 +593,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator('text=APROBADO').click();
 
         // Elegir la solicitud creada anteriormente
-        await page.getByRole('row', {name: `${nombreEmpresa}`}).getByRole('button', {name: 'eye'}).click();
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
 
         // La url debe de tener que la solicitud esta en aprobado
         await expect(page).toHaveURL(/\/aprobado/);
@@ -570,7 +604,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await seccionDesembolso.click();
 
         // El nombre y el apellido del socio deben estar visibles
-        await expect(page.getByText(`Socio: ${nombreEmpresa}`)).toBeVisible(); 
+        await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible(); 
 
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});

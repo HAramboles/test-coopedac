@@ -24,12 +24,19 @@ export const ariaCerrar:string = '[aria-label="close"]';
 export const formBuscar:string = '#form_search';
 export const selectBuscar:string = '#select-search';
 
+// Input Dia de pago para tests de Cobros de Oficina
+export const inputDiaPago:string = '#form_DIA_PAGO';
+
+// Input Fecha Solicitud y Primer Pago para los tests de Solcitud de Credito
+export const inputFechaSolicitud:string = '#loan_form_FECHA_APERTURA';
+export const inputPrimerPago:string = '#loan_form_DIA_PAGO';
+
 // Abrir el browser en una pantalla u otra
 const browserOneScreen = ['--window-position=100,0'];
-const browserSecondScreen = ['--window-position=-1350,100'];
+const browserSecondScreen = ['--window-position=-1400,100'];
 
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
     args: browserSecondScreen,
-}
+};

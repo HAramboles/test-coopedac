@@ -20,11 +20,12 @@ const formatDate = (inputDate: Date) => {
   
   // Primer dia del mes actual
   const primerDiaMes = formatDate(new Date(diaActual.getFullYear(), diaActual.getMonth(), 1));
-  console.log(primerDiaMes)
+
+  // 31 dias despues del dia actual
+  const unMesDespues = formatDate(new Date(diaActual.setDate(diaActual.getDate() + 31)));
 
   // Mismo dia pero dos meses despues
   const dosMesDespues = formatDate(new Date(diaActual.setMonth(diaActual.getMonth() + 2)));
-  console.log(dosMesDespues);
 
   // Dia anterior al dia actual
   diaAnteriorNoFormato = new Date(diaAnteriorNoFormato.setDate(diaAnteriorNoFormato.getDate() - 1));
@@ -39,5 +40,6 @@ const formatDate = (inputDate: Date) => {
     primerDiaMes,
     diaAnterior,
     diaSiguiente,
+    unMesDespues,
     dosMesDespues
   }

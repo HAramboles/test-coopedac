@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, ariaCerrar, browserConfig, inputDiaPago } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -119,6 +119,9 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Linea de Credito
         await expect(page.getByText('Línea de Crédito')).toBeVisible();
         await expect(page.getByText('Si', {exact: true})).toBeVisible();
+
+        // Dia de Pago
+        await expect(page.locator(`${inputDiaPago}`)).toBeDisabled();
     });
 
     test.skip('Historial de Pagos del Prestamo', async () => {

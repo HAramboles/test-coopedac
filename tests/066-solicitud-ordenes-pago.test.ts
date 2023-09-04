@@ -1,10 +1,14 @@
-import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
+
+// Inputs de Sec. Desde y Hasta
+let secDesde: Locator;
+let secHasta: Locator;
 
 // Cedula, nombre, apellido y correo de la persona
 let cedula: string | null;
@@ -37,6 +41,10 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
         correo = await page.evaluate(() => window.localStorage.getItem('correoPersona'));
+
+        // Inputs de Sec. Desde y Hasta
+        secDesde = page.locator('#form_FROM');
+        secHasta = page.locator('#form_TO');
     });
 
     test('Ir a la opcion de Solicitud ordenes de pago', async () => {
@@ -59,6 +67,7 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
 
         // Buscar un socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
+
         // Elegir al socio buscado
         await page.getByText(`${nombre} ${apellido}`).click();
 
@@ -74,11 +83,13 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         // Cantidad Talonarios
         await page.locator('#form_talonario_cantidad').fill('1');
 
+        // Colocar un numero mayor en Sec. Desde que en Hasta
+
         // Sec. Desde
-        await page.locator('#form_FROM').fill('10');
+        await secDesde.fill('20');
 
         // Hasta
-        await page.locator('#form_TO').fill('20');
+        await secHasta.fill('10');
 
         // Titulo formato de ordenes
         await expect(page.locator('h1').filter({hasText: 'FORMATO DE ORDENES A SOLICITAR'})).toBeVisible();
@@ -98,14 +109,41 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         // Tipo Cliente
         await expect(page.getByText('Tipo de cliente')).toBeVisible();
 
-        // Elegir Fisicia
+        // Elegir Fisica
         await page.locator('text=FISICA').click();
     });
 
-    test('Generar el reporte', async () => {
-        // Boton de Generar Reporte
+    test('Error al Generar el reporte', async () => {
+        // Boton Generar Reporte
         const generarReporte = page.getByRole('button', {name: 'Generar reporte'});
+
+        // Click al oton de Generar Reporte
         await expect(generarReporte).toBeVisible();
+        await generarReporte.click();
+
+        // Debe mostrarse un mensaje de error en Sec. Desde
+        await expect(page.locator('text=El campo "Desde" no puede ser mayor al campo "Hasta"')).toBeVisible();
+    });
+
+    test('Generar el reporte', async () => {
+        // Colocar los datos correctamente en Sec. Desde y Hasta
+
+        // Sec. Desde
+        await secDesde.clear();
+        await secDesde.fill('1');
+
+        // El mensaje de error debe desaparecer
+        await expect(page.locator('text=El campo "Desde" no puede ser mayor al campo "Hasta"')).not.toBeVisible();
+
+        // Hasta
+        await secHasta.clear();
+        await secHasta.fill('100');
+
+        // Boton Generar Reporte
+        const generarReporte = page.getByRole('button', {name: 'Generar reporte'});
+
+        // Click al boton de Generar Reporte
+        await generarReporte.click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

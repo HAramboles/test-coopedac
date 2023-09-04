@@ -6,8 +6,9 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Variable con el input para buscar los socios 
-let buscador: Locator;
+// Variables de los buscadores
+let buscadorPersona: Locator;
+let buscadorCuenta: Locator;
 
 // Cedula de la persona
 let cedula: string | null;
@@ -35,8 +36,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // Cedula de la persona almacenados en el state
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
 
-        // Input para buscar las cuentas del socio
-        buscador = page.locator(`${selectBuscar}`);
+        // Inputs para buscar las cuentas del socio
+        buscadorPersona = page.locator(`${selectBuscar}`);
+        buscadorCuenta = page.locator('#rc_select_1');
     });
 
     test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {
@@ -51,8 +53,13 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
     });
 
     test('Cuenta de Aportaciones del Socio', async () => {
+        // Seleccionar un tipo de cuenta a buscar
+        await buscadorCuenta.click();
+        // Click a la opcion de cuenta de Aportaciones
+        await page.getByRole('option', {name: 'APORTACIONES'}).click();
+
         // Buscar un socio
-        await buscador.fill(`${cedula}`);
+        await buscadorPersona.fill(`${cedula}`);
         // Elegir la Cuenta de Aportaciones del Socio
         await page.getByText('| APORTACIONES |').click();
 
@@ -90,8 +97,13 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
     });
 
     test('Cuenta de Aportaciones Preferentes del Socio', async () => {
+        // Seleccionar un tipo de cuenta a buscar
+        await buscadorCuenta.click();
+        // Click a la opcion de cuenta de Aportaciones Preferentes
+        await page.getByRole('option', {name: 'APORTACIONES PREFERENTES'}).click();
+
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${cedula}`);
+        await buscadorPersona.fill(`${cedula}`);
         // Elegir la Cuenta de Aportaciones Preferentes del Socio
         await page.getByText('APORTACIONES PREFERENTES').click();
 
@@ -129,8 +141,13 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
     });
 
     test('Cuenta de Ahorros Normales del Socio', async () => {
+        // Seleccionar un tipo de cuenta a buscar
+        await buscadorCuenta.click();
+        // Click a la opcion de cuenta de Ahorros Normales
+        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
+
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${cedula}`);
+        await buscadorPersona.fill(`${cedula}`);
         // Elegir la Cuenta de Ahorros Normales del Socio
         await page.getByText('AHORROS NORMALES').click();
 
@@ -190,8 +207,13 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
     });
 
     test('Cuenta de Ahorros por Nomina del Socio', async () => {
+        // Seleccionar un tipo de cuenta a buscar
+        await buscadorCuenta.click();
+        // Click a la opcion de cuenta de Ahorros por Nomina
+        await page.getByRole('option', {name: 'AHORROS POR NOMINA'}).click();
+
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${cedula}`);
+        await buscadorPersona.fill(`${cedula}`);
         // Elegir la Cuenta de Ahorros por Nomina del Socio
         await page.getByText('AHORROS POR NOMINA').click();
 
@@ -228,8 +250,13 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
     });
 
     test('Cuenta de Ahorros - Orden de Pago del Socio', async () => {
+        // Seleccionar un tipo de cuenta a buscar
+        await buscadorCuenta.click();
+        // Click a la opcion de cuenta de Orden de Pago
+        await page.getByRole('option', {name: 'ORDEN DE PAGO'}).click();
+
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${cedula}`);
+        await buscadorPersona.fill(`${cedula}`);
         // Elegir la Cuenta de Orden de Pago del Socio
         await page.getByText('ORDEN DE PAGO').click();
 
@@ -269,8 +296,13 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // La URL NO debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
+        // Seleccionar un tipo de cuenta a buscar
+        await buscadorCuenta.click();
+        // Click a la opcion de cuenta de Financieros Pagaderas
+        await page.getByRole('option', {name: 'FINANCIEROS PAGADERAS'}).click();
+
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${cedula}`);
+        await buscadorPersona.fill(`${cedula}`);
         // Elegir la Cuenta de Certificado - Financieros Pagaderos
         await page.getByText('| FINANCIEROS PAGADERAS |').click();
 
@@ -310,8 +342,13 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // La URL NO debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
+        // Seleccionar un tipo de cuenta a buscar
+        await buscadorCuenta.click();
+        // Click a la opcion de cuenta de Financieros Reinvertidas
+        await page.getByRole('option', {name: 'FINANCIEROS REINVERTIDAS'}).click();
+
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${cedula}`);
+        await buscadorPersona.fill(`${cedula}`);
         // Elegir la Cuenta de Certificado - Financieros Reinvertidas
         await page.getByText('| FINANCIEROS REINVERTIDAS |').click();
 
@@ -348,8 +385,13 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // La URL NO debe cambiar
         await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
 
+        // Seleccionar un tipo de cuenta a buscar
+        await buscadorCuenta.click();
+        // Click a la opcion de cuenta de Inversion Pagaderas
+        await page.getByRole('option', {name: 'INVERSION PAGADERAS'}).click();
+
         // Buscar una cuenta del mismo socio
-        await buscador.fill(`${cedula}`);
+        await buscadorPersona.fill(`${cedula}`);
         // Elegir la Cuenta de Certificado - Inversion Pagaderas
         await page.getByText('| INVERSION PAGADERAS |').click();
 
