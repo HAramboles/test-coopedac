@@ -7,16 +7,20 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre y apellido de la persona
-let cedula: string | null;
-let nombre: string | null;
-let apellido: string | null;
+// Cedula, nombre de la persona juridica
+let cedulaEmpresa: string | null;
+let nombreEmpresa: string | null;
+
+// Nombre, apellido de la persona fisica relacionada
+let nombrePersona: string | null;
+let apellidoPersona: string | null;
 
 // Imagen de los documentos
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
-test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona Juridica', async () => {
-    test.beforeAll(async () => { // Antes de las pruebas
+// Pruebas
+test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona Juridica', async () => {
+    test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch({
             headless: browserConfig.headless,
@@ -34,10 +38,13 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula, nombre y apellidos de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        // Cedula y nombre de la persona juridica almacenada en el state
+        cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
+        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
+
+        // Nombre y apellido de la persona fisica relacionada almacenada en el state
+        nombrePersona = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        apellidoPersona = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
     // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -87,12 +94,12 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
 
         // Buscar al socio
-        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedulaEmpresa}`);
         // Seleccionar al socio
-        await page.locator(`text=${nombre} ${apellido}`).click();
+        await page.locator(`text=${nombreEmpresa}`).click();
 
         // El nombre de la persona debe estar visible
-        await expect(page.locator('h1').filter({hasText: `${nombre} $${apellido}`})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: `${nombreEmpresa}`})).toBeVisible();
 
         // Ver la firma del solicitante
         const botonVerFirmas = page.locator('text=Ver firmas');
@@ -120,23 +127,23 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Tipo de credito
         await page.getByLabel('Tipo Crédito').click();
         // Click a credito hipotecario
-        await page.getByText('CONSUMO').click();
+        await page.getByText('COMERCIALES').click();
 
         // Tipo de garantia
         await page.getByLabel('Tipo Garantía').click();
         // Click en garantia hipotecaria
-        await page.getByText('PRENDARIAS').click();
+        await page.getByRole('option', {name: 'AHORROS'}).click();
 
         // Oferta
         await page.getByLabel('Oferta').click();
         // Elegir credito hipotecaria
-        await page.getByText('CRÉDIAUTOS (VEHÍCULOS)').click();
+        await page.getByText('CRÉDITO AGRÍCOLA').click();
 
         // Grupo
         await page.getByLabel('Grupo').click();
-        await page.getByLabel('Grupo').fill('vegamovil');
+        await page.getByLabel('Grupo').fill('sin gara');
         // Elegir grupo sin garantia
-        await page.getByRole('option', {name: 'VEGAMOVIL', exact: true}).click();
+        await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
         // Fecha Solicitud debe ser el dia actual
         await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${formatDate(new Date())}`);
@@ -177,49 +184,50 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // Monto
         await page.locator('#loan_form_MONTO').click();
-        await page.locator('#loan_form_MONTO').fill('125000');
+        await page.locator('#loan_form_MONTO').fill('10000');
 
         // Tasa
         const campoTasa = page.getByLabel('Tasa');
-        await expect(campoTasa).toHaveValue('15.64%');
+        await campoTasa.click();
+        await campoTasa.clear();;
+
+        // Ingresar una Tasa Correcta
+        await campoTasa.fill('10');
 
         // Plazo
         await page.getByPlaceholder('CANTIDAD').click();
-        await page.getByPlaceholder('CANTIDAD').fill('60');
+        await page.getByPlaceholder('CANTIDAD').fill('24');
 
         // Los plazos deben ser mensuales
         await expect(page.locator('text=MENSUAL')).toBeVisible();
 
-        // Agregar un Proveedor
-        await page.locator('#loan_form_ID_PROVEEDOR').click();
-        // Eleghir Vegamovil como proveedor
-        await page.getByText('Vegamovil, S.R.L').click();
-
-        // Agregar una cuenta del proveedor para desembolsar
+        // Agregar una cuenta del socio para desembolsar
         await page.locator(`${selectBuscar}`).first().click();
-        // Seleccionar una cuenta de ahorros del proveedor
-        await page.getByText('AHORROS NORMALES').first().click();
+        // La cuenta de aportaciones no debe estar visible
+        await expect(page.locator('span').filter({hasText: 'APORTACIONES'})).not.toBeVisible(); 
+
+        // Seleccionar la cuenta de ahorros
+        await page.getByText('AHORROS NORMALES').click();
 
         // Finalidad
         await page.getByLabel('Finalidad').click();
         // Elegir propiedad o vivienda
-        await page.getByRole('option', {name: 'PRENDARIO'}).click();
+        await page.getByRole('option', {name: 'AGROPECUARIO'}).click();
 
         // Destino o proposito
         await page.getByPlaceholder('Destino o propósito').click();
-        await page.getByPlaceholder('Destino o propósito').fill('Prestamo para Vehiculos');
+        await page.getByPlaceholder('Destino o propósito').fill('Iniciar con negocio agricola');
 
         // Los valores del monto, tasa y plazo deben estar correctos
-        await expect(page.locator('#loan_form_MONTO')).toHaveValue('RD$ 125,000');
-        await expect(page.locator('#loan_form_TASA')).toHaveValue('5%');
-        await expect(page.locator('#loan_form_PLAZO')).toHaveValue('60');
+        await expect(page.locator('#loan_form_MONTO')).toHaveValue('RD$ 10,000');
+        await expect(page.locator('#loan_form_TASA')).toHaveValue('10%');
+        await expect(page.locator('#loan_form_PLAZO')).toHaveValue('24');
 
         // Via desembolso
         await expect(page.getByText('Vía Desembolso')).toBeVisible();
 
         // El monto de la cuota debe estar visible
-        const inputCuota = page.locator('#loan_form_CUOTA');
-        await expect(inputCuota).toHaveValue('RD$ 3,015.9');
+        await expect(page.locator('#loan_form_CUOTA')).toHaveValue('RD$ 461.45');
 
         // Seccion Cuentas de Cobros
         await expect(page.locator('text=Cuentas de cobro')).toBeVisible();
@@ -235,49 +243,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(botonAgregarCuenta).toBeVisible();
         await botonAgregarCuenta.click();
 
-        // Click en el input para colocar el porcentaje que se usara de la cuenta de cobro
-        await page.locator('#PORC_COBRO').click();
-        // Click fuera del input
-        await page.getByRole('heading', { name: 'Generales del Crédito' }).click();
-
         // Se deben agregar los datos a la tabla de las cuentas
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
-        await expect(page.getByRole('cell', {name: '100.00%'})).toBeVisible();
-
-        // Agregar Abonos Programados
-        const seccionAbonosProgramados = page.locator('text=Abonos Programados');
-        await expect(seccionAbonosProgramados).toBeVisible();
-        await seccionAbonosProgramados.click();
-
-        // Tipo de Abono
-        await expect(page.locator('text=Recurrente')).toBeVisible();
-        const abonoParcial = page.locator('text=Parcial');
-        await expect(abonoParcial).toBeVisible();
-
-        // Click a la opcion de abono parcial
-        await abonoParcial.click();
-
-        // No. Cuota
-        await page.locator('#form_NO_CUOTA').fill('60');
-
-        // Monto del abono
-        await page.locator('#form_MONTO_ABONOS').fill('50000');
-
-        // Click al boton de Agregar Abono
-        const botonAgregarAbono = page.getByRole('button', {name: 'Agregar', exact: true});
-        await expect(botonAgregarAbono).toBeVisible();
-        await botonAgregarAbono.click();
-
-        // Se debe agregar el abono en la tabla de abonos
-        await expect(page.getByRole('cell', {name: '60'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: '50,000'})).toBeVisible();
-
-        // La cuota debe calcularse nuevamente
-        await expect(page.getByText('Calculando Cuotas')).toBeVisible();
-
-        // La cuota debe cambiar al agregarse un abono programado
-        await expect(inputCuota).toHaveValue('RD$ 2,461.21');
+        await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
 
         // Click en guardar y continuar
         GuardaryContinuar();
@@ -289,15 +257,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // El titulo principal debe estar visible
         await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
-
-        // Debe de haber un cargo
-        await expect(page.getByRole('row', {name: 'CUOTA ADMISION X CAMBIO CATEGORIA'})).toBeVisible();
-
-        // Click al boton de Guardar Cargos
-        await page.getByRole('button', {name: 'Guardar Cargos'}).click();
-
-        // Debe mostrarse una alerta de que los cargos se han guardado
-        await expect(page.locator('text=Cargos del préstamo guardados exitosamente.')).toBeVisible();
         
         // Click en guardar y continuar
         GuardaryContinuar();
@@ -326,6 +285,20 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.locator('text=ESTADO DE RESULTADOS')).toBeVisible();
         await expect(page.locator('text=FLUJO DE EFECTIVO')).toBeVisible();
 
+        // Colocar un monto en el campo de Total Ingresos
+        await page.getByText('RD$ 0.00').first().click();
+        await page.getByPlaceholder('MONTO').fill('RD$ 5,0000');
+
+        // Click fuera del input
+        await page.getByText('TOTAL INGRESOS').click();
+
+        // Colocar un monto en el campo de Total Gastos
+        await page.getByText('RD$ 0.00').click();
+        await page.getByPlaceholder('MONTO').fill('RD$ 1,5000');
+
+        // Click fuera del input
+        await page.getByText('TOTAL INGRESOS').click();
+
         // Click en actualizar y continuar
         GuardaryContinuar();
     });
@@ -345,6 +318,45 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=7`);
 
+        // Titulo de Coedudores
+        await expect(page.locator('h1').filter({hasText: 'CODEUDORES'})).toBeVisible();
+
+        // Click al boton de Agregar Codeudor
+        const botonCodeudor = page.getByRole('button', {name: 'Agregar Codeudor'});
+        await expect(botonCodeudor).toBeVisible();
+        await botonCodeudor.click();
+
+        // Se abre un modal
+        const modal = page.locator('text=SELECCIONAR RELACIONADO');
+        await expect(modal).toBeVisible();
+
+        // Buscar a la persona fisica
+        await page.locator(`${formBuscar}`).fill(`${nombrePersona} ${apellidoPersona}`);
+
+        // Click a la opcion de la persona buscada
+        await page.getByText(`${nombrePersona} ${apellidoPersona}`).first(  ).click();
+
+        // Se abre un modal colocar el tipo de relacion
+        await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
+
+        // Click al tipo de relacion
+        await page.getByRole('combobox').click();
+
+        // Elegir la opcion de codeudor
+        await page.getByRole('option', {name: 'CO-DEUDOR(A)'}).click();
+
+        // Click al boton de Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // Debe aparecer una alerta de operacion exitosa
+        await expect(page.locator('text=Relacionados guardados exitosamente.')).toBeVisible();
+
+        // Cerrar el modal
+        await page.getByRole('button', { name: 'Close' }).click();
+
+        // El modal no debe estar visible
+        await expect(modal).not.toBeVisible();
+
         // Click al boton de agregar garantia
         await page.getByRole('button', {name: 'Agregar Garantía'}).click();
 
@@ -356,49 +368,25 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
         await page.getByRole('combobox').click();
-        await page.getByText('VEHÍCULO PRIVADO', {exact: true}).click();
+        await page.getByText('GARANTIA COMERCIAL', {exact: true}).click();
 
         // Elegir que el socio es propietario de la garantia
         await page.getByRole('checkbox').click();
 
         // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
-        await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
+        await expect(page.locator(`text=${nombreEmpresa}`)).toBeVisible();
 
         // Valor tasado
         const valorTasado = page.getByPlaceholder('VALOR TASADO');
         await valorTasado.click();
-        await valorTasado.fill('RD$ 200000');
+        await valorTasado.fill('RD$ 10000');
 
         // Agregar atributos a la garantia
         await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
 
-        // Placa
+        // Atributo
         await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
-        await page.getByPlaceholder('Valor Atributo').fill('HGIT159');
-
-        // Chasis
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
-        await page.getByPlaceholder('Valor Atributo').fill('LKER752');
-
-        // Tipo de Vehiculo
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(1).click();
-        await page.getByPlaceholder('Valor Atributo').fill('CARRO');
-
-        // Marca
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(2).click();
-        await page.getByPlaceholder('Valor Atributo').fill('NISSAN');
-
-        // Modelo
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(3).click();
-        await page.getByPlaceholder('Valor Atributo').fill('350Z');
-
-        // Color
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(4).click();
-        await page.getByPlaceholder('Valor Atributo').fill('GRIS');
-
-        // Año
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(5).click();
-        await page.getByPlaceholder('Valor Atributo').fill('2016');
+        await page.getByPlaceholder('Valor Atributo').fill('568');
 
         // Click en guardar
         await page.getByRole('button', {name: 'save Guardar'}).click();
@@ -423,24 +411,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
     test('Paso 9 - Documentos', async () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=9`);
-
-        // Subir Tabla de amortizacion
-        const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', {name: '10 TABLA AMORTIZACION upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
-        const subirTablaAmortizacion = await subirTablaAmortizacionPromesa;
-        await subirTablaAmortizacion.setFiles(`${firma}`);
-
-        // Esperar que la Tabla de Amortizacion se haya subido
-        await expect(page.getByRole('link', {name: 'TABLA AMORTIZACION'})).toBeVisible();
-
-        // Subir Contrato
-        const subirContratoPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', {name: '11 CONTRATO upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
-        const subirContrato = await subirContratoPromesa;
-        await subirContrato.setFiles(`${firma}`);
-
-        // Esperar que el Contrato se haya subido
-        await expect(page.getByRole('link', {name: 'CONTRATO'})).toBeVisible();
 
         // Subir Cedula del Deudor
         const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');
@@ -487,7 +457,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
         // Elegir la solicitud creada anteriormente
-        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
+        await page.getByRole('row', {name: `${nombreEmpresa}`}).getByRole('button', {name: 'edit'}).click();
 
         // La url debe de tener que la solicitud esta en estado solicitado
         await expect(page).toHaveURL(/\/solicitado/);
@@ -536,7 +506,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator('text=EN PROCESO (ANALISIS)').click();
 
         // Elegir la solicitud creada anteriormente
-        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
+        await page.getByRole('row', {name: `${nombreEmpresa}`}).getByRole('button', {name: 'edit'}).click();
 
         // Dirigirse a la ultima seccion
         const seccionAnalisis = page.getByRole('button', {name: '10 Análisis'});
@@ -547,7 +517,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.getByRole('heading', {name: '(EN PROCESO (ANALISIS))'})).toBeVisible();
 
         // El nombre de la persona debe estar visible en un titulo
-        await expect(page.getByRole('heading', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('heading', {name: `${nombreEmpresa}`})).toBeVisible();
 
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
@@ -593,7 +563,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator('text=APROBADO').click();
 
         // Elegir la solicitud creada anteriormente
-        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
+        await page.getByRole('row', {name: `${nombreEmpresa}`}).getByRole('button', {name: 'eye'}).click();
 
         // La url debe de tener que la solicitud esta en aprobado
         await expect(page).toHaveURL(/\/aprobado/);
@@ -604,7 +574,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await seccionDesembolso.click();
 
         // El nombre y el apellido del socio deben estar visibles
-        await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible(); 
+        await expect(page.getByText(`Socio: ${nombreEmpresa}`)).toBeVisible(); 
 
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
@@ -621,12 +591,12 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Cerrar la pagina con el reporte 
         await page1.close();
     });
-
+    
     test.afterAll(async () => { // Despues de las pruebas
         // Cerrar la page
         await page.close();
 
-        // Cerrar el context 
+        // Cerrar el context
         await context.close();
     });
 });

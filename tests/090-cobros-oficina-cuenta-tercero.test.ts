@@ -11,6 +11,11 @@ let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
+// Cedula, nombre y apellido del tercero
+let cedulaTercero: string | null;
+let nombreTercero: string | null;
+let apellidoTercero: string | null;
+
 // Pruebas
 test.describe.serial('Pruebas con Cobros de Oficina', () => {
     test.beforeAll(async () => { // Antes de las pruebas
@@ -35,6 +40,11 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem("apellidoPersona"));
+
+        // Cedula, nombre y apellido de la persona relacioanda almacenada en el state
+        cedulaTercero = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionada'));
+        nombreTercero = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        apellidoTercero = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
     test('Ir a la opcion de Cobros de Oficina', async () => {
@@ -73,7 +83,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Debe estar visible el credito de la persona
-        await expect(page.getByText('CRÉDITO HIPOTECARIO')).toBeVisible();
+        await expect(page.getByText('LÍNEA DE CRÉDITO')).toBeVisible();
 
         // Hacer un pago al credito
         await page.locator('[aria-label="Expandir fila"]').click();
@@ -95,7 +105,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
         // Prestamo
-        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO HIPOTECARIO');
+        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('LÍNEA DE CRÉDITO');
 
         // Cuenta Cobro
         await expect(page.locator('#form_DESCRIPCION_CUENTA_COBRO')).toHaveValue('AHORROS NORMALES');
@@ -108,13 +118,13 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Linea de Credito
         await expect(page.getByText('Línea de Crédito')).toBeVisible();
-        await expect(page.getByText('No', {exact: true})).toBeVisible();
+        await expect(page.getByText('Si', {exact: true})).toBeVisible();
 
         // Dia de Pago
         await expect(page.locator(`${inputDiaPago}`)).toBeDisabled();
     });
 
-    test.skip('Historial de Pagos del Prestamo', async () => {
+    test('Historial de Pagos del Prestamo', async () => {
         // Boton hsitorial de pagos
         const botonHistorial = page.getByRole('button', {name: 'Historial de pagos'});
         await expect(botonHistorial).toBeVisible();
@@ -155,7 +165,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.locator('#form_COMENTARIO').fill('Saldar el Prestamo');
     });
 
-    test('Cobrar de Cuenta', async () => {
+    test('Cobrar de una Cuenta de Tercero', async () => {
         // Via de cobro
         await expect(page.locator('text=Vía de cobro')).toBeVisible();
 
@@ -164,9 +174,19 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(cobrarCuenta).toBeVisible();
         await page.locator('(//INPUT[@type="radio"])[5]').click();
 
-        // Seleccionar la cuenta de ahorros del socio
-        await page.getByRole('dialog', {name: 'Pago a Préstamo'}).locator(`${selectBuscar}`).click();
-        await page.getByText('AHORROS NORMALES').click();
+        // Click a la opciond de Usar cuenta de tercero
+        await page.locator('text=Usar cuenta de tercero').click();
+
+        // Digitar el nombre de un tercero
+        const buscarCuenta = page.getByRole('dialog', {name: 'Pago a Préstamo'}).locator(`${selectBuscar}`);
+        await buscarCuenta.click();
+        await buscarCuenta.fill(`${nombreTercero} ${apellidoTercero}`);
+
+        // Deben mostrarse las cuentas de la persona buscada
+        await expect(page.getByRole('option', {name: `| ${nombreTercero} ${apellidoTercero}`})).toBeVisible();
+
+        // Elegir la cuenta de Ahorros Normales
+        await page.getByRole('option', {name: 'AHORROS NORMALES |'}).click();
     });
 
     test('Realizar el pago', async () => {
