@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_solicitud_cambio_categoria } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -46,7 +47,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
         await page.getByRole('menuitem', {name: 'Solicitar cambio categoría'}).click();
 
         // La URL debe cambiar 
-        await expect(page).toHaveURL(`${url_base}/solicitar_cambio_categoria/01-2-2-100/`);
+        await expect(page).toHaveURL(`${url_solicitud_cambio_categoria}`);
     });
 
     test('Solicitar Cambio de Categoria', async () => {

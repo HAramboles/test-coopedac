@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_solicitud_cancelacion_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -48,7 +49,7 @@ test.describe.serial('Pruebas con la Solicitud de Cancelacion de una Cuenta', ()
         await page.getByRole('menuitem', {name: 'Solicitud Cancelación'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_cancelacion/01-2-2-105/`);
+        await expect(page).toHaveURL(`${url_solicitud_cancelacion_cuentas}`);
     });
 
     test('Cuentas del Socio elegido', async () => {
@@ -108,7 +109,7 @@ test.describe.serial('Pruebas con la Solicitud de Cancelacion de una Cuenta', ()
         await page1.close(); 
 
         // Debe regresar a la pagina
-        await expect(page).toHaveURL(`${url_base}/solicitud_cancelacion/01-2-2-105/`);
+        await expect(page).toHaveURL(`${url_solicitud_cancelacion_cuentas}`);
 
         // Mensaje de Operacion Exitosa
         await expect(page.locator('text=Solicitud de cambios productos almacenado exitosamente.')).toBeVisible();

@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig, formBuscar } from './utils/dataTests';
+import { url_cerrar_sesiones_transito } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -49,7 +50,7 @@ test.describe.serial('Pruebas Cerrando Sesiones en Transito', async () => {
         await page.getByRole('menuitem', { name: 'Cerrar Sesiones en Tránsito' }).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/cerrar_sesiones/01-4-1-2-4/`);
+        await expect(page).toHaveURL(`${url_cerrar_sesiones_transito}`);
     });
 
     test('Cerrar una Sesion en Transito', async () => {
@@ -84,6 +85,14 @@ test.describe.serial('Pruebas Cerrando Sesiones en Transito', async () => {
 
         // Aparece la alerta de Operacion Exitosa
         await expect(page.locator('text=Sesión inactivada corectamente')).toBeVisible();
+
+        // Click al boton de Actualizar
+        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+        await expect(botonActualizar).toBeVisible();
+        await botonActualizar.click();
+
+        // La sesion no debe estar visible
+        await expect(titularSesion).not.toBeVisible();
     });
     
     test.afterAll(async () => { // Despues de las pruebas

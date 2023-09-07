@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_nota_credito_prestamos } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -46,7 +47,7 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
         await page.getByRole('menuitem', {name: 'Crédito a Préstamos'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/notas_prestamos/01-3-2-4/`);
+        await expect(page).toHaveURL(`${url_nota_credito_prestamos}`);
     });
 
     test('Buscar un socio', async () => {

@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_solicitud_ordenes_pago } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -58,7 +59,7 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         await page.getByRole('menuitem', {name: 'Solicitud Ordenes de Pago'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_ordenes_pago/01-2-2-112/`);
+        await expect(page).toHaveURL(`${url_solicitud_ordenes_pago}`);
     });
 
     test('Llenar los campos de la Solicitud', async () => {

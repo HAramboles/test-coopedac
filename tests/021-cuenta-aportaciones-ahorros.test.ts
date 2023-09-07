@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
+import { url_cuentas_aportaciones, url_cuentas_ahorros_normales } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -90,7 +91,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                 await page.getByRole('menuitem', {name: 'Aportaciones'}).first().click();
 
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+                await expect(page).toHaveURL(`${url_cuentas_aportaciones}`);
         
                 // El titulo debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
@@ -121,7 +122,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1/create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones}/create?step=1`);
                 });
             
                 test('Registrar Cuenta de Aportaciones - Datos Generales', async () => { 
@@ -333,7 +334,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await page1.close();
                     
                     // Debe de regresar a la pagina las cuentas de ahorros
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_normales}`);
             
                     // El titulo de Ahorros debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();

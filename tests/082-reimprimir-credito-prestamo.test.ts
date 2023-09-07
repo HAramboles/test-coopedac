@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate, primerDiaMes } from './utils/fechas';
-import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_reimprimir_credito_prestamo } from './utils/urls';
 
 // Variables globles
 let browser: Browser;
@@ -49,7 +50,7 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
         await page.getByRole('menuitem', {name: 'Reimprimir Crédito a Préstamos'}).click();
 
         // La URL debe cambiar  
-        await expect(page).toHaveURL(`${url_base}/reimprimir_credito_prestamos/01-3-5-4/`);
+        await expect(page).toHaveURL(`${url_reimprimir_credito_prestamo}`);
     }); 
 
     test('Buscar el Credito de un Socio', async () => {
@@ -62,10 +63,10 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
         await page.getByRole('option', {name: `${nombre} ${apellido}`}).click();
 
         // Fecha Inicial, debe tener la fecha del principio de mes
-        await expect(page.locator('#form_FECHA_INICIAL')).toHaveValue(`${primerDiaMes}`);
+        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${primerDiaMes}`);
 
         // Fecha Final, debe tener la fecha actual
-        await expect(page.locator('#form_FECHA_FINAL')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${formatDate(new Date())}`);
 
         // Click al boton de buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});

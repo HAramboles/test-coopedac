@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaRemoverFirmantes } from './utils/interfaces';
+import { url_cuentas_ahorros, url_cuentas_ahorros_orden_pago } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -86,7 +87,7 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                 await page.getByRole('menuitem', {name: 'Ahorros'}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros}`);
         
                 // El titulo de ahorros debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
@@ -108,7 +109,7 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                 await opcionOrdenPago.click();
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros_orden_pago}`);
 
                 // El tipo de captacion de ahorros normales debe estar visible
                 await expect(page.locator('#form').getByTitle('ORDEN DE PAGO')).toBeVisible();
@@ -240,7 +241,7 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                     await botonFinalizar.click();
             
                     // Debe regresar a la pagina de inicio de las Cuentas de Ahorros
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_orden_pago}`);
                 });
             };
 

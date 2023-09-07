@@ -24,6 +24,9 @@ export const ariaCerrar:string = '[aria-label="close"]';
 export const formBuscar:string = '#form_search';
 export const selectBuscar:string = '#select-search';
 
+export const fechaInicio = '#form_FECHA_INICIAL';
+export const fechaFinal = '#form_FECHA_FINAL';
+
 // Input Dia de pago para tests de Cobros de Oficina
 export const inputDiaPago:string = '#form_DIA_PAGO';
 

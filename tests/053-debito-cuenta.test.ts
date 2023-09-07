@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_notas_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -49,7 +50,7 @@ test.describe.serial('Pruebas con el Debito a la Cuenta de Certificado - Financi
         await page.getByRole('menuitem', {name: 'Crédito/Debito a Cuenta'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/notas_cuentas/01-2-2-3/`);
+        await expect(page).toHaveURL(`${url_notas_cuentas}`);
     });
 
     test('Ingresar un Socio', async () => {

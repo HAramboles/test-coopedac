@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
+import { url_sesiones_transito } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -41,7 +42,7 @@ test.describe.serial('Pruebas con el Mensaje de Aviso cuando hat Recepciones Pen
         await page.getByRole('menuitem', {name: 'Sesiones en Tránsito', exact: true}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/sesiones_transito/01-4-1-2-1/`);
+        await expect(page).toHaveURL(`${url_sesiones_transito}`);
     });
 
     test('Mensaje de Aviso por tener Recepciones Pendientes', async () => {

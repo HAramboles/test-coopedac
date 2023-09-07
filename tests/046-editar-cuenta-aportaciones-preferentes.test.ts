@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
+import { url_cuentas_aportaciones_preferentes } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -85,7 +86,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                 await page.getByRole('menuitem', {name: 'Aportaciones Preferentes'}).first().click();
 
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
+                await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}`);
         
                 // El titulo debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'APORTACIONES PREFERENTES'})).toBeVisible();
@@ -221,7 +222,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await botonFinalizar.click();
             
                     // Debe regresar a la pagina de inicio de las Cuentas de Aportaciones Preferentes
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}`);
                 });
             };
 

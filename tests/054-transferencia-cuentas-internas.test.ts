@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_transferencia_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -44,7 +45,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await page.getByRole('menuitem', {name: 'Transferencias Cuentas Internas'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/transferencia_cuenta/01-2-2-104/`);
+        await expect(page).toHaveURL(`${url_transferencia_cuentas}`);
     });
 
     test('Transferir fondo de la Cuenta de Ahorros a la cuenta de Aportaciones Preferentes', async () => {
@@ -146,7 +147,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await page1.close();
 
         // Se debe regresar a la pagina
-        await expect(page).toHaveURL(`${url_base}/transferencia_cuenta/01-2-2-104/`);
+        await expect(page).toHaveURL(`${url_transferencia_cuentas}`);
 
         // Se debe mostrar un mensaje de Opercaion Exitosa
         await expect(page.locator('text=Captacion Movimiento almacenada exitosamente.')).toBeVisible();

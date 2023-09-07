@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_cancelar_certificado, url_cuentas_certificados, url_cuentas_certificados_financieros_pagaderas } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -48,7 +49,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await page.getByRole('menuitem', {name: 'Cancelar certificado'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/cancelar_certificado/01-2-3-5/`);
+        await expect(page).toHaveURL(`${url_cancelar_certificado}`);
     });
 
     test('Cancelar el Certificado de un Socio', async () => {
@@ -118,7 +119,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await page.getByRole('menuitem', {name: 'Certificados'}).first().click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados`);
+        await expect(page).toHaveURL(`${url_cuentas_certificados}`);
     });
 
     test('Confirmar que la Cuenta de Certificado del Socio se cancelo correctamente - Elegir un tipo de captacion', async () => {
@@ -140,7 +141,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await opcionFinancierosPagaderas.click();
 
         // La URL debe de cambiar al elegir el tipo de captacion
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/8`);
+        await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_pagaderas}`);
 
         // El tipo de captacion de Financieros PAGADERAS debe estar visible
         await expect(page.locator('#form').getByTitle('FINANCIEROS PAGADERAS')).toBeVisible();

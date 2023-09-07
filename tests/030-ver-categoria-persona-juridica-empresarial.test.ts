@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_registro_persona } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -16,7 +17,8 @@ test.describe.serial('Pruebas con la Categoria del Socio', async () => {
         // Crear el browser
         browser = await chromium.launch({
             headless: browserConfig.headless,
-            args: browserConfig.args
+            args: browserConfig.args,
+            slowMo: 1800
         });
 
         // Crear el context 
@@ -46,7 +48,7 @@ test.describe.serial('Pruebas con la Categoria del Socio', async () => {
         await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
+        await expect(page).toHaveURL(`${url_registro_persona}`);
     });
 
     test('Ver la Categoria Actual de la Persona', async () => {

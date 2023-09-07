@@ -2,6 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } fr
 import { url_base, dataCerrar, ariaCerrar, selectBuscar, formBuscar, browserConfig } from './utils/dataTests';
 import { diaSiguiente, formatDate } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
+import { url_transacciones_caja } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -81,7 +82,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                 await page.getByRole('menuitem', {name: 'Transacciones de Caja'}).click();
         
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
+                await expect(page).toHaveURL(`${url_transacciones_caja}`);
             });
 
             if (escenarios.ES_BOVEDA !== '0') {
@@ -269,7 +270,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await page2.close();
 
                     // Debe regresar a la pagina
-                    await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
+                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
 
                     // Cerrar las alertas que aparecen
                     await page.locator(`${dataCerrar}`).first().click();
@@ -404,7 +405,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
 
                 test('Liberar la Sesion', async () => {
                     // Luego de que se cierre las nuevas pestañas, se debe regresar a la pagina anterior
-                    await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
+                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
 
                     // Click al boton de Liberar Sesion
                     const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});

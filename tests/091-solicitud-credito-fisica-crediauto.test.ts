@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataCerrar, selectBuscar, formBuscar, browserConfig, inputFechaSolicitud, inputPrimerPago } from './utils/dataTests';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -61,7 +62,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.getByRole('menuitem', {name: 'Solicitud de Crédito'}).click();
 
         // La URL debe de cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
@@ -79,7 +80,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Paso 1 - Datos del Solicitante', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=1`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=1`);
 
         // Deben estar visibles los tres titulos del primer paso
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
@@ -111,7 +112,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Paso 2 - Datos Prestamo', async () => {
         // La URL no debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=2`);
 
         // El titulo principal debe estar visible
         const tituloPrincipal = page.getByRole('heading', {name: 'Generales del Crédito'});
@@ -279,7 +280,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Paso 3 - Cargos del prestamo', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=3`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=3`);
 
         // El titulo principal debe estar visible
         await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
@@ -299,7 +300,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Paso 4 - Deudas', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=4`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=4`);
 
         // El titulo principal debe estar visible
         await expect(page.locator('text=DEUDAS PENDIENTES')).toBeVisible();
@@ -313,7 +314,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Paso 5 - Perfil Financiero', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=5`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=5`);
 
         // Las tres secciones del paso 5 deben estar visibles
         await expect(page.locator('text=ESTADO DE SITUACION')).toBeVisible();
@@ -329,7 +330,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.getByRole('heading', {name: 'REPRESENTANTES LEGALES'})).toBeVisible();
         
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=6`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=6`);
 
         // Click en actualizar y continuar
         GuardaryContinuar();
@@ -337,7 +338,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Paso 7 - Codeudores y Garantias', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=7`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=7`);
 
         // Click al boton de agregar garantia
         await page.getByRole('button', {name: 'Agregar Garantía'}).click();
@@ -403,7 +404,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Paso 8 - Referencias', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=8`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=8`);
 
         // Los tres titulos deben estar visibles
         await expect(page.getByRole('heading', {name: 'Familiares mas Cercanos'})).toBeVisible();
@@ -416,7 +417,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Paso 9 - Documentos', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=9`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=9`);
 
         // Subir Tabla de amortizacion
         const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');
@@ -478,7 +479,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Cambiar el estado de la Solicitud de Solicitado a En Proceso (Analisis)', async () => {
         // La url debe regresar a las solicitudes solicitadas
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
@@ -523,7 +524,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Aprobado', async () => {
         // La url debe regresar a las solicitudes solicitadas
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
 
         // Cambiar el estado de las solicitudes de Solicitado a En Proceso (Analisis)
         await page.locator('text=SOLICITADO').click();
@@ -580,7 +581,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
     test('Desembolsar la solicitud', async () => {
         // La url debe regresar a las solicitudes en proceso
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=en_proceso__analisis`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=en_proceso__analisis`);
 
         // Cambiar el estado de las solicitudes de En Proceso a Aprobado
         await page.locator('text=EN PROCESO (ANALISIS)').click();

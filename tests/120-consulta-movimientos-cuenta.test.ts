@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, expect, Locator, Page, test, chromium } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_consulta_movimientos_cuentas } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -50,6 +51,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Consulta Movimientos Cuenta
         await page.getByRole('menuitem', {name: 'Consulta Movimientos Cuenta'}).click();
+
+        // La URL debe cambiar
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
     });
 
     test('Cuenta de Aportaciones del Socio', async () => {
@@ -64,7 +68,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await page.getByText('| APORTACIONES |').click();
 
         // La URL no debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
 
         // El tipo de captacion debe ser de Aportaciones
         await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('APORTACIONES');
@@ -108,7 +112,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await page.getByText('APORTACIONES PREFERENTES').click();
 
         // La URL no debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
 
         // El tipo de captacion debe ser de Aportaciones Preferentes
         await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('APORTACIONES PREFERENTES');
@@ -152,7 +156,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await page.getByText('AHORROS NORMALES').click();
 
         // La URL no debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
 
         // El tipo de captacion debe ser de Ahorros Normales
         await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('AHORROS NORMALES');
@@ -218,7 +222,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await page.getByText('AHORROS POR NOMINA').click();
 
         // La URL no debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
 
         // El tipo de captacion debe ser de Ahorros por Nomina
         await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('AHORROS POR NOMINA');
@@ -261,7 +265,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await page.getByText('ORDEN DE PAGO').click();
 
         // La URL no debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
 
         // El tipo de captacion debe ser de Orden de Pago
         await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('ORDEN DE PAGO');
@@ -294,7 +298,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
     test('Cuenta de Certificados - Financieros Pagaderas del Socio', async () => {
         // La URL NO debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
 
         // Seleccionar un tipo de cuenta a buscar
         await buscadorCuenta.click();
@@ -340,7 +344,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
     test('Cuenta de Certificados - Financieros Reinvertidas del Socio', async () => {
         // La URL NO debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
 
         // Seleccionar un tipo de cuenta a buscar
         await buscadorCuenta.click();
@@ -383,7 +387,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
     test('Cuenta de Certificados - Inversion Pagaderas del Socio', async () => {
         // La URL NO debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_captaciones/01-2-4-6/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
 
         // Seleccionar un tipo de cuenta a buscar
         await buscadorCuenta.click();

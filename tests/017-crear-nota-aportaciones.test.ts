@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataCerrar, formBuscar, browserConfig } from './utils/dataTests';
+import { url_cuentas_aportaciones } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -51,7 +52,7 @@ test.describe.serial('Pruebas agregando y completando notas', async () => {
         await page.getByRole('menuitem', {name: 'Aportaciones'}).first().click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+        await expect(page).toHaveURL(`${url_cuentas_aportaciones}`);
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();

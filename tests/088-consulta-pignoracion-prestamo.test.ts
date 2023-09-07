@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_consulta_pignoracion_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -44,7 +45,7 @@ test.describe.serial('Pruebas con el Historial de Pignoracion de la Cuenta usada
         await page.getByRole('menuitem', {name: 'Consulta Pignoración de Cuentas'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/pignoracion_cuenta/01-2-4-12/`);
+        await expect(page).toHaveURL(`${url_consulta_pignoracion_cuentas}`);
     });
 
     test('Ver las pignoraciones de una Cuenta de un Socio', async () => {

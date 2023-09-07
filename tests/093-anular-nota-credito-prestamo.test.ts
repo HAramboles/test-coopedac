@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, dataEliminar } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, dataEliminar, fechaInicio, fechaFinal } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
+import { url_anular_nota_credito_prestamo } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -45,7 +46,7 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         await page.getByRole('menuitem', {name: 'Anular Nota Crédito Préstamo'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/anula_nota_cr_prestamo/01-3-6-1/`);
+        await expect(page).toHaveURL(`${url_anular_nota_credito_prestamo}`);
     });
 
     test('Buscar la Nota de Credito al Prestamo', async () => {
@@ -65,10 +66,10 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         await expect(page.locator(`${selectBuscar}`)).toBeVisible();
 
         // Fecha documento inicio
-        await expect(page.locator('#form_FECHA_INICIAL')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${formatDate(new Date())}`);
 
         // Fecha documento final
-        await expect(page.locator('#form_FECHA_FINAL')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${formatDate(new Date())}`);
 
         // Usuario
         await page.locator('#form_USUARIO_INSERCION').click();

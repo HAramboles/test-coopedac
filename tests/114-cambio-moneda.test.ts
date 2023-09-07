@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
+import { url_cambio_moneda } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -41,7 +42,7 @@ test.describe.serial('Pruebas con el Cambio de Moneda', () => {
         await page.getByRole('menuitem', {name: 'Cambio de Monedas'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/cambio_monedas/01-4-1-2-8/`);
+        await expect(page).toHaveURL(`${url_cambio_moneda}`);
     });
 
     test('Realizar un Cambio de Monedas sin abrir el modal de las Denominaciones', async () => {

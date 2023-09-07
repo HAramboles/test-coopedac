@@ -12,8 +12,9 @@ import {
     nombrePersonaFisicaConyuge, 
     apellidoPersonaFisicaConyuge  
 } from './000-nombresyapellidos-personas';
-import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
+import { url_registro_persona } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -116,7 +117,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                 await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
+                await expect(page).toHaveURL(`${url_registro_persona}`);
         
                 // El titulo de registrar persona debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
@@ -150,7 +151,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
             
                     // La url debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=1`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=1`);
                 });
             
                 test('Registrar a la persona - Datos Generales', async() => {
@@ -226,7 +227,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
             
                 test('Registrar a la persona - Informacion de ingresos', async () => {
                     // La url debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=2`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=2`);
             
                     // El titulo de Informacion de Ingresos debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
@@ -282,7 +283,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
             
                 test('Registrar a la persona - Informacion adicional de ingresos', async () => {
                     // La url debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=3`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=3`);
             
                     // El titulo de informacion adicional de ingresos debe estar visible
                     await expect(page.locator('h1').filter({ hasText: 'INFORMACIÓN ADICIONAL DE INGRESOS' })).toBeVisible();
@@ -303,7 +304,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                 
                 test('Registrar a la persona - Persona expuesta politicamente (Peps)', async () => {
                     // La url debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=4`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=4`);
             
                     // El titulo de persona expuesta politicamente debe estar visible
                     await expect(page.locator('h1').filter({ hasText: 'PERSONA EXPUESTA POLÍTICAMENTE' })).toBeVisible();      
@@ -327,12 +328,10 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                     await campoEntidad?.fill('36');
             
                     // Input de fecha de inicio
-                    const campoFechaInicio = page.locator('#form_FECHA_INICIO');
-                    await campoFechaInicio?.fill('25/03/2022');
+                    await page.locator('#form_FECHA_INICIO')?.fill('25/03/2022');
             
                     // Input de fecha de final, solo es necesario hacer click, se pone una fecha automatica
-                    const campoFechaFinal = page.locator('#form_FECHA_FINAL');
-                    await campoFechaFinal.click();
+                    await page.locator(`${fechaFinal}`).click();
             
                     // Hacer click al boton de aceptar
                     await page.locator('button:has-text("Aceptar")').click();
@@ -346,7 +345,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
             
                 test('Registrar a la persona - Direcciones', async () => {
                     // La url debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=5`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=5`);
             
                     // El titulo de direcciones debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
@@ -467,7 +466,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
 
                 test('Registrar a la persona - Relacionados - Crear Conyuge de la Persona', async () => {
                     // La url debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=6`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=6`);
             
                     // El titulo de relacionados del socio debe estar visible 
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible(); 
@@ -587,7 +586,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                     await page.locator('#form_FECHA_INICIO').fill('06/08/2022');
             
                     // Click al input de fecha final, coloca una fecha automatica
-                    await page.locator('#form_FECHA_FINAL').click();
+                    await page.locator(`${fechaFinal}`).click();
             
                     // Click en Aceptar
                     await page.locator('text=Aceptar').click();

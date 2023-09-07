@@ -2,6 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } fr
 import { url_base, ariaCerrar, selectBuscar, dataGuardar, dataCerrar, browserConfig } from './utils/dataTests';
 import { diaAnterior } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
+import { url_transacciones_caja } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -81,7 +82,7 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                 await page.getByRole('menuitem', {name: 'Transacciones de Caja'}).click();
         
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
+                await expect(page).toHaveURL(`${url_transacciones_caja}`);
             });
 
             if (escenarios.ES_BOVEDA !== '0') {
@@ -249,7 +250,7 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
 
                 test('Cerrar la sesion', async () => {
                     // Luego de que se cierre la nueva pestaña, se debe regresar a la pagina anterior
-                    await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
+                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
             
                     // Debe aparecer un modal con el mensaje de actualizar la libreta
                     await expect(page.locator('text=Actualizar libreta')).toBeVisible();

@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
+import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -73,7 +74,7 @@ test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear
                 await page.getByRole('menuitem').filter({hasText: 'Ahorros'}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros}`);
         
                 // El titulo de ahorros debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
@@ -95,7 +96,7 @@ test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear
                 await opcionAhorrosNormales.click();
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros_normales}`);
 
                 // El tipo de captacion de ahorros normales debe estar visible
                 await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
@@ -126,7 +127,7 @@ test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16/create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_normales}/create?step=1`);
             
                     // El titulo de Registrar Cuenta debe estar visible
                     await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
@@ -150,7 +151,7 @@ test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear
                     await page.getByRole('button', {name: 'Aceptar'}).click();
             
                     // Se debe redirigir a la pagina de las cuentas de ahorros
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_normales}`);
 
                     // El titulo de ahorros debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();

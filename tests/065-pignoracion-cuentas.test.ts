@@ -2,6 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, 
 import { formatDate } from './utils/fechas';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/interfaces';
+import { url_pignoracion_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -80,7 +81,7 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                 await page.getByRole('menuitem', {name: 'Pignoración de Cuentas'}).click();
         
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/pignoracion_cuenta/01-2-2-106/`);
+                await expect(page).toHaveURL(`${url_pignoracion_cuentas}`);
             });
 
             test('Buscar una cuenta de un Socio', async () => {

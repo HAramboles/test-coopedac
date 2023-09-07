@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataPrinter, selectBuscar, browserConfig } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
+import { url_consulta_movimientos_prestamos } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -49,7 +50,7 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
         await page.getByRole('menuitem', {name: 'Consulta Movimientos Préstamos'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_movimiento_prestamos/01-3-4-3/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_prestamos}`);
     });
 
     test('Buscar el Prestamo de un Socio', async () => {
@@ -117,7 +118,7 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
         await pageMovimiento1.close();
 
         // Debe regresar a la pagina de las consultas
-        await expect(page).toHaveURL(`${url_base}/consulta_movimiento_prestamos/01-3-4-3/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_prestamos}`);
         
         // Imprimir el segundo movimiento
         const imprimirMovimiento2 = page.locator(`${dataPrinter}`).last();
@@ -133,7 +134,7 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
         await pageMovimiento2.close();
         
         // Debe regresar a la pagina de las consultas
-        await expect(page).toHaveURL(`${url_base}/consulta_movimiento_prestamos/01-3-4-3/`);
+        await expect(page).toHaveURL(`${url_consulta_movimientos_prestamos}`);
 
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS PRÉSTAMOS'})).toBeVisible();

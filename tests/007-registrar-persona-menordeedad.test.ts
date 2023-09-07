@@ -4,6 +4,7 @@ import { formatDate } from './utils/fechas';
 import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './000-nombresyapellidos-personas';
+import { url_registro_persona } from './utils/urls';
 
 // Vaiables globales 
 let browser: Browser;
@@ -97,7 +98,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                 await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
+                await expect(page).toHaveURL(`${url_registro_persona}`);
         
                 // El titulo de registrar persona debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
@@ -125,7 +126,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     await botonPersonaJuridica.click();
             
                     // La URL debe cambiar a la del registro
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=1`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=1`);
                 });
             
                 test('Registro de Persona Fisica - Menor de Edad - Datos Generales', async () => {
@@ -210,7 +211,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             
                 test('Registro de Persona Fisica - Menor de Edad - Informacion de Ingresos', async () => {
                     // La url debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=2`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=2`);
             
                     // El titulo de Informacion de Ingresos debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
@@ -247,7 +248,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             
                 test('Registro de Persona Fisica - Menor de Edad - Informacion de Adicional de Ingresos', async () => {
                     // La url debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=3`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=3`);
             
                     // El titulo de informacion adicional de ingresos debe estar visible
                     await expect(page.locator('h1').filter({ hasText: 'INFORMACIÓN ADICIONAL DE INGRESOS' })).toBeVisible();
@@ -262,7 +263,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             
                 test('Registro de Persona Fisica - Menor de Edad - Persona expuesta politicamente (Peps)', async () => {
                     // La url debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=4`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=4`);
             
                     // El titulo de persona expuesta politicamente debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'PERSONA EXPUESTA POLÍTICAMENTE'})).toBeVisible(); 
@@ -275,7 +276,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             
                 test('Registro de Persona Fisica - Menor de Edad - Direcciones', async () => {
                     // La url debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=5`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=5`);
             
                     // El titulo de direcciones debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
@@ -397,7 +398,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     test.slow();
                     
                     // La url debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_fisica/create?step=6`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=6`);
             
                     // El titulo de relacionados del socio debe estar visible 
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();

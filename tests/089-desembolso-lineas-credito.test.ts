@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_desembolso_lineas_credito } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -46,7 +47,7 @@ test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
         await page.getByRole('menuitem', {name: 'Desembolso Líneas Crédito'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/desembolso_linea_credito/01-3-3-3/`);
+        await expect(page).toHaveURL(`${url_desembolso_lineas_credito}`);
     });
 
     test('Buscar la Linea de Credito de un Socio', async () => {

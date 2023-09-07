@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, Page, expect, Locator, test } from '@playwright/test';
 import { url_base, formBuscar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
+import { url_cuentas_certificados, url_cuentas_certificados_financieros_reinvertidas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -87,7 +88,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                 await page.getByRole('menuitem', {name: 'Certificados', exact: true}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados`);
+                await expect(page).toHaveURL(`${url_cuentas_certificados}`);
         
                 // El titulo de Certificadoss debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
@@ -109,7 +110,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                 await opcionFinancierosReinvertidas.click();
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10`);
+                await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_reinvertidas}`);
 
                 // El tipo de captacion de Financieros Reinvertidas debe estar visible
                 await expect(page.locator('#form').getByTitle('FINANCIEROS REINVERTIDAS')).toBeVisible();
@@ -306,7 +307,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     await botonFinalizar.click();
             
                     // Debe regresar a la pagina de inicio de las Cuentas de Certificados Financieros Reinvertidos
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_reinvertidas}`);
                 });
             };
 

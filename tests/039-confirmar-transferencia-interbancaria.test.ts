@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
+import { url_confirmar_transferencia_interbancaria } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -49,7 +50,7 @@ test.describe.serial('Pruebas con la Confirmacion de Transferencia Interbancaria
         await page.getByRole('menuitem', {name: 'Confirmar Transferencia Interbancaria'}).click();
     
         // La URL debe de cambiar
-        await expect(page).toHaveURL(`${url_base}/confirmar_transferencia_interbancaria/01-4-2-3-2/`);
+        await expect(page).toHaveURL(`${url_confirmar_transferencia_interbancaria}`);
     
         // El titulo de Confirmar Transferencia debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CONFIRMAR TRANSFERENCIA INTERBANCARIA'})).toBeVisible();

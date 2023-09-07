@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
+import { url_transferencia_boveda_caja } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -41,7 +42,7 @@ test.describe.serial('Tranferir desde Boveda a Caja', async () => {
         await page.getByRole('menuitem', {name: 'Transferir a cajas'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/transferencias_boveda_caja/01-4-3-2-2/`);
+        await expect(page).toHaveURL(`${url_transferencia_boveda_caja}`);
     });
 
     test('Elegir una Caja', async () => {

@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_asignar_accesorios } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -48,7 +49,7 @@ test.describe.serial('Asignar una Secuencia de Orden de Pago a la cuenta de Orde
         await page.getByRole('menuitem', {name: 'Asignar Accesorios'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/asignar_accesorios/01-2-8-2/`);
+        await expect(page).toHaveURL(`${url_asignar_accesorios}`);
     });
 
     test('Asignar una Secuencia de Orden de Pago', async () => {

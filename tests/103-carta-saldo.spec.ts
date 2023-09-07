@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig, dataVer } from './utils/dataTests';
+import { url_carta_saldo } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -54,7 +55,7 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         await page.getByRole('menuitem', {name: 'Carta de Saldo'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/carta_saldo/01-3-2-5/`);
+        await expect(page).toHaveURL(`${url_carta_saldo}`);
     });
 
     test('Buscar prestamo de un socio', async () => {

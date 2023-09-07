@@ -1,6 +1,7 @@
 import { APIResponse ,Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
+import { url_cuentas_aportaciones_preferentes } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -90,7 +91,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                 await page.getByRole('menuitem', {name: 'Aportaciones Preferentes'}).first().click();
 
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
+                await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}`);
         
                 // El titulo debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'APORTACIONES PREFERENTES'})).toBeVisible();
@@ -124,7 +125,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
 
                 test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}create?step=1`);
             
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES PREFERENTES'})).toBeVisible();
@@ -233,7 +234,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
             
                 test('Crear cuenta de Aportaciones Preferentes - Paso 2 - Contacto de Firmante', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=2`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -329,7 +330,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
             
                 test('Crear cuenta de Aportaciones Preferentes - Paso 3 - Metodo de Interes', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20/create?step=3`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}create?step=3`);
             
                     // El titulo debe estar visible
                     await expect(page.locator('text=FORMA PAGO DE INTERESES O EXCEDENTES')).toBeVisible();
@@ -354,7 +355,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     await page1.close();
                     
                     // Debe de regresar a la pagina las cuentas de ahorros
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-5/aportaciones_preferentes/20`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}`);
             
                     // El titulo de Ahorros debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'APORTACIONES PREFERENTES'})).toBeVisible();

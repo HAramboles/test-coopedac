@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_solicitud_transferencia_interbancaria } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -43,7 +44,7 @@ test.describe.serial('No permitir una Transferencia Interbancaria si la cuenta d
         await page.getByRole('menuitem', {name: 'Solicitud Transferencia Interbancaria'}).click();
     
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_transferencia/01-2-2-110/`);
+        await expect(page).toHaveURL(`${url_solicitud_transferencia_interbancaria}`);
     
         // El titulo de Solicitud Transferencia Interbancaria estar visible
         await expect(page.locator('h1').filter({hasText: 'SOLICITUD TRANSFERENCIA INTERBANCARIA'})).toBeVisible();

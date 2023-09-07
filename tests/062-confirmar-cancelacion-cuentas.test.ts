@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from "@playwright/test";
 import { url_base, ariaCerrar, formBuscar, browserConfig, dataCheck } from "./utils/dataTests";
+import { url_confirmar_cancelacion_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -48,7 +49,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         await page.getByRole('menuitem', {name: 'Confirmar Cancelación Cuentas'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/confirmar_cierre_cuenta/01-2-3-4/`);
+        await expect(page).toHaveURL(`${url_confirmar_cancelacion_cuentas}`);
     });
 
     test('Datos de la Solicitud de la Cancelacion', async () => {

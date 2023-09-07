@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { dosMesDespues } from './utils/fechas';
+import { url_reprogramacion_creditos } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -49,7 +50,7 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
         await page.getByRole('menuitem', {name: 'Reprogramación Créditos'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reprogramacion_prestamos/01-3-2-2?filter=pendientes`);
+        await expect(page).toHaveURL(`${url_reprogramacion_creditos}?filter=pendientes`);
     });
 
     test('Confirmar la Solicitud de Reprogramacion del Socio', async () => {

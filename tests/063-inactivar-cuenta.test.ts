@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebasActivarInactivarCuentas } from './utils/interfaces';
+import { url_cuentas_ahorros, url_cuentas_ahorros_por_nomina } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -79,7 +80,7 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
                 await page.getByRole('menuitem', {name: 'Ahorros'}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros}`);
         
                 // El titulo de ahorros debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
@@ -101,7 +102,7 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
                 await opcionAhorrosNomina.click();
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/19`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros_por_nomina}`);
 
                 // El tipo de captacion de ahorros por nomina debe estar visible
                 await expect(page.locator('#form').getByTitle('AHORROS POR NOMINA')).toBeVisible();

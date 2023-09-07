@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate, primerDiaMes } from './utils/fechas';
-import { url_base, browserConfig } from './utils/dataTests';
+import { url_base, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_desembolso_neto } from './utils/urls';
 
 // Variabes globales
 let browser: Browser;
@@ -39,7 +40,7 @@ test.describe.serial('Pruebas con el Desembolso Neto', () => {
         await page.getByRole('menuitem', {name: 'Desembolso Neto'}).click();
 
         // La URL de la pagina debe cambiar
-        await expect(page).toHaveURL(`${url_base}/desembolso_neto/01-3-4-9/`);
+        await expect(page).toHaveURL(`${url_desembolso_neto}`);
     });
 
     test('Imprimir el Reporte del Desembolso Neto', async () => {
@@ -47,10 +48,10 @@ test.describe.serial('Pruebas con el Desembolso Neto', () => {
         await expect(page.locator('h1').filter({hasText: 'DESEMBOLSO NETO'})).toBeVisible();
         
         // Fecha Inicial
-        await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${primerDiaMes}`);
+        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${primerDiaMes}`);
 
         // Fecha Final
-        await expect(page.locator('#form_FECHA_FINAL')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${formatDate(new Date())}`);
 
         // Tipo Prestamo
         await expect(page.locator('#form_ID_TIPO_PRESTAMO')).toBeVisible();

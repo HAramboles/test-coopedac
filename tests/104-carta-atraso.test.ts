@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataFile, browserConfig } from './utils/dataTests';
+import { url_carta_atraso } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -38,7 +39,7 @@ test.describe.serial('Prueba con la Carta de Atraso', async () => {
         await page.getByRole('menuitem', {name: 'Carta de Atraso'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/carta_atraso/01-3-2-6/`);
+        await expect(page).toHaveURL(`${url_carta_atraso}`);
     });
 
     test('Generar una Carta de Atraso a un deudor', async () => {

@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_cobros_servicios_caja } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -49,7 +50,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Caja', () => {
         await page.getByRole('menuitem', {name: 'Cobro de Servicios'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/cobro_servicios/01-4-1-2-7/`);
+        await expect(page).toHaveURL(`${url_cobros_servicios_caja}`);
     });
 
     test('Buscar un Socio', async () => {

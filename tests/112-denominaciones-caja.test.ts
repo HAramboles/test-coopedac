@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
+import { url_denominaciones_caja } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -41,7 +42,7 @@ test.describe.serial('Pruebas con las Denominaciones por Caja', () => {
         await page.getByRole('menuitem', {name: 'Denominaciones por caja'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/denominaciones_cajas/01-4-1-4-2/`);
+        await expect(page).toHaveURL(`${url_denominaciones_caja}`);
     });
 
     test('Cambiar los Sucursales de las Cajas', async () => {

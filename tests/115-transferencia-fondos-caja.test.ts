@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_transferencia_fondos_caja } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -41,7 +42,7 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         await page.getByRole('menuitem', {name: 'Transferencia fondos de caja'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/transferencias_cajas/01-4-1-2-9/`);
+        await expect(page).toHaveURL(`${url_transferencia_fondos_caja}`);
     });
 
     test('En el Input de Hasta Caja debe mostrarse la Boveda', async () => {

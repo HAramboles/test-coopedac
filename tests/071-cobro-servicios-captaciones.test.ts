@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, formBuscar, browserConfig } from './utils/dataTests';
+import { url_cobro_servicios_captaciones, url_sesiones_transito, url_cobros_servicios_caja } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -48,7 +49,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         await page.getByRole('menuitem', {name: 'Cobro de Servicios'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/cobros_multiples_servicios/01-2-2-107/`);
+        await expect(page).toHaveURL(`${url_cobro_servicios_captaciones}`);
     });
 
     test('Buscar a una persona', async () => {
@@ -116,7 +117,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/sesiones_transito/01-4-1-2-1/`);
+        await expect(page).toHaveURL(`${url_sesiones_transito}`);
     });
 
     test('Buscar la Sesion abierta con el Cobro de Servicio', async () => {
@@ -143,7 +144,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
 
     test('Aplicar el Cobro del Servicio al Socio', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/cobro_servicios/01-4-1-2-7`);
+        await expect(page).toHaveURL(`${url_cobros_servicios_caja}`);
 
         // El titulo de la pagina debe estar visible
         await expect(page.locator('h1').filter({hasText: 'COBRO DE SERVICIOS'})).toBeVisible();

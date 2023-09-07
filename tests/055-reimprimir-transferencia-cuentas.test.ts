@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate, primerDiaMes } from './utils/fechas';
-import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_reimprimir_transferencia_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -47,7 +48,7 @@ test.describe.serial('Pruebas con la Reimpresion de la Transferencia entre Cuent
         await page.getByRole('menuitem', {name: 'Reimprimir transferencia entre cuentas'}).click();
         
         // La URL de la pagina debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reimp_transferencias_cuentas/01-2-6-2/`);
+        await expect(page).toHaveURL(`${url_reimprimir_transferencia_cuentas}`);
     });
 
     test('Buscar las cuentas de un Socio', async () => {
@@ -58,10 +59,10 @@ test.describe.serial('Pruebas con la Reimpresion de la Transferencia entre Cuent
         await expect(page.getByText('Criterios de Búsqueda')).toBeVisible();
 
         // Fecha Inicial
-        await page.locator('#form_FECHA_INICIAL').fill(`${primerDiaMes}`);
+        await page.locator(`${fechaInicio}`).fill(`${primerDiaMes}`);
 
         // Fecha Final
-        await page.locator('#form_FECHA_FINAL').fill(`${formatDate(new Date())}`);
+        await page.locator(`${fechaFinal}`).fill(`${formatDate(new Date())}`);
 
         // Buscar la cuenta de origen del socio
         await page.locator(`${selectBuscar}`).first().fill(`${nombre} ${apellido}`);

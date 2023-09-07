@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, formBuscar, dataCerrar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
+import { url_transacciones_caja } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -80,7 +81,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                 await page.getByRole('menuitem', {name: 'Transacciones de Caja'}).click();
         
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
+                await expect(page).toHaveURL(`${url_transacciones_caja}`);
             });
 
             if (escenarios.ES_BOVEDA !== '0') {
@@ -276,7 +277,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     await page2.close();
 
                     // Debe regresar a la pagina
-                    await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
+                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
 
                     // Debe mostrarse el modal de Actualizar en libreta
                     const modalLibreta = page.locator('text=Actualizar libreta');

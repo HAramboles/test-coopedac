@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataPrinter, formBuscar, browserConfig } from './utils/dataTests';
+import { url_reimprimir_desembolso } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -48,7 +49,7 @@ test.describe.serial('Pruebas con la Reimpresion de Desembolso', () => {
         await page.getByRole('menuitem', {name: 'Reimprimir Desembolso'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reimprimir_desembolso/01-3-5-3/`);
+        await expect(page).toHaveURL(`${url_reimprimir_desembolso}`);
     });
 
     test('Datos del Credito del Socio', async () => {

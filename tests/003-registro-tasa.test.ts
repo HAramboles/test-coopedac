@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
 import { url_base, ariaCerrar, dataGuardar, browserConfig } from './utils/dataTests';
+import { url_registro_tasa } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -106,7 +107,7 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
                 await page.locator('div > span:has-text("Registro Tasa Simple")').click();
 
                 // expect that the URL is correct
-                await expect(page).toHaveURL(/\/registro_tasa/);
+                await expect(page).toHaveURL(`${url_registro_tasa}`);
             });
 
             test('Los titulos deben estar visibles', async () => {

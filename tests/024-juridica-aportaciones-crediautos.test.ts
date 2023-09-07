@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
+import { url_cuentas_aportaciones_crediautos } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -86,7 +87,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas co
                 await page.getByRole('menuitem', {name: 'Aportaciones (CREDIAUTOS)'}).first().click();
 
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-7/aportaciones_(crediautos)/1`);
+                await expect(page).toHaveURL(`${url_cuentas_aportaciones_crediautos}`);
         
                 // El titulo debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'APORTACIONES (CREDIAUTOS)'})).toBeVisible();
@@ -117,7 +118,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas co
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-7/aportaciones_(crediautos)/1/create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_crediautos}/create?step=1`);
                 });
             
                 test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {
@@ -246,7 +247,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas co
                     await botonFinalizar.click();
             
                     // Debe redirigirse al listado de las cuentas de aportaciones
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-7/aportaciones_(crediautos)/1`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_crediautos}`);
                 });
             };         
         

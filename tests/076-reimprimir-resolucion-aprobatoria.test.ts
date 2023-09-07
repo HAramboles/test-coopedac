@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosReimpresionResolucionAprobatoria } from './utils/interfaces';
+import { url_reimprimir_resolucion_aprobatoria } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -68,7 +69,7 @@ test.describe.serial('Reimpresion de resolucion aprobatoria - Pruebas con los di
                 await page.getByRole('menuitem', {name: 'Reimprimir resolución aprobatoria'}).click();
 
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/reimprimir_resolucion_aprobatoria/01-3-5-6/`);
+                await expect(page).toHaveURL(`${url_reimprimir_resolucion_aprobatoria}`);
             });
 
             test('Reimprimir una solicitud de un socio', async () => {

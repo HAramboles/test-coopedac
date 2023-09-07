@@ -7,9 +7,10 @@ import {
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './000-nombresyapellidos-personas';
+import { url_registro_persona } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -109,7 +110,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
+                await expect(page).toHaveURL(`${url_registro_persona}`);
         
                 // El titulo de registrar persona debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
@@ -137,7 +138,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await botonPersonaJuridica.click();
             
                     // La URL debe cambiar a la del registro
-                    await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/persona_juridica/create?step=1`);
+                    await expect(page).toHaveURL(`${url_registro_persona}persona_juridica/create?step=1`);
                 });
             
                 test('Registro de Persona Juridica - Datos Generales', async () => {
@@ -436,7 +437,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await page.locator('#form_FECHA_INICIO').fill('06/08/2022');
             
                     // Click al input de fecha final, coloca una fecha automatica
-                    await page.locator('#form_FECHA_FINAL').click();
+                    await page.locator(`${fechaFinal}`).click();
             
                     // Click en Aceptar
                     await page.locator('text=Aceptar').click();

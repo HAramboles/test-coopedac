@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_activar_caja } from './utils/urls';
 
 /* Variables globales */
 let browser: Browser;
@@ -7,7 +8,7 @@ let context: BrowserContext;
 let page: Page;
 
 // Pruebas
-test.describe.serial('Activar Caja - Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Pruebas con Activar Caja', async () => {
     test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
         /* Crear el browser, con la propiedad headless */
         browser = await chromium.launch({
@@ -41,7 +42,7 @@ test.describe.serial('Activar Caja - Pruebas con los diferentes parametros', asy
         await page.locator('text=Activar Caja').click();
 
         // La url debe de cambiar
-        await expect(page).toHaveURL(`${url_base}/activar_caja/01-4-1-2-5/`);
+        await expect(page).toHaveURL(`${url_activar_caja}`);
 
         // El titulo de Activar Caja debe estar visible
         await expect(page.locator('h1').filter({hasText: 'Activar Caja'})).toBeVisible();

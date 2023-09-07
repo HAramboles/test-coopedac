@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_reimprimir_solicitud_reprogramacion } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -48,7 +49,7 @@ test.describe.serial('Pruebas con la Reimpresion de la Solicitud de Reprogramaci
         await page.getByRole('menuitem', {name: 'Reimp. Solicitud Reprogramacion'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reimp_solicitud_reprogramacion/01-3-5-5/`);
+        await expect(page).toHaveURL(`${url_reimprimir_solicitud_reprogramacion}`);
     });
 
     test('Buscar un Socio', async () => {

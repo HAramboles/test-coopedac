@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
+import { url_cuentas_aportaciones } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -73,7 +74,7 @@ test.describe.serial('No permitir Crear una Nueva Cuenta de Aportaciones al mism
                 await page.getByRole('menuitem', {name: 'Aportaciones'}).first().click();
 
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+                await expect(page).toHaveURL(`${url_cuentas_aportaciones}`);
         
                 // El titulo debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
@@ -104,7 +105,7 @@ test.describe.serial('No permitir Crear una Nueva Cuenta de Aportaciones al mism
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1/create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones}/create?step=1`);
                 });
             
                 test('Debe de salir un modal avisando que el titular ya tiene una cuenta de aportaciones', async () => {            
@@ -130,7 +131,7 @@ test.describe.serial('No permitir Crear una Nueva Cuenta de Aportaciones al mism
                     await expect(modal).not.toBeVisible();
             
                     // Debe regresar atras y la URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones}`);
                 });
             };
         

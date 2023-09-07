@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, userCorrecto, userCuadreCaja, dataPrinter } from './utils/dataTests';
-import { formatDate } from './utils/fechas'
+import { url_base, browserConfig, userCorrecto, userCuadreCaja, dataPrinter, fechaInicio, fechaFinal } from './utils/dataTests';
+import { formatDate } from './utils/fechas';
+import { url_reimprimir_cuadre_caja } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -42,7 +43,7 @@ test.describe.serial('Pruebas con la Reimprimiseion de Cuadre de Caja', async ()
         await page.getByRole('menuitem', {name: 'Reimprimir Cuadre Caja'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reimprimir_cuadre_caja/01-4-1-5-3/`);
+        await expect(page).toHaveURL(`${url_reimprimir_cuadre_caja}`);
     });
 
     test('Reimprimir el Cuadre de Caja realizado anteriormente', async () => {
@@ -56,8 +57,8 @@ test.describe.serial('Pruebas con la Reimprimiseion de Cuadre de Caja', async ()
         await expect(page.locator('#form_ID_CUADRE')).toHaveValue('');
 
         // La Fecha inio y fin deben tener el dia actual
-        await expect(page.locator('#form_FECHA_INICIAL')).toHaveValue(`${formatDate(new Date())}`);
-        await expect(page.locator('#form_FECHA_FINAL')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${formatDate(new Date())}`);
 
         // En el input Sucursal debe estar el valor Todas
         await expect(page.getByTitle('TODAS').last()).toBeVisible();
@@ -87,7 +88,7 @@ test.describe.serial('Pruebas con la Reimprimiseion de Cuadre de Caja', async ()
         await chequesCuadreCaja.close();
 
         // Debe regresar a la pagina de Reimprimir Cuadre de Caja
-        await expect(page).toHaveURL(`${url_base}/reimprimir_cuadre_caja/01-4-1-5-3/`);
+        await expect(page).toHaveURL(`${url_reimprimir_cuadre_caja}`);
     });
     
     test.afterAll(async () => { // Despues de las pruebas

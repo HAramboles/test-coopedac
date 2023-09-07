@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
+import { url_cuentas_ahorros, url_cuentas_ahorros_orden_pago } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -90,7 +91,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
                 await page.getByRole('menuitem', {name: 'Ahorros'}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros}`);
         
                 // El titulo de ahorros debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
@@ -112,7 +113,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
                 await opcionOrdenPago.click();
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros_orden_pago}`);
 
                 // El tipo de captacion de ahorros normales debe estar visible
                 await expect(page.locator('#form').getByTitle('ORDEN DE PAGO')).toBeVisible();
@@ -143,7 +144,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17/create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_orden_pago}create?step=1`);
             
                     // El titulo de Registrar Cuenta debe estar visible
                     await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
@@ -175,7 +176,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
             
                 test('Contacto de Firmante o Persona', async () => {              
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17/create?step=2`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_orden_pago}create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -268,7 +269,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
             
                 test('Metodo de intereses', async () => {
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17/create?step=3`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_orden_pago}create?step=3`);
                     
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
@@ -293,7 +294,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
                     await page1.close();
                     
                     // Debe de regresar a la pagina las cuentas de ahorros
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/17`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_orden_pago}`);
             
                     // El titulo de Ahorros debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();

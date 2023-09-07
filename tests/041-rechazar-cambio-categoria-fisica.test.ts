@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_aceptar_rechazar_cambio_categoria } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -46,7 +47,7 @@ test.describe.serial('Pruebas con el Rechazo de Cambio de Categoria de la Person
         await page.getByRole('menuitem', {name: 'Aceptar/Rechazar Cambio Categoría'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/aceptar_rechazar_cambio_categoria/01-2-3-3/`);
+        await expect(page).toHaveURL(`${url_aceptar_rechazar_cambio_categoria}`);
     });
 
     test('Cancelar Cambio Categoria', async () => {

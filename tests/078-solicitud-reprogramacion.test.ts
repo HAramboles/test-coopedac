@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { dosMesDespues } from './utils/fechas';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_solicitud_reprogramacion } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -61,7 +62,7 @@ test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes P
         await page.getByRole('menuitem', {name: 'Solicitud Reprogramación'}).click();
 
         // La url debe de cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_reprogramacion/01-3-2-3?filter=pendientes`);
+        await expect(page).toHaveURL(`${url_solicitud_reprogramacion}`);
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'SOLICITUD REPROGRAMACIÓN'})).toBeVisible();

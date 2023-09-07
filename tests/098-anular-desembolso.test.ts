@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig, formBuscar } from './utils/dataTests';
+import { url_anular_desembolso } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -44,7 +45,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await page.getByRole('button', { name: 'Anular Desembolso'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/anular_desembolso/01-3-6-4/`);
+        await expect(page).toHaveURL(`${url_anular_desembolso}`);
     });
 
     test('Anular el Desembolso de la Solcitud Flexi Prox', async () => {

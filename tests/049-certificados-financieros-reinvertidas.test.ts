@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, Page, expect, Locator, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
+import { url_cuentas_certificados, url_cuentas_certificados_financieros_reinvertidas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -90,7 +91,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                 await page.getByRole('menuitem', {name: 'Certificados', exact: true}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados`);
+                await expect(page).toHaveURL(`${url_cuentas_certificados}`);
         
                 // El titulo de Certificadoss debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
@@ -112,7 +113,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                 await opcionFinancierosReinvertidas.click();
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10`);
+                await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_reinvertidas}`);
 
                 // El tipo de captacion de Financieros Reinvertidas debe estar visible
                 await expect(page.locator('#form').getByTitle('FINANCIEROS REINVERTIDAS')).toBeVisible();
@@ -148,7 +149,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
             
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10/create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_reinvertidas}create?step=1`);
             
                     // La cuenta debe ser de financieros reinvertidas
                     await expect(page.locator('text=FINANCIEROS REINVERTIDAS').first()).toBeVisible();
@@ -247,7 +248,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {            
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10/create?step=2`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_reinvertidas}create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -339,7 +340,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 3 - Metodo de Interes', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10/create?step=3`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_reinvertidas}create?step=3`);
             
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
@@ -366,7 +367,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                     await page2.close();
 
                     // Debe regresar a la pagina de los certificados
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/10`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_reinvertidas}`);
                 });
             };
             

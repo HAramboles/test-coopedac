@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
+import { url_cartera_prestamos } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -39,7 +40,7 @@ test.describe('Pruebas con la Cartera de Prestamos', () => {
         await page.getByRole('menuitem', {name: 'Cartera de préstamos'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/cartera_prestamos/01-3-4-7/`);
+        await expect(page).toHaveURL(`${url_cartera_prestamos}`);
     });
 
     test('Imprimir los Prestamos por Cartera', async () => {

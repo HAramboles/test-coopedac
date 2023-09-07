@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
 import { url_base, selectBuscar, dataGuardar, browserConfig } from './utils/dataTests';
+import { url_tabla_amortizacion } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -69,7 +70,7 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
         await page.getByRole('menuitem', {name: 'Tabla de amortización'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/tabla_amortizacion/01-3-4-2/`);
+        await expect(page).toHaveURL(`${url_tabla_amortizacion}`);
 
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'TABLA DE AMORTIZACIÓN'})).toBeVisible();

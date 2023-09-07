@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate, primerDiaMes } from './utils/fechas';
-import { url_base, browserConfig } from './utils/dataTests';
+import { url_base, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_prestamos_gerenciales } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -39,7 +40,7 @@ test.describe.serial('Pruebas con la Impresion de Prestamos Gerenciales', () => 
         await page.getByRole('menuitem', {name: 'Préstamos Gerenciales'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/consulta_prestamos_gerenciales/01-3-4-5/`);
+        await expect(page).toHaveURL(`${url_prestamos_gerenciales}`);
 
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'Préstamos Gerenciales'})).toBeVisible();
@@ -82,16 +83,16 @@ test.describe.serial('Pruebas con la Impresion de Prestamos Gerenciales', () => 
         await expect(page.locator('#form_MONTO_FINAL')).toHaveValue('RD$ 1,000,000');
 
         // Fecha Desembolso Inicial
-        const fechaInicial = page.locator('#form_FECHA_INICIAL');
+        const fechaInicial = page.locator(`${fechaInicio}`);
         await fechaInicial.clear();
         // Ingresar la fecha de inicio del mes
         await fechaInicial.fill(`${primerDiaMes}`);
 
         // Fecha Desembolso Final
-        const fechaFinal = page.locator('#form_FECHA_FINAL');
-        await fechaFinal.clear();
+        const fechaFin = page.locator(`${fechaFinal}`);
+        await fechaFin.clear();
         // Colocar la fecha actual
-        await fechaFinal.fill(`${formatDate(new Date())}`);
+        await fechaFin.fill(`${formatDate(new Date())}`);
 
         // Centro Costos
         await expect(page.getByText('OFICINA PRINCIPAL', {exact: true})).toBeVisible();

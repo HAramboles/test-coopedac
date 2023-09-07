@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
+import { url_registro_persona } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -77,7 +78,7 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
         await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
+        await expect(page).toHaveURL(`${url_registro_persona}`);
     });
 
     test('Seccion Busqueda Avanzada', async () => {

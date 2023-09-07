@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
+import { url_vencimiento_cobros } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -38,7 +39,7 @@ test.describe.serial('Pruebas con el Vencimiento de Cobros', async () => {
         await page.getByRole('menuitem', {name: 'Vencimiento de Cobros'}).click();
 
         // La URL de la pagina
-        await expect(page).toHaveURL(`${url_base}/vencimiento_cobros/01-3-4-11/`)
+        await expect(page).toHaveURL(`${url_vencimiento_cobros}`);
     });
 
     test('Llenar los campos de la pagina de Vencimiento de Cobros', async () => {

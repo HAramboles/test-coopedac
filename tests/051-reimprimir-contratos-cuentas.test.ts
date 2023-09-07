@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataFile, ariaCerrar, formBuscar, browserConfig } from './utils/dataTests';
+import { url_reimprimir_contratos_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -48,7 +49,7 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         await page.getByRole('menuitem', {name: 'Reimprimir contratos cuentas'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reimpresion_contratos/01-2-6-1/`);
+        await expect(page).toHaveURL(`${url_reimprimir_contratos_cuentas}`);
     });
 
     test('Buscar un socio', async () => {

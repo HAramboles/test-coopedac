@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarPersonas } from './utils/interfaces';
+import { url_registro_persona } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -77,7 +78,7 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                 await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
         
                 // La URL deba cambiar
-                await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
+                await expect(page).toHaveURL(`${url_registro_persona}`);
             });
         
             test('Buscar la cuenta del socio', async () => { 

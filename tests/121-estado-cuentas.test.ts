@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, Page, expect, test } from '@playwright/test';
 import { url_base, browserConfig, dataVer } from './utils/dataTests';
+import { url_estado_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -48,7 +49,7 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         await page.getByRole('menuitem', {name: 'Estado de Cuentas'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/estado_cuentas/01-2-4-2/`);
+        await expect(page).toHaveURL(`${url_estado_cuentas}`);
     });
 
     test('Buscar un socio', async () => {

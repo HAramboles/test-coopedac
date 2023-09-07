@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_estado_cuentas_cobrar } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -47,7 +48,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await page.getByRole('menuitem', {name: 'Estado de Cuentas por Cobrar'}).click();
 
         // La URL de la pagina
-        await expect(page).toHaveURL(`${url_base}/estado_cuenta_consolidado/01-3-4-4/`)
+        await expect(page).toHaveURL(`${url_estado_cuentas_cobrar}`);
     });
 
     test('Datos del Socio', async () => {

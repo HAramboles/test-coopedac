@@ -2,6 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
+import { url_cuentas_aportaciones } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -78,7 +79,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los difer
                 await page.getByRole('menuitem', {name: 'Aportaciones'}).first().click();
 
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+                await expect(page).toHaveURL(`${url_cuentas_aportaciones}`);
         
                 // El titulo debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'APORTACIONES'})).toBeVisible();
@@ -109,7 +110,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los difer
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1/create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones}/create?step=1`);
                 });
             
                 test('Registrar Cuenta de Aportaciones - Datos Generales', async () => {            
@@ -209,7 +210,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los difer
                     await page.getByRole('dialog').getByRole('button', {name: 'No'}).click();
             
                     // Debe redirigirse al listado de las cuentas de aportaciones
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-1/aportaciones/1`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones}`);
                 });
             };         
         

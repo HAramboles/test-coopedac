@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
 import { url_base, browserConfig } from './utils/dataTests';
+import { url_prestamos_por_vencer } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -39,7 +40,7 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
         await page.getByRole('menuitem', {name: 'Prestamos por vencer'}).click();
 
         // La URL de la pagina debe cambiar
-        await expect(page).toHaveURL(`${url_base}/prestamos_vencer/01-3-4-8/`);
+        await expect(page).toHaveURL(`${url_prestamos_por_vencer}`);
     });
 
     test('Imprimir todos los prestamos por vencer', async () => {

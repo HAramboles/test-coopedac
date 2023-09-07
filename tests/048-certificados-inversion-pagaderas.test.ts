@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, Page, expect, Locator, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
+import { url_cuentas_certificados, url_cuentas_certificados_inversion_pagaderas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -90,7 +91,7 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                 await page.getByRole('menuitem', {name: 'Certificados', exact: true}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados`);
+                await expect(page).toHaveURL(`${url_cuentas_certificados}`);
         
                 // El titulo de Certificados debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'CERTIFICADOS'})).toBeVisible();
@@ -112,7 +113,7 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                 await opcionInversionPagaderas.click();
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23`);
+                await expect(page).toHaveURL(`${url_cuentas_certificados_inversion_pagaderas}`);
 
                 // El tipo de captacion de Inversion Pagaderas debe estar visible
                 await expect(page.locator('#form').getByTitle('INVERSION PAGADERAS')).toBeVisible();
@@ -147,7 +148,7 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
             
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23/create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_inversion_pagaderas}create?step=1`);
             
                     // La cuenta debe ser de inversion pagaderas
                     await expect(page.locator('text=INVERSION PAGADERAS').first()).toBeVisible();
@@ -231,7 +232,7 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {            
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23/create?step=2`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_inversion_pagaderas}create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -323,7 +324,7 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 3 - Metodo de Interes', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23/create?step=3`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_inversion_pagaderas}create?step=3`);
             
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();
@@ -351,7 +352,7 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
 
 
                     // Debe regresar a la pagina de los certificados
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-4/certificados/23`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_inversion_pagaderas}`);
                 });
             };
             

@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
+import { url_reimprimir_trans_interbancaria } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -46,7 +47,7 @@ test.describe.serial('Pruebas con la Reimpresion de Solicitud de Transferencia I
         await page.getByRole('menuitem', {name: 'Reimp. Solic. Trans. Interbancaria'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reimp_solicitud_trans_interbancaria/01-2-6-4/`);
+        await expect(page).toHaveURL(`${url_reimprimir_trans_interbancaria}`);
     });
 
     test('Reimprimir la Solicitud del Socio', async () => {

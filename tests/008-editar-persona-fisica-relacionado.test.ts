@@ -2,6 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
+import { url_registro_persona } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -113,7 +114,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
         
                 // La URL deba cambiar
-                await expect(page).toHaveURL(`${url_base}/registrar_cliente/01-1-1-1/`);
+                await expect(page).toHaveURL(`${url_registro_persona}`);
             });
 
             test('Buscar la cuenta de la Persona a Editar', async () => {

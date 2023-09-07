@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosAgregarCargosPrestamoDesembolsado } from './utils/interfaces';
+import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -69,7 +70,7 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                 await page.getByRole('menuitem', {name: 'Solicitud de Crédito'}).click();
         
                 // La URL debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+                await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
         
                 // El titulo debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
@@ -90,7 +91,7 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                 await page.locator('text=DESEMBOLSADO').click();
         
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=desembolsado`);
+                await expect(page).toHaveURL(`${url_solicitud_credito}?filter=desembolsado`);
             });
         
             test('Buscar el Prestamo de un Socio', async () => {
@@ -204,7 +205,7 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                     await page.getByRole('button', {name: 'Aceptar'}).click();
             
                     // Debe regresar a la pagina de las solicitudes
-                    await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=desembolsado`);
+                    await expect(page).toHaveURL(`${url_solicitud_credito}?filter=desembolsado`);
                 });
             };
         

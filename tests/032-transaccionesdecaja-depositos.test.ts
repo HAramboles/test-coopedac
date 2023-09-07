@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
+import { url_transacciones_caja } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -80,7 +81,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                 await page.getByRole('menuitem', {name: 'Transacciones de Caja'}).click();
         
                 // La URL debe cambiar
-                await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2/`);
+                await expect(page).toHaveURL(`${url_transacciones_caja}`);
             });
 
             if (escenarios.ES_BOVEDA !== '0') {

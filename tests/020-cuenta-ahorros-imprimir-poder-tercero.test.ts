@@ -1,6 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, dataPrinter, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
+import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -85,7 +86,7 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                 await page.getByRole('menuitem', {name: 'Ahorros'}).click();
         
                 // La url debe de cambiar
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros}`);
         
                 // El titulo de ahorros debe estar visible
                 await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
@@ -107,7 +108,7 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                 await opcionAhorrosNormales.click();
         
                 // La URL debe de cambiar al elegir el tipo de captacion
-                await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                await expect(page).toHaveURL(`${url_cuentas_ahorros_normales}`);
 
                 // El tipo de captacion de ahorros normales debe estar visible
                 await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
@@ -222,7 +223,7 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                     await botonAceptar.click();
             
                     // Debe regresar al listado de las cuentas
-                    await expect(page).toHaveURL(`${url_base}/crear_cuentas/01-2-5-2/ahorros/16`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_normales}`);
                 });
             };        
         

@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig, formBuscar, dataVer, selectBuscar } from './utils/dataTests';
+import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -58,7 +59,7 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         await page.getByRole('menuitem', {name: 'Solicitud de Crédito'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
     });
 
     test('Buscar la Solicitud de Credito de la persona en Estado Cancelado', async () => {

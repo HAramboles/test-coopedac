@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_reimprimir_solicitud_cancelacion_cuentas } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -46,7 +47,7 @@ test.describe.serial('Pruebas con la Reimpresion Solicitud Cancelacion', () => {
         await page.getByRole('menuitem', {name: 'Reimprimir solicitud cancelación'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/reimprimir_solicitud_cancelacion/01-2-6-3/`);
+        await expect(page).toHaveURL(`${url_reimprimir_solicitud_cancelacion_cuentas}`);
     });
 
     test('Buscar la Solicitud de un Socio', async () => {

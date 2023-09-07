@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_solicitud_cambio_tasa_certificado } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -65,7 +66,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await page.getByRole('menuitem', {name: 'Solic. Cambio Tasa Cert.'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_cambio_tasa_cert/01-2-2-113/`);
+        await expect(page).toHaveURL(`${url_solicitud_cambio_tasa_certificado}`);
     });
 
     test('Buscar el Certificado - Financieros Pagaderas de un Socio', async () => {

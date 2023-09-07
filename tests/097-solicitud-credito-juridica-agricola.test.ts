@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataCerrar, selectBuscar, formBuscar, browserConfig, inputFechaSolicitud, inputPrimerPago } from './utils/dataTests';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -68,7 +69,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.getByRole('menuitem', {name: 'Solicitud de Crédito'}).click();
 
         // La URL debe de cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
 
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
@@ -86,7 +87,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
     test('Paso 1 - Datos del Solicitante', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=1`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=1`);
 
         // Deben estar visibles los tres titulos del primer paso
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
@@ -118,7 +119,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
     test('Paso 2 - Datos Prestamo', async () => {
         // La URL no debe cambiar
-        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=2`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=2`);
 
         // El titulo principal debe estar visible
         const tituloPrincipal = page.getByRole('heading', {name: 'Generales del Crédito'});
