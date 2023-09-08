@@ -6,6 +6,7 @@ import {
     browserConfig, 
     inputFechaSolicitud, 
     inputPrimerPago, 
+    dataEdit
 } from './utils/dataTests';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
@@ -377,6 +378,10 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // Click a la opcion de nueva garantia
         await page.locator('text=Nueva garantía').click();
 
+        // Debe salir un modal par agregar la garantia
+        const modalAgregarGarantia = page.locator('text=GARANTÍAS');
+        await expect(modalAgregarGarantia).toBeVisible();
+
         // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
         await page.getByRole('combobox').click();
         await page.getByText('HIPOTECA', {exact: true}).click();
@@ -428,8 +433,38 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // Debe aparecer una alerta de que la garantia se guardo correctamente
         await expect(page.locator('text=Garantías del préstamo guardadas exitosamente.')).toBeVisible();
 
+        // El modal de agregar garantia debe desaparecer
+        await expect(modalAgregarGarantia).not.toBeVisible();
+
         // Editar la garantia agregada
         
+        // Click al boton de editar
+        const botonEditar = page.locator(`${dataEdit}`);
+        await expect(botonEditar).toBeVisible();
+        await botonEditar.click();
+
+        // El modal de agregar garantia aparece nuevamente
+        await expect(modalAgregarGarantia).toBeVisible();
+
+        // Editar el valor tasado
+        await valorTasado.click();
+        await valorTasado.clear();
+        await valorTasado.fill('RD$ 63000');
+
+        // Editar la matricula
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(3).click();
+        await page.getByPlaceholder('VALOR ATRIBUTO').fill('3840');
+
+        // Click al boton de Actualizar
+        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+        await expect(botonActualizar).toBeVisible();
+        await botonActualizar.click();
+
+        // El modal de agregar garantia debe desaparecer nuevamente
+        await expect(modalAgregarGarantia).not.toBeVisible();
+
+        // Solo debe mostrarse una garantia
+        await expect(page.getByRole('cell', {name: 'HIPOTECA'})).toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();

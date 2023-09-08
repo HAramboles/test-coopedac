@@ -203,6 +203,19 @@ const EscenariosReimpresionResolucionAprobatoria: ReimpresionResolucionAprobator
     }
 ];
 
+interface VerProcentajeCobros {
+    VER_PORC_COBRO: 'N' | 'S'
+};
+
+const EscenariosVerProcentajeCobros: VerProcentajeCobros[] = [
+    {
+        VER_PORC_COBRO: 'N'
+    },
+    {
+        VER_PORC_COBRO: 'S'
+    }
+];
+
 export {
     EscenariosPruebaCrearPersonas,
     EscenariosPruebaEditarPersonas,
@@ -214,5 +227,6 @@ export {
     EscenariosPruebasCajaBoveda,
     EscenariosPruebasAgregarEliminarPignoracion,
     EscenariosAgregarCargosPrestamoDesembolsado,
-    EscenariosReimpresionResolucionAprobatoria
+    EscenariosReimpresionResolucionAprobatoria,
+    EscenariosVerProcentajeCobros
 };

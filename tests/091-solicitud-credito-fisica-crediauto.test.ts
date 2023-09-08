@@ -245,6 +245,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(seccionAbonosProgramados).toBeVisible();
         await seccionAbonosProgramados.click();
 
+        // Mensaje de informacion de Abonos Programados
+        await expect(page.locator('text=Al agregar pagos extraordinarios a la solicitud la cuota podría variar')).toBeVisible();
+
         // Tipo de Abono
         await expect(page.locator('text=Recurrente')).toBeVisible();
         const abonoParcial = page.locator('text=Parcial');

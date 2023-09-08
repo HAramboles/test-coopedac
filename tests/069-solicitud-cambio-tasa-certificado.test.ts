@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, dataEdit } from './utils/dataTests';
 import { url_solicitud_cambio_tasa_certificado } from './utils/urls';
 
 // Variables globales
@@ -209,7 +209,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
 
     test('Editar el Certificado - Financieros Pagaderas ya agergado', async () => {
         // Editar el primer certificado agregado, el de Financieros Pagaderas
-        await page.getByRole('row', {name: 'FINANCIEROS PAGADERAS'}).locator('[data-icon="edit"]').click();
+        await page.getByRole('row', {name: 'FINANCIEROS PAGADERAS'}).locator(`${dataEdit}`).click();
 
         // Los datos se deben agregar a los campos de la solicitud
 

@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig, dataCheck, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, dataCheck, fechaInicio, fechaFinal, dataEdit } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 import { url_registro_persona } from './utils/urls';
@@ -533,7 +533,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
 
                 test('Editar la direccion agregada', async () => {
                     // Hacer click al icono de editar
-                    const botonEditar = page.locator('[data-icon="edit"]');
+                    const botonEditar = page.locator(`${dataEdit}`);
                     await expect(botonEditar).toBeVisible();
                     await botonEditar.click();
 

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, selectBuscar, dataGuardar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, dataGuardar, browserConfig, dataEdit } from './utils/dataTests';
 import { url_tabla_amortizacion } from './utils/urls';
 
 // Variables globales
@@ -270,7 +270,7 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
         await expect(page.getByRole('row', {name: `2 ${formatDate(mes2)} 200.00 edit delete`})).toBeVisible();
 
         // Boton Editar
-        const botonEditar = page.locator('[data-icon="edit"]').first();
+        const botonEditar = page.locator(`${dataEdit}`).first();
         await expect(botonEditar).toBeVisible();
         // Click al boton
         await botonEditar.click();

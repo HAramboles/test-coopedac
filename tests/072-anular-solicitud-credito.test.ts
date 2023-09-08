@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, formBuscar, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, formBuscar, ariaCerrar, browserConfig, inputFechaSolicitud, inputPrimerPago } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
+import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -121,7 +122,8 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=2`);
 
         // El titulo principal debe estar visible
-        await expect(page.getByRole('heading', {name: 'Generales del Crédito'})).toBeVisible();
+        const tituloPrincipal = page.getByRole('heading', {name: 'Generales del Crédito'});
+        await expect(tituloPrincipal).toBeVisible();
 
         // Tipo de credito
         await page.getByLabel('Tipo Crédito').click();
@@ -143,6 +145,40 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.getByLabel('Grupo').fill('sin gara');
         // Elegir grupo sin garantia
         await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
+
+        // Fecha Solicitud debe ser el dia actual
+        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${formatDate(new Date())}`);
+
+        // Fecha Primer Pago debe ser 31 dias despues de la fecha de solicitud
+        await expect(page.locator(`${inputPrimerPago}`)).toHaveValue(`${unMesDespues}`);
+
+        // Colocar el dia siguiente como fecha solicitud
+        await page.locator(`${inputFechaSolicitud}`).clear();
+        await page.locator(`${inputFechaSolicitud}`).fill(`${diaSiguiente}`);
+
+        // Click fuera del input
+        await tituloPrincipal.click();
+
+        // Debe aparecer un mensaje de error
+        await expect(page.locator('#loan_form_FECHA_APERTURA_help').getByText('Rango de Fecha inválido.')).toBeVisible();
+
+        // Colocar la fecha de solicitud correcta
+        await page.locator(`${inputFechaSolicitud}`).clear();
+        await page.locator(`${inputFechaSolicitud}`).fill(`${formatDate(new Date())}`);
+
+        // Colocar en la fecha de primer pago una fecha anterior a la de solicitud
+        await page.locator(`${inputPrimerPago}`).clear();
+        await page.locator(`${inputPrimerPago}`).fill(`${diaAnterior}`);
+
+        // Click fuera del input
+        await tituloPrincipal.click();
+
+        // Debe aparecer un mensaje de error
+        await expect(page.locator('#loan_form_DIA_PAGO_help').getByText('Rango de Fecha inválido.')).toBeVisible();
+
+        // Colocar la fecha de primer pago correcta
+        await page.locator(`${inputPrimerPago}`).clear();
+        await page.locator(`${inputPrimerPago}`).fill(`${unMesDespues}`);
 
         // tipo de cuota
         await expect(page.getByText('INSOLUTO')).toBeVisible();
@@ -174,14 +210,6 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Seleccionar la cuenta de ahorros
         await page.getByText('AHORROS NORMALES').click();
 
-        // Agregar un cuenta para cobrar
-        await page.locator(`${selectBuscar}`).last().click();
-        // La cuenta de aportaciones no debe estar visible
-        await expect(page.locator('span').filter({hasText: 'APORTACIONES'})).not.toBeVisible(); 
-        
-        // Seleccionar la cueta de ahorros
-        await page.getByText('AHORROS NORMALES').last().click();
-
         // Finalidad
         await page.getByLabel('Finalidad').click();
         // Elegir consumo
@@ -198,6 +226,24 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Via desembolso
         await expect(page.getByText('Vía Desembolso')).toBeVisible();
+
+        // Seccion Cuentas de Cobros
+        await expect(page.locator('text=Cuentas de cobro')).toBeVisible();
+        
+        // Agregar una cuenta de Cobro
+        await page.locator(`${selectBuscar}`).last().click();
+
+        // Seleccionar la cuenta de ahorros
+        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
+
+        // Click al boton de Agregar Cuenta
+        const botonAgregarCuenta = page.getByRole('button', {name: 'Agregar cuenta'});
+        await expect(botonAgregarCuenta).toBeVisible();
+        await botonAgregarCuenta.click();
+
+        // Se deben agregar los datos a la tabla de las cuentas
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Click en guardar y continuar
         GuardaryContinuar();
@@ -285,14 +331,23 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // El titulo principal debe esatr visible
         await expect(page.getByRole('heading', {name: 'Lista de documentos'})).toBeVisible();
         
-        // Subir Cedula Deudor
-        const subirCartaTrabajoPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('row', {name: '1 CEDULA DEUDOR upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
-        const subirCartaTrabajo = await subirCartaTrabajoPromesa;
-        await subirCartaTrabajo.setFiles(`${firma}`);
+        // Subir Cedula del Deudor
+        const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');
+        await page.getByRole('button', {name: 'upload Cargar'}).first().click();
+        const subirCedulaDeudor = await subirCedulaDeudorPromesa;
+        await subirCedulaDeudor.setFiles(`${firma}`);
 
-        // Esperar que la Cedula del Deudor se haya subido
-        await expect(page.locator('(//div[@class="ant-upload-list-item ant-upload-list-item-done"])')).toBeVisible();
+        // Esperar que la Cedula se haya subido
+        await expect(page.getByRole('link', {name: 'CEDULA DEUDOR'})).toBeVisible();
+
+        // Click en la firma de la Cedula deudor para visualizar
+        await page.getByRole('link', {name: 'CEDULA DEUDOR'}).click();
+
+        // Aprece un modal con la imagen de la firma
+        await expect(page.getByRole('dialog', {name: 'CEDULA DEUDOR'})).toBeVisible();
+
+        // Cerrar la imagen de la firma
+        await page.locator(`${dataCerrar}`).click();
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
@@ -350,6 +405,33 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Aparece una alerta de que la solicitud fue anulada
         await expect(page.locator('text=Prestamo actualizado exitosamente')).toBeVisible();
+    });
+
+    test('Al crear una nueva Solicitud no debe tener los datos de la persona de la Solicitud Anulada', async () => {
+        // El listado de las solicitudes debe ser solicitado
+        await expect(page.locator('text=SOLICITADO')).toBeVisible();
+
+        // Boton Nueva Solicitud
+        const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
+        await expect(botonNuevaSolicitud).toBeVisible();
+        await botonNuevaSolicitud.click();
+
+        // La URL debe cambiar
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=1`);
+
+        // Deben estar visibles los tres titulos del primer paso
+        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // El input de Buscar Socio debe estar vacio
+        await expect(page.locator(`${selectBuscar}`)).toHaveValue('');
+
+        // Click al boton de Cancelar
+        await page.getByRole('button', {name: 'Cancelar'}).click();
+
+        // La url debe regresar a las solicitudes solicitadas
+        await expect(page).toHaveURL(`${url_solicitud_credito}/?filter=solicitado`);
     });
 
     test.afterAll(async () => { // Despues de las pruebas
