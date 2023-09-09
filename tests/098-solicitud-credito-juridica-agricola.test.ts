@@ -288,14 +288,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
         // Colocar un monto en el campo de Total Ingresos
         await page.getByText('RD$ 0.00').first().click();
-        await page.getByPlaceholder('MONTO').fill('RD$ 5,0000');
+        await page.getByPlaceholder('MONTO').fill('RD$ 5,00000');
 
         // Click fuera del input
         await page.getByText('TOTAL INGRESOS').click();
 
         // Colocar un monto en el campo de Total Gastos
         await page.getByText('RD$ 0.00').click();
-        await page.getByPlaceholder('MONTO').fill('RD$ 1,5000');
+        await page.getByPlaceholder('MONTO').fill('RD$ 1,50000');
 
         // Click fuera del input
         await page.getByText('TOTAL INGRESOS').click();
@@ -335,7 +335,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.locator(`${formBuscar}`).fill(`${nombrePersona} ${apellidoPersona}`);
 
         // Click a la opcion de la persona buscada
-        await page.getByText(`${nombrePersona} ${apellidoPersona}`).first(  ).click();
+        await page.getByText(`${nombrePersona} ${apellidoPersona}`).first().click();
 
         // Se abre un modal colocar el tipo de relacion
         await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
@@ -403,7 +403,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         // Los tres titulos deben estar visibles
         await expect(page.getByRole('heading', {name: 'Familiares mas Cercanos'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Referencias Morales o Personales'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'Referencias Comerciales'})).toBeVisible();
+        const tituloReferenciasComerciales = page.getByRole('heading', {name: 'Referencias Comerciales'});
+        await expect(tituloReferenciasComerciales).toBeVisible();
+
+        // Click al titulo de Referencias Comerciales
+        await tituloReferenciasComerciales.click();
+
+        // Se muestra la persona agregada como codeudor
+        await expect(page.getByRole('cell', {name: `${nombrePersona} ${apellidoPersona}`})).toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();
