@@ -42,5 +42,5 @@ const browserSecondScreen = ['--window-position=-1400,100'];
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserSecondScreen,
+    args: browserOneScreen,
 };
