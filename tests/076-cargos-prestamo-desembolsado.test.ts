@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, ariaAgregar } from './utils/dataTests';
 import { EscenariosAgregarCargosPrestamoDesembolsado } from './utils/interfaces';
 import { url_solicitud_credito } from './utils/urls';
 
@@ -120,7 +120,7 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                     await seccionCargos.click();
 
                     // Boton de agregar cargos 
-                    const agregarCuota = page.locator('[aria-label="plus"]');
+                    const agregarCuota = page.locator(`${ariaAgregar}`);
                     await expect(agregarCuota).toBeDisabled();
                 });
 
@@ -136,7 +136,7 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                     await expect(page.locator('h1').filter({hasText: 'CARGOS'})).toBeVisible();
                     
                     // Boton de agregar cargos 
-                    const agregarCuota = page.locator('[aria-label="plus"]');
+                    const agregarCuota = page.locator(`${ariaAgregar}`);
                     await expect(agregarCuota).toBeVisible();
                     await agregarCuota.click();
                 

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, userCorrecto, formBuscar, dataCheck } from './utils/dataTests';
+import { url_base, browserConfig, userCorrecto, formBuscar, dataCheck, ariaCancelar, formComentario } from './utils/dataTests';
 import { url_recepcion_transferencia_boveda } from './utils/urls';
 
 // Variables Globales
@@ -45,7 +45,7 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
         await expect(page).toHaveURL(`${url_recepcion_transferencia_boveda}`);
     });
 
-    test('Confirmar la Transferencia a Boveda', async () => {
+    test('Confirmar la Transferencia a Boveda del millon de pesos', async () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'RECEPCIÓN TRANSFERENCIA BÓVEDA'})).toBeVisible();
 
@@ -56,10 +56,10 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
         await expect(page.getByRole('row', {name: `${userCorrecto}`})).toBeVisible();
 
         // Se debe mostrar el monto de la transferencia
-        // await expect(page.getByRole('cell', {name: '?'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '1,000,000.00'})).toBeVisible();
 
         // Click al boton de Confirmar Transferencia
-        await page.locator(`${dataCheck}`).click();
+        await page.locator(`${dataCheck}`).first().click();
 
         // Debe mostrarse un mensaje modal de Confirmacion
         await expect(page.locator('text=¿Está seguro que desea confirmar transferencia?')).toBeVisible();
@@ -72,6 +72,38 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
 
         // Cerrar la ventana
         await page1.close();
+    });
+
+    test('Cancelar la Transferencia a Boveda de mil pesos', async () => {
+        // Debe mostrarse la transferencia realizada por la caja buscada
+        await expect(page.getByRole('row', {name: `${userCorrecto}`})).toBeVisible();
+
+        // Se debe mostrar el monto de la transferencia
+        await expect(page.getByRole('cell', {name: '1,000.00'})).toBeVisible();
+
+        // Click al boton de Confirmar Transferencia
+        await page.locator(`${ariaCancelar}`).click();
+
+        // Aparece un modal para colocar la razon de la cancelacion de la transferencia
+        await expect(page.locator('text=ANULAR TRANSFERENCIA')).toBeVisible();
+
+        // Debe mostrarse un mensaje modal de Confirmacion
+        await expect(page.locator('text=¿Está seguro que desea confirmar transferencia?')).toBeVisible();
+
+        // Colocar una razon de la cancelacion en el input de comentario
+        await page.locator(`${formComentario}`).fill('Cancelar la Transferencia a Boveda');
+
+        // Click al boton de Aceptar del mensaje modal
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // Se abre una nueva ventana con el Reporte de la Recepcion Transferencia a Boveda
+        const page1 = await context.waitForEvent('page');
+
+        // Cerrar la ventana
+        await page1.close();
+        
+        // Debe regresar a la pagina y debe aparecer una alerta
+        await expect(page.locator('text=Transferencia Anulada Exitosamente')).toBeVisible();
     });
     
     test.afterAll(async () => { // Despues de las pruebas

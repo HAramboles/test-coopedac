@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, formBuscar, dataCerrar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, formBuscar, dataCerrar, browserConfig, formComentario } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
 
@@ -166,7 +166,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     await expect(page.getByText('Esta transacción genera un RTE')).toBeVisible();
             
                     // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Deposito de dos millones de pesos a la cuenta de Ahorros');
+                    await page.locator(`${formComentario}`).fill('Deposito de dos millones de pesos a la cuenta de Ahorros');
             
                     // Boton Aplicar
                     await page.locator('text=Aplicar').click();

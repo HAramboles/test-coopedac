@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { dosMesDespues } from './utils/fechas';
-import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { url_solicitud_reprogramacion } from './utils/urls';
 
 // Variables globales
@@ -158,7 +158,7 @@ test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes P
         await expect(page.getByText('Diferencia de interes por cambio de fecha es:')).toBeVisible();
                     
         // Razones
-        await page.locator('#form_COMENTARIOS').fill('Necesita mas tiempo para los pagos');
+        await page.locator(`${formComentario}`).fill('Necesita mas tiempo para los pagos');
 
         // Boton de Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});

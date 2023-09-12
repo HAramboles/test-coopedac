@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar, selectBuscar, formBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { diaSiguiente, formatDate } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
@@ -164,7 +164,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await campoMonto.fill('1500');
             
                     // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Deposito de 1500 a la cuenta de Orden de Pago');
+                    await page.locator(`${formComentario}`).fill('Deposito de 1500 a la cuenta de Orden de Pago');
             
                     // Boton Aplicar
                     await page.locator('text=Aplicar').click();
@@ -326,7 +326,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await page.getByText('Titular es Portador').click();
             
                     // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Orden de Pago de 100 pesos');
+                    await page.locator(`${formComentario}`).fill('Orden de Pago de 100 pesos');
             
                     // Boton Aplicar
                     await page.locator('text=Aplicar').click();

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, ariaCerrar, browserConfig, inputDiaPago } from './utils/dataTests';
+import { url_base, selectBuscar, ariaCerrar, browserConfig, inputDiaPago, formComentario } from './utils/dataTests';
 import { url_cobros_oficina } from './utils/urls';
 
 // Variables globales
@@ -153,7 +153,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.getByText('Saldo total').click();
 
         // Agregar un comnetario
-        await page.locator('#form_COMENTARIO').fill('Saldar el Prestamo');
+        await page.locator(`${formComentario}`).fill('Saldar el Prestamo');
     });
 
     test('Cobrar de Cuenta', async () => {

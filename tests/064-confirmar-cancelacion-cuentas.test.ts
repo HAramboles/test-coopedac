@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from "@playwright/test";
-import { url_base, ariaCerrar, formBuscar, browserConfig, dataCheck } from "./utils/dataTests";
+import { url_base, ariaCerrar, formBuscar, browserConfig, dataCheck, formComentario } from "./utils/dataTests";
 import { url_confirmar_cancelacion_cuentas } from './utils/urls';
 
 // Variables globales
@@ -98,7 +98,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         await expect(page.getByText('OTRAS RAZONES')).toBeVisible();
 
         // Comentario
-        await page.locator('#form_COMENTARIO').fill('Confirmar la Cancelacion de la cuenta de Orden de Pago');
+        await page.locator(`${formComentario}`).fill('Confirmar la Cancelacion de la cuenta de Orden de Pago');
     });
 
     test('Cancelar la Cuenta', async () => {

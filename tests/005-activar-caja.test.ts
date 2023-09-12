@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, ariaAgregar } from './utils/dataTests';
 import { url_activar_caja } from './utils/urls';
 
 /* Variables globales */
@@ -50,7 +50,7 @@ test.describe.serial('Pruebas con Activar Caja', async () => {
 
     test('Activar Nueva Caja', async () => {
         // Boton Activar Caja
-        const activarCaja = page.locator('[aria-label="plus"]');
+        const activarCaja = page.locator(`${ariaAgregar}`);
         await expect(activarCaja).toBeVisible();
 
         // Click al boton de Activar Caja

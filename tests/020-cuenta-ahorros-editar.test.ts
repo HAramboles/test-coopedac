@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, formBuscar, selectBuscar, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, selectBuscar, ariaCerrar, browserConfig, dataEliminar } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
 
@@ -185,7 +185,7 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await expect(firmaSubida).toBeVisible();
 
                     // Eliminar la firma que tiene la cuenta
-                    await page.locator('[data-icon="delete"]').click();
+                    await page.locator(`${dataEliminar}`).click();
 
                     // La firma no debe estar visible
                     await expect(firmaSubida).not.toBeVisible();

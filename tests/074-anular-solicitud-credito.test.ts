@@ -146,6 +146,88 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Elegir grupo sin garantia
         await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
+        // tipo de cuota
+        await expect(page.getByText('INSOLUTO')).toBeVisible();
+
+        // Monto
+        await page.locator('#loan_form_MONTO').click();
+        await page.locator('#loan_form_MONTO').fill('10000');
+
+        // Plazo
+        await page.getByPlaceholder('CANTIDAD').click();
+        await page.getByPlaceholder('CANTIDAD').fill('12');
+
+        // Los plazos deben ser mensuales
+        await expect(page.locator('text=MENSUAL')).toBeVisible();
+
+        // Agregar una cuenta del socio para desembolsar
+        await page.locator(`${selectBuscar}`).first().click();
+        // La cuenta de aportaciones no debe estar visible
+        await expect(page.locator('span').filter({hasText: 'APORTACIONES'})).not.toBeVisible(); 
+
+        // Seleccionar la cuenta de ahorros
+        await page.getByText('AHORROS NORMALES').click();
+
+        // Finalidad
+        await page.getByLabel('Finalidad').click();
+        // Elegir consumo
+        await page.getByRole('option', { name: 'CONSUMO' }).click();
+
+        // Destino o proposito
+        await page.getByPlaceholder('Destino o propósito').click();
+        await page.getByPlaceholder('Destino o propósito').fill('Asuntos Personales');
+
+        // Via desembolso
+        await expect(page.getByText('Vía Desembolso')).toBeVisible();
+
+        // Seccion Cuentas de Cobros
+        await expect(page.locator('text=Cuentas de cobro')).toBeVisible();
+        
+        // Agregar una cuenta de Cobro
+        await page.locator(`${selectBuscar}`).last().click();
+
+        // Seleccionar la cuenta de ahorros
+        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
+
+        // Click al boton de Agregar Cuenta
+        const botonAgregarCuenta = page.getByRole('button', {name: 'Agregar cuenta'});
+        await expect(botonAgregarCuenta).toBeVisible();
+        await botonAgregarCuenta.click();
+
+        // Se deben agregar los datos a la tabla de las cuentas
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+    });
+
+    test('Paso 2 - Datos Prestamo - Cambiar de Oferta', async () => {
+        // La URL no debe cambiar
+        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=2`);
+
+        // El titulo principal debe estar visible
+        const tituloPrincipal = page.getByRole('heading', {name: 'Generales del Crédito'});
+        await expect(tituloPrincipal).toBeVisible();
+
+        // Tipo de credito
+        await page.getByLabel('Tipo Crédito').click();
+        // Click a credito hipotecario
+        await page.getByText('CONSUMO').click();
+
+        // Tipo de garantia
+        await page.getByLabel('Tipo Garantía').click();
+        // Click en garantia hipotecaria
+        await page.getByText('AHORROS', {exact: true}).click();
+
+        // Oferta
+        await page.getByLabel('Oferta').click();
+        // Elegir credito hipotecaria
+        await page.getByText('CRÉDITO GERENCIAL / AHORROS').click();
+
+        // Grupo
+        await page.getByLabel('Grupo').click();
+        await page.getByLabel('Grupo').fill('sin gara');
+        // Elegir grupo sin garantia
+        await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
+
         // Fecha Solicitud debe ser el dia actual
         await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${formatDate(new Date())}`);
 
@@ -202,6 +284,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Los plazos deben ser mensuales
         await expect(page.locator('text=MENSUAL')).toBeVisible();
 
+        // La cuenta de desembolso debe estar vacia
+        await expect(page.locator(`${selectBuscar}`).first()).toHaveValue('');
+
         // Agregar una cuenta del socio para desembolsar
         await page.locator(`${selectBuscar}`).first().click();
         // La cuenta de aportaciones no debe estar visible
@@ -229,6 +314,10 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Seccion Cuentas de Cobros
         await expect(page.locator('text=Cuentas de cobro')).toBeVisible();
+
+        // La cuenta de cobro debe desaparecer al cambiar la oferta
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).not.toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).not.toBeVisible();
         
         // Agregar una cuenta de Cobro
         await page.locator(`${selectBuscar}`).last().click();

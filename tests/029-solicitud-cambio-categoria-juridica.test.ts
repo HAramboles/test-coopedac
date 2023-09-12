@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { url_solicitud_cambio_categoria } from './utils/urls';
 
 // Variables globales
@@ -89,7 +89,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
         await expect(montoAdmision).toHaveValue('RD$ 24,500');
 
         // Comentario
-        await page.locator('#form_COMENTARIO').fill('CAMBIO DE SOCIO AHORRANTE A SOCIO EMPRESARIAL');
+        await page.locator(`${formComentario}`).fill('CAMBIO DE SOCIO AHORRANTE A SOCIO EMPRESARIAL');
 
         // Click en Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});

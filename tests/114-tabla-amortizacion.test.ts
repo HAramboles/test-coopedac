@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, selectBuscar, dataGuardar, browserConfig, dataEdit } from './utils/dataTests';
+import { url_base, selectBuscar, dataGuardar, browserConfig, dataEdit, dataEliminar } from './utils/dataTests';
 import { url_tabla_amortizacion } from './utils/urls';
 
 // Variables globales
@@ -208,7 +208,7 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
 
     test('Eliminar el seguro de la Tabla de Amortizacion', async () => {
         // Boton eliminar
-        const botonEliminar = page.locator('[data-icon="delete"]');
+        const botonEliminar = page.locator(`${dataEliminar}`);
         await expect(botonEliminar).toBeVisible();
         await botonEliminar.click();
 

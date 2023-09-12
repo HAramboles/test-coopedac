@@ -88,6 +88,29 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         await page.locator(`${ariaCerrar}`).click();
     });
 
+    test('Transferir otro Monto a Boveda', async () => {
+        // Transferir mil pesos desde la caja a la boveda
+        const cant1000 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[2]'); // Campo de RD 1000
+
+        // Cantidad = 1 de 1000
+        await cant1000.click();
+        await cant1000.fill('1');
+
+        // Boton Guardar
+        const botonGuardar =  page.getByRole('button', {name: 'Guardar'});
+        await expect(botonGuardar).toBeVisible();
+        await botonGuardar.click();
+
+        // Esperar que se abra una nueva ventana
+        const page1 = await context.waitForEvent('page');
+
+        // Cerrar la ventana
+        await page1.close();
+
+        // Debe regresar a la pagina y debe aparecer un mensaje
+        await expect(page.locator('text=Transacción caja almacenada exitosamente.')).toBeVisible();
+    });
+
     test.afterAll(async () => {
         // Cerrar el context
         await context.close();

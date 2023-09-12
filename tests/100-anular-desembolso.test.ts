@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, formBuscar } from './utils/dataTests';
+import { url_base, browserConfig, formBuscar, ariaCancelar } from './utils/dataTests';
 import { url_anular_desembolso } from './utils/urls';
 
 // Variables Globales
@@ -48,7 +48,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await expect(page).toHaveURL(`${url_anular_desembolso}`);
     });
 
-    test('Anular el Desembolso de la Solcitud Flexi Prox', async () => {
+    test('Anular el Desembolso de la Solicitud de Credito Agricola de la Persona Juridica', async () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'ANULACIÓN DE DESEMBOLSO'})).toBeVisible();
 
@@ -60,7 +60,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await expect(solicitudDesembolsadaEmpresa).toBeVisible();
 
         // Click al boton de Anular Desembolso
-        await solicitudDesembolsadaEmpresa.locator('[aria-label="stop"]').click();
+        await solicitudDesembolsadaEmpresa.locator(`${ariaCancelar}`).click();
 
         //
     });

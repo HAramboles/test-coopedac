@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
 
@@ -166,7 +166,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await campoMonto.fill('2000');
             
                     // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Deposito de 2000 pesos a la cuenta de Aportaciones');
+                    await page.locator(`${formComentario}`).fill('Deposito de 2000 pesos a la cuenta de Aportaciones');
             
                     // Boton Agregar
                     await page.locator('text=Agregar').click();
@@ -199,7 +199,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await campoMonto.fill('100100');
             
                     // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Deposito de 100100 pesos a la cuenta de Ahorros');
+                    await page.locator(`${formComentario}`).fill('Deposito de 100100 pesos a la cuenta de Ahorros');
             
                     // Boton Agregar
                     await page.locator('text=Agregar').click();

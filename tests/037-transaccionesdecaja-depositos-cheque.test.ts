@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, dataGuardar, dataCerrar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, dataGuardar, dataCerrar, browserConfig, formComentario } from './utils/dataTests';
 import { diaAnterior } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
@@ -164,7 +164,7 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                     await campoMonto.fill('1000');
             
                     // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Deposito de un cheque de 1000 pesos a la cuenta de Ahorros');
+                    await page.locator(`${formComentario}`).fill('Deposito de un cheque de 1000 pesos a la cuenta de Ahorros');
             
                     // Boton Aplicar
                     await page.locator('text=Aplicar').click();

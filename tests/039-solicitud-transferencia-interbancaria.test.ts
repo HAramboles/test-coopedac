@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { url_solicitud_transferencia_interbancaria } from './utils/urls';
 
 // Variables globales
@@ -114,7 +114,7 @@ test.describe.serial('Pruebas con la Solicitud de Transferencia Interbancaria', 
         await page.getByRole('option', {name: `${nombre} ${apellido}`}).click();
     
         // Agregar un comentario (Opcional)
-        const campoComentario = page.locator('#form_COMENTARIO');
+        const campoComentario = page.locator(`${formComentario}`);
         await expect(campoComentario).toBeVisible();
         await campoComentario?.fill('Transferencia Bancaria');
     

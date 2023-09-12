@@ -21,9 +21,12 @@ export const dataEliminar:string = '[data-icon="delete"]';
 export const dataEdit:string = '[data-icon="edit"]';
 
 export const ariaCerrar:string = '[aria-label="close"]';
+export const ariaCancelar:string = '[aria-label="stop"]';
+export const ariaAgregar:string = '[aria-label="plus"]';
 
 export const formBuscar:string = '#form_search';
 export const selectBuscar:string = '#select-search';
+export const formComentario:string = '#form_COMENTARIO';   
 
 export const fechaInicio = '#form_FECHA_INICIAL';
 export const fechaFinal = '#form_FECHA_FINAL';
@@ -42,5 +45,5 @@ const browserSecondScreen = ['--window-position=-1400,100'];
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserOneScreen,
+    args: browserSecondScreen
 };

@@ -240,6 +240,92 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
                     await newPage.close();
                 });
 
+                test('Realizar otro Pago al Prestamo', async () => {
+                    // Boton de Pagos
+                    const botonPagos = page.getByRole('button', {name: 'Pagos'});
+                    await expect(botonPagos).toBeVisible();
+
+                    // Click al boton de Pagos
+                    await botonPagos.click();
+
+                    // Debe aparecer el modal de pagos
+                    const modalPagos = page.locator('h1').filter({hasText: 'PAGO A PRÉSTAMO'});
+                    await expect(modalPagos).toBeVisible();
+
+                    // Seccion Datos Generales
+                    await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
+
+                    // Socio
+                    // await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
+                    await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue('JADE JOHNSON');
+
+                    // Prestamo
+                    await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO GERENCIAL / AHORROS');
+
+                    // Seccion Opciones de Pago
+                    await expect(page.locator('h1').filter({hasText: 'OPCIONES DE PAGO'})).toBeVisible();
+
+                    // Colocar un monto en Abono a Capital
+                    const inputAbonoCapital = page.locator('#form_MONTO_ABONO_CAPITAL');
+                    await inputAbonoCapital.fill('5000');
+
+                    // Debe colocarse el monto en el campo de Abono a Capital
+                    await expect(inputAbonoCapital).toHaveValue('RD$ 5,000');
+
+                    // Click al boton de Aplicar
+                    const botonAplicar = page.locator('button').filter({hasText: 'Aplicar'});
+                    await expect(botonAplicar).toBeVisible();
+                    await botonAplicar.click();
+                });
+
+                test('Realizar la distribucion del segundo Pago al Prestamo', async () => {
+                    // Se abre un modal para la distribucion de ingresos
+                    const modalDistribucion = page.locator('h1').filter({hasText: 'DISTRIBUCIÓN DE INGRESOS'});
+                    await expect(modalDistribucion).toBeVisible();
+
+                    // El modal debe contener 4 titulos y todos deben estar visibles
+                    await expect(page.locator('h1').filter({hasText: 'RECIBIDO'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'DETALLE DISTRIBUCIÓN'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
+
+                    // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
+                    const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
+                    await expect(iconoAlerta).toBeVisible();
+
+                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 5000
+                    const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
+
+                    // Cantidad = 100 de 1000
+                    await cant1000.click();
+                    await cant1000.fill('5');
+
+                    // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
+                    await expect(iconoAlerta).not.toBeVisible();
+            
+                    // Iconos check verdes
+                    const iconoVerde1 = page.getByRole('img', {name: 'check-circle'}).first();
+                    const iconoVerde2 = page.getByRole('img', {name: 'check-circle'}).last();
+            
+                    // Los dos checks verdes deben salir al hacer bien la distribucion
+                    await expect(iconoVerde1).toBeVisible();
+                    await expect(iconoVerde2).toBeVisible();
+            
+                    // Hacer click al boton de Aceptar
+                    const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
+            
+                    // Se abrira una nueva pagina con el reporte del pago al prestamo
+                    const [newPage] = await Promise.all([
+                        context.waitForEvent('page'),
+                        // Click al boton de Finalizar
+                        await expect(botonAceptar).toBeVisible(),
+                        await botonAceptar.click()
+                    ]);
+                    
+                    // La pagina abierta con el reporte del pago al prestamo
+                    await newPage.close();
+                })
+
                 test('Liberar la Sesion', async () => {
                     // Click al boton de Liberar Sesion
                     const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});

@@ -203,20 +203,6 @@ const EscenariosReimpresionResolucionAprobatoria: ReimpresionResolucionAprobator
     }
 ];
 
-// Interfaz para la Reversion de Pago a Prestamo
-interface ReversarPagoPrestamo {
-    PERMITE_REVERSION: 'N' | 'S'
-};
-
-const EscenariosReversarPagoPrestamo: ReversarPagoPrestamo[] = [
-    {
-        PERMITE_REVERSION: 'N'
-    }, 
-    {
-        PERMITE_REVERSION: 'S'
-    }
-];
-
 // Interfaz para Ver el Porcentaje de Cuentas de Cobros en Solicitud de Credito
 interface VerProcentajeCobros {
     VER_PORC_COBRO: 'N' | 'S'
@@ -243,6 +229,5 @@ export {
     EscenariosPruebasAgregarEliminarPignoracion,
     EscenariosAgregarCargosPrestamoDesembolsado,
     EscenariosReimpresionResolucionAprobatoria,
-    EscenariosReversarPagoPrestamo,
     EscenariosVerProcentajeCobros
 };

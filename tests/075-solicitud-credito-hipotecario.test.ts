@@ -6,7 +6,8 @@ import {
     browserConfig, 
     inputFechaSolicitud, 
     inputPrimerPago, 
-    dataEdit
+    dataEdit,
+    ariaAgregar
 } from './utils/dataTests';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
@@ -300,7 +301,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.getByRole('button', {name: 'Guardar Cargos', }).click();
 
         // Boton de agregar cargos 
-        const agregarCuota = page.locator('[aria-label="plus"]');
+        const agregarCuota = page.locator(`${ariaAgregar}`);
         await expect(agregarCuota).toBeVisible();
         await agregarCuota.click();
     

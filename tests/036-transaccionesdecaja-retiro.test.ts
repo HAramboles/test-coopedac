@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
 
@@ -174,7 +174,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     await campoMonto.fill('100');
             
                     // Agregar un comentario
-                    await page.locator('#form_COMENTARIO').fill('Retiro de 100 pesos de la cuenta de Ahorros');
+                    await page.locator(`${formComentario}`).fill('Retiro de 100 pesos de la cuenta de Ahorros');
             
                     // Boton Agregar
                     await page.locator('text=Agregar').click();

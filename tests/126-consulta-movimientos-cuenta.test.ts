@@ -340,6 +340,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // El balance final debe ser 0, ya que la cuenta esta cancelada
         await expect(page.getByRole('row', { name: 'Balance Final : 0.00' })).toBeVisible();
+
+        // Interes generado no pagado
+        await expect(page.getByRole('row', {name: 'Interes Generado no Pagado: RD$ 0'})).toBeVisible();
     });
 
     test('Cuenta de Certificados - Financieros Reinvertidas del Socio', async () => {
@@ -383,6 +386,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Balance Final
         await expect(page.getByRole('row', { name: 'Balance Final : 50.00' })).toBeVisible();
+
+        // Interes generado no pagado
+        await expect(page.getByRole('row', {name: 'Interes Generado no Pagado: RD$ 0'})).toBeVisible();
     });
 
     test('Cuenta de Certificados - Inversion Pagaderas del Socio', async () => {
@@ -426,6 +432,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Balance Final
         await expect(page.getByRole('row', { name: 'Balance Final : 50.00' })).toBeVisible();
+
+        // Interes generado no pagado
+        await expect(page.getByRole('row', {name: 'Interes Generado no Pagado: RD$ 0'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

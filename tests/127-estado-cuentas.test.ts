@@ -95,6 +95,25 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         await expect(page.getByRole('row', {name: 'TOTALES: RD$ 30,200.00 RD$ 29,900.00'}).first()).toBeVisible();
     });
 
+    test('Ver los movimientos de la cuenta de Ahorros Normales', async () => {
+        // Cambiar el tipo de cuentas
+        await page.getByTitle('TODAS').click();
+        // Elegir Ahorros Normales
+        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
+
+        // Click al boton de Ir a Movimientos
+        await page.locator('[aria-label="export"]').first().click();
+
+        // Debe abrirse una nueva ventana con la pagina de consulta movimientos
+        const page1 = await context.waitForEvent('page');
+
+        // La URL debe cambiar
+        await expect(page1).toHaveURL(/\/consulta_captaciones/);
+
+        // Cerrar la nueva pestaña
+        await page1.close(); 
+    });
+
     test('Cuentas y prestamos cancelados', async () => {
         // Cambiar a Cuentas y prestamos cancelados
         await page.locator('text=CUENTAS ACTIVAS Y PRÉSTAMOS DESEMBOLSADOS').click();
@@ -115,6 +134,20 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
 
         // Totales 
         await expect(page.getByRole('row', {name: 'TOTALES: RD$ 0.00 RD$ 0.00'}).first()).toBeVisible();
+    });
+
+    test('Ver los movimientos del Prestamo Hipotecario', async () => {
+        // Click al boton de Ir a Movimientos
+        await page.locator('[aria-label="export"]').first().click();
+
+        // Debe abrirse una nueva ventana con la pagina de consulta movimientos
+        const page1 = await context.waitForEvent('page');
+
+        // La URL debe cambiar
+        await expect(page1).toHaveURL(/\/estado_cuenta_consolidado/);
+
+        // Cerrar la nueva pestaña
+        await page1.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

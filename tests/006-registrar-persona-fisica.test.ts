@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig, dataCheck, fechaInicio, fechaFinal, dataEdit } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, dataCheck, fechaInicio, fechaFinal, dataEdit, dataEliminar } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 import { url_registro_persona } from './utils/urls';
@@ -610,7 +610,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await expect(nuevaDireccion).toBeVisible();
                 
                     // Eliminar la nueva direccion
-                    const botonEliminar = page.locator('[data-icon="delete"]').last();
+                    const botonEliminar = page.locator(`${dataEliminar}`).last();
                     await expect(botonEliminar).toBeVisible();
                     await botonEliminar.click();
 

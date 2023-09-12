@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { url_aceptar_rechazar_cambio_categoria } from './utils/urls';
 
 // Variables globales
@@ -70,7 +70,7 @@ test.describe.serial('Pruebas con el Rechazo de Cambio de Categoria de la Person
         await expect(page.locator('text=Motivo de Rechazo')).toBeVisible();
 
         // Colocar un comentario
-        await page.locator('#form_COMENTARIO').fill('Cambio de opinion del Socio');
+        await page.locator(`${formComentario}`).fill('Cambio de opinion del Socio');
 
         // Click en Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
