@@ -274,7 +274,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(noPermisoEditar).toBeVisible();
 
                     // Click al boton de Aceptar del modal de telefono
-                    await noPermisoEditar.getByRole('button', {name: 'Aceptar'}).click();
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
 
                     // Click al boton de editar del email
                     await editarEmail.click();
@@ -283,7 +283,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(noPermisoEditar).toBeVisible();
 
                     // Click al boton de Aceptar del modal de email
-                    await noPermisoEditar.getByRole('button', {name: 'Aceptar'}).click();
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
 
                     // Click en Actualizar y continuar
                     actualizarContinuar();
