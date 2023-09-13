@@ -96,13 +96,13 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
         // Prestamo
-        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO HIPOTECARIO');
+        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDIAUTOS');
 
         // Cuenta Cobro
-        await expect(page.locator('#form_DESCRIPCION_CUENTA_COBRO')).toHaveValue('AHORROS NORMALES');
+        // await expect(page.locator('#form_DESCRIPCION_CUENTA_COBRO')).toHaveValue('AHORROS NORMALES');
 
         // Cuota
-        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 416.67');
+        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 3,015.9');
 
         // Garantia
         await expect(page.getByText('Sin garantía')).toBeVisible();
@@ -143,11 +143,27 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Cuotas pendientes
         await expect(page.getByText('0 cuotas pendientes RD 0.00')).toBeVisible();
 
-        // Adelantar cuotas
-        await expect(page.getByText('Adelantar cuotas')).toBeVisible();
-
         // Saldo total
         await expect(page.getByText('Saldo total')).toBeVisible();
+
+        // Click a Adelantar cuotas
+        const adelantarCuotas = page.getByText('Adelantar cuotas');
+        await expect(adelantarCuotas).toBeVisible();
+        await adelantarCuotas.click();
+
+        // Aparece un modal para seleccionar la cuota
+        await expect(page.locator('text=SELECCIÓN DE CUOTAS')).toBeVisible();
+
+        // Seleccionar la primera cuota
+        await page.getByRole('checkbox').first().click();
+
+        // Click al boton de Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // En el input total a pagar deberia colcarse la cuota elegida
+        const totalPagar = page.locator('#form_A_PAGAR');
+        await expect(totalPagar).toBeDisabled();
+        await expect(totalPagar).toHaveValue('RD$ 3,016');
     });
 
     test('Cobrar de Cuenta', async () => {

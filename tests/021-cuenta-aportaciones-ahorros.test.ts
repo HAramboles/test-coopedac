@@ -232,8 +232,10 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTE'})).toBeVisible();
 
-                    // Cerrar los dos mensajes que se muestran
+                    // Cerrar las alertas que se muestran
                     await page.locator(`${ariaCerrar}`).first().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
                     await page.locator(`${ariaCerrar}`).last().click();
             
                     // Boton de Agregar Firmantes debe estar visible

@@ -144,7 +144,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     await botonNuevaCuenta.click();
             
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_cuentas_ahorros_por_nomina}create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_por_nomina}/create?step=1`);
             
                     // El titulo de Registrar Cuenta debe estar visible
                     await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
@@ -176,7 +176,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
             
                 test('Contacto de Firmante o Persona', async () => {            
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_cuentas_ahorros_por_nomina}create?step=2`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_por_nomina}/create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -269,7 +269,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
             
                 test('Metodo de intereses', async () => {
                     // La URL debe de cambiar
-                    await expect(page).toHaveURL(`${url_cuentas_ahorros_por_nomina}create?step=3`);
+                    await expect(page).toHaveURL(`${url_cuentas_ahorros_por_nomina}/create?step=3`);
                     
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();

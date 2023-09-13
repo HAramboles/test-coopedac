@@ -321,6 +321,8 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // Cerrar las alertas
                     await page.locator(`${ariaCerrar}`).first().click();
                     await page.locator(`${ariaCerrar}`).last().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
 
                     // Boton de Guardar y Continuar, probar que no se pueda continuar sin agregar un representante
                     const botonGuardaryContinuar = page.getByRole('button', {name: 'Guardar y continuar'});
@@ -331,9 +333,6 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await expect(page.locator('text=Debe agregar como firmante al representante legal del socio.')).toBeVisible();
                     // Click en Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();
-
-                    // Cerrar una de las alertas
-                    await page.locator(`${ariaCerrar}`).click();
             
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.getByRole('button', {name: 'plus Agregar Firmante'});

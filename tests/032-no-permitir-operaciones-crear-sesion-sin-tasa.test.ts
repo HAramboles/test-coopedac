@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, dataCheck, selectBuscar, dataGuardar } from './utils/dataTests';
-import { url_sesiones_transito, url_registro_tasa, url_transacciones_caja } from './utils/urls';
+import { url_base, browserConfig, dataCheck, dataGuardar, formBuscar } from './utils/dataTests';
+import { url_sesiones_transito, url_registro_tasa } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
 // Variables globales
@@ -54,7 +54,7 @@ test.describe.serial('Pruebas con la Creacion de una Sesion de Transito que no d
         await expect(page.locator('text=Tasas de cambio del día')).toBeVisible();
 
         // La tasa del dia debe estar visible
-        await expect(page.getByRole('cell', {name: '56.0000'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '56.0000'}).first()).toBeVisible();
 
         // Click al boton de Inhabilitar
         const botonInhabilitar = page.getByRole('row', {name: `${formatDate(new Date())} DOLARES (US) 56.0000`}).locator(`${dataCheck}`);
@@ -70,7 +70,7 @@ test.describe.serial('Pruebas con la Creacion de una Sesion de Transito que no d
 
     test('Ir a la opcion de Sesiones en Transito', async () => {
         // Click a Contraer todo del menu de navegacion
-        await page.locator('text=Contraer todo').click();
+        // await page.locator('text=Contraer todo').click();
 
         // TESORERIA
         await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
@@ -101,13 +101,13 @@ test.describe.serial('Pruebas con la Creacion de una Sesion de Transito que no d
         await expect(page.locator('text=ABRIR NUEVA SESIÓN')).toBeVisible();
 
         // Buscar una persona
-        await page.getByRole('dialog').locator(`${selectBuscar}`).fill(`${cedula}`);
+        await page.getByRole('dialog').locator(`${formBuscar}`).fill(`${cedula}`);
 
         // Aparecen las cuentas de la persona, elegir la cuenta de Ahorros Normales
         await page.getByRole('row', {name: 'AHORROS NORMALES'}).locator('text=Seleccionar').click();
 
         // Se dirige a la opcion de Transacciones de Caja
-        await expect(page).toHaveURL(`${url_transacciones_caja}`);
+        await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2`);
 
         // Debe aparecer el mensaje de aviso
         await expect(page.locator('text=Es necesario registrar la tasa del día. Imposible realizar operaciones.')).toBeVisible();

@@ -120,23 +120,23 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // Tipo de credito
         await page.getByLabel('Tipo Crédito').click();
-        // Click a credito hipotecario
+        // Click a credito consumo
         await page.getByText('CONSUMO').click();
 
         // Tipo de garantia
         await page.getByLabel('Tipo Garantía').click();
-        // Click en garantia hipotecaria
+        // Click en garantia prendarias
         await page.getByText('PRENDARIAS').click();
 
         // Oferta
         await page.getByLabel('Oferta').click();
-        // Elegir credito hipotecaria
-        await page.getByText('CRÉDIAUTOS (VEHÍCULOS)').click();
+        // Elegir credito crediautos
+        await page.getByText('CRÉDIAUTOS').click();
 
         // Grupo
         await page.getByLabel('Grupo').click();
         await page.getByLabel('Grupo').fill('vegamovil');
-        // Elegir grupo sin garantia
+        // Elegir grupo vegamovil
         await page.getByRole('option', {name: 'VEGAMOVIL', exact: true}).click();
 
         // Fecha Solicitud debe ser el dia actual
@@ -199,7 +199,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Agregar una cuenta del proveedor para desembolsar
         await page.locator(`${selectBuscar}`).first().click();
         // Seleccionar una cuenta de ahorros del proveedor
-        await page.getByText('AHORROS NORMALES').first().click();
+        await page.getByText('AHORROS NORMALES | 00100100050126').click();
 
         // Finalidad
         await page.getByLabel('Finalidad').click();

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig, selectBuscar, dataEliminar } from './utils/dataTests';
-import { url_anular_deposito } from './utils/urls';
+import { url_anular_retiro } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
 // Variables globales
@@ -14,7 +14,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
+test.describe.serial('Pruebas con la Anulacion de un Retiro', async () => {
     test.beforeAll(async () => {
         // Crear el browser
         browser = await chromium.launch({
@@ -39,7 +39,7 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
-    test('Ir a la opcion de Anular Deposito', async () => {
+    test('Ir a la opcion de Anular Retiro', async () => {
         // Tesoreria
         await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
 
@@ -49,14 +49,14 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         // Anulaciones
         await page.getByRole('menuitem', {name: 'ANULACIONES'}).click();
 
-        // Anular Deposito
+        // Anular Retiro
         await page.getByRole('menuitem', {name: 'Anular Depósito'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_anular_deposito}`);
+        await expect(page).toHaveURL(`${url_anular_retiro}`);
     });
 
-    test('Buscar el Deposito realizado por la Caja en uso a la Cuenta de Ahorros Normales de la persona', async () => {
+    test('Buscar el Retiro realizado por la Caja en uso a la Cuenta de Ahorros Normales de la persona', async () => {
         // El titulo deberia estar visible
         await expect(page.locator('h1').filter({hasText: 'ANULAR DEPÓSITO'})).toBeVisible();
 
@@ -64,7 +64,7 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         await expect(page.locator('text=Criterio de búsqueda')).toBeVisible();
 
         // El tipo de transaccion debe ser Deposito
-        await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('DE - DEPOSITOS');
+        await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('RE - RETIROS');
 
         // Id documento y Cuenta de origen deben estar vacios por defecto
         await expect(page.locator('#form_ID_DOCUMENTO')).toHaveValue('');
@@ -92,11 +92,11 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         await botonBuscar.click();
     });
 
-    test('Anular el Deposito', async () => {
-        // Debe mostrarse el deposito realizado
-        await expect(page.getByRole('cell', {name: '1,000.00'})).toBeVisible();
+    test('Anular el Retiro', async () => {
+        // Debe mostrarse el retiro realizado
+        await expect(page.getByRole('cell', {name: '500.00'})).toBeVisible();
 
-        // Click al boton de Anular del deposito
+        // Click al boton de Anular del retiro
         await page.locator(`${dataEliminar}`).click();
 
         // Aparece un modal para colocar la razon de la anulacion
@@ -104,7 +104,7 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         await expect(modalAnulacion).toBeVisible();
 
         // Colocar una razon en el input de comentario
-        await page.locator('#form_CONCEPTO_ANULACION').fill('Anular deposito realizado por caja');
+        await page.locator('#form_CONCEPTO_ANULACION').fill('Anular retiro realizado por caja');
 
         // Click al boton de Aceptar del modal de Razon de Anulacion
         await page.getByRole('button', {name: 'Aceptar'}).click();

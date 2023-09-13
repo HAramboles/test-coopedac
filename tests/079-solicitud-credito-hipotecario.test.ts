@@ -380,7 +380,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.locator('text=Nueva garantía').click();
 
         // Debe salir un modal par agregar la garantia
-        const modalAgregarGarantia = page.locator('text=GARANTÍAS');
+        const modalAgregarGarantia = page.getByRole('dialog', {name: 'GARANTÍAS'});
         await expect(modalAgregarGarantia).toBeVisible();
 
         // Debe salir un modal para agregar la garantia y elegir el tipo de garantia

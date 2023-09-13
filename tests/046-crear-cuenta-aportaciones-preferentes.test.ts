@@ -125,7 +125,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
 
                 test('Crear cuenta de Aportaciones Preferentes - Paso 1 - Datos Generales', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}/create?step=1`);
             
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE APORTACIONES PREFERENTES'})).toBeVisible();
@@ -234,7 +234,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
             
                 test('Crear cuenta de Aportaciones Preferentes - Paso 2 - Contacto de Firmante', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}create?step=2`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}/create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -330,7 +330,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
             
                 test('Crear cuenta de Aportaciones Preferentes - Paso 3 - Metodo de Interes', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}create?step=3`);
+                    await expect(page).toHaveURL(`${url_cuentas_aportaciones_preferentes}/create?step=3`);
             
                     // El titulo debe estar visible
                     await expect(page.locator('text=FORMA PAGO DE INTERESES O EXCEDENTES')).toBeVisible();

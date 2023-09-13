@@ -140,7 +140,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await expect(page.getByRole('cell', {name: '10', exact: true})).toBeVisible();
         
         // Plazo
-        await expect(page.getByRole('cell', {name: '24'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '24', exact: true})).toBeVisible();
     });
 
     test('Buscar el Certificado - Financieros Reinvertidas del Socio', async () => {

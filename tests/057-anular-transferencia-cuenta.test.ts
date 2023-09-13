@@ -64,7 +64,7 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         // Buscar la cuenta de destino
         await page.locator(`${selectBuscar}`).last().fill(`${cedula}`);
         // Click a la opcion de Aportaciones
-        await page.getByRole('option', {name: 'APORTACIONES | '}).click();
+        await page.getByText('APORTACIONES |').click();
 
         // Fecha de Inicio y Fin deben tener el dia actual
         await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(new Date())}`);

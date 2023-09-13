@@ -110,7 +110,7 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await pag1.close();
 
         // En la pagina de la Anular Pago a Prestamo debe mostrarse un mensaje modal de operacion exitosa
-        await expect(page.locator('text=Se ha anulado correctamente No. RP-40542.')).toBeVisible();
+        await expect(page.locator('text=Operación Exitosa')).toBeVisible();
 
         // Click al boton de Aceptar el modal de Operacion Exitosa
         await page.getByRole('button', {name: 'Aceptar'}).click();

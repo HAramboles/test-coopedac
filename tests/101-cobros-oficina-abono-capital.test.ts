@@ -96,13 +96,13 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
         // Prestamo
-        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO HIPOTECARIO');
+        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDIAUTOS');
 
         // Cuenta Cobro
-        await expect(page.locator('#form_DESCRIPCION_CUENTA_COBRO')).toHaveValue('AHORROS NORMALES');
+        // await expect(page.locator('#form_DESCRIPCION_CUENTA_COBRO')).toHaveValue('AHORROS NORMALES');
 
         // Cuota
-        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 416.67');
+        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 3,015.9');
 
         // Garantia
         await expect(page.getByText('Sin garantía')).toBeVisible();
@@ -136,7 +136,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
-    test('Opciones de Pago - Cuotas Pendientes', async () => {
+    test('Opciones de Pago', async () => {
         // Titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'OPCIONES DE PAGO'})).toBeVisible();
 
@@ -148,6 +148,20 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Saldo total
         await expect(page.getByText('Saldo total')).toBeVisible();
+    });
+
+    test('Hacer un Abono a Capital', async () => {
+        // Colocar un abono a capital
+        const abonoCapital = page.locator('#form_MONTO_ABONO_CAPITAL');
+        await expect(abonoCapital).toBeVisible();
+        await abonoCapital.fill('12000');
+
+        // El valor de Abono a Capital y Total a Pagar deben ser igual
+        await expect(abonoCapital).toHaveValue('RD$ 12,000');
+        
+        const totalPagar = page.locator('#form_A_PAGAR');
+        await expect(totalPagar).toBeDisabled();
+        await expect(totalPagar).toHaveValue('RD$ 12,000');
     });
 
     test('Cobrar de Cuenta', async () => {

@@ -78,10 +78,10 @@ test.describe.serial('Pruebas con el Debito a la Cuenta de Certificado - Financi
         await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue(' 0.00');
 
         // Transito
-        await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue(' 0.00');
+        await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue(' 600.00');
 
         // Disponible
-        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue(' 2,100.00');
+        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue(' 1,500.00');
     });
 
     test('Hacer el movimiento', async () => {

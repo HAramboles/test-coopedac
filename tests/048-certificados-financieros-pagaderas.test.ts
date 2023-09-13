@@ -149,7 +149,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     await expect(page.locator('h1').filter({hasText: 'CREAR CUENTA DE CERTIFICADOS'})).toBeVisible();
             
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_pagaderas}create?step=1`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_pagaderas}/create?step=1`);
             
                     // La cuenta debe ser de financieros pagaderos
                     await expect(page.locator('text=FINANCIEROS PAGADERAS').first()).toBeVisible();
@@ -248,7 +248,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 2 - Contacto de Firmante', async () => {            
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_pagaderas}create?step=2`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_pagaderas}/create?step=2`);
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -340,7 +340,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
             
                 test('Crear una Nueva Cuenta de Certificado - Paso 3 - Metodo de Interes', async () => {
                     // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_pagaderas}create?step=3`);
+                    await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_pagaderas}/create?step=3`);
             
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FORMA PAGO DE INTERESES O EXCEDENTES'})).toBeVisible();

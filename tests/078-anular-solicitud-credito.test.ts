@@ -127,18 +127,18 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Tipo de credito
         await page.getByLabel('Tipo Crédito').click();
-        // Click a credito hipotecario
-        await page.getByText('CONSUMO').click();
+        // Click a credito comerciales
+        await page.getByText('COMERCIALES').click();
 
         // Tipo de garantia
         await page.getByLabel('Tipo Garantía').click();
-        // Click en garantia hipotecaria
+        // Click en garantia ahorros
         await page.getByText('AHORROS', {exact: true}).click();
 
         // Oferta
         await page.getByLabel('Oferta').click();
-        // Elegir credito hipotecaria
-        await page.getByText('CRÉDITO GERENCIAL / AHORROS').click();
+        // Elegir credito agricola
+        await page.getByText('CRÉDITO AGRÍCOLA').click();
 
         // Grupo
         await page.getByLabel('Grupo').click();
@@ -209,17 +209,17 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Tipo de credito
         await page.getByLabel('Tipo Crédito').click();
-        // Click a credito hipotecario
+        // Click a credito consumo
         await page.getByText('CONSUMO').click();
 
         // Tipo de garantia
         await page.getByLabel('Tipo Garantía').click();
-        // Click en garantia hipotecaria
+        // Click en garantia ahorros
         await page.getByText('AHORROS', {exact: true}).click();
 
         // Oferta
         await page.getByLabel('Oferta').click();
-        // Elegir credito hipotecaria
+        // Elegir credito gerencial / ahorros
         await page.getByText('CRÉDITO GERENCIAL / AHORROS').click();
 
         // Grupo
