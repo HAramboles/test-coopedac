@@ -253,7 +253,7 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                     ]);
 
                     // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(8000);
+                    await newPage.waitForTimeout(4000);
                   
                     // La pagina abierta con el reporte se cierra
                     await newPage.close();
@@ -291,7 +291,7 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                     const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

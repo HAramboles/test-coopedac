@@ -60,7 +60,7 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
         const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte con los movimientos
         await page1.close();
@@ -99,7 +99,7 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
         const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte con los movimientos
         await page1.close();

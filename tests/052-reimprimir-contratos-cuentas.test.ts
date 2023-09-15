@@ -73,11 +73,11 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         // Esperar que se abra una nueva pestaña con el reporte
         const pageAportaciones = await context.waitForEvent('page');
 
+        // Esperar que el reporte este visible
+        await pageAportaciones.waitForTimeout(4000);
+
         // Cerrar la pagina con el reporte
         await pageAportaciones.close();
-
-        // Esperar que el reporte este visible
-        await pageAportaciones.waitForTimeout(8000);
 
         // Cerrar el mensaje que se muestra
         await page.locator(`${ariaCerrar}`).click();
@@ -106,7 +106,7 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         await page2.close();
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la segunda pagina
         await page1.close();
@@ -129,7 +129,7 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         const pageAhorros = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await pageAhorros.waitForTimeout(8000);
+        await pageAhorros.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte
         await pageAhorros.close();
@@ -152,7 +152,7 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         const pageAhorrosNomina = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await pageAhorrosNomina.waitForTimeout(8000);
+        await pageAhorrosNomina.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte
         await pageAhorrosNomina.close();
@@ -175,7 +175,7 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         const pageAhorrosOrdenPago = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await pageAhorrosOrdenPago.waitForTimeout(8000);
+        await pageAhorrosOrdenPago.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte
         await pageAhorrosOrdenPago.close();
@@ -206,7 +206,7 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         await page2.close();
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la segunda pagina
         await page1.close();
@@ -229,7 +229,7 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         const pageFinancierosReinvertidas = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await pageFinancierosReinvertidas.waitForTimeout(8000);
+        await pageFinancierosReinvertidas.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte
         await pageFinancierosReinvertidas.close();
@@ -252,7 +252,7 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         const pageInversionPagaderas = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await pageInversionPagaderas.waitForTimeout(8000);
+        await pageInversionPagaderas.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte
         await pageInversionPagaderas.close();

@@ -208,7 +208,7 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                     const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

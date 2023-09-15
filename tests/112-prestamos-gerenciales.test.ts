@@ -113,7 +113,7 @@ test.describe.serial('Pruebas con la Impresion de Prestamos Gerenciales', () => 
         const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte
         await page1.close();

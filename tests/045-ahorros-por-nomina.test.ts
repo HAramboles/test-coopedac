@@ -167,6 +167,9 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     await page.getByText('Cargar ').click(); 
                     const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
                     await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
+
+                    // La firma subida debe estar visible
+                    await expect(page.getByAltText('firma.jpg')).toBeVisible();
             
                     // Boton de  Continuar
                     const botonContinuar = page.getByRole('button', {name: 'Continuar'});
@@ -256,7 +259,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     ]);
 
                     // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(8000);
+                    await newPage.waitForTimeout(4000);
                   
                     // La pagina abierta con el reporte se cierra
                     await newPage.close();
@@ -294,7 +297,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

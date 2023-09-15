@@ -112,7 +112,7 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
         const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte 
         await page1.close();

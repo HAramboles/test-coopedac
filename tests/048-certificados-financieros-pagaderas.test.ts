@@ -243,7 +243,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();
@@ -330,7 +330,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();
@@ -444,7 +444,7 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     await page2.close();
 
                     // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
 
                     // Cerrar la segunda pagina
                     await page1.close();

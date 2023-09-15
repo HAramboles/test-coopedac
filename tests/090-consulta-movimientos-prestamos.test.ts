@@ -87,19 +87,17 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
     test('Imprimir los Movimientos del Prestamo', async () => {
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+
         // Esperar que se abra una nueva ventana con el reporte
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton Imprimir
-            await expect(botonImprimir).toBeVisible(),
-            await botonImprimir.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte
-        await newPage.close();
+        await page1.close();
     });
 
     test('Movimientos del Prestamo', async () => {
@@ -109,16 +107,14 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
 
         // Imprimir el primer movimiento
         const imprimirMovimiento1 = page.locator(`${dataPrinter}`).first();
+        await expect(imprimirMovimiento1).toBeVisible();
+        await imprimirMovimiento1.click();
+
         // Esperar que se abra una nueva ventana con el reporte
-        const [pageMovimiento1] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton
-            await expect(imprimirMovimiento1).toBeVisible(),
-            await imprimirMovimiento1.click()
-        ]);
+        const pageMovimiento1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await pageMovimiento1.waitForTimeout(8000);
+        await pageMovimiento1.waitForTimeout(4000);
 
         // Cerrar la pagina
         await pageMovimiento1.close();
@@ -128,16 +124,14 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
         
         // Imprimir el segundo movimiento
         const imprimirMovimiento2 = page.locator(`${dataPrinter}`).last();
+        await expect(imprimirMovimiento2).toBeVisible();
+        await imprimirMovimiento2.click();
+
         // Esperar que se abra una nueva ventana con el reporte
-        const [pageMovimiento2] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton
-            await expect(imprimirMovimiento2).toBeVisible(),
-            await imprimirMovimiento2.click()
-        ]);
+        const pageMovimiento2 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await pageMovimiento2.waitForTimeout(8000);
+        await pageMovimiento2.waitForTimeout(4000);
 
         // Cerrar la pagina
         await pageMovimiento2.close();

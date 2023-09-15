@@ -67,7 +67,7 @@ test.describe.serial('Pruebas con la Reimpresion de Solicitud de Transferencia I
         const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina abierta con la solicitud
         await page1.close();

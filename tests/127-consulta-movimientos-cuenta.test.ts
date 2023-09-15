@@ -78,19 +78,17 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Imprimir los movimientos de la cuenta de Aportaciones
         const imprimirAportaciones = page.getByRole('button', {name: 'Imprimir'});
+        await expect(imprimirAportaciones).toBeVisible();
+        await imprimirAportaciones.click();
+
         // Esperar que se abra una nueva pestaña con el estado de la cuenta 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Imprimir
-            await expect(imprimirAportaciones).toBeVisible(),
-            await imprimirAportaciones.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con la el reporte del estado de la cuenta
-        await newPage.close();
+        await page1.close();
 
         // Titulo movimiento de la cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
@@ -125,19 +123,17 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Imprimir los movimientos de la cuenta
         const imprimirAportacionesPreferentes = page.getByRole('button', {name: 'Imprimir'});
+        await expect(imprimirAportacionesPreferentes).toBeVisible();
+        await imprimirAportacionesPreferentes.click();
+
         // Imprimir los movimientos de la cuenta de Aportaciones Preferentes 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(imprimirAportacionesPreferentes).toBeVisible(),
-            await imprimirAportacionesPreferentes.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte del estado de la cuenta
-        await newPage.close();
+        await page1.close();
 
         // Titulo movimiento de la cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
@@ -172,19 +168,17 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Imprimir los movimientos de la cuenta
         const imprimirAhorrosNormales = page.getByRole('button', {name: 'Imprimir'});
+        await expect(imprimirAhorrosNormales).toBeVisible();
+        await imprimirAhorrosNormales.click();
+
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(imprimirAhorrosNormales).toBeVisible(),
-            await imprimirAhorrosNormales.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
-        await newPage.close();
+        await page1.close();
 
         // Titulo movimiento de la cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
@@ -241,19 +235,17 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Imprimir los movimientos de la cuenta
         const imprimirAhorrosPorNomina = page.getByRole('button', {name: 'Imprimir'});
+        await expect(imprimirAhorrosPorNomina).toBeVisible();
+        await imprimirAhorrosPorNomina.click();
+
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(imprimirAhorrosPorNomina).toBeVisible(),
-            await imprimirAhorrosPorNomina.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
-        await newPage.close();
+        await page1.close();
 
         // Titulo movimiento de la cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
@@ -287,19 +279,17 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Imprimir los movimientos de la cuenta
         const imprimirOrdenPago = page.getByRole('button', {name: 'Imprimir'});
+        await expect(imprimirOrdenPago).toBeVisible();
+        await imprimirOrdenPago.click();
+
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(imprimirOrdenPago).toBeVisible(),
-            await imprimirOrdenPago.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
-        await newPage.close();
+        await page1.close();
 
         // Titulo movimiento de la cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
@@ -333,19 +323,17 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Imprimir los movimientos de la cuenta
         const imprimirFinancierosPagaderas = page.getByRole('button', {name: 'Imprimir'});
+        await expect(imprimirFinancierosPagaderas).toBeVisible();
+        await imprimirFinancierosPagaderas.click();
+
         // Esperar que se abra una nueva pestaña con el reporte de los movimientos de la cuenta 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(imprimirFinancierosPagaderas).toBeVisible(),
-            await imprimirFinancierosPagaderas.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
-        await newPage.close();
+        await page1.close();
 
         // Titulo movimientos de la cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
@@ -385,19 +373,17 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Imprimir los movimientos de la cuenta
         const imprimirFinancierosReinvertidas = page.getByRole('button', {name: 'Imprimir'});
+        await expect(imprimirFinancierosReinvertidas).toBeVisible();
+        await imprimirFinancierosReinvertidas.click();
+
         // Esperar que se abra una nueva pestaña con el reporte de los movimientos de la cuenta 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(imprimirFinancierosReinvertidas).toBeVisible(),
-            await imprimirFinancierosReinvertidas.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
-        await newPage.close();
+        await page1.close();
 
         // Titulo movimientos de la cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
@@ -434,19 +420,17 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Imprimir los movimientos de la cuenta
         const imprimirFinancierosReinvertidas = page.getByRole('button', {name: 'Imprimir'});
+        await expect(imprimirFinancierosReinvertidas).toBeVisible();
+        await imprimirFinancierosReinvertidas.click();
+
         // Esperar que se abra una nueva pestaña con el reporte de los movimientos de la cuenta 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(imprimirFinancierosReinvertidas).toBeVisible(),
-            await imprimirFinancierosReinvertidas.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
-        await newPage.close();
+        await page1.close();
 
         // Titulo movimientos de la cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();

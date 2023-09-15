@@ -65,7 +65,7 @@ test.describe('Pruebas con la Cartera de Prestamos', () => {
         const page1 = await context.newPage();
 
         // Esperar a que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la ventana con el reporte
         await page1.close();

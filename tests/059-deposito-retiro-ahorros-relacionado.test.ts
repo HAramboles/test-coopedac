@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, formComentario, formBuscar } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
 
@@ -57,7 +57,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
         
                 // Cedula, ,ombre y apellido de la persona alamcenada en el state
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePnombrePersonaJuridicaRelacionadaersona'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
@@ -183,19 +183,75 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();
+                });
 
-                    // Esperar que se abra una nueva pestaña con el reporte
+                test('Datos para el Reporte RTE', async () => {
+                    // Debe salir otro modal para colocar la informacion para el reporte RTE
+                    await expect(page.locator('text=CAPTURA DE DATOS. LAVADO DE EFECTIVO')).toBeVisible();
+
+                    // El modal debe contener un aviso
+                    await expect(page.getByText('Se requiere información de la persona que realiza la transacción. Puede buscar o crear la persona en las opciones de más abajo.')).toBeVisible();
+
+                    // Colocar una explicacion para el Origen de Fondos
+                    await page.locator('#form_ORIGEN_FONDOS').fill('Fondos obtenidos del Trabajo');
+
+                    // Subtitulo del modal
+                    await expect(page.locator('text=BUSCAR INTERMEDIARIO')).toBeVisible();
+
+                    // Debe mostrarse un input para buscar un intermediario
+                    await expect(page.locator(`${formBuscar}`)).toBeVisible();
+
+                    // Debe mostrarse un boton para crear un intermediario
+                    const botonCrearIntermediario = page.getByRole('button', {name: 'Crear Intermediario'});
+                    await expect(botonCrearIntermediario).toBeVisible();
+                    // await botonCrearIntermediario.click();
+
+                    // Boton de Cliente es Intermediario
+                    const botonClienteIntermediario = page.getByText('Cliente Intermediario');
+                    await expect(botonClienteIntermediario).toBeVisible();
+
+                    // Click al boton de Cliente Intermediario
+                    await botonClienteIntermediario.click();
+
+                    // Los datos del socio deben agregarse
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+                    // Click al boton de Seleccionar
+                    await page.getByText('Seleccionar').click();
+
+                    // Debe salir otro modal para confirmar la informacion
+                    await expect(page.locator('text=Confirmar')).toBeVisible();
+
+                    // Contenido del modal
+                    await expect(page.locator('text=Asegúrese de haber seleccionado a la persona correcta:')).toBeVisible();
+                    await expect(page.getByText(`Nombre: ${nombre} ${apellido}`)).toBeVisible();
+                    await expect(page.getByText('Doc. Identidad:')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Esperar que se abran dos nuevas pestañas con los reportes
                     const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
+                    await page2.waitForTimeout(3000);
 
-                    // Cerrar la nueva pestaña
+                    // Cerrar la primera pagina
+                    await page2.close();
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(4000);
+
+                    // Cerrar la segunda pagina
                     await page1.close();
+
+                    // Debe regresar a la pagina
+                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
 
                     // Debe salir un modal
                     await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
-            
+
                     // Click al boton de Cancelar
                     await page.locator('text=Cancelar').click();
                 });
@@ -249,20 +305,17 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
             
                     // Hace click en Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
             
                     // Se abrira una nueva pagina con el reporte del retiro
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    const page1 = await context.newPage();
 
                     // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
                     
                     // La pagina abierta con el reporte del retiro se debe cerrar
-                    await newPage.close();
+                    await page1.close();
 
                     // Debe salir un modal
                     await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();

@@ -118,19 +118,17 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
 
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonImprimir).toBeVisible(),
-            await botonImprimir.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
-        await newPage.close();
+        await page1.close();
 
         // La tabla de amortizacion debe estar visible
         await expect(page.getByText('No. Cuota')).toBeVisible();
@@ -175,7 +173,7 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
         ]);
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await newPage.waitForTimeout(4000);
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();

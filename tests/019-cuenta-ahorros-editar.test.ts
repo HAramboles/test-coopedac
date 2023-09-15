@@ -213,9 +213,6 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                 test('Editar una Cuenta de Ahorros - Contacto de Firmante o Persona', async () => {
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=2/);
-
-                    // Cerrar uno de los mensajes que se muestran
-                    // await page.locator(`${ariaCerrar}`).first().click();
             
                     // El titulo de firmantes debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
@@ -293,7 +290,7 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

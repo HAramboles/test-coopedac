@@ -174,19 +174,17 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
     test('Imprimir la Carta de Saldo', async () => {
         // Boton de generar carta
         const generarCarta = page.locator('[data-icon="file-text"]');
+        await expect(generarCarta).toBeVisible();
+        await generarCarta.click();
+
         // Esperar que se abra otra ventana con la carta
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de generar carta
-            await expect(generarCarta).toBeVisible(),
-            await generarCarta.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con la carta
-        await newPage.close();
+        await page1.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

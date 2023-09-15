@@ -127,7 +127,7 @@ test.describe.serial('Pruebas con la Solicitud de Transferencia Interbancaria', 
         const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
     
         // La pagina abierta con la solicitud se cierra
         await page1.close();

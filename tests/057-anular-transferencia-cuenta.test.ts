@@ -57,14 +57,12 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('TRC - TRANSFERENCIA');
 
         // Buscar la cuenta de origen
-        // await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
-        await page.locator(`${selectBuscar}`).first().fill('ARYA CRUZ');
+        await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
         // Click a la opcion de Ahorros Normales
         await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
 
         // Buscar la cuenta de destino
-        //await page.locator(`${selectBuscar}`).last().fill(`${cedula}`);
-        await page.locator(`${selectBuscar}`).last().fill('ARYA CRUZ');
+        await page.locator(`${selectBuscar}`).last().fill(`${cedula}`);
         // Click a la opcion de Aportaciones
         await page.getByRole('option', {name: 'APORTACIONES |'}).getByText('APORTACIONES |').click();
 

@@ -78,7 +78,7 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         // Buscar el usuario de la caja la cual hizo la transaccion
         await page.getByTitle('TODAS').click();
         // Elegir la primera caja que se muestra
-        await page.getByRole('option').nth(0).click();
+        await page.getByRole('option', {name: 'BPSH'}).nth(0).click();
 
         // Fecha inicio
         await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(new Date())}`);
@@ -94,7 +94,7 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         await botonBuscar.click();
     });
 
-    test.skip('Anular el Deposito', async () => {
+    test('Anular el Deposito', async () => {
         // Debe mostrarse el deposito realizado
         await expect(page.getByRole('cell', {name: '1,000.00'})).toBeVisible();
 
@@ -115,7 +115,7 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         const pag1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await pag1.waitForTimeout(8000);
+        await pag1.waitForTimeout(4000);
 
         // Cerrar la ventana del reporte
         await pag1.close();

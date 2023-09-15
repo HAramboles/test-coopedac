@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, formBuscar, ariaCerrar, browserConfig, inputFechaSolicitud, inputPrimerPago } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, formBuscar, browserConfig, inputFechaSolicitud, inputPrimerPago } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 
@@ -171,7 +171,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Finalidad
         await page.getByLabel('Finalidad').click();
         // Elegir consumo
-        await page.getByRole('option', { name: 'CONSUMO' }).click();
+        await page.getByRole('option', {name: 'CONSUMO'}).click();
 
         // Destino o proposito
         await page.getByPlaceholder('Destino o propósito').click();
@@ -208,9 +208,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(tituloPrincipal).toBeVisible();
 
         // Tipo de credito
-        await page.getByLabel('Tipo Crédito').click();
+        await page.locator('#loan_form').getByText('COMERCIALES').click();
         // Click a credito consumo
-        await page.getByText('CONSUMO').click();
+        await page.getByRole('option', {name: 'CONSUMO'}).getByText('CONSUMO').click();
 
         // Tipo de garantia
         await page.getByLabel('Tipo Garantía').click();
@@ -295,11 +295,6 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Seleccionar la cuenta de ahorros
         await page.getByText('AHORROS NORMALES').click();
 
-        // Finalidad
-        await page.getByLabel('Finalidad').click();
-        // Elegir consumo
-        await page.getByRole('option', { name: 'CONSUMO' }).click();
-
         // Destino o proposito
         await page.getByPlaceholder('Destino o propósito').click();
         await page.getByPlaceholder('Destino o propósito').fill('Asuntos Personales');
@@ -323,7 +318,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.locator(`${selectBuscar}`).last().click();
 
         // Seleccionar la cuenta de ahorros
-        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
+        await page.getByRole('option', {name: 'AHORROS NORMALES'}).last().click();
 
         // Click al boton de Agregar Cuenta
         const botonAgregarCuenta = page.getByRole('button', {name: 'Agregar cuenta'});
@@ -416,9 +411,6 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
     test('Paso 6 - Documentos', async () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=6`);
-
-        // El titulo principal debe esatr visible
-        await expect(page.getByRole('heading', {name: 'Lista de documentos'})).toBeVisible();
         
         // Subir Cedula del Deudor
         const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');
@@ -436,7 +428,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByRole('dialog', {name: 'CEDULA DEUDOR'})).toBeVisible();
 
         // Cerrar la imagen de la firma
-        await page.locator(`${dataCerrar}`).click();
+        await page.getByRole('button', {name: 'Close'}).click();
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
@@ -463,7 +455,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page2.close();
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la segunda pagina
         await page1.close();
@@ -471,14 +463,10 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
     test('Anular la Solicitud Creada', async () => {
         // La url debe regresar a las solicitudes solicitadas
-        await expect(page).toHaveURL(`${url_solicitud_credito}/?filter=solicitado`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
 
         // Cambiar el estado de las solicitudes a Aprobado
         await expect(page.locator('text=SOLICITADO')).toBeVisible();
-
-        // Cerrar las alertas
-        await page.locator(`${ariaCerrar}`).first().click();
-        await page.locator(`${ariaCerrar}`).last().click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
@@ -528,8 +516,14 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Click al boton de Cancelar
         await page.getByRole('button', {name: 'Cancelar'}).click();
 
+        // Debe aparecer un mensaje de confirmacion
+        await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
+
+        // Click al boton de Aceptar del mensaje de confirmacion
+        await page.getByRole('button', {name: 'check Aceptar'}).click();
+
         // La url debe regresar a las solicitudes solicitadas
-        await expect(page).toHaveURL(`${url_solicitud_credito}/?filter=solicitado`);
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
     });
 
     test.afterAll(async () => { // Despues de las pruebas

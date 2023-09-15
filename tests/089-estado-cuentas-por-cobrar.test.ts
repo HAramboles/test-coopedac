@@ -92,19 +92,17 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
 
         // Imprimir Estado a la Fecha de Corte
         const botonImprimirEstado = page.getByRole('button', {name: 'printer', exact: true});
+        await expect(botonImprimirEstado).toBeVisible();
+        await botonImprimirEstado.click();
+
         // Esperar que se abra una nueva pestaña
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonImprimirEstado).toBeVisible(),
-            await botonImprimirEstado.click()
-        ]);
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte del Estado a la Fecha de Corte
-        await newPage.close();
+        await page1.close();
     });
 
     test('Situación del movimiento', async () => {
@@ -190,18 +188,17 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
 
         // Boton de Imprimir todos los recibos de los pagos
         const botonRecibos = page.getByRole('button', {name: 'Todos los Recibos'});
-        const [newPage] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonRecibos).toBeVisible(),
-            await botonRecibos.click()
-        ]);
+        await expect(botonRecibos).toBeVisible();
+        await botonRecibos.click();
+
+        // Esperar que se abra una nueva ventana con el reporte 
+        const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await newPage.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte de todos los recibos
-        await newPage.close();
+        await page1.close();
 
         // Totales
         await expect(page.getByRole('row', {name: 'TOTALES: 50,000.00 0.00 50,000.00 0.00 0.00 0.00	0.00 100,000.00'})).toBeVisible();

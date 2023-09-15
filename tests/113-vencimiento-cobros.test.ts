@@ -127,7 +127,7 @@ test.describe.serial('Pruebas con el Vencimiento de Cobros', async () => {
         const page1 = await context.newPage();
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte
         await page1.close();

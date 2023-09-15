@@ -396,7 +396,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page2.close();
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la segunda pagina
         await page1.close();
@@ -459,7 +459,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page2.close();
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
 
         // Cerrar la segunda pagina
         await page1.close();
@@ -517,7 +517,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte 
         await page1.close();
@@ -573,7 +573,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(8000);
+        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte 
         await page1.close();

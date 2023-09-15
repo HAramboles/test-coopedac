@@ -33,7 +33,8 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
         // Crear el browser
         browser = await chromium.launch({
             headless: browserConfig.headless,
-            args: browserConfig.args
+            args: browserConfig.args,
+            slowMo: 1800
         });
 
         // Crear el context

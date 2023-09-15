@@ -50,7 +50,7 @@ test.describe.serial('Pruebas con la Anulacion de un Retiro', async () => {
         await page.getByRole('menuitem', {name: 'ANULACIONES'}).click();
 
         // Anular Retiro
-        await page.getByRole('menuitem', {name: 'Anular Depósito'}).click();
+        await page.getByRole('menuitem', {name: 'Anular Retiro'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_anular_retiro}`);
@@ -58,7 +58,7 @@ test.describe.serial('Pruebas con la Anulacion de un Retiro', async () => {
 
     test('Buscar el Retiro realizado por la Caja en uso a la Cuenta de Ahorros Normales de la persona', async () => {
         // El titulo deberia estar visible
-        await expect(page.locator('h1').filter({hasText: 'ANULAR DEPÓSITO'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'ANULAR RETIRO'})).toBeVisible();
 
         // Seccion criterio de busqueda debe estar visible
         await expect(page.locator('text=Criterio de búsqueda')).toBeVisible();
@@ -78,7 +78,7 @@ test.describe.serial('Pruebas con la Anulacion de un Retiro', async () => {
         // Buscar el usuario de la caja la cual hizo la transaccion
         await page.getByTitle('TODAS').click();
         // Elegir la primera caja que se muestra
-        await page.getByRole('option').nth(0).click();
+        await page.getByRole('option', {name: 'BPSH'}).nth(0).click();
 
         // Fecha inicio
         await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(new Date())}`);
@@ -115,7 +115,7 @@ test.describe.serial('Pruebas con la Anulacion de un Retiro', async () => {
         const pag1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await pag1.waitForTimeout(8000);
+        await pag1.waitForTimeout(4000);
 
         // Cerrar la ventana del reporte
         await pag1.close();

@@ -227,20 +227,17 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
             
                     // Hacer click al boton de Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
             
                     // Se abrira una nueva pagina con el reporte del pago al prestamo
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    const page1 = await context.newPage();
 
                     // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
                     
                     // La pagina abierta con el reporte del pago al prestamo
-                    await newPage.close();
+                    await page1.close();
                 });
 
                 test('Realizar otro Pago al Prestamo', async () => {
@@ -316,20 +313,17 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
             
                     // Hacer click al boton de Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
             
                     // Se abrira una nueva pagina con el reporte del pago al prestamo
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    const page1 = await context.newPage();
 
                     // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
                     
                     // La pagina abierta con el reporte del pago al prestamo
-                    await newPage.close();
+                    await page1.close();
                 })
 
                 test('Liberar la Sesion', async () => {

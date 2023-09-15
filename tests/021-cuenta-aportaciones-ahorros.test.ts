@@ -221,6 +221,9 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await page.getByText('Cargar ').click(); 
                     const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
                     await subirFirma.setFiles(`${firma}`); // setFiles para elegir un archivo
+
+                    // La firma subida debe estar visible
+                    await expect(page.getByAltText('firma.jpg')).toBeVisible();
             
                     // Boton de Actualizar
                     const botonActualizar = page.locator('text=Actualizar');
@@ -302,7 +305,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     ]);
 
                     // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(8000);
+                    await newPage.waitForTimeout(4000);
                   
                     // Cerrar la nueva pagina con el reporte
                     await newPage.close();
@@ -337,7 +340,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

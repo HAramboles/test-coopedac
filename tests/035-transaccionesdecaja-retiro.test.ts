@@ -212,20 +212,17 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
             
                     // Hace click en Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
-            
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
+
                     // Se abrira una nueva pagina con el reporte del retiro
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(8000);
+                    await page1.waitForTimeout(4000);
                     
                     // La pagina abierta con el reporte del retiro se debe cerrar
-                    await newPage.close();
+                    await page1.close();
                 });
             
                 test('Actualizar la libreta luego de realizar el retiro', async () => {
