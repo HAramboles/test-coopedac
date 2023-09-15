@@ -114,6 +114,9 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         // Se abre una nueva ventana del navegador con el reporte de la anulacion
         const pag1 = await context.waitForEvent('page');
 
+        // Esperar que el reporte este visible
+        await pag1.waitForTimeout(8000);
+
         // Cerrar la ventana del reporte
         await pag1.close();
 

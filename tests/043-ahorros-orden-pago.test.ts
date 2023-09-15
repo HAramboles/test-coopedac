@@ -254,6 +254,9 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
                         await expect(botonAceptar).toBeVisible(),
                         await botonAceptar.click()
                     ]);
+
+                    // Esperar que el reporte este visible
+                    await newPage.waitForTimeout(8000);
                   
                     // La pagina abierta con el reporte se cierra
                     await newPage.close();
@@ -289,6 +292,9 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
                   
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

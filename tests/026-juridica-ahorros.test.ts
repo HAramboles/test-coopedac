@@ -18,8 +18,7 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 let cedulaEmpresa: string | null;
 let nombreEmpresa: string | null;
 
-// Cedula, nombre y apellido del firmante
-let cedulaFirmante: string | null;
+// Nombre y apellido del firmante
 let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
@@ -72,8 +71,7 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                 cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
                 nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
 
-                // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-                cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+                // Nombre y apellido de la persona relacionada almacenada en el state
                 nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
@@ -253,6 +251,9 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                         await expect(botonAceptar).toBeVisible(),
                         await botonAceptar.click()
                     ]);
+
+                    // Esperar que el reporte este visible
+                    await newPage.waitForTimeout(8000);
                   
                     // La pagina abierta con el reporte se cierra
                     await newPage.close();
@@ -288,6 +289,9 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                   
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

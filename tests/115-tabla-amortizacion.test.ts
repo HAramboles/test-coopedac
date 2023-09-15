@@ -126,6 +126,9 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
             await botonImprimir.click()
         ]);
 
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
+
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();
 
@@ -170,6 +173,9 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
             await expect(botonImprimir).toBeVisible(),
             await botonImprimir.click()
         ]);
+
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();

@@ -261,13 +261,21 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     // Click al boton de Aceptar del modal
                     await page.getByRole('button', {name: 'Aceptar'}).click();
 
-                    // Esperar que se abran dos nuevas pestañas con el recibo y el Reporte RTE
+                    // Esperar que se abran dos nuevas pestañas con los reportes
                     const page1 = await context.waitForEvent('page');
                     const page2 = await context.waitForEvent('page');
 
-                    // Cerrar las nuevas pestañas con el recibo y el reporte RTE
-                    await page1.close();
+                    // Esperar que el reporte este visible
+                    await page2.waitForTimeout(3000);
+
+                    // Cerrar la primera pagina
                     await page2.close();
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
+
+                    // Cerrar la segunda pagina
+                    await page1.close();
 
                     // Debe regresar a la pagina
                     await expect(page).toHaveURL(`${url_transacciones_caja}`);
@@ -398,9 +406,17 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     const page1 = await context.waitForEvent('page');
                     const page2 = await context.waitForEvent('page');
 
-                    // Cerrar las nuevas pestañas con el recibo de la orden y el reporte RTE
-                    await page1.close();
+                    // Esperar que el reporte este visible
+                    await page2.waitForTimeout(3000);
+
+                    // Cerrar la primera pagina
                     await page2.close();
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
+
+                    // Cerrar la segunda pagina
+                    await page1.close();
                 });
 
                 test('Liberar la Sesion', async () => {

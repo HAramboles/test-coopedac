@@ -78,6 +78,9 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         // Esperar que se abra una nueva ventana
         const page1 = await context.waitForEvent('page');
 
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
         // Cerrar la ventana
         await page1.close();
 
@@ -103,6 +106,9 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
 
         // Esperar que se abra una nueva ventana
         const page1 = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
 
         // Cerrar la ventana
         await page1.close();

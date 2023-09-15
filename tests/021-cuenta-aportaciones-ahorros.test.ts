@@ -237,6 +237,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await page.locator(`${ariaCerrar}`).last().click();
                     await page.locator(`${ariaCerrar}`).last().click();
                     await page.locator(`${ariaCerrar}`).last().click();
+                    await page.locator(`${ariaCerrar}`).last().click();
             
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
@@ -299,6 +300,9 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                         await expect(botonAceptar).toBeVisible(),
                         await botonAceptar.click()
                     ]);
+
+                    // Esperar que el reporte este visible
+                    await newPage.waitForTimeout(8000);
                   
                     // Cerrar la nueva pagina con el reporte
                     await newPage.close();
@@ -331,6 +335,9 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                   
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

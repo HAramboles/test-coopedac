@@ -220,6 +220,9 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                         await expect(botonAceptar).toBeVisible(),
                         await botonAceptar.click()
                     ]);
+
+                    // Esperar que el reporte este visible
+                    await newPage.waitForTimeout(8000);
                     
                     // La pagina abierta con el reporte del retiro se debe cerrar
                     await newPage.close();

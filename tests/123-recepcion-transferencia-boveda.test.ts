@@ -70,6 +70,9 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
         // Se abre una nueva ventana con el Reporte de la Recepcion Transferencia a Boveda
         const page1 = await context.waitForEvent('page');
 
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
         // Cerrar la ventana
         await page1.close();
     });
@@ -98,6 +101,9 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
 
         // Se abre una nueva ventana con el Reporte de la Recepcion Transferencia a Boveda
         const page1 = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
 
         // Cerrar la ventana
         await page1.close();

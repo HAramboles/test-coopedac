@@ -76,6 +76,9 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         // Cerrar la pagina con el reporte
         await pageAportaciones.close();
 
+        // Esperar que el reporte este visible
+        await pageAportaciones.waitForTimeout(8000);
+
         // Cerrar el mensaje que se muestra
         await page.locator(`${ariaCerrar}`).click();
     });
@@ -92,12 +95,21 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         expect(contratoAportacionesPreferentes).toBeVisible();
         contratoAportacionesPreferentes.click();
 
-        // Esperar que se abra dos nuevas pestañas con los reportes de la cuenta
+        // Esperar que se abran dos nuevas pestañas con los reportes
         const page1 = await context.waitForEvent('page');
         const page2 = await context.waitForEvent('page');
 
-        await page1.close();
+        // Esperar que el reporte este visible
+        await page2.waitForTimeout(3000);
+
+        // Cerrar la primera pagina
         await page2.close();
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
+        // Cerrar la segunda pagina
+        await page1.close();
 
         // Cerrar el mensaje que se muestra
         await page.locator(`${ariaCerrar}`).click();
@@ -115,6 +127,9 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Esperar que se abra una nueva pestaña con el reporte
         const pageAhorros = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await pageAhorros.waitForTimeout(8000);
 
         // Cerrar la pagina con el reporte
         await pageAhorros.close();
@@ -136,6 +151,9 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         // Esperar que se abra una nueva pestaña con el reporte
         const pageAhorrosNomina = await context.waitForEvent('page');
 
+        // Esperar que el reporte este visible
+        await pageAhorrosNomina.waitForTimeout(8000);
+
         // Cerrar la pagina con el reporte
         await pageAhorrosNomina.close();
 
@@ -156,6 +174,9 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         // Esperar que se abra una nueva pestaña con el reporte
         const pageAhorrosOrdenPago = await context.waitForEvent('page');
 
+        // Esperar que el reporte este visible
+        await pageAhorrosOrdenPago.waitForTimeout(8000);
+
         // Cerrar la pagina con el reporte
         await pageAhorrosOrdenPago.close();
 
@@ -174,12 +195,21 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         expect(contratoFinancierosPagaderas).toBeVisible();
         contratoFinancierosPagaderas.click();
 
-        // Esperar que se abra dos nuevas pestañas con los reportes de la cuenta
+        // Esperar que se abran dos nuevas pestañas con los reportes
         const page1 = await context.waitForEvent('page');
         const page2 = await context.waitForEvent('page');
 
-        await page1.close();
+        // Esperar que el reporte este visible
+        await page2.waitForTimeout(3000);
+
+        // Cerrar la primera pagina
         await page2.close();
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
+        // Cerrar la segunda pagina
+        await page1.close();
 
         // Cerrar el mensaje que se muestra
         await page.locator(`${ariaCerrar}`).click();
@@ -197,6 +227,9 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Esperar que se abra una nueva pestaña con el reporte
         const pageFinancierosReinvertidas = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await pageFinancierosReinvertidas.waitForTimeout(8000);
 
         // Cerrar la pagina con el reporte
         await pageFinancierosReinvertidas.close();
@@ -217,6 +250,9 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Esperar que se abra una nueva pestaña con el reporte
         const pageInversionPagaderas = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await pageInversionPagaderas.waitForTimeout(8000);
 
         // Cerrar la pagina con el reporte
         await pageInversionPagaderas.close();

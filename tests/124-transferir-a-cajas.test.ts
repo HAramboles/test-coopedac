@@ -95,6 +95,9 @@ test.describe.serial('Tranferir desde Boveda a Caja', async () => {
         // Debe abrirse una nueva ventana con el reporte de transferencia
         const page1 = await context.waitForEvent('page');
 
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
         // Cerrar la nueva pestaña
         await page1.close();
 

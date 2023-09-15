@@ -242,6 +242,9 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
+
                     // Cerrar la nueva pestaña
                     await page1.close();
                 });
@@ -325,6 +328,9 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                   
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();
@@ -427,13 +433,21 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     await expect(botonFinalizar).toBeVisible();
                     await botonFinalizar.click();
                     
-                    // Esperar que se abran dos pestañas
+                    // Esperar que se abran dos nuevas pestañas con los reportes
                     const page1 = await context.waitForEvent('page');
                     const page2 = await context.waitForEvent('page');
 
-                    // Cerrar las dos paginas abiertas
-                    await page1.close();
+                    // Esperar que el reporte este visible
+                    await page2.waitForTimeout(3000);
+
+                    // Cerrar la primera pagina
                     await page2.close();
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
+
+                    // Cerrar la segunda pagina
+                    await page1.close();
 
                     // Debe regresar a la pagina de los certificados
                     await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_pagaderas}`);

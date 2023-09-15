@@ -61,13 +61,21 @@ test.describe.serial('Prueba con la Carta de Atraso', async () => {
         // Click al boton de Generar del modal
         await page.getByRole('button', {name: 'Generar'}).click();
 
-        // Se abre una nueva ventana con la carta de atraso
+        // Esperar que se abran dos nuevas pestañas con los reportes
         const page1 = await context.waitForEvent('page');
         const page2 = await context.waitForEvent('page');
 
-        // Cerrar la pagina con la carta de Atraso
-        await page1.close();
+        // Esperar que el reporte este visible
+        await page2.waitForTimeout(3000);
+
+        // Cerrar la primera pagina
         await page2.close();
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
+        // Cerrar la segunda pagina
+        await page1.close();
 
         // Debe regresar a la pagina de Carta de Atraso
         await expect(page.locator('h1').filter({hasText: 'CARTA DE ATRASO'})).toBeVisible();

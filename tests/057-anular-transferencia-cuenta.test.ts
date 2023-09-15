@@ -57,14 +57,16 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('TRC - TRANSFERENCIA');
 
         // Buscar la cuenta de origen
-        await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
+        // await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).first().fill('ARYA CRUZ');
         // Click a la opcion de Ahorros Normales
         await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
 
         // Buscar la cuenta de destino
-        await page.locator(`${selectBuscar}`).last().fill(`${cedula}`);
+        //await page.locator(`${selectBuscar}`).last().fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).last().fill('ARYA CRUZ');
         // Click a la opcion de Aportaciones
-        await page.getByText('APORTACIONES |').click();
+        await page.getByRole('option', {name: 'APORTACIONES |'}).getByText('APORTACIONES |').click();
 
         // Fecha de Inicio y Fin deben tener el dia actual
         await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(new Date())}`);

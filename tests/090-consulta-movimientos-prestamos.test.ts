@@ -95,6 +95,9 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
             await botonImprimir.click()
         ]);
 
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
+
         // Cerrar la pagina con el reporte
         await newPage.close();
     });
@@ -114,6 +117,9 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
             await imprimirMovimiento1.click()
         ]);
 
+        // Esperar que el reporte este visible
+        await pageMovimiento1.waitForTimeout(8000);
+
         // Cerrar la pagina
         await pageMovimiento1.close();
 
@@ -129,6 +135,9 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
             await expect(imprimirMovimiento2).toBeVisible(),
             await imprimirMovimiento2.click()
         ]);
+
+        // Esperar que el reporte este visible
+        await pageMovimiento2.waitForTimeout(8000);
 
         // Cerrar la pagina
         await pageMovimiento2.close();

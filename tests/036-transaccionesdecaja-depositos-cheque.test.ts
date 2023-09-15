@@ -244,6 +244,9 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
+
                     // Cerrar la nueva pestaña
                     await page1.close();
                 });
@@ -263,8 +266,7 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                     // Cerrar las alertas que aparecen
                     await page.locator(`${dataCerrar}`).first().click();
                     await page.locator(`${dataCerrar}`).first().click();
-                    await page.locator(`${dataCerrar}`).first().click();
-                    await page.locator(`${dataCerrar}`).last().click();
+                    await page.locator(`${dataCerrar}`).first().click();;
                 });
 
                 test('Liberar la Sesion', async () => {

@@ -86,6 +86,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
             await imprimirAportaciones.click()
         ]);
 
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
+
         // Cerrar la pagina con la el reporte del estado de la cuenta
         await newPage.close();
 
@@ -130,6 +133,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
             await imprimirAportacionesPreferentes.click()
         ]);
 
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
+
         // Cerrar la pagina con el reporte del estado de la cuenta
         await newPage.close();
 
@@ -173,6 +179,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
             await expect(imprimirAhorrosNormales).toBeVisible(),
             await imprimirAhorrosNormales.click()
         ]);
+
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();
@@ -240,6 +249,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
             await imprimirAhorrosPorNomina.click()
         ]);
 
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
+
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();
 
@@ -283,6 +295,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
             await imprimirOrdenPago.click()
         ]);
 
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
+
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await newPage.close();
 
@@ -325,6 +340,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
             await expect(imprimirFinancierosPagaderas).toBeVisible(),
             await imprimirFinancierosPagaderas.click()
         ]);
+
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
 
         // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
         await newPage.close();
@@ -375,6 +393,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
             await imprimirFinancierosReinvertidas.click()
         ]);
 
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
+
         // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
         await newPage.close();
 
@@ -420,6 +441,9 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
             await expect(imprimirFinancierosReinvertidas).toBeVisible(),
             await imprimirFinancierosReinvertidas.click()
         ]);
+
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
 
         // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
         await newPage.close();

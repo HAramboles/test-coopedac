@@ -79,6 +79,9 @@ test.describe.serial('Pruebas con el Desembolso Neto', () => {
         // Esperar que se abra una nueva pagina
         const page1 = await context.newPage();
 
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
         // Cerrar la pagina con el reporte
         await page1.close();
     });

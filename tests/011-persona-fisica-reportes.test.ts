@@ -59,7 +59,8 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                 await page.goto(`${url_base}`);
 
                 // Boton de Editar Cuenta
-                botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
+                // botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
+                botonEditarCuenta = page.getByRole('row', {name: 'ARYA CRUZ'}).getByRole('button', {name: 'edit'});
 
                 // Cedula, nombre y apellido de la persona
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
@@ -86,7 +87,8 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                 await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
 
                 // Buscar al menor
-                await page.locator(`${formBuscar}`).fill(`${cedula}`);
+                // await page.locator(`${formBuscar}`).fill(`${cedula}`);
+                await page.locator(`${formBuscar}`).fill('ARYA CRUZ');
             });
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
@@ -119,7 +121,7 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
             
                 test('Imprimir Reporte de Admision', async () => {
                     // El titulo de relacionados del socio debe estar visible
-                    await expect(page.locator('h1').filter({ hasText: 'RELACIONADOS DEL SOCIO' })).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
             
                     // Boton Reporte de Admision
                     const generarReporte = page.getByRole('button', {name: 'Admisión'});
@@ -129,13 +131,16 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
+
                     // Cerrar la nueva pestaña
                     await page1.close();
                 });
             
                 test('Imprimir Reporte de Conozca a su Socio', async () => {
                     // El titulo de relacionados del socio debe estar visible
-                    await expect(page.locator('h1').filter({ hasText: 'RELACIONADOS DEL SOCIO' })).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
             
                     // Boton Reporte de Conozca a su Socio
                     const generarReporte = page.getByRole('button', {name: 'Conozca a su Socio'});
@@ -144,6 +149,9 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
 
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
 
                     // Cerrar las dos paginas
                     await page1.close();

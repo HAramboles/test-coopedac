@@ -104,6 +104,9 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Caja', () => {
         // Esperar a que se abra una nueva ventana
         const page1 = await context.waitForEvent('page');
 
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
         // Cerrar la ventana con el recibo
         await page1.close();
 

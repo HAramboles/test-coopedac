@@ -138,6 +138,9 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Esperar que se abra una nueva ventana con el reporte de todo el historial de pagos
         const page1 = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
         
         // Cerrar la pagina con el reporte 
         await page1.close(); 
@@ -193,20 +196,24 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
     test('Realizar el pago', async () => {
         // Boton Aplicar
         const botonAplicar = page.getByRole('button', {name: 'Aplicar'});
-        // Esperar que se abran dos ventanas con los reportes
-        const [newPage, newPage2] = await Promise.all([
-            context.waitForEvent('page'),
-            context.waitForEvent('page'),
-            // Click al boton de Aceptar
-            await expect(botonAplicar).toBeVisible(),
-            await botonAplicar.click()
-        ]);
+        await expect(botonAplicar).toBeVisible();
+        await botonAplicar.click();
 
-        // Cerrar la primera pagina 
-        await newPage.close();
+        // Esperar que se abran dos nuevas pestañas con los reportes
+        const page1 = await context.waitForEvent('page');
+        const page2 = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await page2.waitForTimeout(3000);
+
+        // Cerrar la primera pagina
+        await page2.close();
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
 
         // Cerrar la segunda pagina
-        await newPage2.close();
+        await page1.close();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

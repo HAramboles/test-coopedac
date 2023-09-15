@@ -447,19 +447,28 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(botonFinalizar).toBeVisible();
         await botonFinalizar.click();
 
-        // Se deben abrir tres nuevas ventanas con diferentes reportes
+        // Esperar que se abran tres nuevas pestañas con los reportes
         const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page'); 
+        const page2 = await context.waitForEvent('page');
         const page3 = await context.waitForEvent('page');
-        
-        // Cerrar la pagina con la solicitud
-        await page1.close();
 
-        // Cerrar la pagina con la tabla de amortizacion
+        // Esperar que el reporte este visible
+        await page3.waitForTimeout(3000);
+
+        // Cerrar la primera pagina
+        await page3.close();
+
+        // Esperar que el reporte este visible
+        await page2.waitForTimeout(3000);
+
+        // Cerrar la primera pagina
         await page2.close();
 
-        // Cerrar la pagina con el tercer reporte
-        await page3.close();
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
+        // Cerrar la segunda pagina
+        await page1.close();
     });
 
     test('Agregar una Observacion al Prestamo', async () => {
@@ -533,19 +542,28 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Se deben abrir tres nuevas ventanas con diferentes reportes
+        // Esperar que se abran tres nuevas pestañas con los reportes
         const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page'); 
+        const page2 = await context.waitForEvent('page');
         const page3 = await context.waitForEvent('page');
-        
-        // Cerrar la pagina con la solicitud
-        await page1.close();
 
-        // Cerrar la pagina con la tabla de amortizacion
+        // Esperar que el reporte este visible
+        await page3.waitForTimeout(3000);
+
+        // Cerrar la primera pagina
+        await page3.close();
+
+        // Esperar que el reporte este visible
+        await page2.waitForTimeout(3000);
+
+        // Cerrar la primera pagina
         await page2.close();
 
-        // Cerrar la pagina con el tercer reporte
-        await page3.close();
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
+        // Cerrar la segunda pagina
+        await page1.close();
     });
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Aprobado', async () => {
@@ -598,6 +616,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Esperar que se abra una nueva pestaña con el reporte
         const page1 = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
         
         // Cerrar la pagina con el reporte 
         await page1.close();
@@ -679,6 +700,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Esperar que se abra una nueva pestaña con el reporte
         const page1 = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
         
         // Cerrar la pagina con el reporte 
         await page1.close();

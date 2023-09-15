@@ -99,6 +99,9 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
             await expect(botonImprimirEstado).toBeVisible(),
             await botonImprimirEstado.click()
         ]);
+
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
         
         // Cerrar la pagina con el reporte del Estado a la Fecha de Corte
         await newPage.close();
@@ -193,6 +196,9 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
             await expect(botonRecibos).toBeVisible(),
             await botonRecibos.click()
         ]);
+
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
         
         // Cerrar la pagina con el reporte de todos los recibos
         await newPage.close();

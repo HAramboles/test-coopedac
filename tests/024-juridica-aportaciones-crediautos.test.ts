@@ -219,6 +219,9 @@ test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas co
                         await expect(botonAceptar).toBeVisible(),
                         await botonAceptar.click()
                     ]);
+
+                    // Esperar que el reporte este visible
+                    await newPage.waitForTimeout(8000);
                   
                     // La pagina abierta con el reporte se cierra
                     await newPage.close();

@@ -146,8 +146,21 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         // La URL debe cambiar
         await expect(page1).toHaveURL(/\/estado_cuenta_consolidado/);
 
+        // El titulo debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTAS POR COBRAR'})).toBeVisible();
+
+        // Las secciones de los datos del prestamo deben estar visibles
+        await expect(page.getByText('Situación del movimiento')).toBeVisible();
+        await expect(page.getByText('Datos de préstamo')).toBeVisible();
+        await expect(page.getByText('Historial de pagos')).toBeVisible();
+        await expect(page.getByText('Cuotas pendientes')).toBeVisible();
+        await expect(page.getByText('Ver Tabla de Amortización')).toBeVisible();
+
         // Cerrar la nueva pestaña
         await page1.close();
+
+        // Debe regresar a la pagina de Estado de Cuentas
+        await expect(page).toHaveURL(`${url_estado_cuentas}`);
     });
 
     test.afterAll(async () => { // Despues de las pruebas

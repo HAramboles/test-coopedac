@@ -182,6 +182,9 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
             await generarCarta.click()
         ]);
 
+        // Esperar que el reporte este visible
+        await newPage.waitForTimeout(8000);
+
         // Cerrar la pagina con la carta
         await newPage.close();
     });

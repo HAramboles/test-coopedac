@@ -433,12 +433,20 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     await botonFinalizar.click();
 
                     // Esperar que se abran dos nuevas pestañas con los reportes
-                    const page1 = await context.newPage();
-                    const page2 = await context.newPage();
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
 
-                    // Cerrar las dos paginas
-                    await page1.close();
+                    // Esperar que el reporte este visible
+                    await page2.waitForTimeout(3000);
+
+                    // Cerrar la primera pagina
                     await page2.close();
+
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
+
+                    // Cerrar la segunda pagina
+                    await page1.close();
                 });
 
                 test('Debe regresar a la pagina de Registrar persona', async () => {

@@ -235,6 +235,9 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
                         await expect(botonAceptar).toBeVisible(),
                         await botonAceptar.click()
                     ]);
+
+                    // Esperar que el reporte este visible
+                    await newPage.waitForTimeout(8000);
                     
                     // La pagina abierta con el reporte del pago al prestamo
                     await newPage.close();
@@ -321,6 +324,9 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
                         await expect(botonAceptar).toBeVisible(),
                         await botonAceptar.click()
                     ]);
+
+                    // Esperar que el reporte este visible
+                    await newPage.waitForTimeout(8000);
                     
                     // La pagina abierta con el reporte del pago al prestamo
                     await newPage.close();

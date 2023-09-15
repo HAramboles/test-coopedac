@@ -106,10 +106,13 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await page.getByRole('button', {name: 'Aceptar'}).click();
         
         // Se abre una nueva ventana del navegador con el reporte de anulacion
-        const pag1 = await context.waitForEvent('page');
+        const page1 = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
 
         // Cerrar la ventana del reporte
-        await pag1.close();
+        await page1.close();
 
         // En la pagina de la Anular Pago a Prestamo debe mostrarse un mensaje modal de operacion exitosa
         await expect(page.locator('text=Operación Exitosa')).toBeVisible();

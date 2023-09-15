@@ -247,6 +247,9 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con l
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
+                    // Esperar que el reporte este visible
+                    await page1.waitForTimeout(8000);
+
                     // Cerrar la nueva pestaña
                     await page1.close();
                     

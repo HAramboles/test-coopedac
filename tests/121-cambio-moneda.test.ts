@@ -170,6 +170,9 @@ test.describe.serial('Pruebas con el Cambio de Moneda', () => {
         // Esperar a que se abra una nueva pestaña
         const page1 = await context.waitForEvent('page');
 
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(8000);
+
         // Cerrar la nueva pestaña
         await page1.close();
 
