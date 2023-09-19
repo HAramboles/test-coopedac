@@ -61,15 +61,8 @@ test.describe.serial('Prueba con la Carta de Atraso', async () => {
         // Click al boton de Generar del modal
         await page.getByRole('button', {name: 'Generar'}).click();
 
-        // Esperar que se abran dos nuevas pestañas con los reportes
+        // Esperar que se abra una nueva ventana con el reporte de la Carta de Atraso
         const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await page2.waitForTimeout(3000);
-
-        // Cerrar la primera pagina
-        await page2.close();
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);

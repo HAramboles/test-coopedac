@@ -19,7 +19,8 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
         // Crear el browser
         browser = await chromium.launch({
             headless: browserConfig.headless,
-            args: browserConfig.args
+            args: browserConfig.args,
+            slowMo: browserConfig.slowmo
         });
 
         // Crear el context
@@ -76,7 +77,7 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
 
     test('Debe mostrarse el Credito al Prestamo para Imprimir', async () => {
         // Estado
-        await expect(page.getByText('A', {exact: true})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Concepto
         await expect(page.getByText('ABONO A CAPITAL')).toBeVisible();
@@ -89,11 +90,14 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
 
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'printer'});
-        await expect(botonImprimir).toBeVisible();
-        await botonImprimir.click();
 
         // Esperar que se abra una nueva pestaña con el reporte
-        const page1 = await context.waitForEvent('page');
+        const [page1] = await Promise.all([
+            await context.newPage(),
+            // Click al boton de Imprimir
+            await expect(botonImprimir).toBeVisible(),
+            await botonImprimir.click()
+        ]);
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);

@@ -338,9 +338,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=8`);
 
         // Los tres titulos deben estar visibles
-        await expect(page.getByRole('heading', {name: 'Familiares mas Cercanos'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'Referencias Morales o Personales'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'Referencias Comerciales'})).toBeVisible();
+        await expect(page.getByText('Familiares mas Cercanos')).toBeVisible();
+        await expect(page.getByText('Referencias Morales o Personales')).toBeVisible();
+        await expect(page.getByText('Referencias Comerciales')).toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();
@@ -349,9 +349,6 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
     test('Paso 9 - Documentos', async () => {
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=9`);
-
-        // El titulo principal debe esatr visible
-        await expect(page.getByRole('heading', {name: 'Lista de documentos'})).toBeVisible();
         
         // Subir Cedula Deudor
         const subirCartaTrabajoPromesa = page.waitForEvent('filechooser');
@@ -369,7 +366,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByRole('dialog', {name: 'CEDULA DEUDOR'})).toBeVisible();
 
         // Cerrar la imagen de la firma
-        await page.locator(`${dataCerrar}`).click();
+        await page.getByLabel('Close', {exact: true}).click();
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
@@ -557,7 +554,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(botonImprimirContrato).toBeVisible();
 
         // Desembolsar la mitad de la linea, es decir, 5000 pesos
-        await page.getByRole('cell', {name: 'RD$ 10,000.00 edit'}).getByText('RD$ 10,000.00').click();
+        await page.getByText('RD$ 10,000.00').nth(1).click();
         await page.locator('#form_MONTO_DESEMBOLSAR').click();
         await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 5000');
 

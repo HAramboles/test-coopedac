@@ -335,7 +335,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.locator(`${formBuscar}`).fill(`${nombrePersona} ${apellidoPersona}`);
 
         // Click a la opcion de la persona buscada
-        await page.getByText(`${nombrePersona} ${apellidoPersona}`).first().click();
+        await page.getByText(`${nombrePersona} ${apellidoPersona}`).click();
 
         // Se abre un modal colocar el tipo de relacion
         await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
@@ -401,9 +401,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1/create?step=8`);
 
         // Los tres titulos deben estar visibles
-        await expect(page.getByRole('heading', {name: 'Familiares mas Cercanos'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'Referencias Morales o Personales'})).toBeVisible();
-        const tituloReferenciasComerciales = page.getByRole('heading', {name: 'Referencias Comerciales'});
+        await expect(page.getByText('Familiares mas Cercanos')).toBeVisible();
+        await expect(page.getByText('Referencias Morales o Personales')).toBeVisible();
+        const tituloReferenciasComerciales = page.getByText('Referencias Comerciales');
         await expect(tituloReferenciasComerciales).toBeVisible();
 
         // Click al titulo de Referencias Comerciales

@@ -246,6 +246,20 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                     // Debe regresar a la pagina de inicio de las Cuentas de Ahorros
                     await expect(page).toHaveURL(`${url_cuentas_ahorros_orden_pago}`);
                 });
+
+                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
+                    // Boton de seleccionar captaciones
+                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
+                    await expect(botonCaptaciones).toBeVisible();
+                    // Click al boton
+                    await botonCaptaciones.click();
+
+                    // Tipos de cuentas
+                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
+                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
+                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
+                });
             };
 
             test.afterAll(async () => { // Despues de las pruebas

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, ariaCerrar, browserConfig, inputDiaPago } from './utils/dataTests';
+import { url_base, selectBuscar, ariaCerrar, browserConfig, inputDiaPago, formComentario } from './utils/dataTests';
 import { url_cobros_oficina } from './utils/urls';
 
 // Variables globales
@@ -11,6 +11,11 @@ let page: Page;
 let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
+
+// Cedula, nombre y apellido del tercero
+let cedulaTercero: string | null;
+let nombreTercero: string | null;
+let apellidoTercero: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con Cobros de Oficina', () => {
@@ -36,6 +41,11 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem("apellidoPersona"));
+
+        // Cedula, nombre y apellido de la persona relacioanda almacenada en el state
+        cedulaTercero = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionada'));
+        nombreTercero = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+        apellidoTercero = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
     test('Ir a la opcion de Cobros de Oficina', async () => {
@@ -63,10 +73,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Debe aparecer un mensaje de que la cuenta no se encontro
-        await expect(page.locator('text=No se ha encontrado la cuenta digitada')).toBeVisible();
-
-        // Cerrar el mensaje
-        await page.locator(`${ariaCerrar}`).click();
+        await expect(page.locator('text=No se han encontrado resultados')).toBeVisible();
 
         // Buscar un socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
@@ -74,7 +81,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Debe estar visible el credito de la persona
-        await expect(page.getByText('CRÉDITO HIPOTECARIO')).toBeVisible();
+        await expect(page.getByText('LÍNEA DE CRÉDITO')).toBeVisible();
 
         // Hacer un pago al credito
         await page.locator('[aria-label="Expandir fila"]').click();
@@ -96,20 +103,20 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
         // Prestamo
-        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDIAUTOS');
+        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('LÍNEA DE CRÉDITO ');
 
         // Cuenta Cobro
         // await expect(page.locator('#form_DESCRIPCION_CUENTA_COBRO')).toHaveValue('AHORROS NORMALES');
 
         // Cuota
-        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 3,015.9');
+        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 83.33');
 
         // Garantia
-        await expect(page.getByText('Sin garantía')).toBeVisible();
+        await expect(page.getByText('AHORROS NORMALES')).toBeVisible();
 
         // Linea de Credito
-        await expect(page.getByText('Línea de Crédito')).toBeVisible();
-        await expect(page.getByText('No', {exact: true})).toBeVisible();
+        await expect(page.getByText('Línea de Crédito', {exact: true})).toBeVisible();
+        await expect(page.getByText('Si', {exact: true})).toBeVisible();
 
         // Dia de Pago
         await expect(page.locator(`${inputDiaPago}`)).toBeDisabled();
@@ -128,6 +135,9 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Esperar que se abra una nueva ventana con el reporte de todo el historial de pagos
         const page1 = await context.waitForEvent('page');
+
+        // Esperar que el reporte este visible
+        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte 
         await page1.close(); 
@@ -136,37 +146,27 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
-    test('Opciones de Pago - Adelantar Cuotas', async () => {
+    test('Opciones de Pago', async () => {
         // Titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'OPCIONES DE PAGO'})).toBeVisible();
 
         // Cuotas pendientes
         await expect(page.getByText('0 cuotas pendientes RD 0.00')).toBeVisible();
 
+        // Adelantar cuotas
+        await expect(page.getByText('Adelantar cuotas')).toBeVisible();
+
         // Saldo total
         await expect(page.getByText('Saldo total')).toBeVisible();
 
-        // Click a Adelantar cuotas
-        const adelantarCuotas = page.getByText('Adelantar cuotas');
-        await expect(adelantarCuotas).toBeVisible();
-        await adelantarCuotas.click();
+        // Click a la opcion de Saldo total
+        await page.getByText('Saldo total').click();
 
-        // Aparece un modal para seleccionar la cuota
-        await expect(page.locator('text=SELECCIÓN DE CUOTAS')).toBeVisible();
-
-        // Seleccionar la primera cuota
-        await page.getByRole('checkbox').first().click();
-
-        // Click al boton de Aceptar
-        await page.getByRole('button', {name: 'Aceptar'}).click();
-
-        // En el input total a pagar deberia colcarse la cuota elegida
-        const totalPagar = page.locator('#form_A_PAGAR');
-        await expect(totalPagar).toBeDisabled();
-        await expect(totalPagar).toHaveValue('RD$ 3,016');
+        // Agregar un comnetario
+        await page.locator(`${formComentario}`).fill('Saldar el Prestamo');
     });
 
-    test('Cobrar de Cuenta', async () => {
+    test('Cobrar de una Cuenta de Tercero', async () => {
         // Via de cobro
         await expect(page.locator('text=Vía de cobro')).toBeVisible();
 
@@ -175,9 +175,16 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(cobrarCuenta).toBeVisible();
         await page.locator('(//INPUT[@type="radio"])[5]').click();
 
-        // Seleccionar la cuenta de ahorros del socio
-        await page.getByRole('dialog', {name: 'Pago a Préstamo'}).locator(`${selectBuscar}`).click();
-        await page.getByText('AHORROS NORMALES').click();
+        // Click a la opciond de Usar cuenta de tercero
+        await page.locator('text=Usar cuenta de tercero').click();
+
+        // Digitar el nombre de un tercero
+        const buscarCuenta = page.getByRole('dialog', {name: 'Pago a Préstamo'}).locator(`${selectBuscar}`);
+        await buscarCuenta.click();
+        await buscarCuenta.fill(`${nombreTercero} ${apellidoTercero}`);
+
+        // Elegir la cuenta de Ahorros Normales
+        await page.getByRole('option', {name: 'AHORROS NORMALES |'}).click();
     });
 
     test('Realizar el pago', async () => {

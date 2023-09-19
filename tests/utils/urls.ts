@@ -69,6 +69,7 @@ export const url_tabla_amortizacion = `${url_base}/tabla_amortizacion/01-3-4-2/`
 export const url_reimprimir_libreta = `${url_base}/reimp_libreta/01-4-1-5-1/`;
 export const url_reimprimir_recibo = `${url_base}/reimp_recibo/01-4-1-5-2/`;
 export const url_cobros_servicios_caja = `${url_base}/cobro_servicios/01-4-1-2-7/`;
+export const url_anular_cobro_servicios = `${url_base}/anular_cobro_servicios/01-4-1-6-6/`;
 export const url_denominaciones_caja = `${url_base}/denominaciones_cajas/01-4-1-4-2/`;
 export const url_historico_caja = `${url_base}/historial_cajas/01-4-1-4-1/`;
 export const url_cambio_moneda = `${url_base}/cambio_monedas/01-4-1-2-8/`;

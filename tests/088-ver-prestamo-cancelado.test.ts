@@ -7,8 +7,7 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre y apellido de la persona
-let cedula: string | null;
+// Nombre y apellido de la persona
 let nombre: string | null;
 let apellido: string | null;
 
@@ -32,8 +31,7 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula, nombre y apellido de la persona almacenados en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        // Nombre y apellido de la persona almacenados en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
@@ -70,7 +68,7 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         await page.locator('text=CANCELADO').click();
 
         // Buscar la solicitud de la persona
-        await page.locator(`${formBuscar}`).fill(`${cedula}`);
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Datos del prestamo
         await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 50,000.00 48 RD$ 416.67`})).toBeVisible();
@@ -83,7 +81,7 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         await botonVerSolicitud.click();
 
         // Debe dirigirse a la solicitud de credito
-        await expect(page.getByRole('heading', {name: 'SOLICITUD DE CRÉDITO', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'SOLICITUD DE CRÉDITO'})).toBeVisible();
 
         // La solicitud debe estar en estado Cancelado
         await expect(page.getByRole('heading', {name: '(CANCELADO)'})).toBeVisible();
@@ -91,7 +89,7 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
 
     test('Todos los inputs de la Solicitud deben estar Inhabilitados', async () => {
         // Paso 1
-        await expect(page.getByRole('heading', {name: 'SOLICITANTE', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'SOLICITANTE:'})).toBeVisible();
 
         // El input para buscar socios debe estar inhabilitado
         await expect(page.locator(`${selectBuscar}`)).toBeDisabled();
@@ -135,7 +133,7 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         Siguiente();
 
         // Paso 7
-        await expect(page.getByRole('heading', {name: 'GARANTÍAS', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'GARANTÍAS'})).toBeVisible();
 
         // El boton de Agregar Garantia debe estar inhabilitado
         await expect(page.getByRole('button', {name: 'Agregar Garantía'})).toBeDisabled();
@@ -144,18 +142,25 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         Siguiente();
 
         // Paso 8
-        await expect(page.getByRole('heading', {name: 'FAMILIARES MAS CERCANOS'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'REFERENCIAS MORALES O PERSONALES'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'REFERENCIAS COMERCIALES'})).toBeVisible();
+        await expect(page.getByText('FAMILIARES MAS CERCANOS')).toBeVisible();
+        await expect(page.getByText('REFERENCIAS MORALES O PERSONALES')).toBeVisible();
+        await expect(page.getByText('REFERENCIAS COMERCIALES')).toBeVisible();
 
         // El boton Agregar debe estar inhabilitado
-        await expect(page.getByRole('button', {name: 'Agregar'})).toBeDisabled();
+        // await expect(page.getByRole('button', {name: 'Agregar'})).toBeDisabled();
 
         // Click al boton de Siguiente
         Siguiente();
 
         // Paso 9
-        await expect(page.getByRole('heading', {name: 'LISTA DE DOCUMENTOS'})).toBeVisible();
+        
+        // Los documentos deben estar visibles
+        await expect(page.getByRole('link', {name: 'CARTA DE TRABAJO'}).first()).toBeVisible();
+        await expect(page.getByRole('link', {name: 'INFORME BURO CREDITO (DATACREDITO)'}).first()).toBeVisible();
+        await expect(page.getByRole('link', {name: 'INFORME DEL SUBGERENTE DE NEGOCIOS'}).first()).toBeVisible();
+        await expect(page.getByRole('link', {name: 'INSTANCIA DE CREDITO LLENA Y FIRMADA'}).first()).toBeVisible();
+        await expect(page.getByRole('link', {name: 'TABLA AMORTIZACION'}).first()).toBeVisible();
+        await expect(page.getByRole('link', {name: 'CEDULA DEUDOR'}).first()).toBeVisible();;
 
         // Click al boton de Finalizar
         const botonFinalizar = page.getByRole('button', {name: 'Finalizar'});

@@ -99,7 +99,7 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
         await expect(page.locator('#form_CAMB_FECHA')).toHaveValue(`${dosMesDespues}`);
 
         // Distribucion de Cuota
-        //await page.getByLabel('Siguiente Cuota').check();
+        await page.getByLabel('Siguiente Cuota').check();
 
         // Razones
         await expect(page.getByText('NECESITA MAS TIEMPO PARA LOS PAGOS')).toBeVisible();
@@ -107,9 +107,9 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
 
     test('Confirmar la Reprogramacion del Credito', async () => {
         // Boton Actualizar
-        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
-        await expect(botonActualizar).toBeVisible();
-        await botonActualizar.click();
+        const botonAceptar = page.getByRole('button', {name: 'Actualizar'});
+        await expect(botonAceptar).toBeVisible();
+        await botonAceptar.click();
 
         // Debe mostrarse un mensaje de que la operacion fue un exito
         await expect(page.locator('text=Solicitud de cambios productos actualizada exitosamente.')).toBeVisible();

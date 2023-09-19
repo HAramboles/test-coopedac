@@ -82,7 +82,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('cell', {name: 'RD'})).toBeVisible();
 
         // Tasa del Credito
-        await expect(page.getByText('10.00%	')).toBeVisible();
+        await expect(page.getByRole('cell', {name: '10.00%'}).first()).toBeVisible();
 
         // Monto Desembolsado del Credito
         await expect(page.getByText('50,000.00').first()).toBeVisible();

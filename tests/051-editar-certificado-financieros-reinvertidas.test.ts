@@ -309,6 +309,19 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     // Debe regresar a la pagina de inicio de las Cuentas de Certificados Financieros Reinvertidos
                     await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_reinvertidas}`);
                 });
+
+                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
+                    // Boton de seleccionar captaciones
+                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
+                    await expect(botonCaptaciones).toBeVisible();
+                    // Click al boton
+                    await botonCaptaciones.click();
+
+                    // Tipos de cuentas
+                    await expect(page.locator('text=FINANCIEROS REINVERTIDAS')).toBeVisible();
+                    await expect(page.locator('text=FINANCIEROS PAGADERAS')).toBeVisible();
+                    await expect(page.locator('text=INVERSION PAGADERAS')).toBeVisible();
+                });
             };
 
             test.afterAll(async () => { // Despues de las pruebas

@@ -76,11 +76,11 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
 
         // Cuota
         const cuota = page.locator('#form_CUOTA');
-        await expect(cuota).toHaveValue('$ 416.67');
+        await expect(cuota).toHaveValue('RD$ 416.67');
 
         // Deuda total
         const deudaTotal = page.locator('#form_DEUDA_CAPTITAL');
-        await expect(deudaTotal).toHaveValue('$ 50,000');
+        await expect(deudaTotal).toHaveValue('RD$ 50,000');
 
         // Moneda
         // const moneda = page.locator('#form_ID_MONEDA');

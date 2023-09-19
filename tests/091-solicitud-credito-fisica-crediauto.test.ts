@@ -93,7 +93,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator(`text=${nombre} ${apellido}`).click();
 
         // El nombre de la persona debe estar visible
-        await expect(page.locator('h1').filter({hasText: `${nombre} $${apellido}`})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
         // Ver la firma del solicitante
         const botonVerFirmas = page.locator('text=Ver firmas');
@@ -108,6 +108,12 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // Click al boton de guardar y continuar 
         GuardaryContinuar();
+
+        // Se debe mostrar un modal
+        await expect(page.locator('text=No se ha actualizado la información laboral de la persona. ¿Desea continuar?')).toBeVisible();
+
+        // Click en Aceptar
+        await page.locator('text=Aceptar').click();
     });
 
     test('Paso 2 - Datos Prestamo', async () => {
@@ -212,7 +218,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // Los valores del monto, tasa y plazo deben estar correctos
         await expect(page.locator('#loan_form_MONTO')).toHaveValue('RD$ 125,000');
-        await expect(page.locator('#loan_form_TASA')).toHaveValue('5%');
+        await expect(page.locator('#loan_form_TASA')).toHaveValue('15.64%');
         await expect(page.locator('#loan_form_PLAZO')).toHaveValue('60');
 
         // Via desembolso
@@ -263,7 +269,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator('#form_MONTO_ABONOS').fill('50000');
 
         // Click al boton de Agregar Abono
-        const botonAgregarAbono = page.getByRole('button', {name: 'Agregar', exact: true});
+        const botonAgregarAbono = page.getByRole('button', {name: 'plus Agregar', exact: true});
         await expect(botonAgregarAbono).toBeVisible();
         await botonAgregarAbono.click();
 
@@ -410,9 +416,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=8`);
 
         // Los tres titulos deben estar visibles
-        await expect(page.getByRole('heading', {name: 'Familiares mas Cercanos'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'Referencias Morales o Personales'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'Referencias Comerciales'})).toBeVisible();
+        await expect(page.getByText('Familiares mas Cercanos')).toBeVisible();
+        await expect(page.getByText('Referencias Morales o Personales')).toBeVisible();
+        await expect(page.getByText('Referencias Comerciales')).toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();
@@ -456,7 +462,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.getByRole('dialog', {name: 'CEDULA DEUDOR'})).toBeVisible();
 
         // Cerrar la imagen de la firma
-        await page.locator(`${dataCerrar}`).click();
+        await page.getByLabel('Close', {exact: true}).click();
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
@@ -593,13 +599,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // Esperar que se abran dos nuevas pestañas con los reportes
         const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await page2.waitForTimeout(3000);
-
-        // Cerrar la primera pagina
-        await page2.close();
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);

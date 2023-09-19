@@ -122,6 +122,15 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     // Egresos en transito
                     await expect(page.locator('h1').filter({hasText: 'EGRESOS EN TRÁNSITO'})).toBeVisible();      
                 });
+
+                test('El balance de la caja debe ser diferente de 0', async () => {
+                    // No debe mostrarse 0 como balance de la caja
+                    const balanceCero = page.locator('text=Balance en caja: RD$ 0.00');
+                    if (await balanceCero.isVisible()) {
+                        await page.close();
+                        await context.close();
+                    };
+                });
             
                 test('Seleccionar un socio', async () => {
                     // Input para buscar el socio
@@ -174,8 +183,11 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     // Debe salir un mensaje de que la operacion salio correctamente
                     await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
                 });
-                
-                test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
+
+                test('Modal de Distribucion de Ingresos', async () => {
+                    // Aplicar el deposito de la cuenta de ahorros
+                    await page.locator('text=Aplicar').click();
+            
                     // Debe salir un modal para la distribucion de ingresos
                     await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();
             
@@ -184,7 +196,33 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
                     await expect(page.locator('h1').filter({hasText: 'DETALLE DISTRIBUCIÓN'})).toBeVisible();
                     await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
-            
+                });
+        
+                test('Las denominaciones de la caja deben mostrarse', async () => {
+                    // Click al boton de Denominaciones
+                    const botonDenominacones = page.getByLabel('Distribución de Ingresos').getByRole('button', {name: 'eye Denominaciones'});
+                    await expect(botonDenominacones).toBeVisible();
+                    await botonDenominacones.click();
+        
+                    // Debe aparecer un modal con las denominaciones de la caja
+                    const modalDenominaciones = page.locator('h1').filter({hasText: 'DENOMINACIONES'});
+                    await expect(modalDenominaciones).toBeVisible();
+        
+                    // Las denominaciones de la caja deben estar visibles
+                    const noDenominaciones = page.getByRole('dialog').locator('text=No hay datos');
+                    if (await noDenominaciones.isVisible()) {
+                        await page.close();
+                        await context.close();
+                    }
+        
+                    // Click al boton de Salir
+                    await page.getByRole('button', {name: 'Salir'}).click();
+        
+                    // El modal debe cerrarse
+                    await expect(modalDenominaciones).not.toBeVisible();
+                });
+                
+                test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
                     // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'}).first();
                     await expect(iconoAlerta).toBeVisible();

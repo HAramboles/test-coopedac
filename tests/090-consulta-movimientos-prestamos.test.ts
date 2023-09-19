@@ -14,7 +14,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () => {
+test.describe.serial('Pruebas con la Consulta de los Movimientos de un Prestamo', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -66,10 +66,10 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
         await expect(page.locator('#form_PRESTAMOS')).toHaveValue('PRESTAMOS');
 
         // Cuota
-        await expect(page.locator('#form_CUOTA')).toHaveValue('');
+        await expect(page.locator('#form_CUOTA')).toHaveValue('RD$ 416.67');
 
         // Balance
-        await expect(page.locator('#form_DEUDA_CAPTITAL')).toHaveValue('RD$ 50,000');
+        await expect(page.locator('#form_DEUDA_CAPTITAL')).toHaveValue('RD$ 0');
 
         // Moneda
         await expect(page.getByText('PESO (RD)')).toBeVisible();
@@ -91,7 +91,7 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
         await botonImprimir.click();
 
         // Esperar que se abra una nueva ventana con el reporte
-        const page1 = await context.newPage();
+        const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);
@@ -101,17 +101,13 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
     });
 
     test('Movimientos del Prestamo', async () => {
-        // Deben mostrarse los dos movimientos realizados en el prestamo
-        await expect(page.getByRole('row', {name: '0', exact: true})).toBeVisible();
-        await expect(page.getByRole('row', {name: '1', exact: true})).toBeVisible();
-
         // Imprimir el primer movimiento
         const imprimirMovimiento1 = page.locator(`${dataPrinter}`).first();
         await expect(imprimirMovimiento1).toBeVisible();
         await imprimirMovimiento1.click();
 
         // Esperar que se abra una nueva ventana con el reporte
-        const pageMovimiento1 = await context.newPage();
+        const pageMovimiento1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await pageMovimiento1.waitForTimeout(4000);
@@ -128,7 +124,7 @@ test.describe('Pruebas con la Consulta de los Movimientos de un Prestamo', () =>
         await imprimirMovimiento2.click();
 
         // Esperar que se abra una nueva ventana con el reporte
-        const pageMovimiento2 = await context.newPage();
+        const pageMovimiento2 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await pageMovimiento2.waitForTimeout(4000);

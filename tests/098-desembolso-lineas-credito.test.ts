@@ -12,7 +12,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
+test.describe.serial('Pruebas con el Desembolso de Lineas de Credito', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
@@ -76,7 +76,7 @@ test.describe('Pruebas con el Desembolso de Lineas de Credito', () => {
         await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('24')).toBeVisible();
 
         // Cuota
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 83.33')).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 41.67')).toBeVisible();
     });
 
     test('Desembolsar la otra mitad de la Linea de Credito', async () => {

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, dataEliminar } from './utils/dataTests';
-import { url_anular_pago_prestamo } from './utils/urls';
+import { url_base, browserConfig, dataEliminar } from './utils/dataTests';
+import { url_anular_cobro_servicios } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
 // Variables globales
@@ -13,8 +13,8 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => {
-    test.beforeAll(async () => {
+test.describe.serial('Anular Cobro de Servicios', async () => {
+    test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({
             headless: browserConfig.headless,
@@ -37,7 +37,7 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
-    test('Ir a la opcion de Anular Pago a Prestamo', async () => {
+    test('Ir a la pagina de Anular Cobro de Servicios', async () => {
         // Tesoreria
         await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
 
@@ -47,31 +47,27 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         // Anulaciones
         await page.getByRole('menuitem', {name: 'ANULACIONES'}).click();
 
-        // Anular Pago a Prestamo
-        await page.getByRole('menuitem', {name: 'Anular Pago a Préstamo'}).click();
+        // Anular Cobro de Servicios
+        await page.getByRole('menuitem', {name: 'Anular Cobro Servicios'}).click();
 
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_anular_pago_prestamo}`);
+        await expect(page).toHaveURL(`${url_anular_cobro_servicios}`);
     });
 
-    test.skip('Buscar los Pagos realizados al Prestamo de la persona', async () => {
-        // El titulo deberia estar visible
-        await expect(page.locator('h1').filter({hasText: 'ANULAR PAGO A PRÉSTAMO'})).toBeVisible();
+    test('Contenido de la pagina de Anular Cobro de Servicios', async () => {
+        // El titulo principal debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'ANULAR COBRO SERVICIOS'})).toBeVisible();
 
         // Seccion criterio de busqueda debe estar visible
         await expect(page.locator('text=Criterio de búsqueda')).toBeVisible();
 
-        // El tipo de transaccion debe ser Pago a prestamo
-        await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('RP - PAGOS A PRESTAMOS');
-
-        // Id documento y Cuenta de origen deben estar vacios por defecto
-        await expect(page.locator('#form_ID_DOCUMENTO')).toHaveValue('');
-        await expect(page.locator(`${selectBuscar}`)).toHaveValue('');
+        // El tipo de transaccion debe ser Deposito
+        await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('RO - OTROS INGRESOS');
 
         // Buscar el usuario de la caja la cual hizo la transaccion
         await page.getByTitle('TODAS').click();
         // Elegir la primera caja que se muestra
-        await page.getByRole('option').nth(0).click();
+        await page.getByRole('option', {name: 'BPSH'}).nth(0).click();
 
         // Fecha inicio
         await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(new Date())}`);
@@ -87,34 +83,33 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await botonBuscar.click();
     });
 
-    test('Anular uno de los Pagos al Prestamo', async () => {
-        // Deben mostrarse los dos pagos realizados
-        await expect(page.getByRole('cell', {name: '5,000.00'}).first()).toBeVisible();
-        await expect(page.getByRole('cell', {name: '5,000.00'}).last()).toBeVisible();
+    test('Anular el Cobro de Servicios', async () => {
+        // Debe mostrarse el cobro de servicio realizado
+        await expect(page.getByRole('cell', {name: '100.00'})).toBeVisible();
 
-        // Click al boton de Anular del primer pago
-        await page.locator(`${dataEliminar}`).first().click();
+        // Click al boton de Anular del deposito
+        await page.locator(`${dataEliminar}`).click();
 
         // Aparece un modal para colocar la razon de la anulacion
-        const modalAnulacion = page.locator('text=Razón de la Anulación');
+        const modalAnulacion = page.locator('text=Motivo de la Anulación');
         await expect(modalAnulacion).toBeVisible();
 
         // Colocar una razon en el input de comentario
-        await page.locator('#form_CONCEPTO_ANULACION').fill('Anular primer pago realizado por caja');
+        await page.locator('#form_CONCEPTO_ANULACION').fill('Anular cobro de servicio realizado por caja');
 
         // Click al boton de Aceptar del modal de Razon de Anulacion
         await page.getByRole('button', {name: 'Aceptar'}).click();
         
-        // Se abre una nueva ventana del navegador con el reporte de anulacion
-        const page1 = await context.waitForEvent('page');
+        // Se abre una nueva ventana del navegador con el reporte de la anulacion
+        const pag1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
+        await pag1.waitForTimeout(4000);
 
         // Cerrar la ventana del reporte
-        await page1.close();
+        await pag1.close();
 
-        // En la pagina de la Anular Pago a Prestamo debe mostrarse un mensaje modal de operacion exitosa
+        // En la pagina de la Anular Deposito debe mostrarse un mensaje modal de operacion exitosa
         await expect(page.locator('text=Operación Exitosa')).toBeVisible();
 
         // Click al boton de Aceptar el modal de Operacion Exitosa
@@ -122,10 +117,10 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
     });
 
     test.afterAll(async () => { // Despues de las pruebas
-        // Cerrar la page
+       // Cerrar la page
         await page.close();
-
-        // Cerrar el browser
+         
+        // Cerrar el context
         await context.close();
     });
 });

@@ -7,9 +7,10 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre de la empresa
+// Cedula, nombre y apellido de la persona
 let cedula: string | null;
-let nombreEmpresa: string | null;
+let nombre: string | null;
+let apellido: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
@@ -31,9 +32,10 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula, nombre de la persona juridica almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
-        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
+        // Cedula, nombre y apellido de la persona almacenada en el state
+        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la opcion de Credito a Prestamos', async () => {
@@ -57,21 +59,22 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Seleccionar a la persona
-        await page.locator(`text=${nombreEmpresa}`).click();
+        await page.locator('text=2039393').click();
+        // await page.locator(`text=${nombre} ${apellido}`).click();
     });
 
     test('Llenar los datos necesarios para el credito al prestamo', async () => {
         // El prestamo debe estar visible
         const prestamo = page.locator('#form_PRESTAMOS');
-        await expect(prestamo).toHaveAttribute('value', 'CRÉDIAUTOS (VEHÍCULOS)');
+        await expect(prestamo).toHaveAttribute('value', 'CRÉDIAUTOS');
 
         // Cuota
         const cuota = page.locator('#form_CUOTA');
-        await expect(cuota).toHaveValue('$ 2,461.21');
+        await expect(cuota).toHaveValue('RD$ 3,015.9');
 
         // Deuda total
         const deudaTotal = page.locator('#form_DEUDA_CAPTITAL');
-        await expect(deudaTotal).toHaveValue('$ 125,000');
+        await expect(deudaTotal).toHaveValue('RD$ 125,000');
 
         // Moneda
         // const moneda = page.locator('#form_ID_MONEDA');

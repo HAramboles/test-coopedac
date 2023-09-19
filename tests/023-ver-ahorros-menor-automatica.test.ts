@@ -179,6 +179,20 @@ test.describe.serial('Pruebas en el modo solo lectura, para ver una cuenta', asy
         await expect(page).toHaveURL(`${url_cuentas_ahorros_infantiles}`);
     });
 
+    test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
+        // Boton de seleccionar captaciones
+        const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
+        await expect(botonCaptaciones).toBeVisible();
+        // Click al boton
+        await botonCaptaciones.click();
+
+        // Tipos de cuentas
+        await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+        await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
+        await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
+        await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
+    });
+
     test.afterAll(async () => { // despues de todas las pruebas
         // Cerrar la page
         await page.close();

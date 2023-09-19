@@ -17,7 +17,7 @@ let apellido: string | null;
 let nota: string | null;
 
 // Pruebas
-test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebasCajaBoveda) {
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
@@ -123,6 +123,15 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
                     await expect(page.locator('h1').filter({hasText: 'EGRESOS EN TRÁNSITO'})).toBeVisible();      
                 });
 
+                test.skip('El balance de la caja debe ser diferente de 0', async () => {
+                    // No debe mostrarse 0 como balance de la caja
+                    const balanceCero = page.locator('text=Balance en caja: RD$ 0.00');
+                    if (await balanceCero.isVisible()) {
+                        await page.close();
+                        await context.close();
+                    };
+                });
+
                 test('Seleccionar un socio', async () => {
                     // Input para buscar el socio
                     const buscarSocio = page.locator(`${selectBuscar}`);
@@ -130,12 +139,11 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
             
                     // Ingresar la cedula del socio
                     await buscarSocio.fill(`${cedula}`);
-                    await buscarSocio.fill('JADE JOHNSON');
                     // Seleccionar la cuenta de aportaciones del socio  
                     await page.locator('text=APORTACIONES').click();
                 });
 
-                test.skip('Debe salir un modal con la nota anteriormente creada', async () => {        
+                test('Debe salir un modal con la nota anteriormente creada', async () => {        
                     // Titulo del modal
                     await expect(page.locator('h1').filter({hasText: `NOTAS PARA ${nombre} ${apellido}`})).toBeVisible();
             
@@ -170,8 +178,7 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
 
                     // Socio
-                    // await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
-                    await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue('JADE JOHNSON');
+                    await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
                     // Prestamo
                     await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO GERENCIAL / AHORROS');
@@ -231,7 +238,7 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
                     await botonAceptar.click();
             
                     // Se abrira una nueva pagina con el reporte del pago al prestamo
-                    const page1 = await context.newPage();
+                    const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
                     await page1.waitForTimeout(4000);
@@ -256,8 +263,7 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
 
                     // Socio
-                    // await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
-                    await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue('JADE JOHNSON');
+                    await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
                     // Prestamo
                     await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO GERENCIAL / AHORROS');
@@ -317,7 +323,7 @@ test.describe.serial('Pago a Prestamo desde Caja = Pruebas con los diferentes pa
                     await botonAceptar.click();
             
                     // Se abrira una nueva pagina con el reporte del pago al prestamo
-                    const page1 = await context.newPage();
+                    const page1 = await context.waitForEvent('page');
 
                     // Esperar que el reporte este visible
                     await page1.waitForTimeout(4000);

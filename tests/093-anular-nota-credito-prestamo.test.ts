@@ -8,8 +8,9 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre de la empresa
-let nombreEmpresa: string | null;
+// Nombre y apellido de la persona
+let nombre: string | null;
+let apellido: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
@@ -31,8 +32,9 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre de la persona juridica alamcenada en el state
-        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
+        // Nombre y apellido de la persona almacenada en el state
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ir a la pagina de Anular Nota Credito Prestamo', async () => {
@@ -82,22 +84,25 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
 
     test('Anular la Nota de Credito al Prestamo Crediauto de la Persona Juridica', async () => {
         // Nota Credito al Prestamo
-        await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`}).last()).toBeVisible();
 
         // Concepto
-        await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'}).last()).toBeVisible();
 
         // Monto Ingreso
         await expect(page.getByRole('cell', {name: 'RD$ 125,000.00'})).toBeVisible();
 
         // Boton Eliminar
-        await page.getByRole('row', {name: `${nombreEmpresa}`}).locator(`${dataEliminar}`).click();
+        // await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator(`${dataEliminar}`).click();
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator(`${dataEliminar}`).last().click();
 
         // Aparece un modal
         await expect(page.locator('text=Motivo de la Anulación')).toBeVisible();
 
         // Colocar una razon de la anulacion en el input de comentario
-        await page.locator('#fform_CONCEPTO_ANULACION').fill('Nota Credito a Prestamo Rechazada');
+        await page.locator('#form_CONCEPTO_ANULACION').fill('Nota Credito a Prestamo Rechazada');
 
         // Click al boton Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();
@@ -107,7 +112,7 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         await expect(modalOperacionExitosa).toBeVisible();
 
         // Click al boton de Aceptar del mensaje modal
-        await modalOperacionExitosa.getByRole('button', {name: 'Aceptar'}).click();
+        await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

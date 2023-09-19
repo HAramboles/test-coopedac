@@ -324,6 +324,20 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     // Debe regresar a la pagina de inicio de las Cuentas de Ahorros
                     await expect(page).toHaveURL(`${url_cuentas_ahorros_normales}`);
                 });
+
+                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
+                    // Boton de seleccionar captaciones
+                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
+                    await expect(botonCaptaciones).toBeVisible();
+                    // Click al boton
+                    await botonCaptaciones.click();
+
+                    // Tipos de cuentas
+                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
+                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
+                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
+                });
             };
         
             test.afterAll(async () => { // Despues de las pruebas
