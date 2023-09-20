@@ -57,7 +57,7 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
         await botonImprimir.click();
 
         // Esperar que se abra una nueva pagina
-        const page1 = await context.newPage();
+        const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);
@@ -96,7 +96,7 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
         await botonImprimir.click();
 
         // Esperar que se abra una nueva pagina
-        const page1 = await context.newPage();
+        const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);

@@ -122,7 +122,7 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
         await botonImprimir.click();
 
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
-        const page1 = await context.newPage();
+        const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);

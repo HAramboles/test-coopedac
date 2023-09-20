@@ -48,7 +48,7 @@ test.describe.serial('Pruebas con el Desembolso Neto', () => {
         await expect(page.locator('h1').filter({hasText: 'DESEMBOLSO NETO'})).toBeVisible();
         
         // Fecha Inicial
-        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${primerDiaMes}`);
+        await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${primerDiaMes}`);
 
         // Fecha Final
         await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${formatDate(new Date())}`);
@@ -77,7 +77,7 @@ test.describe.serial('Pruebas con el Desembolso Neto', () => {
         await generarReporte.click();
 
         // Esperar que se abra una nueva pagina
-        const page1 = await context.newPage();
+        const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);

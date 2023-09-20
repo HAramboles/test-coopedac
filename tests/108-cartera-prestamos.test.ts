@@ -62,7 +62,7 @@ test.describe('Pruebas con la Cartera de Prestamos', () => {
         await botonImprimir.click();
 
         // Esperar que se abra una nueva pestaña con el reporte
-        const page1 = await context.newPage();
+        const page1 = await context.waitForEvent('page');
 
         // Esperar a que el reporte este visible
         await page1.waitForTimeout(4000);

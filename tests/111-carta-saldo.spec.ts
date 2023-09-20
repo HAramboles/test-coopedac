@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig, dataVer } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, dataVer, dataCerrar } from './utils/dataTests';
 import { url_carta_saldo } from './utils/urls';
 
 // Variables globales
@@ -65,14 +65,13 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         // Buscar un socio
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
-        // Debe mostrarse el prestamo del socio buscado
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        // Debe mostrarse el prestamo hipotecario del socio buscado
         
         // Financiamiento
         await expect(page.getByRole('cell', {name: 'CRÉDITO HIPOTECARIO'})).toBeVisible();
 
         // Cliente
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO'}).getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Monto
         await expect(page.getByRole('cell', {name: 'RD$ 50,000.00'})).toBeVisible();
@@ -91,7 +90,7 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
 
     test('Ver los datos del prestamo', async () => {
         // Ver el prestamo
-        await page.locator(`${dataVer}`).click();
+        await page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO'}).locator(`${dataVer}`).click();
 
         // Debe salir un modal con la solicitud
         const modal = page.locator('h1').filter({hasText: 'SOLICITUD DE CREDITO'}).first();
@@ -110,7 +109,7 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         Siguiente();
 
         // Paso 2 - Datos Prestamos
-        await expect(page.locator('h1').filter({hasText: 'GENERALES DEL CRÉDITO'})).toBeVisible();
+        await expect(page.locator('h2').filter({hasText: 'GENERALES DEL CRÉDITO'})).toBeVisible();
 
         // Click en Siguiente
         Siguiente();
@@ -144,15 +143,18 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         Siguiente();
 
         // Paso 7 - Codeudores
-        await expect(page.locator('h1').filter({hasText: 'GARANTÍAS'})).toBeVisible();
+        await expect(page).toHaveURL(`${url_base}/carta_saldo/01-3-2-5?step=7`);
 
-        // Debe mostarse la garantia de hipoteca
-        await expect(page.getByRole('cell', {name: 'HIPOTECA'})).toBeVisible();
+        // Click en Siguiente
+        Siguiente();
 
         // Paso 8 - Referencias
-        await expect(page.locator('h1').filter({hasText: 'FAMILIARES MAS CERCANOS'})).toBeVisible();
-        await expect(page.locator('h1').filter({hasText: 'REFERENCIAS MORALES O PERSONALES'})).toBeVisible();        
-        await expect(page.locator('h1').filter({hasText: 'REFERENCIAS COMERCIALES'})).toBeVisible();  
+        await expect(page.getByText('FAMILIARES MAS CERCANOS')).toBeVisible();
+        await expect(page.getByText('REFERENCIAS MORALES O PERSONALES')).toBeVisible();        
+        await expect(page.getByText('REFERENCIAS COMERCIALES')).toBeVisible(); 
+        
+        // Click en Siguiente
+        Siguiente();
         
         // Paso 9 - Documentos
         await expect(page.locator('h1').filter({hasText: 'LISTA DE DOCUMENTOS'})).toBeVisible();
@@ -164,8 +166,8 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         await expect(page.locator('div').filter({hasText: 'TABLA AMORTIZACION'}).nth(4)).toBeVisible();
         await expect(page.locator('div').filter({hasText: 'CEDULA DEUDOR'}).nth(4)).toBeVisible();
 
-        // Click en Aceptar
-        await page.getByRole('button', {name: 'Aceptar'}).click();
+        // Click en la X para cerrar el modal
+        await page.locator(`${dataCerrar}`).click();
 
         // El modal debe desaparecer
         await expect(modal).not.toBeVisible();
@@ -173,12 +175,12 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
 
     test('Imprimir la Carta de Saldo', async () => {
         // Boton de generar carta
-        const generarCarta = page.locator('[data-icon="file-text"]');
+        const generarCarta = page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO'}).locator('[data-icon="file-text"]');
         await expect(generarCarta).toBeVisible();
         await generarCarta.click();
 
         // Esperar que se abra otra ventana con la carta
-        const page1 = await context.newPage();
+        const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);

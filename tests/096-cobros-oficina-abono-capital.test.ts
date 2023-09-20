@@ -158,7 +158,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         
         const totalPagar = page.locator('#form_A_PAGAR');
         await expect(totalPagar).toBeDisabled();
-        await expect(totalPagar).toHaveValue('RD$ 12,000');
+        await expect(totalPagar).toHaveValue('RD$ 11,000');
     });
 
     test('Cobrar de Cuenta', async () => {

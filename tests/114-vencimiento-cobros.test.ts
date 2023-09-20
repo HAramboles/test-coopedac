@@ -63,7 +63,7 @@ test.describe.serial('Pruebas con el Vencimiento de Cobros', async () => {
         await selectorGrupo.fill('sin garan');
 
         // Elegir el grupo buscado
-        await page.getByRole('menuitem', {name: 'SIN GARANTIA'}).click();
+        await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
         // Elegir un tipo de prestamo
         await page.locator('#form_ID_TIPO_TRANS_PREST').click();
@@ -82,7 +82,7 @@ test.describe.serial('Pruebas con el Vencimiento de Cobros', async () => {
         await selectorEjecutivo.fill('cliente inac');
 
         // Elegir el ejecutivo buscado
-        await page.getByRole('menuitem', {name: 'CLIENTE INACTIVO'}).click();
+        await page.getByRole('option', {name: 'CLIENTE INACTIVO'}).click();
 
         // Elegir una cartera
         await page.locator('#form_ID_CARTERA').click();
@@ -108,7 +108,7 @@ test.describe.serial('Pruebas con el Vencimiento de Cobros', async () => {
         // Elegir un tipo de garantia
         await page.locator('#form_ID_GARANTIA').click();
         // Opciones de garantia
-        const garantiaHipoteca = page.getByRole('option', {name: 'BANCA'});
+        const garantiaHipoteca = page.getByRole('option', {name: 'HIPOTECA', exact: true});
         await expect(garantiaHipoteca).toBeVisible();
 
         // Click al tipo de garantia Hipoteca
@@ -124,7 +124,7 @@ test.describe.serial('Pruebas con el Vencimiento de Cobros', async () => {
         await botonImprimir.click();
 
         // Se abre una nueva pestaña con el reporte
-        const page1 = await context.newPage();
+        const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);

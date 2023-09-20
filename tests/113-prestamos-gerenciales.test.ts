@@ -110,7 +110,7 @@ test.describe.serial('Pruebas con la Impresion de Prestamos Gerenciales', () => 
         await botonImprimir.click();
 
         // Esperar que se abra una nueva pagina
-        const page1 = await context.newPage();
+        const page1 = await context.waitForEvent('page');
 
         // Esperar que el reporte este visible
         await page1.waitForTimeout(4000);
