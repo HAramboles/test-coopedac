@@ -183,9 +183,6 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                 });
 
                 test('Modal de Distribucion de Ingresos', async () => {
-                    // Aplicar el deposito de la cuenta de ahorros
-                    await page.locator('text=Aplicar').click();
-            
                     // Debe salir un modal para la distribucion de ingresos
                     await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();
             

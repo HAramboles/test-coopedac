@@ -2,6 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } fr
 import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
+import { formatDate } from './utils/fechas';
 
 // Variables Globales
 let browser: Browser;
@@ -249,6 +250,10 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
             
                     // Titulo de Vista Previa
                     await expect(page1.locator('text=VISTA PREVIA')).toBeVisible();
+
+                    // Deben mostrarse las dos transacciones realizadas
+                    await expect(page.getByRole('row', {name: `${formatDate(new Date())} 100,100.00			100,000.00	`})).toBeVisible();
+                    await expect(page.getByRole('row', {name: `${formatDate(new Date())}			100.00	99,900.00	`})).toBeVisible();
             
                     // La pagina abierta con la vista previa de la libreta se debe cerrar
                     await page1.close();

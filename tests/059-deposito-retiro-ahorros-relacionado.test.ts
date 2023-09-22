@@ -336,6 +336,9 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await cant500.click();
                     await cant500.fill('1');
 
+                    // El input de Pendiente no puede tener 0 en los decimales
+                    await expect(page.locator('(//INPUT[@autocomplete="off"])[54]')).toHaveValue('RD$ 0.02');
+
                     // Cantidad = 2 de 0.01
                     await cant01Decimal.click();
                     await cant01Decimal.fill('2');

@@ -9,6 +9,9 @@ export const passCuadreCaja = process.env.REACT_APP_WEB_SERVICE_API_PASS_CUADRE_
 // URL de la pagina
 export const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
+// Nombre del testigo de los firmantes
+export const nombreTestigo:string = 'HECTOR ARAMBOLES';
+
 // Costantes utilizadas con regularidad
 export const dataCerrar:string = '[data-icon="close"]';
 export const dataPrinter:string = '[data-icon="printer"]';
@@ -46,5 +49,5 @@ const browserSecondScreen = ['--window-position=-1400,100'];
 export const browserConfig = {
     headless: false,
     args: browserOneScreen,
-    slowmo: 1800
+    slowmo: 1500
 };

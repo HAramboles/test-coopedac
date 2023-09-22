@@ -185,9 +185,6 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                 });
 
                 test('Modal de Distribucion de Ingresos', async () => {
-                    // Aplicar el deposito de la cuenta de ahorros
-                    await page.locator('text=Aplicar').click();
-            
                     // Debe salir un modal para la distribucion de ingresos
                     await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();
             

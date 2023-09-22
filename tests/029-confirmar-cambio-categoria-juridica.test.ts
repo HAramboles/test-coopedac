@@ -73,6 +73,9 @@ test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la P
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
+
+        // Aparece una alerta de operacion exitosa
+        await expect(page.locator('text=Categoria cta. socio actualizado exitosamente')).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

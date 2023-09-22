@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones, url_cuentas_ahorros_normales } from './utils/urls';
 
@@ -292,7 +292,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await expect(seleccionarTestigo).toBeVisible();
                     await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option').nth(0).click();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
             
                     // Boton de Aceptar
                     const botonAceptar = page.locator('text=Aceptar');

@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaRemoverFirmantes } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_orden_pago } from './utils/urls';
 
@@ -29,7 +29,7 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                 // Crear el browser
                 browser = await chromium.launch({
                     headless: browserConfig.headless,
-                    args: browserConfig.args
+                    args: browserConfig.args,
                 });
         
                 // Crear el context
@@ -197,7 +197,7 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                     // Seleccionar un testigo
                     await page.locator('#form_ID_TESTIGO').click();
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option').nth(0).click();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
             
                     // Boton de Imprimir
                     const botonImprimir = page.getByRole('button', {name: 'check Imprimir'});

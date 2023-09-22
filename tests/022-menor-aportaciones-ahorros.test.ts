@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones, url_cuentas_ahorros_infantiles } from './utils/urls';
 
@@ -229,7 +229,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // Seleccionar un testigo
                     await page.locator('#form_ID_TESTIGO').click();
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option').nth(0).click();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
             
                     // Boton de Aceptar
                     const botonAceptar = page.locator('text=Aceptar');
@@ -274,15 +274,18 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                 });
             
                 test('Crear la Cuenta de Ahorros del Menor - Datos Generales', async () => {
-                    // Debe redirigirse a la creacion de la cuenta de ahorros
-                    await expect(page).toHaveURL(/\/ahorros/);
+                    // Esperar a que la pagina este completamente cargada
+                    await page.waitForTimeout(3000);
+                    
+                    // Debe redirigirse a la edicion de la cuenta de ahorros
+                    await expect(page).toHaveURL(/\/edit/);
             
                     // Titulo de editar cuenta, ya que se crea automaticamente
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
 
                     // Cerrar las alertas
-                    await page.locator(`${ariaCerrar}`).first().click();
-                    await page.locator(`${ariaCerrar}`).last().click();
+                    // await page.locator(`${ariaCerrar}`).first().click();
+                    // await page.locator(`${ariaCerrar}`).last().click();
             
                     // La cuenta debe ser la del socio
                     await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();

@@ -1,5 +1,5 @@
 import { APIResponse ,Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones_preferentes } from './utils/urls';
 
@@ -307,7 +307,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     await expect(seleccionarTestigo).toBeVisible();
                     await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option').nth(0).click();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
             
                     // Boton de Aceptar
                     const botonAceptar = page.locator('text=Aceptar');

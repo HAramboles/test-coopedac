@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_orden_pago } from './utils/urls';
 
@@ -161,6 +161,9 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
             
                     // El tipo de captacion debe ser Ahorros
                     await expect(page.locator('text=ORDEN DE PAGO').first()).toBeVisible();
+
+                    // La categoria debe ser Socio Ahorrante
+                    await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
             
                     // Subir la imagen de la firma
                     const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
@@ -246,7 +249,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
                     await expect(seleccionarTestigo).toBeVisible();
                     await seleccionarTestigo.click();
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option').nth(0).click();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
             
                     // Boton de Aceptar
                     const botonAceptar = page.locator('text=Aceptar');

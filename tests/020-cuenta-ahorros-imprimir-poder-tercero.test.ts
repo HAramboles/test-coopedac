@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, dataPrinter, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, dataPrinter, formBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
 
@@ -192,7 +192,7 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                     // Seleccionar un testigo
                     await page.locator('#form_ID_TESTIGO').click();
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option').nth(0).click();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
             
                     // Boton de Imprimir
                     const botonImprimir = page.getByRole('button', {name: 'check Imprimir'});
