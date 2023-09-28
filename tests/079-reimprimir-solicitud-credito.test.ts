@@ -69,9 +69,6 @@ test.describe.serial('Prueba con la Reimpresion de la Solicitud de Credito', () 
 
         // Esperar que se abra una nueva pestaña con el reporte
         const page1 = await context.waitForEvent('page');
-
-        // Esperar que se cargue el reporte
-        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte 
         await page1.close();

@@ -1,5 +1,6 @@
 import { Browser, BrowserContext, chromium, Cookie, expect, Locator, Page, test } from '@playwright/test';
 import { url_base, userCorrecto, passCorrecto, browserConfig } from './utils/dataTests';
+import { url_registro_persona } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -68,6 +69,9 @@ test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', async
     test('Colocar una contraseña incorrecta', async () => {
         // Ingresar una contraseña incorrecta
         await campoContraseña.fill('123456');
+
+        // Experar tres segundos antes de hacer click en el boton de Aceptar
+        await page.waitForTimeout(3000);
 
         // Click en el boton de Aceptar
         await botonAceptar.click();
@@ -151,7 +155,24 @@ test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', async
         await botonAceptar.click();
 
         // Deberia quedarse en la misma pagina 
-        await expect(page).toHaveURL(`${url_base}`);
+        await expect(page).toHaveURL(`${url_base}`);        
+    });
+
+    test('Ir a la opcion de Registrar Persona', async () => {
+        // Boton de Socios
+        await page.getByRole('menuitem', {name: 'SOCIOS'}).click();
+
+        // Boton de Operaciones
+        await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
+
+        // Boton de Registrar Persona
+        await page.getByRole('menuitem', {name: 'Registrar persona'}).click();
+
+        // La url debe de cambiar
+        await expect(page).toHaveURL(`${url_registro_persona}`);
+
+        // El titulo de registrar persona debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

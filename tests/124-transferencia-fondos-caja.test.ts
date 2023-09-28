@@ -78,9 +78,6 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         // Esperar que se abra una nueva ventana
         const page1 = await context.waitForEvent('page');
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
         // Cerrar la ventana
         await page1.close();
 
@@ -92,6 +89,11 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
     });
 
     test('Transferir otro Monto a Boveda', async () => {
+        // Click al selector de Hasta Caja
+        await page.locator('#form_ID_CAJA_HASTA').click();
+        // Click a la opcion de Boveda Principal
+        await page.getByRole('option', {name: 'BOVEDA PRINCIPAL'}).click();
+
         // Transferir mil pesos desde la caja a la boveda
         const cant1000 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[2]'); // Campo de RD 1000
 
@@ -106,9 +108,6 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
 
         // Esperar que se abra una nueva ventana
         const page1 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
 
         // Cerrar la ventana
         await page1.close();

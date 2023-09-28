@@ -191,15 +191,13 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
             
                 test('Crear la Cuenta de Ahorros - Datos Generales', async () => {
                     // Debe redirigirse a la creacion de la cuenta de ahorros
-                    await expect(page).toHaveURL(/\/ahorros/);
+                    await expect(page).toHaveURL(/\/edit/);
+
+                    // Esperar que cargen los datos
+                    await page.waitForTimeout(4000);
             
                     // Titulo de editar cuenta, ya que se crea automaticamente
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
-
-                    // Cerrar las alertas
-                    await page.locator(`${ariaCerrar}`).first().click();
-                    await page.locator(`${ariaCerrar}`).first().click();
-                    await page.locator(`${ariaCerrar}`).last().click();
             
                     // La cuenta debe ser la del socio
                     await expect(page.locator('h1').filter({hasText: `| ${nombre} ${apellido}`})).toBeVisible();
@@ -209,6 +207,25 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
             
                     // La categoria debe ser Socio Ahorrante
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
+
+                    if (await page.locator('text=SOCIO AHORRANTE').isHidden()) {
+                        await page.getByRole('button', {name: 'Omitir'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=2/);
+
+                        await page.waitForTimeout(4000);
+
+                        // 
+                        await page.getByRole('button', {name: 'Anterior'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=1/);
+                    }
             
                     // Editar el monto de confirmacion
                     const montoConfirmacion = page.getByPlaceholder('MONTO DE CONFIRMACIÓN');
@@ -235,12 +252,11 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'FIRMANTE'})).toBeVisible();
 
+                    // Esperar cuatro segundos antes de continuar
+                    await page.waitForTimeout(4000);
+
                     // Cerrar las alertas que se muestran
                     await page.locator(`${ariaCerrar}`).first().click();
-                    await page.locator(`${ariaCerrar}`).last().click();
-                    await page.locator(`${ariaCerrar}`).last().click();
-                    await page.locator(`${ariaCerrar}`).last().click();
-                    await page.locator(`${ariaCerrar}`).last().click();
             
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
@@ -290,25 +306,26 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // Seleccionar un testigo
                     const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
                     await expect(seleccionarTestigo).toBeVisible();
+                    await page.waitForTimeout(3000);
                     await seleccionarTestigo.click();
+
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+
+                    // Esperar dos segundos antes de dar click al boton de Aceptar
+                    await page.waitForTimeout(2000)
             
                     // Boton de Aceptar
-                    const botonAceptar = page.locator('text=Aceptar');
-                    // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
 
-                    // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(4000);
-                  
-                    // Cerrar la nueva pagina con el reporte
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
             
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
@@ -339,9 +356,6 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-
                     // Cerrar la nueva pestaña
                     await page1.close();
                     
@@ -350,6 +364,20 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
             
                     // El titulo de Ahorros debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
+                });
+
+                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
+                    // Boton de seleccionar captaciones
+                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
+                    await expect(botonCaptaciones).toBeVisible();
+                    // Click al boton
+                    await botonCaptaciones.click();
+
+                    // Tipos de cuentas
+                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
+                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
+                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
                 });
             };
         

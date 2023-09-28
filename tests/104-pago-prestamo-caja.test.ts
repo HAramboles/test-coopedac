@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, ariaCerrar } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, ariaCerrar, formBuscar } from './utils/dataTests';
 import { url_transacciones_caja } from './utils/urls';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 
@@ -188,10 +188,10 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
 
                     // Colocar un monto en Abono a Capital
                     const inputAbonoCapital = page.locator('#form_MONTO_ABONO_CAPITAL');
-                    await inputAbonoCapital.fill('5000');
+                    await inputAbonoCapital.fill('6000');
 
                     // Debe colocarse el monto en el campo de Abono a Capital
-                    await expect(inputAbonoCapital).toHaveValue('RD$ 5,000');
+                    await expect(inputAbonoCapital).toHaveValue('RD$ 6,000');
 
                     // Click al boton de Aplicar
                     const botonAplicar = page.locator('button').filter({hasText: 'Aplicar'});
@@ -214,12 +214,12 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
                     await expect(iconoAlerta).toBeVisible();
 
-                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 5000
+                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 6000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
 
-                    // Cantidad = 100 de 1000
+                    // Cantidad = 6 de 1000
                     await cant1000.click();
-                    await cant1000.fill('5');
+                    await cant1000.fill('6');
 
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();
@@ -236,15 +236,63 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();
-            
-                    // Se abrira una nueva pagina con el reporte del pago al prestamo
-                    const page1 = await context.waitForEvent('page');
+                });
 
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-                    
-                    // La pagina abierta con el reporte del pago al prestamo
+                test('Datos para el Reporte RTE', async () => {
+                    // Debe salir otro modal para colocar la informacion para el reporte RTE
+                    await expect(page.locator('text=CAPTURA DE DATOS. LAVADO DE EFECTIVO')).toBeVisible();
+
+                    // El modal debe contener un aviso
+                    await expect(page.getByText('Se requiere información de la persona que realiza la transacción. Puede buscar o crear la persona en las opciones de más abajo.')).toBeVisible();
+
+                    // Colocar una explicacion para el Origen de Fondos
+                    await page.locator('#form_ORIGEN_FONDOS').fill('Fondos obtenidos del Trabajo');
+
+                    // Subtitulo del modal
+                    await expect(page.locator('text=BUSCAR INTERMEDIARIO')).toBeVisible();
+
+                    // Debe mostrarse un input para buscar un intermediario
+                    await expect(page.locator(`${formBuscar}`)).toBeVisible();
+
+                    // Debe mostrarse un boton para crear un intermediario
+                    const botonCrearIntermediario = page.getByRole('button', {name: 'Crear Intermediario'});
+                    await expect(botonCrearIntermediario).toBeVisible();
+                    // await botonCrearIntermediario.click();
+
+                    // Boton de Cliente es Intermediario
+                    const botonClienteIntermediario = page.getByText('Cliente Intermediario');
+                    await expect(botonClienteIntermediario).toBeVisible();
+
+                    // Click al boton de Cliente Intermediario
+                    await botonClienteIntermediario.click();
+
+                    // Los datos del socio deben agregarse
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+                    // Click al boton de Seleccionar
+                    await page.getByText('Seleccionar').click();
+
+                    // Debe salir otro modal para confirmar la informacion
+                    await expect(page.locator('text=Confirmar')).toBeVisible();
+
+                    // Contenido del modal
+                    await expect(page.locator('text=Asegúrese de haber seleccionado a la persona correcta:')).toBeVisible();
+                    await expect(page.getByText(`Nombre: ${nombre} ${apellido}`)).toBeVisible();
+                    await expect(page.getByText('Doc. Identidad:')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Esperar que se abran dos nuevas pestañas con los reportes
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
+
+                    // Cerrar las dos paginas
+                    await page2.close();
                     await page1.close();
+
+                    // Debe regresar a la pagina
+                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
                 });
 
                 test('Realizar otro Pago al Prestamo', async () => {
@@ -273,10 +321,10 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
 
                     // Colocar un monto en Abono a Capital
                     const inputAbonoCapital = page.locator('#form_MONTO_ABONO_CAPITAL');
-                    await inputAbonoCapital.fill('5000');
+                    await inputAbonoCapital.fill('4000');
 
                     // Debe colocarse el monto en el campo de Abono a Capital
-                    await expect(inputAbonoCapital).toHaveValue('RD$ 5,000');
+                    await expect(inputAbonoCapital).toHaveValue('RD$ 4,000');
 
                     // Click al boton de Aplicar
                     const botonAplicar = page.locator('button').filter({hasText: 'Aplicar'});
@@ -299,12 +347,12 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
                     await expect(iconoAlerta).toBeVisible();
 
-                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 5000
+                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 4000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
 
-                    // Cantidad = 100 de 1000
+                    // Cantidad = 4 de 1000
                     await cant1000.click();
-                    await cant1000.fill('5');
+                    await cant1000.fill('4');
 
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();
@@ -321,16 +369,64 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();
-            
-                    // Se abrira una nueva pagina con el reporte del pago al prestamo
-                    const page1 = await context.waitForEvent('page');
+                });
 
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-                    
-                    // La pagina abierta con el reporte del pago al prestamo
+                test('Datos para el Reporte RTE de nuevo', async () => {
+                    // Debe salir otro modal para colocar la informacion para el reporte RTE
+                    await expect(page.locator('text=CAPTURA DE DATOS. LAVADO DE EFECTIVO')).toBeVisible();
+
+                    // El modal debe contener un aviso
+                    await expect(page.getByText('Se requiere información de la persona que realiza la transacción. Puede buscar o crear la persona en las opciones de más abajo.')).toBeVisible();
+
+                    // Colocar una explicacion para el Origen de Fondos
+                    await page.locator('#form_ORIGEN_FONDOS').fill('Fondos obtenidos del Trabajo');
+
+                    // Subtitulo del modal
+                    await expect(page.locator('text=BUSCAR INTERMEDIARIO')).toBeVisible();
+
+                    // Debe mostrarse un input para buscar un intermediario
+                    await expect(page.locator(`${formBuscar}`)).toBeVisible();
+
+                    // Debe mostrarse un boton para crear un intermediario
+                    const botonCrearIntermediario = page.getByRole('button', {name: 'Crear Intermediario'});
+                    await expect(botonCrearIntermediario).toBeVisible();
+                    // await botonCrearIntermediario.click();
+
+                    // Boton de Cliente es Intermediario
+                    const botonClienteIntermediario = page.getByText('Cliente Intermediario');
+                    await expect(botonClienteIntermediario).toBeVisible();
+
+                    // Click al boton de Cliente Intermediario
+                    await botonClienteIntermediario.click();
+
+                    // Los datos del socio deben agregarse
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+                    // Click al boton de Seleccionar
+                    await page.getByText('Seleccionar').click();
+
+                    // Debe salir otro modal para confirmar la informacion
+                    await expect(page.locator('text=Confirmar')).toBeVisible();
+
+                    // Contenido del modal
+                    await expect(page.locator('text=Asegúrese de haber seleccionado a la persona correcta:')).toBeVisible();
+                    await expect(page.getByText(`Nombre: ${nombre} ${apellido}`)).toBeVisible();
+                    await expect(page.getByText('Doc. Identidad:')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Esperar que se abran dos nuevas pestañas con los reportes
+                    const page1 = await context.waitForEvent('page');
+                    const page2 = await context.waitForEvent('page');
+
+                    // Cerrar las dos paginas
+                    await page2.close();
                     await page1.close();
-                })
+
+                    // Debe regresar a la pagina
+                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
+                });
 
                 test('Liberar la Sesion', async () => {
                     // Click al boton de Liberar Sesion

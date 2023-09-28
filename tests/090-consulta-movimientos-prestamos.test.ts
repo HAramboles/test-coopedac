@@ -93,9 +93,6 @@ test.describe.serial('Pruebas con la Consulta de los Movimientos de un Prestamo'
         // Esperar que se abra una nueva ventana con el reporte
         const page1 = await context.waitForEvent('page');
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
         // Cerrar la pagina con el reporte
         await page1.close();
     });
@@ -108,9 +105,6 @@ test.describe.serial('Pruebas con la Consulta de los Movimientos de un Prestamo'
 
         // Esperar que se abra una nueva ventana con el reporte
         const pageMovimiento1 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await pageMovimiento1.waitForTimeout(4000);
 
         // Cerrar la pagina
         await pageMovimiento1.close();
@@ -125,9 +119,6 @@ test.describe.serial('Pruebas con la Consulta de los Movimientos de un Prestamo'
 
         // Esperar que se abra una nueva ventana con el reporte
         const pageMovimiento2 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await pageMovimiento2.waitForTimeout(4000);
 
         // Cerrar la pagina
         await pageMovimiento2.close();

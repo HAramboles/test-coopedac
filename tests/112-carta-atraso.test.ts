@@ -63,10 +63,7 @@ test.describe.serial('Prueba con la Carta de Atraso', async () => {
 
         // Esperar que se abra una nueva ventana con el reporte de la Carta de Atraso
         const page1 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
+        
         // Cerrar la segunda pagina
         await page1.close();
 

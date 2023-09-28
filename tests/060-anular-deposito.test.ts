@@ -76,7 +76,7 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
 
         // Buscar el usuario de la caja la cual hizo la transaccion
-        await page.getByTitle('TODAS').click();
+        await page.getByTitle('TODOS').click();
         // Elegir la primera caja que se muestra
         await page.getByRole('option', {name: 'BPSH'}).nth(0).click();
 
@@ -113,9 +113,6 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         
         // Se abre una nueva ventana del navegador con el reporte de la anulacion
         const pag1 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await pag1.waitForTimeout(4000);
 
         // Cerrar la ventana del reporte
         await pag1.close();

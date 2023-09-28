@@ -156,6 +156,32 @@ test.describe.serial('No permitir la Creacion de una Cuenta de Ahorros sin crear
                     // El titulo de ahorros debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
                 });
+
+                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
+                    // Boton de seleccionar captaciones
+                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
+                    await expect(botonCaptaciones).toBeVisible();
+                    // Click al boton
+                    await botonCaptaciones.click();
+
+                    // Tipos de cuentas
+                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
+                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
+                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
+                });
+
+                test.skip('Las opciones con los tipos de captacion deben estar visibles', async () => {
+                    // Click al selector de tipos captacion
+                    await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
+                    await page.locator('#form').getByTitle('AHORROS NORMALES').click();
+
+                    // Todos los tipos de captacion deben estar visibles
+                    await expect(page.getByRole('menuitem', {name: 'AHORROS NORMALES'})).toBeVisible();
+                    await expect(page.getByRole('menuitem', {name: 'AHORROS POR NOMINA'})).toBeVisible();
+                    await expect(page.getByRole('menuitem', {name: 'AHORROS INFANTILES'})).toBeVisible();
+                    await expect(page.getByRole('menuitem', {name: 'ORDEN DE PAGO'})).toBeVisible();
+                });
             };
             
             test.afterAll(async () => { // Despues de las pruebas

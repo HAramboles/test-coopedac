@@ -65,7 +65,7 @@ test.describe.serial('Anular Cobro de Servicios', async () => {
         await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('RO - OTROS INGRESOS');
 
         // Buscar el usuario de la caja la cual hizo la transaccion
-        await page.getByTitle('TODAS').click();
+        await page.getByTitle('TODOS').click();
         // Elegir la primera caja que se muestra
         await page.getByRole('option', {name: 'BPSH'}).nth(0).click();
 
@@ -88,10 +88,10 @@ test.describe.serial('Anular Cobro de Servicios', async () => {
         await expect(page.getByRole('cell', {name: '100.00'})).toBeVisible();
 
         // Click al boton de Anular del deposito
-        await page.locator(`${dataEliminar}`).click();
+        await page.getByRole('row', {name: '100.00'}).locator(`${dataEliminar}`).click();
 
         // Aparece un modal para colocar la razon de la anulacion
-        const modalAnulacion = page.locator('text=Motivo de la Anulación');
+        const modalAnulacion = page.locator('text=Razón de la Anulación');
         await expect(modalAnulacion).toBeVisible();
 
         // Colocar una razon en el input de comentario
@@ -102,9 +102,6 @@ test.describe.serial('Anular Cobro de Servicios', async () => {
         
         // Se abre una nueva ventana del navegador con el reporte de la anulacion
         const pag1 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await pag1.waitForTimeout(4000);
 
         // Cerrar la ventana del reporte
         await pag1.close();

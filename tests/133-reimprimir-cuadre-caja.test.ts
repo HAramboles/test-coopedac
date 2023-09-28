@@ -83,16 +83,8 @@ test.describe.serial('Pruebas con la Reimprimiseion de Cuadre de Caja', async ()
         // La otra con el Reporte de los Cheques de Caja
         const page2 = await context.waitForEvent('page');
 
-        // Esperar que el reporte este visible
-        await page2.waitForTimeout(3000);
-
-        // Cerrar la primera pagina
+        // Cerrar todas las paginas
         await page2.close();
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
-        // Cerrar la segunda pagina
         await page1.close();
 
         // Debe regresar a la pagina de Reimprimir Cuadre de Caja

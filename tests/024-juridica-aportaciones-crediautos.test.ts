@@ -84,7 +84,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas co
                 await page.getByRole('menuitem', {name: 'APERTURA DE CUENTAS'}).click();
         
                 // Captaciones
-                await page.getByRole('menuitem', {name: 'Aportaciones (CREDIAUTOS)'}).first().click();
+                await page.getByRole('menuitem', {name: 'Aportaciones (CREDIAUTOS)'}).click();
 
                 // La URL debe cambiar
                 await expect(page).toHaveURL(`${url_cuentas_aportaciones_crediautos}`);
@@ -161,7 +161,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas co
                     await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();
 
                     // Boton de Agregar Firmantes debe estar visible
-                    const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
+                    const botonAgregarFirmantes = page.getByRole('button', {name: 'plus Agregar Firmante'});
                     await expect(botonAgregarFirmantes).toBeVisible();
                     // Click al boton
                     await botonAgregarFirmantes.click();
@@ -172,7 +172,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas co
                     // El representante de la empresa debe estar visible sin tener que buscarlo
                     await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
             
-                    // Seleccionar el tutor
+                    // Seleccionar el firmante
                     await page.getByRole('button', {name: 'Seleccionar'}).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
@@ -206,25 +206,26 @@ test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas co
                     // Seleccionar un testigo
                     const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
                     await expect(seleccionarTestigo).toBeVisible();
+                    await page.waitForTimeout(3000);
                     await seleccionarTestigo.click();
+
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+
+                    // Esperar dos segundos antes de dar click al boton de Aceptar
+                    await page.waitForTimeout(2000)
             
                     // Boton de Aceptar
-                    const botonAceptar = page.locator('text=Aceptar');
-                    // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
 
-                    // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(8000);
-                  
-                    // La pagina abierta con el reporte se cierra
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
             
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible(); 

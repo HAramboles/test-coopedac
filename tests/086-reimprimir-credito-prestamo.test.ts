@@ -19,8 +19,7 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
         // Crear el browser
         browser = await chromium.launch({
             headless: browserConfig.headless,
-            args: browserConfig.args,
-            slowMo: browserConfig.slowmo
+            args: browserConfig.args
         });
 
         // Crear el context
@@ -98,9 +97,6 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
             await expect(botonImprimir).toBeVisible(),
             await botonImprimir.click()
         ]);
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte 
         await page1.close(); 

@@ -94,9 +94,6 @@ test.describe.serial('Pruebas con la Reimpresion de Desembolso', () => {
 
         // Esperar que se abra una nueva pestaña con el reporte
         const page1 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte 
         await page1.close();

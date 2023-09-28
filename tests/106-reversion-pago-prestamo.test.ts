@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_reversar_pago_prestamo } from './utils/urls';
 import { url_base, browserConfig, selectBuscar } from './utils/dataTests';
 
@@ -76,10 +76,10 @@ test.describe.serial('Puebas con Reversar Pago a Prestamo', async () => {
 
     test('Entrar al modal Revesar Pago a Prestamo', async () => {
         // Debe mostrarse el movimiento del pago realizado por caja
-        await expect(page.getByRole('cell', {name: '5,000.00'}).first()).toBeVisible();
+        await expect(page.getByRole('cell', {name: '4,000.00'})).toBeVisible();
 
         // Click al boton de Reversar Prestamo
-        await page.locator('[data-icon="left-circle"]').last().click();
+        await page.getByRole('row', {name: '4,000.00'}).locator('[data-icon="left-circle"]').click();
     });
 
     test('Modal de Revesar Pago a Prestamo', async () => {
@@ -95,8 +95,42 @@ test.describe.serial('Puebas con Reversar Pago a Prestamo', async () => {
         await expect(page.getByText('Cuotas afectadas')).toBeVisible();
     });
 
+    test('En la seccion Valores de la activdad se debe mostrar el pago al prestamo realizado', async () => {
+        // Capital
+        await expect(page.locator('#form_CAPITAL')).toHaveValue('4,000.00');
+
+        // Total recibido
+        await expect(page.locator('#form_TOTAL_RECIBIDO')).toHaveValue('4,000.00');
+    });
+
+    test.skip('', async () => {
+
+    });
+
     test('Reversar el Pago al Prestamo realizado por Caja', async () => {
-        
+        // Boton de Reversar
+        const botonReversar = page.getByRole('button', {name: 'Reversar'});
+        await expect(botonReversar).toBeVisible();
+        await botonReversar.click();
+
+        // Debe aparecer un modal de confirmacion
+        const modalConfirmacion = page.locator('text=¿Está seguro que desea reversar el pago?');
+        await expect(modalConfirmacion).toBeVisible();
+
+        // Click al boton de Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // Aparece un mensaje modal de operacion exitosa
+        await expect(page.locator('text=Pago reversado con éxito')).toBeVisible();
+
+        // Click al boton de Aceptar del modal de Operacion Exitosa
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // El modal debe Reversar pago a Prestamo debe cerrarse
+        await expect(page.locator('text=ACTIVIDADES DEL PRÉSTAMO')).not.toBeVisible();
+
+        // El boton de Reversar debe estar deshabilitado
+        await expect(botonReversar).toBeDisabled();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

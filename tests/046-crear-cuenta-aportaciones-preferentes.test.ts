@@ -228,9 +228,6 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(8000);
-
                     // Cerrar la nueva pestaña
                     await page1.close();
                 });
@@ -259,7 +256,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     await page.locator(`${ariaCerrar}`).first().click();
             
                     // Boton de Agregar Firmantes debe estar visible
-                    const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
+                    const botonAgregarFirmantes = page.getByRole('button', {name: 'plus Agregar Firmante'});
                     await expect(botonAgregarFirmantes).toBeVisible();
                     // Click al boton
                     await botonAgregarFirmantes.click();
@@ -305,22 +302,25 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     // Seleccionar un testigo
                     const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
                     await expect(seleccionarTestigo).toBeVisible();
+                    await page.waitForTimeout(3000);
                     await seleccionarTestigo.click();
+
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+
+                    // Esperar dos segundos antes de dar click al boton de Aceptar
+                    await page.waitForTimeout(2000)
             
                     // Boton de Aceptar
-                    const botonAceptar = page.locator('text=Aceptar');
+                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();
 
-                    // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
-                    const page1 = await context.newPage();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-                  
-                    // La pagina abierta con el reporte se cierra
+                    // Cerrar la nueva pestaña
                     await page1.close();
             
                     // El firmante agregado se debe mostrar
@@ -354,9 +354,6 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                   
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

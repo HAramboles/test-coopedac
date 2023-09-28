@@ -62,9 +62,6 @@ test.describe.serial('Pruebas con el Reporte de Prestamos Cancelados', async () 
         // Debe abrirse una nueva pestaña con el reporte de Prestamos Cancelados
         const page1 = await context.waitForEvent('page');
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
         // Cerrar la pagina con el reporte
         await page1.close();
 

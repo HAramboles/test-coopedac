@@ -84,9 +84,6 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // Esperar que se abra una nueva pestaña con el estado de la cuenta 
         const page1 = await context.newPage();
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
         // Cerrar la pagina con la el reporte del estado de la cuenta
         await page1.close();
 
@@ -129,9 +126,6 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // Imprimir los movimientos de la cuenta de Aportaciones Preferentes 
         const page1 = await context.newPage();
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
         // Cerrar la pagina con el reporte del estado de la cuenta
         await page1.close();
 
@@ -173,9 +167,6 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
         const page1 = await context.newPage();
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await page1.close();
@@ -241,9 +232,6 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
         const page1 = await context.newPage();
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await page1.close();
 
@@ -285,9 +273,6 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // Esperar que se abra una nueva pestaña con la tabla de amortizacion 
         const page1 = await context.newPage();
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
         // Cerrar la pagina con la tabla de amortizacion para imprimir
         await page1.close();
 
@@ -328,9 +313,6 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Esperar que se abra una nueva pestaña con el reporte de los movimientos de la cuenta 
         const page1 = await context.newPage();
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
         await page1.close();
@@ -379,8 +361,6 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // Esperar que se abra una nueva pestaña con el reporte de los movimientos de la cuenta 
         const page1 = await context.newPage();
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
         await page1.close();
@@ -425,9 +405,6 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Esperar que se abra una nueva pestaña con el reporte de los movimientos de la cuenta 
         const page1 = await context.newPage();
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
 
         // Cerrar la pagina con el reporte con todos los movimientos de la cuenta
         await page1.close();

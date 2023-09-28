@@ -33,8 +33,7 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
         // Crear el browser
         browser = await chromium.launch({
             headless: browserConfig.headless,
-            args: browserConfig.args,
-            slowMo: 1800
+            args: browserConfig.args
         });
 
         // Crear el context
@@ -130,6 +129,9 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
 
         // Persona Fisica Casada
         await expect(page.getByRole('cell', {name: `${nombrePersonaCasada} ${apellidoPersonaCasada}`})).toBeVisible();
+
+        // Esperar que se muestren las personas buscadas
+        await page.waitForTimeout(6000);
     });
 
     test('Buscar a la Persona Fisica Menor de Edad', async () => {
@@ -148,6 +150,9 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
 
         // Debe mostrarse la persona menor de edad creada
         await expect(page.getByRole('cell', {name: `${nombrePersonaMenorEdad} ${apellidoPersonaMenorEdad}`})).toBeVisible();
+
+        // Esperar que se muesre la persona buscada
+        await page.waitForTimeout(6000);
     });
 
     test('Buscar a la Persona Juridica', async () => {
@@ -174,6 +179,9 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
 
         // Debe mostrarse la persona juridica creada
         await expect(page.getByRole('cell', {name: `${nombrePersonaJuridica}`})).toBeVisible();
+
+        // Esperar que se muestre la persona buscada
+        await page.waitForTimeout(6000);
     });
     
     test.afterAll(async () => { // Despues de las pruebas

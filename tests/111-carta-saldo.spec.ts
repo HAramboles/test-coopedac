@@ -182,9 +182,6 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         // Esperar que se abra otra ventana con la carta
         const page1 = await context.waitForEvent('page');
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
         // Cerrar la pagina con la carta
         await page1.close();
     });

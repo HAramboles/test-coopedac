@@ -43,11 +43,10 @@ export const inputPrimerPago:string = '#loan_form_DIA_PAGO';
 
 // Abrir el browser en una pantalla u otra
 const browserOneScreen = ['--window-position=100,0'];
-const browserSecondScreen = ['--window-position=-1400,100'];
+const browserSecondScreen = ['--window-position=-1500,-100'];
 
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserOneScreen,
-    slowmo: 1500
+    args: browserSecondScreen
 };

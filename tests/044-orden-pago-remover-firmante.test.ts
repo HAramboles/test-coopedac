@@ -126,6 +126,9 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                 const botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
                 await expect(botonEditarCuenta).toBeVisible();
                 await botonEditarCuenta.click();
+
+                // Esperar cinco segundos
+                await page.waitForTimeout(5000);
         
                 // La URL debe cambiar
                 await expect(page).toHaveURL(/\/?step=1/);
@@ -135,8 +138,30 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
             });
 
             test('Primer Paso - Datos Generales', async () => {
+                // Esperar que carguen los datos
+                await page.waitForTimeout(4000);
+
                 // Debe de aparecer el nombre de la persona como titulo
                 await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
+
+                if (await page.locator('text=SOCIO AHORRANTE').isHidden()) {
+                    await page.getByRole('button', {name: 'Omitir'}).click();
+
+                    await page.waitForTimeout(4000);
+
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(/\/?step=2/);
+
+                    await page.waitForTimeout(4000);
+
+                    // 
+                    await page.getByRole('button', {name: 'Anterior'}).click();
+
+                    await page.waitForTimeout(4000);
+
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(/\/?step=1/);
+                }
 
                 // La categoria debe ser Socio Ahorrante
                 await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
@@ -173,12 +198,18 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                 test('El boton de Eliminar Firmante debe estar inhabilitado', async () => {
                     // Boton de Remove Firmante inhabilitado
                     await expect(botonEliminarFirmante).toBeDisabled();
+
+                    // Esperar cuatro segundos
+                    await page.waitForTimeout(4000);
                 });
             } else if (escenarios.ID_OPERACION === 28) {
                 // Tests cuando ID_OPERACION es igual a 28
                 test('El boton de Eliminar Firmante debe estar habilitado', async () => {
                     // Boton de Remove Firmante inhabilitado
                     await expect(botonEliminarFirmante).toBeEnabled();
+
+                    // Esperar cuatro segundos
+                    await page.waitForTimeout(4000);
                 });
 
                 test('Eliminar el firmante', async () => {
@@ -195,20 +226,25 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await page.waitForTimeout(3000);
+                    await seleccionarTestigo.click();
+
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+
+                    // Esperar dos segundos antes de dar click al boton de Aceptar
+                    await page.waitForTimeout(2000)
             
                     // Boton de Imprimir
-                    const botonImprimir = page.getByRole('button', {name: 'check Imprimir'});
+                    const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
                     await expect(botonImprimir).toBeVisible();
                     await botonImprimir.click();
-            
+
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

@@ -293,12 +293,18 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         // Click fuera del input
         await page.getByText('TOTAL INGRESOS').click();
 
+        // Esperar que se actualice los ingresos
+        await page.waitForTimeout(2000);
+
         // Colocar un monto en el campo de Total Gastos
         await page.getByText('RD$ 0.00').click();
         await page.getByPlaceholder('MONTO').fill('RD$ 1,50000');
 
         // Click fuera del input
         await page.getByText('TOTAL INGRESOS').click();
+
+        // Esperar que se actualice los gastos
+        await page.waitForTimeout(2000);
 
         // Click en actualizar y continuar
         GuardaryContinuar();
@@ -436,7 +442,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(page.getByRole('dialog', {name: 'CEDULA DEUDOR'})).toBeVisible();
 
         // Cerrar la imagen de la firma
-        await page.locator(`${dataCerrar}`).click();
+        await page.getByLabel('Close', {exact: true}).click();
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
@@ -450,22 +456,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         const page2 = await context.waitForEvent('page');
         const page3 = await context.waitForEvent('page');
 
-        // Esperar que el reporte este visible
-        await page3.waitForTimeout(3000);
-
-        // Cerrar la primera pagina
+        // Cerrar todas las paginas
         await page3.close();
-
-        // Esperar que el reporte este visible
-        await page2.waitForTimeout(3000);
-
-        // Cerrar la primera pagina
         await page2.close();
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
-        // Cerrar la segunda pagina
         await page1.close();
     });
 
@@ -504,22 +497,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         const page2 = await context.waitForEvent('page');
         const page3 = await context.waitForEvent('page');
 
-        // Esperar que el reporte este visible
-        await page3.waitForTimeout(3000);
-
-        // Cerrar la primera pagina
+        // Cerrar todas las paginas
         await page3.close();
-
-        // Esperar que el reporte este visible
-        await page2.waitForTimeout(3000);
-
-        // Cerrar la primera pagina
         await page2.close();
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
-        // Cerrar la segunda pagina
         await page1.close();
     });
 
@@ -571,20 +551,10 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Esperar que se abran dos nuevas pestañas con los reportes
+        // Esperar que se abra una pagina con el reporte de Aprobacion
         const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
 
-        // Esperar que el reporte este visible
-        await page2.waitForTimeout(3000);
-
-        // Cerrar la primera pagina
-        await page2.close();
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
-        // Cerrar la segunda pagina
+        // Cerrar la pagina con el reporte
         await page1.close();
     });
 
@@ -614,6 +584,13 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
         await expect(botonImprimirContrato).toBeVisible();
 
+        // La tabla de cuentas de cobros debe estar visible
+        await expect(page.getByRole('row', {name: 'Principal Tipo de cuenta No. Cuenta Titular Acciones'})).toBeVisible();
+
+        // La cuenta de cobro debe estar visible
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
+
         // Desembolsar la solicitud
         const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
         await expect(botonDesembolsar).toBeVisible();
@@ -621,9 +598,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
         // Esperar que se abra una nueva pestaña con el reporte
         const page1 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte 
         await page1.close();

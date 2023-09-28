@@ -58,14 +58,13 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
 
-                // Boton de Editar Cuenta
-                // botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-                botonEditarCuenta = page.getByRole('row', {name: 'ARYA CRUZ'}).getByRole('button', {name: 'edit'});
-
                 // Cedula, nombre y apellido de la persona
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+                // Boton de Editar Cuenta
+                botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
             });
         
             test('Ir a la opcion de Registro de Persona', async () => {
@@ -87,8 +86,7 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                 await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
 
                 // Buscar al menor
-                // await page.locator(`${formBuscar}`).fill(`${cedula}`);
-                await page.locator(`${formBuscar}`).fill('ARYA CRUZ');
+                await page.locator(`${formBuscar}`).fill(`${cedula}`);
             });
 
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
@@ -104,6 +102,9 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();
+
+                    // Esperar que carguen los datos
+                    await page.waitForTimeout(4000);
 
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/edit/);
@@ -131,9 +132,6 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-
                     // Cerrar la nueva pestaña
                     await page1.close();
                 });
@@ -149,9 +147,6 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
 
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
 
                     // Cerrar las dos paginas
                     await page1.close();

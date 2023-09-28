@@ -69,9 +69,6 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Cajas', async () =>
         // Debe abrirse una nueva ventana con el reporte de transferencia desde caja
         const page1 = await context.waitForEvent('page');
 
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
-
         // Cerrar la nueva pestaña
         await page1.close();
     });

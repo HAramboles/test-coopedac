@@ -238,25 +238,26 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                     // Seleccionar un testigo
                     const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
                     await expect(seleccionarTestigo).toBeVisible();
+                    await page.waitForTimeout(3000);
                     await seleccionarTestigo.click();
+
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
 
+                    // Esperar dos segundos antes de dar click al boton de Aceptar
+                    await page.waitForTimeout(2000)
+            
                     // Boton de Aceptar
-                    const botonAceptar = page.locator('text=Aceptar');
-                    // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Aceptar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
+                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
 
-                    // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(4000);
-                  
-                    // La pagina abierta con el reporte se cierra
-                    await newPage.close();
+                    // Esperar que se abra una nueva pestaña con el reporte
+                    const page1 = await context.waitForEvent('page');
+
+                    // Cerrar la nueva pestaña
+                    await page1.close();
             
                     // El firmante agregado se debe mostrar
                     await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
@@ -290,9 +291,6 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-
                     // Cerrar la nueva pestaña
                     await page1.close();
                     
@@ -301,6 +299,20 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
             
                     // El titulo de Ahorros debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
+                });
+
+                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
+                    // Boton de seleccionar captaciones
+                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
+                    await expect(botonCaptaciones).toBeVisible();
+                    // Click al boton
+                    await botonCaptaciones.click();
+
+                    // Tipos de cuentas
+                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
+                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
+                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
                 });
             };
         

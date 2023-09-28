@@ -47,7 +47,8 @@ test.describe.serial('No debe permitir Transacciones de Caja sin una Tasa Regist
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REGISTRO DE TASA'})).toBeVisible();
 
-       const tasaDia = page.getByRole('cell', {name: '56.0000'}).first();
+       // const tasaDia = page.getByRole('cell', {name: '56.0000'}).first();
+       const tasaDia = page.locator('(//TD[@record="[object Object]"][text()="56.0000"])');
 
         // Condicion si hay o no una tasa del dia registrada
         if (await tasaDia.isVisible()) {

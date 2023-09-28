@@ -269,16 +269,8 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     const page1 = await context.waitForEvent('page');
                     const page2 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page2.waitForTimeout(3000);
-
-                    // Cerrar la primera pagina
+                    // Cerrar las dos paginas
                     await page2.close();
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-
-                    // Cerrar la segunda pagina
                     await page1.close();
 
                     // Debe regresar a la pagina
@@ -315,7 +307,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await page.locator(`${formComentario}`).fill('Retiro de 500.02 pesos de la cuenta de Ahorros');
             
                     // Aplicar el retiro
-                    await page.locator('text=Aplicar').click();
+                    await page.getByRole('button', {name: 'Aplicar'}).click();
                 });
 
                 test('Datos de la Distribucion de Egresos', async () => {
@@ -353,9 +345,6 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
             
                     // Se abrira una nueva pagina con el reporte del retiro
                     const page1 = await context.newPage();
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
                     
                     // La pagina abierta con el reporte del retiro se debe cerrar
                     await page1.close();

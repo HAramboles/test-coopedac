@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, ariaCerrar, dataGuardar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, dataGuardar, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
 import { url_registro_tasa } from './utils/urls';
 
 // Variables globales
@@ -183,8 +183,28 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
                         await expect(AlertaError).not.toBeVisible();
                     };
 
-                    // La moneda agregada debe estar en la table de monedas
+                    // La moneda agregada debe estar en la tabla de monedas
                     await expect(page.getByText('DOLARES (US)').first()).toBeVisible();
+
+                    // El titulo de la seccion Historial de Tasa Registradas debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'Historial De Tasas Registradas'})).toBeVisible();
+
+                    // Cambiar las fechas de incio y fin para que solo se muestre la tasa registrada en el dia actual
+                    await page.locator(`${fechaInicio}`).clear();
+                    await page.locator(`${fechaInicio}`).fill(formatDate(new Date()));
+                    await page.waitForTimeout(3000);
+                    await expect(page.locator(`${fechaFinal}`)).toHaveValue(formatDate(new Date()));
+
+                    // Click al boton de buscar
+                    const botonBuscar = page.getByRole('button', {name: 'Buscar'});
+                    await expect(botonBuscar).toBeVisible();
+                    await botonBuscar.click();
+
+                    // Solo deben mostrarse las dos tasas registradas en el dia actual
+                    await expect(page.getByRole('row', {name: `${formatDate(new Date())} PESO (RD) 1.0000 TRANSACCIONAL`})).toBeVisible();
+                    await expect(page.getByRole('row', {name: `${formatDate(new Date())} DOLARES (US) 56.0000 TRANSACCIONAL`})).toBeVisible();
+
+                    await page.waitForTimeout(3000);
 
                 } else if (scenarie.FECHA_DIA_AUTO === 'N' || scenarie.FECHA_DIA_AUTO === '' && scenarie.ID_MONEDA_DEFECTO === 'US') {
                     test.skip();

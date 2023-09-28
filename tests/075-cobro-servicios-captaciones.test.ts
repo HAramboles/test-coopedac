@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, formBuscar, browserConfig } from './utils/dataTests';
-import { url_cobro_servicios_captaciones, url_sesiones_transito, url_cobros_servicios_caja } from './utils/urls';
+import { url_cobro_servicios_captaciones, url_sesiones_transito, url_cobros_servicios_captaciones_caja } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;
@@ -144,7 +144,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
 
     test('Aplicar el Cobro del Servicio al Socio', async () => {
         // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_cobros_servicios_caja}`);
+        await expect(page).toHaveURL(`${url_cobros_servicios_captaciones_caja}`);
 
         // El titulo de la pagina debe estar visible
         await expect(page.locator('h1').filter({hasText: 'COBRO DE SERVICIOS'})).toBeVisible();
@@ -178,9 +178,6 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         
         // Esperar que se abra una nueva pestaña con el reporte
         const page1 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte 
         await page1.close();

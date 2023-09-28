@@ -25,7 +25,7 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Pruebas
-test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes parametros', async () => {
+test.describe.serial('Certificados - Inversion Pagaderas - Pruebas con los diferentes parametros', async () => {
     for (const escenario of EscenariosPruebaCrearCuentas) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
@@ -226,9 +226,6 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-
                     // Cerrar la nueva pestaña
                     await page1.close();
                 });
@@ -301,20 +298,23 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                     // Seleccionar un testigo
                     const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
                     await expect(seleccionarTestigo).toBeVisible();
+                    await page.waitForTimeout(3000);
                     await seleccionarTestigo.click();
+
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+
+                    // Esperar dos segundos antes de dar click al boton de Aceptar
+                    await page.waitForTimeout(2000)
             
                     // Boton de Aceptar
-                    const botonAceptar = page.locator('text=Aceptar');
+                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();
-                  
+
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();
@@ -352,20 +352,26 @@ test.describe('Certificados - Inversion Pagaderas - Pruebas con los diferentes p
                     const page1 = await context.waitForEvent('page');
                     const page2 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page2.waitForTimeout(3000);
-
-                    // Cerrar la primera pagina
+                    // Cerrar las dos paginas
                     await page2.close();
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-
-                    // Cerrar la segunda pagina
                     await page1.close();
 
                     // Debe regresar a la pagina de los certificados
                     await expect(page).toHaveURL(`${url_cuentas_certificados_inversion_pagaderas}`);
+                });
+
+                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
+                    // Boton de seleccionar captaciones
+                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
+                    await expect(botonCaptaciones).toBeVisible();
+                    // Click al boton
+                    await botonCaptaciones.click();
+
+                    // Tipos de cuentas
+                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
+                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
+                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
                 });
             };
             

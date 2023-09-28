@@ -151,6 +151,9 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();
+
+                    // Esperar cinco segundos
+                    await page.waitForTimeout(5000);
             
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=1/);
@@ -159,7 +162,10 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
                 });
             
-                test('Editar Cuenta de Ahorros - Datos Generales', async () => {            
+                test('Editar Cuenta de Ahorros - Datos Generales', async () => {    
+                    // Esperar que carguen los datos
+                    await page.waitForTimeout(4000);
+                    
                     // Debe de aparecer el nombre de la persona como titulo
                     await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
             
@@ -170,9 +176,29 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
             
                     // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
                     await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+
+                    if (await page.locator('text=SOCIO AHORRANTE').isHidden()) {
+                        await page.getByRole('button', {name: 'Omitir'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=2/);
+
+                        await page.waitForTimeout(4000);
+
+                        // 
+                        await page.getByRole('button', {name: 'Anterior'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=1/);
+                    }
             
                     // La categoria debe ser Socio Ahorrante
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
+
             
                     // Editar el monto de confirmacion
                     const montoConfirmacion = page.getByPlaceholder('MONTO DE CONFIRMACIÓN');
@@ -276,21 +302,23 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     // Seleccionar un testigo
                     const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
                     await expect(seleccionarTestigo).toBeVisible();
+                    await page.waitForTimeout(3000);
                     await seleccionarTestigo.click();
+
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+
+                    // Esperar dos segundos antes de dar click al boton de Aceptar
+                    await page.waitForTimeout(2000);
             
                     // Boton de Aceptar
-                    const botonAceptar = page.locator('text=Aceptar');
-                    // Esperar que se abra una nueva pestaña con el reporte de poder a terceros
+                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();
-                  
+
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

@@ -307,9 +307,6 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                         await expect(botonAceptar).toBeVisible(),
                         await botonAceptar.click()
                     ]);
-
-                    // Esperar que el reporte este visible
-                    await newPage.waitForTimeout(4000);
                     
                     // La pagina abierta con el reporte del deposito se debe cerrar
                     await newPage.close();
@@ -361,9 +358,6 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
 
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();

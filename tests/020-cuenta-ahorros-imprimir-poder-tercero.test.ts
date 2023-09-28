@@ -143,18 +143,43 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();
+
+                    // Esperar cinco segundos
+                    await page.waitForTimeout(5000);
             
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=1/);
             
                     // El titulo de editar cuenta debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
+
+                    // Esperar que carguen los datos
+                    await page.waitForTimeout(4000);
             
                     // Debe de aparecer el nombre de la persona como titulo
                     await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
             
                     // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
                     await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+
+                    if (await page.locator('text=SOCIO AHORRANTE').isHidden()) {
+                        await page.getByRole('button', {name: 'Omitir'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=2/);
+
+                        await page.waitForTimeout(4000);
+
+                        // 
+                        await page.getByRole('button', {name: 'Anterior'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=1/);
+                    }
             
                     // La categoria debe ser Socio Ahorrante
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
@@ -190,9 +215,16 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
             
                     // Seleccionar un testigo
-                    await page.locator('#form_ID_TESTIGO').click();
+                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
+                    await expect(seleccionarTestigo).toBeVisible();
+                    await seleccionarTestigo.click();
+
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).nth(0).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+
+                    // Esperar dos segundos antes de dar click al boton de Aceptar
+                    await page.waitForTimeout(2000);
             
                     // Boton de Imprimir
                     const botonImprimir = page.getByRole('button', {name: 'check Imprimir'});
@@ -201,9 +233,6 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
             
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
 
                     // Cerrar la nueva pestaña
                     await page1.close();
@@ -227,6 +256,20 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
             
                     // Debe regresar al listado de las cuentas
                     await expect(page).toHaveURL(`${url_cuentas_ahorros_normales}`);
+                });
+
+                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
+                    // Boton de seleccionar captaciones
+                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
+                    await expect(botonCaptaciones).toBeVisible();
+                    // Click al boton
+                    await botonCaptaciones.click();
+
+                    // Tipos de cuentas
+                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
+                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
+                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
+                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
                 });
             };        
         

@@ -97,9 +97,6 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
 
         // Esperar que se abra una nueva pestaña
         const page1 = await context.newPage();
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte del Estado a la Fecha de Corte
         await page1.close();
@@ -193,9 +190,6 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
 
         // Esperar que se abra una nueva ventana con el reporte 
         const page1 = await context.newPage();
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
         
         // Cerrar la pagina con el reporte de todos los recibos
         await page1.close();

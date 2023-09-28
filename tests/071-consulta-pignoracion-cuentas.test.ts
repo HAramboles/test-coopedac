@@ -71,6 +71,9 @@ test.describe.serial('Pruebas con el Historial de Pignoracion de Cuentas', () =>
 
         // Debe estar el monto despignorado
         await expect(page.getByRole('row', {name: 'LIBERADO RD$ 150.00'})).toBeVisible();
+
+        // Esperar cinco segundos
+        await page.waitForTimeout(5000);
     });
 
     test.afterAll(async () => { // Despues de las pruebas

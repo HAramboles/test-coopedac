@@ -107,7 +107,7 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
 
     test('Confirmar la Reprogramacion del Credito', async () => {
         // Boton Actualizar
-        const botonAceptar = page.getByRole('button', {name: 'Actualizar'});
+        const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 

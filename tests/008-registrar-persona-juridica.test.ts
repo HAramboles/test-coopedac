@@ -144,6 +144,8 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 test('Registro de Persona Juridica - Datos Generales', async () => {
                     // El titulo de datos generales debe estra visible
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
+
+                    await page.waitForLoadState();
             
                     // Razon social / nombre de la empresa
                     await page.locator('#legalPerson_NOMBRE_EMPRESA').fill(`${nombrePersonaJuridica}`);
@@ -576,16 +578,8 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     const page1 = await context.waitForEvent('page');
                     const page2 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page2.waitForTimeout(3000);
-
-                    // Cerrar la primera pagina
+                    // Cerrar las dos paginas
                     await page2.close();
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-
-                    // Cerrar la segunda pagina
                     await page1.close();
                 });
 

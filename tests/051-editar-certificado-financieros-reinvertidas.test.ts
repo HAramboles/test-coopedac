@@ -145,6 +145,9 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();
+
+                    // Esperar cinco segundos
+                    await page.waitForTimeout(5000);
             
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=1/);
@@ -154,6 +157,9 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                 });
 
                 test('Editar Cuenta de Certificados Financieros Reinvertidas - Datos Generales', async () => {
+                    // Esperar que carguen los datos
+                    await page.waitForTimeout(4000);
+
                     // Tipo Captacion
                     await expect(page.getByTitle('FINANCIEROS REINVERTIDAS').first()).toBeVisible();
 
@@ -166,6 +172,25 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
 
                     // Titular
                     await expect(page.getByTitle(`${nombre} ${apellido}`)).toBeVisible();
+
+                    if (await page.locator('text=SOCIO AHORRANTE').isHidden()) {
+                        await page.getByRole('button', {name: 'Omitir'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=2/);
+
+                        await page.waitForTimeout(4000);
+
+                        // 
+                        await page.getByRole('button', {name: 'Anterior'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=1/);
+                    }
 
                     // Categoria
                     await expect(page.getByTitle('SOCIO AHORRANTE')).toBeVisible();
@@ -193,6 +218,9 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                 });
 
                 test('Editar Cuenta de Certificados Financieros Reinvertidas - Firmantes y Contactos', async () => {
+                    // Esperar que carguen los datos
+                    await page.waitForTimeout(4000);
+
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=2/);
             
@@ -203,7 +231,7 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             
                     // Se debe mostrar la firma del titular por defecto
-                    //await expect(page.locator('text=TITULAR')).toBeVisible();
+                    await expect(page.locator('text=TITULAR')).toBeVisible();
             
                     // El tipo de firma requerida debe estar visible
                     await expect(page.locator('text=(Y) FIRMA REQUERIDA')).toBeVisible();

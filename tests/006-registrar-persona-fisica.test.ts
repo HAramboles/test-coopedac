@@ -738,16 +738,8 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     const page1 = await context.waitForEvent('page');
                     const page2 = await context.waitForEvent('page');
 
-                    // Esperar que el reporte este visible
-                    await page2.waitForTimeout(3000);
-
-                    // Cerrar la primera pagina
+                    // Cerrar las dos paginas abiertas
                     await page2.close();
-
-                    // Esperar que el reporte este visible
-                    await page1.waitForTimeout(4000);
-
-                    // Cerrar la segunda pagina
                     await page1.close();
                 });
 

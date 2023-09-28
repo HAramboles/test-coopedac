@@ -17,8 +17,7 @@ test.describe.serial('Pruebas con la Categoria del Socio', async () => {
         // Crear el browser
         browser = await chromium.launch({
             headless: browserConfig.headless,
-            args: browserConfig.args,
-            slowMo: 1800
+            args: browserConfig.args
         });
 
         // Crear el context 
@@ -63,6 +62,9 @@ test.describe.serial('Pruebas con la Categoria del Socio', async () => {
 
         // La categoria del socio debe estar visible
         await expect(page.getByRole('cell', {name: 'SOCIO EMPRESARIAL'})).toBeVisible();
+
+        // Esperar que se muestre el resultado
+        await page.waitForTimeout(6000);
     });
 
     test.afterAll(async () => { // Despues de las pruebas

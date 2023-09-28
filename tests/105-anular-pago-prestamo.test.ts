@@ -89,27 +89,24 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
 
     test('Anular uno de los Pagos al Prestamo', async () => {
         // Deben mostrarse los dos pagos realizados
-        await expect(page.getByRole('cell', {name: '5,000.00'}).first()).toBeVisible();
-        await expect(page.getByRole('cell', {name: '5,000.00'}).last()).toBeVisible();
+        await expect(page.getByRole('cell', {name: '6,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '4,000.00'})).toBeVisible();
 
-        // Click al boton de Anular del primer pago
-        await page.locator(`${dataEliminar}`).first().click();
+        // Click al boton de Anular del pago de 6000
+        await page.getByRole('row', {name: '6,000.00'}).locator(`${dataEliminar}`).click();
 
         // Aparece un modal para colocar la razon de la anulacion
         const modalAnulacion = page.locator('text=Razón de la Anulación');
         await expect(modalAnulacion).toBeVisible();
 
         // Colocar una razon en el input de comentario
-        await page.locator('#form_CONCEPTO_ANULACION').fill('Anular primer pago realizado por caja');
+        await page.locator('#form_CONCEPTO_ANULACION').fill('Anular pago de 6000 pesos realizado por caja');
 
         // Click al boton de Aceptar del modal de Razon de Anulacion
         await page.getByRole('button', {name: 'Aceptar'}).click();
         
         // Se abre una nueva ventana del navegador con el reporte de anulacion
         const page1 = await context.waitForEvent('page');
-
-        // Esperar que el reporte este visible
-        await page1.waitForTimeout(4000);
 
         // Cerrar la ventana del reporte
         await page1.close();

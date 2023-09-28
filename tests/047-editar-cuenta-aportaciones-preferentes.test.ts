@@ -121,6 +121,9 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();
+
+                    // Esperar cinco segundos
+                    await page.waitForTimeout(5000);
             
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=1/);
@@ -130,6 +133,9 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                 });
 
                 test('Editar Cuenta de Aportaciones Preferentes - Datos Generales', async () => {
+                    // Esperar que carguen los datos
+                    await page.waitForTimeout(4000);
+
                     // Tipo Captacion
                     await expect(page.getByTitle('APORTACIONES PREFERENTES').first()).toBeVisible();
 
@@ -142,6 +148,25 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
 
                     // Titular
                     await expect(page.getByTitle(`${nombre} ${apellido}`)).toBeVisible();
+
+                    if (await page.locator('text=SOCIO AHORRANTE').isHidden()) {
+                        await page.getByRole('button', {name: 'Omitir'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=2/);
+
+                        await page.waitForTimeout(4000);
+
+                        // 
+                        await page.getByRole('button', {name: 'Anterior'}).click();
+
+                        await page.waitForTimeout(4000);
+
+                        // La URL debe cambiar
+                        await expect(page).toHaveURL(/\/?step=1/);
+                    }
 
                     // Categoria
                     await expect(page.getByTitle('SOCIO AHORRANTE')).toBeVisible();
@@ -171,6 +196,9 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                 });
 
                 test('Editar Cuenta de Aportaciones Preferentes - Firmantes y Contactos', async () => {
+                    // Esperar que carguen los datos
+                    await page.waitForTimeout(4000);
+                    
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=2/);
             
