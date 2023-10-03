@@ -1,10 +1,10 @@
 // Funciones para los test de Registro de Personas
 
 // Funcion para generar numeros de aleatorios para las cedulas
-const generarCedulasyPasaporte = () => { 
+const generarNumerosAleatorios = (numTotal:number) => { 
     const aleatorios:number[] = []; // Iniciar con un array vacio
     // Generar 11 numeros
-    for (let i = 0; i < 11; i++) { 
+    for (let i = 0; i < numTotal; i++) { 
         let random = Math.random(); // Crear una variable que almacene la funcion random
         random = random * 9 + 1; // Los numeros generados tienen que ser dentro de un rango,
         // y se le debe sumar 1 para que tambien cuente el ultimo numero. 
@@ -27,72 +27,22 @@ const generarLetrasPasaporte = () => {
     return pasaporte; // Retornar la variable con las dos letras
 };
 
-// Funcion para generar 15 numeros aleatorios para el registro mercantil de la persona juridica
-const generarRegistroMercantil = () => { 
-    const aleatorios:number[] = []; 
-    for (let i = 0; i < 15; i++) { 
-        let random = Math.random(); 
-        random = random * 9 + 1;  
-        random = Math.trunc(random); 
-        aleatorios[i] = random;  
-    };
-    return (aleatorios.join('')); 
-};
-
-// Funcion para generar 2 numeros aleatorios para colocarlos en el correo de las personas
-const generarNumerosparaCorreo = () => { 
-    const aleatorios:number[] = []; 
-    for (let i = 0; i < 2; i++) { 
-        let random = Math.random(); 
-        random = random * 9 + 1; 
-        random = Math.trunc(random);
-        aleatorios[i] = random; 
-    };
-    return (aleatorios.join('')); 
-};
-
-// Funcion para generar 10 numeros aleatorios para los numeros de telefono celulares
-const generarNumerosCelularTelefono = () => { 
-    const aleatorios:number[] = []; 
-    for (let i = 0; i < 7; i++) { 
-        let random = Math.random(); 
-        random = random * 9 + 1; 
-        random = Math.trunc(random); 
-        aleatorios[i] = random; 
-    };
-    return (aleatorios.join('')); 
-};
-
 // Exportar las funciones como constantes
+export const numerosCedulas = generarNumerosAleatorios(11); // Cedula para la persona fisica
+export const numerosCedulas2 = generarNumerosAleatorios(11); // Cedula para la persona juridica
+export const numerosCedulas3 = generarNumerosAleatorios(11); // Cedula para el relacionado de la persona juridica
+export const numerosCedulas4 = generarNumerosAleatorios(11); // Cedula para el menor de edad
+export const numerosCedulas5 = generarNumerosAleatorios(11); // Cedula para persona casada
+export const numerosCedulas6 = generarNumerosAleatorios(11); // Cedula para el conyuge de la persona casada
 
-const numerosCedulas = generarCedulasyPasaporte(); // Cedula para la persona fisica
-const numerosCedulas2 = generarCedulasyPasaporte(); // Cedula para la persona juridica
-const numerosCedulas3 = generarCedulasyPasaporte(); // Cedula para el relacionado de la persona juridica
-const numerosCedulas4 = generarCedulasyPasaporte(); // Cedula para el menor de edad
-const numerosCedulas5 = generarCedulasyPasaporte(); // Cedula para persona casada
-const numerosCedulas6 = generarCedulasyPasaporte(); // Cedula para el conyuge de la persona casada
+export const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosAleatorios(11)); // Pasaporte para la persona fisica
+export const numerosPasaporte2 = (generarLetrasPasaporte() + generarNumerosAleatorios(11)); // Pasaporte para la persona fisica casada
 
-const numerosPasaporte = (generarLetrasPasaporte() + generarCedulasyPasaporte()); // Pasaporte para la persona fisica
-const numerosPasaporte2 = (generarLetrasPasaporte() + generarCedulasyPasaporte()); // Pasaporte para la persona fisica casada
+export const numerosRegistroMercantil = generarNumerosAleatorios(15); // Registro Mercantil de la persona juridica
 
-const numerosRegistroMercantil = generarRegistroMercantil(); // Registro Mercantil de la persona juridica
+export const numerosCorreo = generarNumerosAleatorios(2); // Numeros para el correo de las personas
 
-const numerosCorreo = generarNumerosparaCorreo(); // Numeros para el correo de las personas
+export const numerosCelular = ('829' + generarNumerosAleatorios(10)); // Numeros para los celulares
+export const numerosTelefono = ('809' + generarNumerosAleatorios(10)); // Numeros para los telefonos
 
-const numerosCelular = ('829' + generarNumerosCelularTelefono()); // Numeros para los celulares
-const numerosTelefono = ('809' + generarNumerosCelularTelefono()); // Numeros para los telefonos
-
-export {
-    numerosCedulas,
-    numerosCedulas2,
-    numerosCedulas3,
-    numerosCedulas4,
-    numerosCedulas5,
-    numerosCedulas6,
-    numerosPasaporte,
-    numerosPasaporte2,
-    numerosRegistroMercantil,
-    numerosCorreo,
-    numerosCelular,
-    numerosTelefono
-};
+export const numerosCheques = generarNumerosAleatorios(4); // Numeros para los cheques

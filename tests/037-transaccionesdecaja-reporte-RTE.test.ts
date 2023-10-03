@@ -229,11 +229,11 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     const cant2000 = page.locator('[id="0"]'); // Campo de RD 2000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
             
-                    // Cantidad = 100 de 1000
+                    // Cantidad = 1000 de 1000
                     await cant1000.click();
                     await cant1000.fill('1000');
 
-                    // Cantidad = 1 de 100
+                    // Cantidad = 500 de 2000
                     await cant2000.click();
                     await cant2000.fill('500');
             

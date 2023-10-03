@@ -8,7 +8,7 @@ let context: BrowserContext;
 let page: Page;
 
 // Pruebas
-test.describe.serial('Pruebas con el Mensaje de Aviso cuando hat Recepciones Pendientes', async () => {
+test.describe.serial('Pruebas con el Mensaje de Aviso cuando hay Recepciones Pendientes en Sesiones en Transito', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch({

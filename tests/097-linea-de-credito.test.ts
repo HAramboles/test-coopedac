@@ -299,7 +299,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('h1').filter({hasText: 'GARANTÍAS LÍQUIDAS'})).toBeVisible();
 
         // Click al boton de agregar garantia
-        const agregarGarantiaLiquida = page.getByRole('button', {name: 'Agregar Garantia'});
+        const agregarGarantiaLiquida = page.getByRole('button', {name: 'Agregar Garantia Liquida'});
         await expect(agregarGarantiaLiquida).toBeVisible();
         await agregarGarantiaLiquida.click();
 

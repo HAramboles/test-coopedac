@@ -300,6 +300,15 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(botonFinalizar).toBeVisible();
                     await botonFinalizar.click();
 
+                    // Debe salir un mensaje de que no hay relacionados
+                    await expect(page.locator('text=No Registró Relacionado.')).toBeVisible();
+                    await expect(page.locator('text=¿Desea finalizar el registro sin agregar relacionados?')).toBeVisible();
+
+                    // Click al boton de Finalizar del mensaje modal
+                    const botonFinalizarModal = page.getByRole('dialog').getByRole('button', {name: 'check Finalizar'})
+                    await expect(botonFinalizarModal).toBeVisible();
+                    await botonFinalizarModal.click();
+
                     // Esperar que se abran dos nuevas pestañas con los reportes
                     const page1 = await context.waitForEvent('page');
                     const page2 = await context.waitForEvent('page');
@@ -413,6 +422,9 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 test('Debe dirigirse al paso de Relacionados del Socio', async () => {
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
+
+                    // La persona no debe tener ningun relacionado
+                    await expect(page.locator('text=No hay datos')).toBeVisible();
                 });
 
                 test('Finalizar con la Edicion de la Persona Fisica', async () => {
@@ -420,6 +432,15 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     const botonFinalizar = page.locator('text=Finalizar');
                     await expect(botonFinalizar).toBeVisible();
                     await botonFinalizar.click();
+
+                    // Debe salir un mensaje de que no hay relacionados
+                    await expect(page.locator('text=No Registró Relacionado.')).toBeVisible();
+                    await expect(page.locator('text=¿Desea finalizar el registro sin agregar relacionados?')).toBeVisible();
+
+                    // Click al boton de Finalizar del mensaje modal
+                    const botonFinalizarModal = page.getByRole('dialog').getByRole('button', {name: 'check Finalizar'})
+                    await expect(botonFinalizarModal).toBeVisible();
+                    await botonFinalizarModal.click();
 
                     // Esperar que se abran dos nuevas pestañas con los reportes
                     const page1 = await context.waitForEvent('page');

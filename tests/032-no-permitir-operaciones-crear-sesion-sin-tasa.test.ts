@@ -70,7 +70,7 @@ test.describe.serial('Pruebas con la Creacion de una Sesion de Transito que no d
 
     test('Ir a la opcion de Sesiones en Transito', async () => {
         // Click a Contraer todo del menu de navegacion
-        // await page.locator('text=Contraer todo').click();
+        await page.locator('text=Contraer todo').click();
 
         // TESORERIA
         await page.getByRole('menuitem', {name: 'TESORERIA'}).click();

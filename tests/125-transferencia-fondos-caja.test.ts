@@ -66,7 +66,7 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         // Transferir un millon de pesos desde la caja a la boveda
         const cant1000 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[2]'); // Campo de RD 1000
 
-        // Cantidad = 1 de 1000
+        // Cantidad = 1000 de 1000
         await cant1000.click();
         await cant1000.fill('1000');
 

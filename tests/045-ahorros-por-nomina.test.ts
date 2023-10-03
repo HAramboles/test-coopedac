@@ -240,6 +240,15 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
             
                     // Debe aparecer un modal para seleccionar el testigo de la eliminacion del firmante
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
+
+                    // Click en Aceptar sin colocar un testigo
+                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
+
+                    // Debe salir una alerta y un mensaje de error
+                    await expect(page.locator('text=Debe seleccionar un testigo')).toBeVisible();
+                    await expect(page.locator('text=Testigo es requerido.')).toBeVisible();
             
                     // Seleccionar un testigo
                     const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
@@ -255,7 +264,6 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     await page.waitForTimeout(2000)
             
                     // Boton de Aceptar
-                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();
 

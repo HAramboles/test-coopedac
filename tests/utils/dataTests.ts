@@ -12,6 +12,9 @@ export const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 // Nombre del testigo de los firmantes
 export const nombreTestigo:string = 'HECTOR ARAMBOLES';
 
+// Nombre del oficial de cuadre
+export const nombreOficialCuadre:string = 'CARLOS GIL';
+
 // Costantes utilizadas con regularidad
 export const dataCerrar:string = '[data-icon="close"]';
 export const dataPrinter:string = '[data-icon="printer"]';

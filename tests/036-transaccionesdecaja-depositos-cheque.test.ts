@@ -3,6 +3,7 @@ import { url_base, ariaCerrar, selectBuscar, dataGuardar, dataCerrar, browserCon
 import { diaAnterior } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
+import { numerosCheques } from './utils/cedulasypasaporte';
 
 // Variables globales
 let browser: Browser;
@@ -238,7 +239,7 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                     // Aparecen los campos para agregar los datos del cheque
 
                     // No. documento
-                    await page.locator('#form_NO_DOCUMENTO').fill('6221');
+                    await page.locator('#form_NO_DOCUMENTO').fill(`${numerosCheques}`);
 
                     // Banco
                     await page.locator('#form_BANCO').fill('ALAVER');

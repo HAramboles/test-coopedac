@@ -341,7 +341,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByText('Oferta require Garantía(s) Líquidas del siguiente tipo: AHORROS.')).toBeVisible();
 
         // Click al boton de agregar garantia
-        await page.getByRole('button', {name: 'Agregar Garantia'}).click();
+        await page.getByRole('button', {name: 'Agregar Garantia Liquida'}).click();
 
         // Debe salir un modal para agregar la garantia liquida
         await expect(page.getByRole('heading', {name: 'Agregar Garantía Líquida'}).first()).toBeVisible();

@@ -108,6 +108,7 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
 
     test('Deben mostrarse todas las Transacciones realizadas por la Caja', async () => {
         // Estructura de la tabla de las transacciones
+        await expect(page.getByRole('columnheader', {name: 'Caja'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Fecha'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'No. Documento'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Tipo Transacción'})).toBeVisible();

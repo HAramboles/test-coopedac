@@ -179,7 +179,7 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
     });
 
     test.afterAll(async () => { /* Despues de que se realizen todas las pruebas */
-        /* Guardar las cookies y el sesionStorage */
+        /* Guardar las cookies y el sesionStorage en el state */
         await context.storageState({path: 'state.json'});
 
         // Cerrar la page
