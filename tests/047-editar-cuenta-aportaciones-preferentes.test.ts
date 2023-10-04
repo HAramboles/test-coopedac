@@ -133,6 +133,9 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                 });
 
                 test('Editar Cuenta de Aportaciones Preferentes - Datos Generales', async () => {
+                    // Esperar que la pagina cargue
+                    await page.waitForLoadState('networkidle');
+                
                     // Esperar que carguen los datos
                     await page.waitForTimeout(4000);
 

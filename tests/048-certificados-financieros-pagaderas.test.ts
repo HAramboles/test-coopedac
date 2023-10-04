@@ -153,6 +153,12 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
             
                     // La cuenta debe ser de financieros pagaderos
                     await expect(page.locator('text=FINANCIEROS PAGADERAS').first()).toBeVisible();
+
+                    // Esperar que la pagina cargue
+                    await page.waitForLoadState('networkidle');
+                
+                    // Esperar que carguen los datos
+                    await page.waitForTimeout(4000);
             
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`).first();
@@ -445,18 +451,15 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                     await expect(page).toHaveURL(`${url_cuentas_certificados_financieros_pagaderas}`);
                 });
 
-                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
-                    // Boton de seleccionar captaciones
-                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
-                    await expect(botonCaptaciones).toBeVisible();
-                    // Click al boton
-                    await botonCaptaciones.click();
+                test('Las opciones con los tipos de captacion deben estar visibles', async () => {
+                    // Click al selector de tipos captacion
+                    await expect(page.locator('#form').getByTitle('FINANCIEROS PAGADERAS')).toBeVisible();
+                    await page.locator('#form').getByTitle('FINANCIEROS PAGADERAS').click();
 
-                    // Tipos de cuentas
-                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
-                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
-                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
-                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
+                    // Todos los tipos de captacion deben estar visibles
+                    await expect(page.getByRole('option', {name: 'FINANCIEROS PAGADERAS'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'FINANCIEROS REINVERTIDAS'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'INVERSION PAGADERAS'})).toBeVisible();
                 });
             };
             

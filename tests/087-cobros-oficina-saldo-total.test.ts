@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, ariaCerrar, browserConfig, inputDiaPago, formComentario } from './utils/dataTests';
+import { url_base, selectBuscar, dataCerrar, browserConfig, inputDiaPago, formComentario } from './utils/dataTests';
 import { url_cobros_oficina } from './utils/urls';
 
 // Variables globales
@@ -95,9 +95,6 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Prestamo
         await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO HIPOTECARIO');
 
-        // Cuenta Cobro
-        // await expect(page.locator('#form_DESCRIPCION_CUENTA_COBRO')).toHaveValue('AHORROS NORMALES');
-
         // Cuota
         await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 416.67');
 
@@ -110,6 +107,27 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Dia de Pago
         await expect(page.locator(`${inputDiaPago}`)).toBeDisabled();
+    });
+
+    test('Ver la o las cuentas de cobro pertenecientes al prestamo', async () => {
+        // Click al boton de Ver cuentas
+        const botonVerCobros = page.getByRole('button', {name: 'Cuenta(s) de cobro'});
+        await expect(botonVerCobros).toBeVisible();
+        await botonVerCobros.click();
+
+        // Debe aparecer un modal con las cuentas de cobro
+        const modal = page.locator('h1').filter({hasText: 'CUENTA(S) DE COBRO DEL PRÉSTAMO'});
+        await expect(modal).toBeVisible();
+
+        // En el modal debe estar la cuenta de Ahorros Normales de la persona que se le coloco como cuenta de cobro
+        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+
+        // Cerrar el modal
+        await page.locator(`${dataCerrar}`).click();
+
+        // El modal debe desaparecer
+        await expect(modal).not.toBeVisible();
     });
 
     test('Historial de Pagos del Prestamo', async () => {

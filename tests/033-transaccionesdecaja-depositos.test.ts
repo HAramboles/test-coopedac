@@ -245,7 +245,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await expect(modalDenominaciones).toBeVisible();
         
                     // Las denominaciones de la caja deben estar visibles
-                    const noDenominaciones = page.getByRole('dialog').locator('text=No hay datos');
+                    const noDenominaciones = page.getByLabel('Denominaciones').getByText('No hay datos');
                     if (await noDenominaciones.isVisible()) {
                         await page.close();
                         await context.close();

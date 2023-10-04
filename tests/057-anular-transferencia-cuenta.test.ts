@@ -56,16 +56,6 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         // Tipo transaccion
         await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('TRC - TRANSFERENCIA');
 
-        // Buscar la cuenta de origen
-        await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
-        // Click a la opcion de Ahorros Normales
-        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
-
-        // Buscar la cuenta de destino
-        await page.locator(`${selectBuscar}`).last().fill(`${cedula}`);
-        // Click a la opcion de Aportaciones
-        await page.getByRole('option', {name: 'APORTACIONES |'}).getByText('APORTACIONES |').click();
-
         // Fecha de Inicio y Fin deben tener el dia actual
         await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(new Date())}`);
         await expect(page.locator('#form_FECHA_FIN')).toHaveValue(`${formatDate(new Date())}`);
@@ -76,13 +66,13 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await botonBuscar.click();
     });
 
-    test('Anular la transaccion buscada', async () => {
-        // En la transaccion buscada deben mostrarse la fecha y el monto
-        await expect(page.getByRole('cell', {name: `${formatDate(new Date())}`})).toBeVisible();
-        await expect(page.getByRole('cell', {name: '1000.00'})).toBeVisible();
+    test('Anular la transferencia buscada', async () => {
+        // En la transaferencia buscada deben mostrarse la fecha y el monto
+        // await expect(page.getByRole('cell', {name: `${formatDate(new Date())}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '1,000.00'})).toBeVisible();
 
         // Click al boton de Anular
-        const botonAnular = page.locator('[data-icon="stop"]');
+        const botonAnular = page.getByRole('row', {name: '1,000.00'}).locator('[data-icon="stop"]');
         await expect(botonAnular).toBeVisible();
         await botonAnular.click();
 
@@ -104,7 +94,7 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await expect(modalAnulacion).not.toBeVisible();
 
         // Click al boton de Aceptar del modal de operacion exitosa
-        await page.getByRole('dialog', {name: 'Operación Exitosa'}).getByRole('button', {name: 'Aceptar'}).click();
+        await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

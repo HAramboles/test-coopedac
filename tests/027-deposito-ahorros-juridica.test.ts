@@ -158,9 +158,6 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                     // Debe salir un mensaje de que la operacion salio correctamente
                     await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
-            
-                    // Cerrar el mensaje
-                    await page.locator(`${dataCerrar}`).click();
                 });
 
                 test('Modal de Distribucion de Ingresos', async () => {

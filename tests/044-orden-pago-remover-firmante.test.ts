@@ -138,30 +138,14 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
             });
 
             test('Primer Paso - Datos Generales', async () => {
+                // Esperar que la pagina cargue
+                await page.waitForLoadState('networkidle');
+
                 // Esperar que carguen los datos
                 await page.waitForTimeout(4000);
 
                 // Debe de aparecer el nombre de la persona como titulo
                 await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
-
-                if (await page.locator('text=SOCIO AHORRANTE').isHidden()) {
-                    await page.getByRole('button', {name: 'Omitir'}).click();
-
-                    await page.waitForTimeout(4000);
-
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(/\/?step=2/);
-
-                    await page.waitForTimeout(4000);
-
-                    // 
-                    await page.getByRole('button', {name: 'Anterior'}).click();
-
-                    await page.waitForTimeout(4000);
-
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(/\/?step=1/);
-                }
 
                 // La categoria debe ser Socio Ahorrante
                 await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
@@ -283,18 +267,16 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                     await expect(page).toHaveURL(`${url_cuentas_ahorros_orden_pago}`);
                 });
 
-                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
-                    // Boton de seleccionar captaciones
-                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
-                    await expect(botonCaptaciones).toBeVisible();
-                    // Click al boton
-                    await botonCaptaciones.click();
+                test('Las opciones con los tipos de captacion deben estar visibles', async () => {
+                    // Click al selector de tipos captacion
+                    await expect(page.locator('#form').getByTitle('ORDEN DE PAGO')).toBeVisible();
+                    await page.locator('#form').getByTitle('ORDEN DE PAGO').click();
 
-                    // Tipos de cuentas
-                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
-                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
-                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
-                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
+                    // Todos los tipos de captacion deben estar visibles
+                    await expect(page.getByRole('option', {name: 'AHORROS NORMALES'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'AHORROS POR NOMINA'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'AHORROS INFANTILES'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'ORDEN DE PAGO'})).toBeVisible();
                 });
             };
 

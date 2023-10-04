@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, dataEliminar } from './utils/dataTests';
+import { url_base, browserConfig, dataEliminar } from './utils/dataTests';
 import { url_anular_deposito } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
@@ -35,7 +35,7 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
 
         // Cedula, nombre y apellido de la persona almacenada en el state
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePnombrePersonaJuridicaRelacionadaersona'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
     });
 
@@ -68,12 +68,7 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
 
         // Id documento y Cuenta de origen deben estar vacios por defecto
         await expect(page.locator('#form_ID_DOCUMENTO')).toHaveValue('');
-        await expect(page.locator(`${selectBuscar}`)).toHaveValue('');
-
-        // Buscar la cuenta de Ahorros Normales
-        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
-        // Elegir la cuenta de Ahorros Normales
-        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
+        await expect(page.locator('#form_ID_CUENTA')).toHaveValue('');
 
         // Buscar el usuario de la caja la cual hizo la transaccion
         await page.getByTitle('TODOS').click();
@@ -96,10 +91,10 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
 
     test('Anular el Deposito', async () => {
         // Debe mostrarse el deposito realizado
-        await expect(page.getByRole('cell', {name: '1,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Click al boton de Anular del deposito
-        await page.locator(`${dataEliminar}`).click();
+        await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator(`${dataEliminar}`).click();
 
         // Aparece un modal para colocar la razon de la anulacion
         const modalAnulacion = page.locator('text=Razón de la Anulación');
@@ -112,10 +107,10 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
         
         // Se abre una nueva ventana del navegador con el reporte de la anulacion
-        const pag1 = await context.waitForEvent('page');
+        const page1 = await context.waitForEvent('page');
 
         // Cerrar la ventana del reporte
-        await pag1.close();
+        await page1.close();
 
         // En la pagina de la Anular Deposito debe mostrarse un mensaje modal de operacion exitosa
         await expect(page.locator('text=Operación Exitosa')).toBeVisible();

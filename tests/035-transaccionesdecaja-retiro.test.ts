@@ -201,12 +201,11 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
             
                     // Hacer la distribucion del dinero a retirar, en el caso de la prueba RD 100
-                    // Divididos en 50 y 50
-                    const cant50 = page.locator('[id="17"]');
+                    const cant100 = page.locator('[id="16"]');
             
                     // Cantidad = 2 de 50
-                    await cant50.click();
-                    await cant50.fill('2');
+                    await cant100.click();
+                    await cant100.fill('1');
             
                     // Luego de distribuir la cantidad, debe aparecer una opcion de Guardar Entregado
                     await expect(page.locator('text=Guardar Entregado')).toBeVisible();

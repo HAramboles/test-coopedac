@@ -419,7 +419,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     actualizarContinuar();
                 });
 
-                test('Debe dirigirse al paso de Relacionados del Socio', async () => {
+                test('Debe dirigirse al paso de Relacionados del Socio y no debe haber ningun relacionado', async () => {
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
 

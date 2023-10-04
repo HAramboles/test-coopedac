@@ -7,7 +7,8 @@ import {
     inputFechaSolicitud, 
     inputPrimerPago, 
     dataEdit,
-    ariaAgregar
+    ariaAgregar,
+    formBuscar
 } from './utils/dataTests';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
@@ -507,7 +508,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await subirCartaTrabajo.setFiles(`${firma}`);
 
         // Esperar que la Carta de Trabajo se haya subido
-        //await expect(page.getByRole('link', {name: 'CARTA DE TRABAJO'})).toBeVisible();
         await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
 
         // Cerrar la alerta que se genera al subir la imagen
@@ -521,7 +521,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Esperar que el Buro Credito se haya subido
         await expect(page.getByRole('link', {name: 'INFORME BURO CREDITO (DATACREDITO)'})).toBeVisible();
-        //await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
 
         // Cerrar la alerta que se genera al subir la imagen
         await page.locator(`${dataCerrar}`).last().click();
@@ -534,10 +533,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Esperar que el Informe del Subgerente de Negocios se haya subido
         await expect(page.getByRole('link', {name: 'INFORME DEL SUBGERENTE DE NEGOCIOS'})).toBeVisible();
-        //await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
-
-        // Cerrar la alerta que se genera al subir la imagen
-        // await page.locator(`${dataCerrar}`).last().click();
         
         // Subir Instancia de credito llena y firmada
         const subirInstanciaCreditoPromesa = page.waitForEvent('filechooser');
@@ -547,10 +542,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Esperar que la Instancia de Credito se haya subido
         await expect(page.getByRole('link', {name: 'INSTANCIA DE CREDITO LLENA Y FIRMADA'})).toBeVisible();
-        //await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
-
-        // Cerrar la alerta que se genera al subir la imagen
-        // await page.locator(`${dataCerrar}`).last().click();
 
         // Subir Tabla de amortizacion
         const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');
@@ -559,11 +550,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await subirTablaAmortizacion.setFiles(`${firma}`);
 
         // Esperar que la Tabla de Amortizacion se haya subido
-        await expect(page.getByRole('link', {name: 'TABLA AMORTIZACION'})).toBeVisible();
-        //await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
-
-        // Cerrar la alerta que se genera al subir la imagen
-        // await page.locator(`${dataCerrar}`).last().click();
+        await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
         
         // Subir Cedula del Deudor
         const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');
@@ -572,11 +559,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await subirCedulaDeudor.setFiles(`${firma}`);
 
         // Esperar que la Cedula se haya subido
-       await expect(page.getByRole('link', {name: 'CEDULA DEUDOR'})).toBeVisible();
-       //await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
-
-        // Cerrar la alerta que se genera al subir la imagen
-        // await page.locator(`${dataCerrar}`).last().click();
+       await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
     });
 
     test('Finalizar con la creacion de la Solicitud', async () => {
@@ -600,11 +583,25 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
 
+        // Esperar que la pagina cargue
+        await page.waitForTimeout(3000);
+
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
         // La url debe de tener que la solicitud esta en estado solicitado
         await expect(page).toHaveURL(/\/solicitado/);
+
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(5000);
+
+        // Debe estar en el primer paso de la solicitud
+        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
 
         // Ir a la seccion de datos prestamos 
         const datosPrestamos = page.getByRole('button', {name: '2 Datos Préstamos'})
@@ -634,7 +631,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(page.getByRole('link', {name: 'CEDULA DEUDOR'}).first()).toBeVisible();
 
         // Click en la firma de la Cedula deudor para visualizar
-        await page.getByRole('link', {name: 'CEDULA DEUDOR'}).click();
+        await page.getByRole('link', {name: 'CEDULA DEUDOR'}).first().click();
 
         // Aprece un modal con la imagen de la firma
         await expect(page.getByRole('dialog', {name: 'CEDULA DEUDOR'})).toBeVisible();

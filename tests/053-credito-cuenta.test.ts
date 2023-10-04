@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { url_notas_cuentas } from './utils/urls';
 
 // Variables globales
@@ -69,24 +69,24 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
         await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('FINANCIEROS PAGADERAS');
 
         // Sucursal
-        await expect(page.locator('#form_sucursal')).toHaveValue('OFICINA PRINCIPAL');
+        await expect(page.locator('#form_DESC_CENTRO')).toHaveValue('OFICINA PRINCIPAL');
 
         // Balance
-        await expect(page.locator('#form_BALANCE')).toHaveValue(' 50.00');
+        await expect(page.locator('#form_BALANCE')).toHaveValue('50.00');
 
         // Pignorado
-        await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue(' 0.00');
+        await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('0.00');
 
         // Transito
-        await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue(' 0.00');
+        await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('0.00');
 
         // Disponible
-        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue(' 50.00');
+        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('50.00');
     });
 
     test('Hacer el movimiento', async () => {
         // Monto
-        await page.locator('#form_MONTO').fill('2050');
+        await page.locator('#form_MONTO_MOVIMIENTO').fill('2050');
 
         // Tipo Movimiento
         await page.locator('#form_ORIGEN_MOVIMIENTO').click();
@@ -102,12 +102,12 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
         await expect(page.locator('#form_FECHA_DOCUMENTO')).toHaveValue(`${formatDate(new Date())}`);
 
         // Comentario
-        await page.locator(`${formComentario}`).fill('Ingreso de 2050 pesos a la cuenta de Certificado');
+        await page.getByPlaceholder('Comentario de la nota').fill('Ingreso de 2050 pesos a la cuenta de Certificado');
     });
 
-    test('Realizar el Credito a la Cuenta', async () => {
+    test('Aplicar la nota de Credito a la Cuenta', async () => {
         // Boton Guadar
-        const botonGuadar = page.getByRole('button', {name: 'Guardar'});
+        const botonGuadar = page.getByRole('button', {name: 'Aplicar nota'});
         await expect(botonGuadar).toBeVisible();
         await botonGuadar.click();
 
@@ -117,11 +117,11 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
         // Cerrar la pagina con el reporte
         await page1.close();
 
-        // Se deben mostrar dos mensajes de confirmacion
-        await expect(page.locator('text=Captacion Movimiento almacenada exitosamente.')).toBeVisible();
+        // Debe mostrarse un mensaje modal
+        await expect(page.locator('text=Se ha aplicado la nota a la cuenta')).toBeVisible();
 
-        // Cerrar los mensajes
-        await page.locator(`${ariaCerrar}`).first().click();
+        // Click al boton de Aceptar del mensaje modal
+        await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

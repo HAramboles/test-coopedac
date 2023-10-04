@@ -293,7 +293,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('span').filter({hasText: 'APORTACIONES'})).not.toBeVisible(); 
 
         // Seleccionar la cuenta de ahorros
-        await page.getByText('AHORROS NORMALES').click();
+        await page.getByText('AHORROS NORMALES | ').click();
 
         // Destino o proposito
         await page.getByPlaceholder('Destino o propósito').click();

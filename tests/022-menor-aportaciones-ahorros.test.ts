@@ -280,7 +280,10 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await page.getByRole('dialog').getByRole('button', {name: 'Sí'}).click();
                 });
             
-                test('Crear la Cuenta de Ahorros del Menor - Datos Generales', async () => {   
+                test('Crear la Cuenta de Ahorros del Menor - Datos Generales', async () => {  
+                    // Esperar que la pagina cargue
+                    await page.waitForLoadState('networkidle');
+                     
                     // Esperar que carguen los datos
                     await page.waitForTimeout(4000);
 
@@ -289,35 +292,12 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
             
                     // Titulo de editar cuenta, ya que se crea automaticamente
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
-
-                    // Cerrar las alertas
-                    // await page.locator(`${ariaCerrar}`).first().click();
-                    // await page.locator(`${ariaCerrar}`).last().click();
             
                     // La cuenta debe ser la del socio
                     await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
             
                     // El tipo de captacion debe ser Ahorros Normales y no debe cambiar
                     await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
-
-                    if (await page.locator('text=SOCIO AHORRANTE').isHidden()) {
-                        await page.getByRole('button', {name: 'Omitir'}).click();
-
-                        await page.waitForTimeout(4000);
-
-                        // La URL debe cambiar
-                        await expect(page).toHaveURL(/\/?step=2/);
-
-                        await page.waitForTimeout(4000);
-
-                        // 
-                        await page.getByRole('button', {name: 'Anterior'}).click();
-
-                        await page.waitForTimeout(4000);
-
-                        // La URL debe cambiar
-                        await expect(page).toHaveURL(/\/?step=1/);
-                    }
             
                     // La categoria debe ser Socio Ahorrante
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
@@ -408,12 +388,6 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
             
                     // Debe aparecer un modal para seleccionar el testigo de la eliminacion del firmante
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
-            
-                    // Seleccionar un testigo
-                    const seleccionarTestigo = page.locator('#form_ID_TESTIGO');
-                    await expect(seleccionarTestigo).toBeVisible();
-                    await page.waitForTimeout(3000);
-                    await seleccionarTestigo.click();
 
                     if (await page.locator('(//SPAN[@class="ant-select-selection-item"][text()="HECTOR ARAMBOLES"])').isVisible()) {
                         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
@@ -488,18 +462,16 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await expect(page.locator('h1').filter({hasText: 'AHORROS'})).toBeVisible();
                 });
 
-                test.skip('Se deben ver los demas tipos de cuentas en el Selector Tipo Cuenta', async () => {
-                    // Boton de seleccionar captaciones
-                    const botonCaptaciones = page.locator('#form_CLASE_TIPO_SELECIONADO');
-                    await expect(botonCaptaciones).toBeVisible();
-                    // Click al boton
-                    await botonCaptaciones.click();
+                test('Las opciones con los tipos de captacion deben estar visibles', async () => {
+                    // Click al selector de tipos captacion
+                    await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
+                    await page.locator('#form').getByTitle('AHORROS NORMALES').click();
 
-                    // Tipos de cuentas
-                    await expect(page.locator('text=AHORROS NORMALES')).toBeVisible();
-                    await expect(page.locator('text=ORDEN DE PAGO')).toBeVisible();
-                    await expect(page.locator('text=AHORROS INFANTILES')).toBeVisible();
-                    await expect(page.locator('text=AHORROS POR NOMINA')).toBeVisible();
+                    // Todos los tipos de captacion deben estar visibles
+                    await expect(page.getByRole('option', {name: 'AHORROS NORMALES'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'AHORROS POR NOMINA'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'AHORROS INFANTILES'})).toBeVisible();
+                    await expect(page.getByRole('option', {name: 'ORDEN DE PAGO'})).toBeVisible();
                 });
             };
         
