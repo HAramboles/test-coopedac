@@ -147,16 +147,17 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                 });
             
                 test('Llenar los campos del primer paso del registro de cuenta de ahorros', async () => {
-                    // Esperar que la pagina cargue
-                    await page.waitForLoadState('networkidle');
-                     
                     // Esperar que carguen los datos
                     await page.waitForTimeout(4000);
 
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`);
-            
                     await campoTitular?.fill(`${cedulaEmpresa}`);
+
+                    // Esperar a que el servicio de busqueda de personas cargue
+                    await page.waitForResponse('**/persona/personas?page=1&size=10');
+                    await page.waitForTimeout(3000);
+                    
                     // Seleccionar la opcion que aparece
                     await page.locator(`text=${cedulaEmpresa}`).click();
 

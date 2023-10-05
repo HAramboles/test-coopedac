@@ -150,18 +150,19 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros por Nomina - Pruebas con
                     await expect(page.locator('text=CREAR CUENTA DE AHORROS')).toBeVisible();
                 });
             
-                test('Llenar los campos del primer paso del registro de cuenta de ahorros - orden de pago', async () => {
-                    // Esperar que la pagina cargue
-                    await page.waitForLoadState('networkidle');
-                
+                test('Llenar los campos del primer paso del registro de cuenta de ahorros por nomina', async () => {
                     // Esperar que carguen los datos
                     await page.waitForTimeout(4000);
 
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`);
-                    
                     // Buscar un socio
                     await campoTitular?.fill(`${cedula}`);
+
+                    // Esperar a que el servicio de busqueda de personas cargue
+                    await page.waitForResponse('**/persona/personas?page=1&size=10');
+                    await page.waitForTimeout(3000);
+
                     // Seleccionar la opcion que aparece
                     await page.locator(`text=${cedula}`).click();
             

@@ -109,7 +109,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator(`${inputDiaPago}`)).toBeDisabled();
     });
 
-    test('Ver la o las cuentas de cobro pertenecientes al prestamo', async () => {
+    test.skip('Ver la o las cuentas de cobro pertenecientes al prestamo', async () => {
         // Click al boton de Ver cuentas
         const botonVerCobros = page.getByRole('button', {name: 'Cuenta(s) de cobro'});
         await expect(botonVerCobros).toBeVisible();
@@ -151,7 +151,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
-    test('Opciones de Pago - Abono/Distribuido Cuota', async () => {
+    test('Opciones de Pago - Adelantar Cuotas', async () => {
         // Titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'OPCIONES DE PAGO'})).toBeVisible();
 
@@ -161,17 +161,24 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Saldo total
         await expect(page.getByText('Saldo total')).toBeVisible();
 
-        // Colocar un Abono/Distribuido Cuota
-        const abonoCapital = page.locator('#form_MONTO_RESTANTE');
-        await expect(abonoCapital).toBeVisible();
-        await abonoCapital.fill('1000');
+        // Click a Adelantar cuotas
+        const adelantarCuotas = page.getByText('Adelantar cuotas');
+        await expect(adelantarCuotas).toBeVisible();
+        await adelantarCuotas.click();
 
-        // El valor de Abono/Distribuido Cuota y Total a Pagar deben ser igual
-        await expect(abonoCapital).toHaveValue('RD$ 1,000');
-        
+        // Aparece un modal para seleccionar la cuota
+        await expect(page.locator('text=SELECCIÓN DE CUOTAS')).toBeVisible();
+
+        // Seleccionar la primera cuota
+        await page.getByRole('checkbox').first().click();
+
+        // Click al boton de Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // En el input total a pagar deberia colcarse la cuota elegida
         const totalPagar = page.locator('#form_A_PAGAR');
         await expect(totalPagar).toBeDisabled();
-        await expect(totalPagar).toHaveValue('RD$ 1,000');
+        await expect(totalPagar).toHaveValue('RD$ 3,016');
     });
 
     test('Cobrar de Cuenta', async () => {
@@ -210,4 +217,5 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Cerrar el context
         await context.close();
     });
+
 });

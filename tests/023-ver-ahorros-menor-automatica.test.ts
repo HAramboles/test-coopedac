@@ -105,8 +105,8 @@ test.describe.serial('Pruebas en el modo solo lectura, para ver una cuenta', asy
         // La URL debe cambiar
         await expect(page).toHaveURL(/\/?step=1/);
 
-        // Esperar que la pagina cargue
-        await page.waitForLoadState('networkidle');
+        // Esperar a que el servicio de busqueda de personas cargue
+        await page.waitForResponse(/\/persona/);
 
         // El titulo de editar cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CUENTA DE AHORROS'})).toBeVisible();

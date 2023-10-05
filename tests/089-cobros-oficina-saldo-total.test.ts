@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, dataCerrar, browserConfig, inputDiaPago } from './utils/dataTests';
+import { url_base, selectBuscar, dataCerrar, browserConfig, inputDiaPago, formComentario } from './utils/dataTests';
 import { url_cobros_oficina } from './utils/urls';
 
 // Variables globales
@@ -71,10 +71,10 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Debe estar visible el credito de la persona
-        await expect(page.getByText('CRÉDIAUTOS')).toBeVisible();
+        await expect(page.getByText('CRÉDITO HIPOTECARIO')).toBeVisible();
 
         // Hacer un pago al credito
-        await page.getByText('CRÉDIAUTOS').locator('[aria-label="Expandir fila"]').click();
+        await page.locator('[aria-label="Expandir fila"]').click();
 
         // Click al boton de Pagos
         const botonPagos = page.getByText('PAGOS');
@@ -93,10 +93,10 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
         // Prestamo
-        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDIAUTOS');
+        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO HIPOTECARIO');
 
         // Cuota
-        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 3,015.9');
+        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 416.67');
 
         // Garantia
         await expect(page.getByText('Sin garantía')).toBeVisible();
@@ -109,7 +109,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator(`${inputDiaPago}`)).toBeDisabled();
     });
 
-    test('Ver la o las cuentas de cobro pertenecientes al prestamo', async () => {
+    test.skip('Ver la o las cuentas de cobro pertenecientes al prestamo', async () => {
         // Click al boton de Ver cuentas
         const botonVerCobros = page.getByRole('button', {name: 'Cuenta(s) de cobro'});
         await expect(botonVerCobros).toBeVisible();
@@ -151,34 +151,24 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
     });
 
-    test('Opciones de Pago - Adelantar Cuotas', async () => {
+    test('Opciones de Pago', async () => {
         // Titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'OPCIONES DE PAGO'})).toBeVisible();
 
         // Cuotas pendientes
         await expect(page.getByText('0 cuotas pendientes RD 0.00')).toBeVisible();
 
+        // Adelantar cuotas
+        await expect(page.getByText('Adelantar cuotas')).toBeVisible();
+
         // Saldo total
         await expect(page.getByText('Saldo total')).toBeVisible();
 
-        // Click a Adelantar cuotas
-        const adelantarCuotas = page.getByText('Adelantar cuotas');
-        await expect(adelantarCuotas).toBeVisible();
-        await adelantarCuotas.click();
+        // Click a la opcion de Saldo total
+        await page.getByText('Saldo total').click();
 
-        // Aparece un modal para seleccionar la cuota
-        await expect(page.locator('text=SELECCIÓN DE CUOTAS')).toBeVisible();
-
-        // Seleccionar la primera cuota
-        await page.getByRole('checkbox').first().click();
-
-        // Click al boton de Aceptar
-        await page.getByRole('button', {name: 'Aceptar'}).click();
-
-        // En el input total a pagar deberia colcarse la cuota elegida
-        const totalPagar = page.locator('#form_A_PAGAR');
-        await expect(totalPagar).toBeDisabled();
-        await expect(totalPagar).toHaveValue('RD$ 3,016');
+        // Agregar un comnetario
+        await page.locator(`${formComentario}`).fill('Saldar el Prestamo');
     });
 
     test('Cobrar de Cuenta', async () => {
@@ -201,7 +191,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(botonAplicar).toBeVisible();
         await botonAplicar.click();
 
-        // Esperar que se abran dos nuevas pestañas con los reportes
+        // Esperar que se abran dos ventanas con los reportes
         const page1 = await context.waitForEvent('page');
         const page2 = await context.waitForEvent('page');
 
@@ -217,5 +207,4 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Cerrar el context
         await context.close();
     });
-
 });

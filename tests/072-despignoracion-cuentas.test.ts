@@ -138,8 +138,8 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                     // Click en Aceptar
                     await page.getByRole('dialog').filter({ hasText: 'Confirmar¿Está seguro de liberar el registro?CancelarAceptar' }).getByRole('button', { name: 'check Aceptar' }).click();
             
-                    // Los 150 pesos deben estar en estado liberado
-                    await expect(page.getByRole('row', {name: 'LIBERADO RD$ 150.00'})).toBeVisible();
+                    // Los 150 pesos ya no deben mostrarse en la tabla despues de despignorarlos
+                    await expect(page.getByRole('row', {name: 'CONGELADO RD$ 150.00'})).not.toBeVisible();
                 });
             };
         

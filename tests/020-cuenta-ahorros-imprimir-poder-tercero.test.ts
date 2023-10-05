@@ -143,18 +143,16 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();
-
-                    // Esperar cinco segundos
-                    await page.waitForTimeout(5000);
             
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=1/);
+
+                    // Esperar a que el servicio de busqueda de personas cargue
+                    await page.waitForResponse('**/persona/personas?page=1&size=15');
+                    await page.waitForTimeout(3000);
             
                     // El titulo de editar cuenta debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE AHORROS'})).toBeVisible();
-
-                    // Esperar que la pagina cargue
-                    await page.waitForLoadState('networkidle');
 
                     // Esperar que carguen los datos
                     await page.waitForTimeout(4000);

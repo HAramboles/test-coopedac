@@ -7,13 +7,12 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula de la persona
-let cedula: string | null;
+// Cedula de la persona fisica
+let cedulaPersona: string | null;
 
-// Cedula, nombre y apellido de la persona relacionada
-let cedulaRelacionada: string | null;
-let nombreRelacionada: string | null;
-let apellidoRelacionada: string | null;
+// Cedula y nombre de la persona juridica
+let cedulaEmpresa: string | null;
+let nombreEmpresa: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () => {
@@ -35,13 +34,12 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula de la persona alamcenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        // Cedula de la persona fisica almacenada en el state
+        cedulaPersona = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
 
-        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
-        cedulaRelacionada = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
-        nombreRelacionada = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
-        apellidoRelacionada = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+        // Cedula y nombre de la persona juridica almacenada en el state
+        cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
+        nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
     
     test('Ir a la opcion de Transferencias Cuentas Internas', async () => {
@@ -63,7 +61,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIAS CUENTAS INTERNAS'})).toBeVisible();
 
         // Buscar un socio
-        await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).first().fill(`${cedulaPersona}`);
 
         // Deben mostrarse todas las cuentas de tipo Ahorro que posee el socio
         const cuentaAhorrosNormales = page.getByText('AHORROS NORMALES');
@@ -77,8 +75,8 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         // Seleccionar la cuenta de ahorros del socio
         await page.getByText('AHORROS NORMALES').click();
 
-        // Buscar la cuenta de ahorros normales del socio relacionado
-        await page.locator(`${selectBuscar}`).last().fill(`${cedulaRelacionada}`);
+        // Buscar la cuenta de ahorros normales de la persona juridica
+        await page.locator(`${selectBuscar}`).last().fill(`${cedulaEmpresa}`);
 
         // Deben salir la cuenta de ahorros normales y la de aportaciones de la persona relacionada
         await expect(page.getByRole('option', {name: 'AHORROS NORMALES'})).toBeVisible();
@@ -91,10 +89,10 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await expect(page.locator('h1').filter({hasText: 'Detalle De La Transacción'})).toBeVisible();
 
         // Ingresar un monto
-        await page.locator('#form_MONTO').fill('25000');
+        await page.locator('#form_MONTO').fill('1500');
 
         // Agregar un comentario
-        await page.locator('#form_DESCRIPCION').fill(`Transferencia a la cuenta de Ahorros Normales de ${nombreRelacionada} ${apellidoRelacionada}`);
+        await page.locator('#form_DESCRIPCION').fill(`Transferencia a la cuenta de Ahorros Normales de ${nombreEmpresa}`);
 
         // Click en siguiente
         await page.getByRole('button', {name: 'Siguiente'}).click();
@@ -111,10 +109,10 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await expect(page.getByText('Destino')).toBeVisible();
 
         // Monto
-        await expect(page.getByPlaceholder('MONTO')).toHaveValue('RD$ 25,000');
+        await expect(page.getByPlaceholder('MONTO')).toHaveValue('RD$ 1,500');
 
         // Comentario
-        await expect(page.getByText(`Transferencia a la cuenta de Ahorros Normales de ${nombreRelacionada} ${apellidoRelacionada}`)).toBeVisible();
+        await expect(page.getByText(`Transferencia a la cuenta de Ahorros Normales de ${nombreEmpresa}`)).toBeVisible();
     });
 
     test('Finalizar con la Transferencia entre Cuentas', async () => {

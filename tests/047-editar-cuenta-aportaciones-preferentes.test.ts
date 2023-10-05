@@ -121,21 +121,19 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
                     await botonEditarCuenta.click();
-
-                    // Esperar cinco segundos
-                    await page.waitForTimeout(5000);
             
                     // La URL debe cambiar
                     await expect(page).toHaveURL(/\/?step=1/);
+
+                    // Esperar a que el servicio de busqueda de personas cargue
+                    await page.waitForResponse('**/persona/personas?page=1&size=15');
+                    await page.waitForTimeout(3000);
             
                     // El titulo de editar cuenta debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'EDITAR CUENTA DE APORTACIONES PREFERENTES'})).toBeVisible();
                 });
 
-                test('Editar Cuenta de Aportaciones Preferentes - Datos Generales', async () => {
-                    // Esperar que la pagina cargue
-                    await page.waitForLoadState('networkidle');
-                
+                test('Editar Cuenta de Aportaciones Preferentes - Datos Generales', async () => {               
                     // Esperar que carguen los datos
                     await page.waitForTimeout(4000);
 
@@ -151,25 +149,6 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
 
                     // Titular
                     await expect(page.getByTitle(`${nombre} ${apellido}`)).toBeVisible();
-
-                    if (await page.locator('text=SOCIO AHORRANTE').isHidden()) {
-                        await page.getByRole('button', {name: 'Omitir'}).click();
-
-                        await page.waitForTimeout(4000);
-
-                        // La URL debe cambiar
-                        await expect(page).toHaveURL(/\/?step=2/);
-
-                        await page.waitForTimeout(4000);
-
-                        // 
-                        await page.getByRole('button', {name: 'Anterior'}).click();
-
-                        await page.waitForTimeout(4000);
-
-                        // La URL debe cambiar
-                        await expect(page).toHaveURL(/\/?step=1/);
-                    }
 
                     // Categoria
                     await expect(page.getByTitle('SOCIO AHORRANTE')).toBeVisible();

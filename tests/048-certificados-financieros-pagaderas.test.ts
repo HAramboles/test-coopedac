@@ -153,17 +153,18 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
             
                     // La cuenta debe ser de financieros pagaderos
                     await expect(page.locator('text=FINANCIEROS PAGADERAS').first()).toBeVisible();
-
-                    // Esperar que la pagina cargue
-                    await page.waitForLoadState('networkidle');
                 
                     // Esperar que carguen los datos
                     await page.waitForTimeout(4000);
             
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`).first();
-            
                     await campoTitular?.fill(`${cedula}`);
+
+                    // Esperar a que el servicio de busqueda de personas cargue
+                    await page.waitForResponse('**/persona/personas?page=1&size=10');
+                    await page.waitForTimeout(3000);
+                    
                     // Seleccionar la opcion que aparece
                     await page.locator(`text=${cedula}`).click(); 
             

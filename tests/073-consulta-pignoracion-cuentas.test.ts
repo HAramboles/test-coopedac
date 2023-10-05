@@ -66,11 +66,8 @@ test.describe.serial('Pruebas con el Historial de Pignoracion de Cuentas', () =>
         // Estado de Cuenta
         await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');
 
-        // Debe estar el monto pignorado
+        // Solo debe estar el monto pignorado
         await expect(page.getByRole('row', {name: 'CONGELADO RD$ 100.00'})).toBeVisible(); 
-
-        // Debe estar el monto despignorado
-        await expect(page.getByRole('row', {name: 'LIBERADO RD$ 150.00'})).toBeVisible();
 
         // Esperar cinco segundos
         await page.waitForTimeout(5000);

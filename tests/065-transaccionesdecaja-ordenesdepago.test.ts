@@ -203,12 +203,10 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     const modalDenominaciones = page.locator('h1').filter({hasText: 'DENOMINACIONES'});
                     await expect(modalDenominaciones).toBeVisible();
         
-                    // Las denominaciones de la caja deben estar visibles
-                    const noDenominaciones = page.getByRole('dialog').locator('text=No hay datos');
-                    if (await noDenominaciones.isVisible()) {
-                        await page.close();
-                        await context.close();
-                    }
+                    // La tabla de las denominaciones debe estar visible en el modal 
+                    await expect(page.getByLabel('Denominaciones').getByRole('columnheader', {name: 'Moneda'})).toBeVisible();
+                    await expect(page.getByLabel('Denominaciones').getByRole('columnheader', {name: 'Cantidad'})).toBeVisible();
+                    await expect(page.getByLabel('Denominaciones').getByRole('columnheader', {name: 'Monto'})).toBeVisible();
         
                     // Click al boton de Salir
                     await page.getByRole('button', {name: 'Salir'}).click();
@@ -216,7 +214,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     // El modal debe cerrarse
                     await expect(modalDenominaciones).not.toBeVisible();
                 });
-
+                
                 test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Orden de Pago', async () => {
                     // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'});

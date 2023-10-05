@@ -69,6 +69,10 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         // Boton de Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
         await expect(botonImprimir).toBeVisible();
+
+        // Cambiar el estado de los prestamos a mostrar a Cancelado
+        await page.getByTitle('DESEMBOLSADO').click();
+        await page.getByRole('option', {name: 'CANCELADO'}).click();
     });
 
     test('Prestamo del Socio', async () => {

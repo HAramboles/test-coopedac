@@ -270,7 +270,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                 test('Probar el Deposito de Centavos - Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
                     // Aplicar el deposito de la cuenta de ahorros
-                    await page.locator('text=Aplicar').click();
+                    await page.getByRole('button', {name: 'Aplicar'}).click();
             
                     // Debe salir un modal para la distribucion de ingresos
                     await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();

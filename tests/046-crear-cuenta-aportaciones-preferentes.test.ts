@@ -132,15 +132,17 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
             
                     // El titulo de la seccion debe estar visible
                     await expect(page.locator('text=Datos Generales')).toBeVisible();
-
-                    // Esperar que la pagina cargue
-                    await page.waitForLoadState('networkidle');
                 
                     // Esperar que carguen los datos
                     await page.waitForTimeout(4000);
             
                     // Buscar un socio
                     await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
+
+                    // Esperar a que el servicio de busqueda de personas cargue
+                    await page.waitForResponse('**/persona/personas?page=1&size=10');
+                    await page.waitForTimeout(3000);
+
                     // Click al socio
                     await page.locator(`text=${cedula}`).click();
             

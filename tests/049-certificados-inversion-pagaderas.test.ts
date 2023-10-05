@@ -152,17 +152,18 @@ test.describe.serial('Certificados - Inversion Pagaderas - Pruebas con los difer
             
                     // La cuenta debe ser de inversion pagaderas
                     await expect(page.locator('text=INVERSION PAGADERAS').first()).toBeVisible();
-
-                    // Esperar que la pagina cargue
-                    await page.waitForLoadState('networkidle');
                 
                     // Esperar que carguen los datos
                     await page.waitForTimeout(4000);
             
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`).first();
-            
                     await campoTitular?.fill(`${cedula}`);
+
+                    // Esperar a que el servicio de busqueda de personas cargue
+                    await page.waitForResponse('**/persona/personas?page=1&size=10');
+                    await page.waitForTimeout(3000);
+                    
                     // Seleccionar la opcion que aparece
                     await page.locator(`text=${cedula}`).click(); 
             

@@ -59,8 +59,7 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Seleccionar a la persona
-        await page.locator('text=2039393').click();
-        // await page.locator(`text=${nombre} ${apellido}`).click();
+        await page.locator(`text=${nombre} ${apellido}`).click();
     });
 
     test('Llenar los datos necesarios para el credito al prestamo', async () => {

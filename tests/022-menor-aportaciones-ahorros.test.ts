@@ -464,8 +464,8 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
 
                 test('Las opciones con los tipos de captacion deben estar visibles', async () => {
                     // Click al selector de tipos captacion
-                    await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
-                    await page.locator('#form').getByTitle('AHORROS NORMALES').click();
+                    await expect(page.locator('#form').getByTitle('AHORROS INFANTILES')).toBeVisible();
+                    await page.locator('#form').getByTitle('AHORROS INFANTILES').click();
 
                     // Todos los tipos de captacion deben estar visibles
                     await expect(page.getByRole('option', {name: 'AHORROS NORMALES'})).toBeVisible();

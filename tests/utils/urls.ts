@@ -30,6 +30,7 @@ export const url_reimprimir_transferencia_cuentas = `${url_base}/reimp_transfere
 export const url_anular_transferencia_cuenta = `${url_base}/anular_transferencia/01-2-7-2/`;
 export const url_anular_deposito = `${url_base}/anular_deposito/01-4-1-6-2/`;
 export const url_anular_retiro = `${url_base}/anular_retiros/01-4-1-6-3/`;
+export const url_reversar_transferencia = `${url_base}/reversar_transf_cuenta/01-2-9-1/`;
 export const url_asignar_accesorios = `${url_base}/asignar_accesorios/01-2-8-2/`;
 export const url_solicitud_cancelacion_cuentas = `${url_base}/solicitud_cancelacion/01-2-2-105/`;
 export const url_reimprimir_solicitud_cancelacion_cuentas = `${url_base}/reimprimir_solicitud_cancelacion/01-2-6-3/`;

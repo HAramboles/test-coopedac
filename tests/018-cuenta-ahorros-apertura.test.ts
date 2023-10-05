@@ -154,13 +154,17 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con l
                     const fechaApetura = page.locator('#AHORROS\\ NORMALES_FECHA_APERTURA');
                     await expect(fechaApetura).toBeDisabled();
                     await expect(fechaApetura).toHaveValue(`${formatDate(new Date())}`);
-
-                    // Esperar que la pagina cargue
-                    await page.waitForLoadState('networkidle');
                     
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`);
                     await campoTitular?.fill(`${cedula}`);
+
+                    // Esperar a que el servicio de busqueda de personas cargue
+                    await page.waitForResponse('**/persona/personas?page=1&size=10');
+                    await page.waitForTimeout(3000);
+
+                    await page.pause();
+
                     // Seleccionar la opcion que aparece
                     await page.locator(`text=${cedula}`).click();
             
