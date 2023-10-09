@@ -136,6 +136,10 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     // Seleccionar la cuenta de ahorros normales del socio  
                     await page.locator('text=AHORROS NORMALES').click();
                 });
+
+                test.skip('No debe salir un Error de la Actividad Economico', async () => {
+                    await expect(page.locator("text=Cannot destructure property 'CONCEPTO'")).not.toBeVisible();
+                });
             
                 test('Boton de Deposito de la cuenta de Ahorros', async () => {            
                     // Boton de Deposito debe estar visible
@@ -199,7 +203,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
             
                 test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
                     // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
-                    const iconoAlerta = page.getByRole('img', {name: 'close-circle'}).first();
+                    const iconoAlerta = page.getByLabel('Distribución de Ingresos').getByLabel('close-circle');
                     await expect(iconoAlerta).toBeVisible();
             
                     // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 1000
@@ -303,9 +307,12 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
             
                     // Agregar un comentario
                     await page.locator(`${formComentario}`).fill('Retiro de 500.02 pesos de la cuenta de Ahorros');
+
+                    // Esperar un segundo antes de hacer click en Aceptar
+                    await page.waitForTimeout(1000);
             
                     // Aplicar el retiro
-                    await page.getByRole('button', {name: 'Aplicar'}).click();
+                    await page.getByRole('button', {name: 'check Aplicar'}).click();
                 });
 
                 test('Datos de la Distribucion de Egresos', async () => {

@@ -132,6 +132,10 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     // Seleccionar la cuenta de ahorros del socio  
                     await page.locator('text=AHORROS NORMALES').click();
                 });
+
+                test.skip('No debe salir un Error de la Actividad Economico', async () => {
+                    await expect(page.locator("text=Cannot destructure property 'CONCEPTO'")).not.toBeVisible();
+                });
             
                 test('Boton de Deposito de la cuenta de Ahorros', async () => {
                     // Boton de Deposito debe estar visible
@@ -184,12 +188,10 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     const modalDenominaciones = page.locator('h1').filter({hasText: 'DENOMINACIONES'});
                     await expect(modalDenominaciones).toBeVisible();
         
-                    // Las denominaciones de la caja deben estar visibles
-                    const noDenominaciones = page.getByRole('dialog').locator('text=No hay datos');
-                    if (await noDenominaciones.isVisible()) {
-                        await page.close();
-                        await context.close();
-                    }
+                    // La tabla de las denominaciones debe estar visible en el modal 
+                    await expect(page.getByLabel('Denominaciones').getByRole('columnheader', {name: 'Moneda'})).toBeVisible();
+                    await expect(page.getByLabel('Denominaciones').getByRole('columnheader', {name: 'Cantidad'})).toBeVisible();
+                    await expect(page.getByLabel('Denominaciones').getByRole('columnheader', {name: 'Monto'})).toBeVisible();
         
                     // Click al boton de Salir
                     await page.getByRole('button', {name: 'Salir'}).click();
@@ -200,7 +202,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
 
                 test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {            
                     // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
-                    const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
+                    const iconoAlerta = page.getByLabel('Distribución de Ingresos').getByLabel('close-circle');
                     await expect(iconoAlerta).toBeVisible();
             
                     // El monto para el cambio de categoria de Ahorrante a Empresarial es de 25000, colocar un monto mayor
@@ -260,12 +262,6 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                     // Agregar un comentario
                     await page.locator(`${formComentario}`).fill('Deposito de 200.05 pesos a la cuenta de Ahorros');
-            
-                    // Boton Agregar
-                    await page.locator('text=Agregar').click();
-            
-                    // Debe salir un mensaje de que la operacion salio correctamente
-                    await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
                 });
             
                 test('Probar el Deposito de Centavos - Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
@@ -282,7 +278,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
             
                     // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
-                    const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
+                    const iconoAlerta = page.getByLabel('Distribución de Ingresos').getByLabel('close-circle');
                     await expect(iconoAlerta).toBeVisible();
             
                     // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 200.05

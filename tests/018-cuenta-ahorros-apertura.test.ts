@@ -163,8 +163,6 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con l
                     await page.waitForResponse('**/persona/personas?page=1&size=10');
                     await page.waitForTimeout(3000);
 
-                    await page.pause();
-
                     // Seleccionar la opcion que aparece
                     await page.locator(`text=${cedula}`).click();
             

@@ -113,6 +113,9 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
 
         // Debe mostrarse un mensaje de que la operacion fue un exito
         await expect(page.locator('text=Solicitud de cambios productos actualizada exitosamente.')).toBeVisible();
+
+        // El modal de Reprogramacion de Creditos debe cerrarse
+        await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).not.toBeVisible();
     });
     
     test.afterAll(async () => { // Despues de las pruebas

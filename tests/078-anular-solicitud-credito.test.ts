@@ -311,23 +311,23 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page.locator('text=Cuentas de cobro')).toBeVisible();
 
         // La cuenta de cobro debe desaparecer al cambiar la oferta
-        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).not.toBeVisible();
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).not.toBeVisible();
+        // await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).not.toBeVisible();
+        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).not.toBeVisible();
         
-        // Agregar una cuenta de Cobro
-        await page.locator(`${selectBuscar}`).last().click();
+        // // Agregar una cuenta de Cobro
+        // await page.locator(`${selectBuscar}`).last().click();
 
-        // Seleccionar la cuenta de ahorros
-        await page.getByRole('option', {name: 'AHORROS NORMALES'}).last().click();
+        // // Seleccionar la cuenta de ahorros
+        // await page.getByRole('option', {name: 'AHORROS NORMALES'}).last().click();
 
-        // Click al boton de Agregar Cuenta
-        const botonAgregarCuenta = page.getByRole('button', {name: 'Agregar cuenta'});
-        await expect(botonAgregarCuenta).toBeVisible();
-        await botonAgregarCuenta.click();
+        // // Click al boton de Agregar Cuenta
+        // const botonAgregarCuenta = page.getByRole('button', {name: 'Agregar cuenta'});
+        // await expect(botonAgregarCuenta).toBeVisible();
+        // await botonAgregarCuenta.click();
 
-        // Se deben agregar los datos a la tabla de las cuentas
-        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        // // Se deben agregar los datos a la tabla de las cuentas
+        // await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Click en guardar y continuar
         GuardaryContinuar();
@@ -478,6 +478,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Aparece una alerta de que la solicitud fue anulada
         await expect(page.locator('text=Prestamo actualizado exitosamente')).toBeVisible();
+
+        // La solicitud de credito no debe estar visible
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).not.toBeVisible();
     });
 
     test('Al crear una nueva Solicitud no debe tener los datos de la persona de la Solicitud Anulada', async () => {

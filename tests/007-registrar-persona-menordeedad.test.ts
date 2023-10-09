@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { numerosCedulas4, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
+import { numerosCedulas, numerosTelefono, numerosCorreo } from './utils/cedulasypasaporte';
 import { formatDate } from './utils/fechas';
 import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
@@ -20,7 +20,7 @@ let nombreMadre: string | null;
 let apellidoMadre: string | null;
 
 // Cedula, numero telefonico y correo del menor
-const cedulaMenor = numerosCedulas4;
+const cedulaMenor = numerosCedulas;
 const telefonoMenor = numerosTelefono;
 const numerosParaCorreo = numerosCorreo;
 

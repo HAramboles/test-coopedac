@@ -1,13 +1,13 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { 
+    numerosCedulas, 
     numerosCedulas2, 
-    numerosCedulas3, 
     numerosRegistroMercantil, 
     numerosCorreo, 
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, fechaFinal } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './000-nombresyapellidos-personas';
 import { url_registro_persona } from './utils/urls';
@@ -21,8 +21,8 @@ let page: Page;
 let botonNuevaPersona: Locator;
 
 // Cedulas
-const cedulaPersonaJuridica = numerosCedulas2;
-const cedulaPersonaJuridicaRelacionado = numerosCedulas3;
+const cedulaPersonaJuridica = numerosCedulas;
+const cedulaPersonaJuridicaRelacionado = numerosCedulas2;
 
 // Registro Mercantil
 const registroMercantil = numerosRegistroMercantil;

@@ -86,7 +86,7 @@ test.describe.serial('Eliminar Movimiento en Consulta Movimientos Cuenats - Prue
                 // Buscar una cuenta del mismo socio
                 await page.locator(`${selectBuscar}`).fill(`${cedula}`);
                 // Elegir la Cuenta de Ahorros Normales del Socio
-                await page.getByText('AHORROS NORMALES').click();
+                await page.getByText('| AHORROS NORMALES |').click();
 
                 // La URL no debe cambiar
                 await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
@@ -101,8 +101,7 @@ test.describe.serial('Eliminar Movimiento en Consulta Movimientos Cuenats - Prue
                 await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
 
                 // Tabla de los movimientos de la cuenta
-                await expect(page.getByRole('columnheader', {name: 'Tipo Doc'})).toBeVisible();
-                await expect(page.getByRole('columnheader', {name: 'No. Documento'})).toBeVisible();
+                await expect(page.getByRole('columnheader', {name: 'Documento'})).toBeVisible();
                 await expect(page.getByRole('columnheader', {name: 'Fecha'})).toBeVisible();
                 await expect(page.getByRole('columnheader', {name: 'Comentario'})).toBeVisible();
                 await expect(page.getByRole('columnheader', {name: 'Clase Transacción'})).toBeVisible();
@@ -120,10 +119,10 @@ test.describe.serial('Eliminar Movimiento en Consulta Movimientos Cuenats - Prue
             } else if (escenario.ID_OPERACION === 34) {
                 test('Anular un Movimiento de la Cuenta', async () => {
                     // El boton de Anular debe estar en la tabla de movimientos
-                    await expect(page.locator(`${dataEliminar}`)).toBeVisible();
+                    await expect(page.locator(`${dataEliminar}`).nth(1)).toBeVisible();
 
                     // Click al boton de Anular
-                    await page.locator(`${dataEliminar}`).click();
+                    await page.locator(`${dataEliminar}`).nth(1).click();
 
                     // Debe aparecer un modal para colocar la razon de la anulacion
                     await expect(page.locator('text=Razón anulación')).toBeVisible();

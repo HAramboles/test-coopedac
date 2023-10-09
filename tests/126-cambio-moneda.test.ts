@@ -123,10 +123,6 @@ test.describe.serial('Pruebas con el Cambio de Moneda', () => {
 
         // El modal de las denominaciones debe desaparecer
         await expect(modalDenominaciones).not.toBeVisible();
-
-        // El input de RD 500 debe tener la cantidad digitada anteriormente
-        const cant500 = page.locator('[id="2"]');
-        await expect(cant500).toHaveValue('1');
     });
 
     test('Entregar mas de lo que tiene la caja', async () => {

@@ -66,7 +66,7 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await botonBuscar.click();
     });
 
-    test('Anular la transferencia buscada', async () => {
+    test('Reversar la transferencia buscada', async () => {
         // En la transaferencia buscada deben mostrarse la fecha y el monto
         await expect(page.getByRole('cell', {name: '1,500.00'})).toBeVisible();
 
@@ -76,7 +76,7 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await botonAnular.click();
 
         // Aparece el mensaje modal de Anulacion
-        const modalReversar = page.locator('text=Reversar Transferencia');
+        const modalReversar = page.getByText('Reversar Transferencia', {exact: true});
         await expect(modalReversar).toBeVisible();
 
         // Mensaje del mensaje modal
@@ -97,6 +97,10 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
 
         // El modal de operacion exitosa debe desaparecer
         await expect(modalOperacionExitosa).not.toBeVisible();
+    });
+
+    test.skip('La transferencia ya reversada no debe mostrarse', async () => {
+        await expect(page.getByRole('cell', {name: '1,500.00'})).not.toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

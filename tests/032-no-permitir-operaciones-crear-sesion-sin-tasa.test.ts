@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, dataCheck, dataGuardar, formBuscar } from './utils/dataTests';
+import { url_base, browserConfig, dataCheck, dataGuardar, formBuscar, dataCerrar } from './utils/dataTests';
 import { url_sesiones_transito, url_registro_tasa } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
@@ -8,8 +8,10 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula de la persona
+// Cedula, nombre y apellido de la persona
 let cedula: string | null;
+let nombre: string | null;
+let apellido: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con la Creacion de una Sesion de Transito que no debe permitir operaciones sin una tasa registrada', async () => {
@@ -31,8 +33,10 @@ test.describe.serial('Pruebas con la Creacion de una Sesion de Transito que no d
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula de la persona almacenada en el state
+        // Cedula, nombre y apellido de la persona almacenada en el state
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
     });
 
     test('Ingresar a la pagina de Registro de Tasa Simple', async () => {
@@ -105,6 +109,14 @@ test.describe.serial('Pruebas con la Creacion de una Sesion de Transito que no d
 
         // Aparecen las cuentas de la persona, elegir la cuenta de Ahorros Normales
         await page.getByRole('row', {name: 'AHORROS NORMALES'}).locator('text=Seleccionar').click();
+
+        // Cerrar el modal de Abrir Nueva Sesion
+        await page.locator(`${dataCerrar}`).click();
+
+        // Seleccionar la sesion ya creada
+        const botonSeleccionarSesion = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'Seleccionar'});
+        await expect(botonSeleccionarSesion).toBeVisible();
+        await botonSeleccionarSesion.click();
 
         // Se dirige a la opcion de Transacciones de Caja
         await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2`);

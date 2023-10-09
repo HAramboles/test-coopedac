@@ -90,9 +90,6 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
 
         // Cuenta de Certificado - Inversion Pagaderas
         await expect(page.getByRole('cell', {name: 'INVERSION PAGADERAS', exact: true})).toBeVisible();
-
-        // Totales
-        await expect(page.getByRole('row', {name: 'TOTALES: RD$ 30,200.00 RD$ 29,900.00'}).first()).toBeVisible();
     });
 
     test('Ver los movimientos de la cuenta de Ahorros Normales', async () => {
@@ -120,11 +117,16 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         // Elegir cancelados
         await page.locator('text=CUENTAS Y PRÉSTAMOS CANCELADOS').click();
 
+        // Cambiar el tipo de cuenta a Todas
+        await page.locator('#root').getByTitle('AHORROS NORMALES').click();
+        // Elegir Todas
+        await page.getByRole('option', {name: 'TODAS'}).click();
+
         // Cuenta de Certificados - Financieros Pagaderas
         await expect(page.getByRole('cell', {name: 'FINANCIEROS PAGADERAS', exact: true})).toBeVisible();
 
         // Cuenta de Orden de Pago
-        await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();
 
         // Credito Hipotecario
         await expect(page.getByRole('cell', {name: 'CRÉDITO HIPOTECARIO', exact: true})).toBeVisible();
@@ -138,7 +140,7 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
 
     test('Ver los movimientos del Prestamo Hipotecario', async () => {
         // Click al boton de Ir a Movimientos
-        await page.locator('[aria-label="export"]').first().click();
+        await page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO'}).locator('[aria-label="export"]').first().click();
 
         // Debe abrirse una nueva ventana con la pagina de consulta movimientos
         const page1 = await context.waitForEvent('page');

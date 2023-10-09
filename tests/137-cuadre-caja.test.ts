@@ -47,6 +47,8 @@ test.describe.serial('Pruebas con el Mensaje de Aviso cuando hay Recepciones Pen
         const modalUsuarioOficialCuadre = page.getByText('INICIO SESIÓN DE OFICIAL');
         await expect(modalUsuarioOficialCuadre).toBeVisible();
 
+        await page.waitForTimeout(10000);
+
         // Colocar el usuario del Oficial de Cuadre
         const inputUsuarioOficialCuadre = page.locator('#form_username');
         await inputUsuarioOficialCuadre.clear();
@@ -57,11 +59,12 @@ test.describe.serial('Pruebas con el Mensaje de Aviso cuando hay Recepciones Pen
         await inputClaveOficialCuadre.clear();
         await inputClaveOficialCuadre.fill(`${passCuadreCaja}`);
 
-        // Esperar a que el boton de Iniciar Sesion este habilitado
-        await page.waitForTimeout(3000);
-
         // Click al boton de Iniciar Sesion
         const botonIniciarSesion = page.getByRole('button', {name: 'Iniciar Sesión'});
+
+        // Esperar a que el boton de Iniciar Sesion este habilitado
+        await page.waitForTimeout(8000);
+
         await expect(botonIniciarSesion).toBeVisible();
         await botonIniciarSesion.click();
 

@@ -1,7 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { 
-    numerosCedulas5, 
-    numerosCedulas6,
+    numerosCedulas, 
+    numerosCedulas2,
     numerosPasaporte2, 
     numerosCorreo, 
     numerosCelular 
@@ -25,8 +25,8 @@ let page: Page;
 let botonNuevaPersona: Locator;
 
 // Cedulas de las personas
-const cedulaPersonaCasada = numerosCedulas5;
-const cedulaPersonaConyuge = numerosCedulas6;
+const cedulaPersonaCasada = numerosCedulas;
+const cedulaPersonaConyuge = numerosCedulas2;
 
 // Pasaporte de la persona
 const pasaportePersonaCasada = numerosPasaporte2;

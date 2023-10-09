@@ -66,7 +66,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
 
         // Debe mostrarse la solicitud desembolsada de la empresa
-        const solicitudDesembolsadaEmpresa = page.getByRole('cell', {name: `${nombreEmpresa}`});
+        const solicitudDesembolsadaEmpresa = page.getByRole('row', {name: `${nombreEmpresa}`});
         await expect(solicitudDesembolsadaEmpresa).toBeVisible();
 
         // Click al boton de Anular Desembolso

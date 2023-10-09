@@ -76,23 +76,22 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
         await expect(deudaTotal).toHaveValue('RD$ 125,000');
 
         // Moneda
-        // const moneda = page.locator('#form_ID_MONEDA');
         await expect(page.locator('text=PESO')).toBeVisible();
 
         // Tasa de moneda
         await expect(page.locator('#form_TASA_MONEDA')).toBeVisible();
 
+        // Click al boton Cancelar Prestamo
+        await page.locator('(//INPUT[@type="checkbox"])[2]').click();
+
         // Concepto Contable
         const conceptoContable = page.locator('#form_SEC_TIPO_CONCEPTO');
         await conceptoContable.click();
         // Seleccionar 
-        await page.locator('text=NOTA DE CREDITO SIN VALOR FISCAL').click();
+        await page.locator('text=CANCELACIÓN DE PRÉSTAMO').click();
 
         // Comentario
         await page.locator('#form_NOTA').fill('Cancelar Prestamo');
-
-        // Click al boton Cancelar Prestamo
-        await page.locator('(//INPUT[@type="checkbox"])[2]').click();
 
         // Los nombres de las etiquetas deben estar visibles
         await expect(page.getByRole('columnheader', {name: 'Concepto'})).toBeVisible();

@@ -28,12 +28,8 @@ const generarLetrasPasaporte = () => {
 };
 
 // Exportar las funciones como constantes
-export const numerosCedulas = generarNumerosAleatorios(11); // Cedula para la persona fisica
-export const numerosCedulas2 = generarNumerosAleatorios(11); // Cedula para la persona juridica
-export const numerosCedulas3 = generarNumerosAleatorios(11); // Cedula para el relacionado de la persona juridica
-export const numerosCedulas4 = generarNumerosAleatorios(11); // Cedula para el menor de edad
-export const numerosCedulas5 = generarNumerosAleatorios(11); // Cedula para persona casada
-export const numerosCedulas6 = generarNumerosAleatorios(11); // Cedula para el conyuge de la persona casada
+export const numerosCedulas = generarNumerosAleatorios(11); 
+export const numerosCedulas2 = generarNumerosAleatorios(11); 
 
 export const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosAleatorios(11)); // Pasaporte para la persona fisica
 export const numerosPasaporte2 = (generarLetrasPasaporte() + generarNumerosAleatorios(11)); // Pasaporte para la persona fisica casada

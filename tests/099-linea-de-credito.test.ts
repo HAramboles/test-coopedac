@@ -542,6 +542,8 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Click fuera del checkbox
         await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
 
+        await page.waitForTimeout(5000);
+
         // Click a Desembolsar
         const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
         await expect(botonDesembolsar).toBeVisible();

@@ -39,7 +39,7 @@ test.describe.serial('Pruebas Cerrando la Sesion', async () => {
         await expect(page.getByText(`${formatDate(new Date())}`)).toBeVisible();
 
         // El nombre del usuario debe estar visible en el header
-        await expect(page.getByText(`${userCorrecto}`)).toBeVisible();
+        await expect(page.locator('span').filter({hasText: `${userCorrecto}`})).toBeVisible();
 
         // Boton de Inicio del Header
         await expect(page.locator('[aria-label="home"]')).toBeVisible();

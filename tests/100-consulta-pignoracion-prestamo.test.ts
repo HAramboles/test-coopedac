@@ -48,7 +48,7 @@ test.describe.serial('Pruebas con el Historial de Pignoracion de la Cuenta usada
         await expect(page).toHaveURL(`${url_consulta_pignoracion_cuentas}`);
     });
 
-    test('Ver las pignoraciones de una Cuenta de un Socio', async () => {
+    test('Solo deben estar la pignoracion manual y la de la Linea de Credito', async () => {
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'PIGNORACIÓN DE CUENTAS'})).toBeVisible();
 

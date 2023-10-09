@@ -70,7 +70,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
 
         await expect(cuentaAhorrosNormales).toBeVisible();
         await expect(cuentaAhorrosNomina).toBeVisible();
-        // await expect(cuentaOrdenPago).toBeVisible();
+        await expect(cuentaOrdenPago).toBeVisible();
 
         // Seleccionar la cuenta de ahorros del socio
         await page.getByText('AHORROS NORMALES').click();

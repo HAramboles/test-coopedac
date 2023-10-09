@@ -696,12 +696,15 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
         await campoComentario.click();
-        await campoComentario.fill('Credito Aprobado');
+        await campoComentario.fill('Solicitud de Credito Aprobada');
         // Guardar Comentario
         await page.getByRole('button', {name: 'Guardar'}).click();
 
         // Debe mostrarse un mensaje de que el comentario se guardo correctamente
         await expect(page.locator('text=Prestamos observacion almacenada exitosamente.')).toBeVisible();
+
+        // Esperar que se guarde el comentario
+        await page.waitForTimeout(2000);
 
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();
@@ -776,7 +779,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(page.getByRole('heading', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // El comentario anterior debe estar visible
-        await expect(page.getByText('Credito Aprobado')).toBeVisible();
+        await expect(page.getByText('Solicitud de Credito Aprobada')).toBeVisible();
 
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();

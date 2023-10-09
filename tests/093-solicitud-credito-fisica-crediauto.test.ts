@@ -608,6 +608,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
         await expect(botonImprimirContrato).toBeVisible();
 
+        await page.waitForTimeout(5000);
+
         // Desembolsar la solicitud
         const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
         await expect(botonDesembolsar).toBeVisible();
