@@ -2,6 +2,8 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, browserConfig, dataEliminar } from './utils/dataTests';
 import { url_anular_cobro_servicios } from './utils/urls';
 import { formatDate } from './utils/fechas';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -35,6 +37,11 @@ test.describe.serial('Anular Cobro de Servicios', async () => {
         // Nombre y apellido de la persona almacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.NORMAL);
     });
 
     test('Ir a la pagina de Anular Cobro de Servicios', async () => {

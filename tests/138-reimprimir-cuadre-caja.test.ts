@@ -2,6 +2,8 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, browserConfig, userCorrecto, userCuadreCaja, dataPrinter, fechaInicio, fechaFinal } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
 import { url_reimprimir_cuadre_caja } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -27,6 +29,11 @@ test.describe.serial('Pruebas con la Reimprimiseion de Cuadre de Caja', async ()
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.NORMAL);
     });
 
     test('Ir a la opcion de Reimprimir Cuadre de Caja', async () => {

@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { url_base, userCorrecto, passCorrecto, browserConfig, dataVer } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 /* Variables globales */
 let browser: Browser;
@@ -37,7 +39,12 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
         /* Localizar los campos para ingresar el usuario y la contraseña y el boton de login */
         usernameCampo = page.locator('#form_username');
         passCampo = page.locator('#form_password');
-        botonLogin = page.getByRole('button', {name: 'Iniciar Sesión'});    
+        botonLogin = page.getByRole('button', {name: 'Iniciar Sesión'});
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.CRITICAL);
     });
 
     test('Los campos deben estar visibles o deben de existir', async () => {

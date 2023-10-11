@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
 import { url_relacion_prestamos_seguros } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -36,6 +38,11 @@ test.describe.serial('Pruebas con la Impresion del Reporte de Relacion Prestamos
 
         // Input de centro costo
         inputCentroCosto = page.locator('#form_ID_CENTRO_COSTO');
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.MINOR);
     });
 
     test('Ir a la opcion de Relacion Prestamos Seguros', async () => {

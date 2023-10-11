@@ -1,7 +1,9 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar } from './utils/dataTests';
+import { url_base, browserConfig } from './utils/dataTests';
 import { url_anular_transferencia_cuenta } from './utils/urls';
 import { formatDate } from './utils/fechas';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -34,6 +36,11 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         // Cedula de la persona almacenada en el state
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
     }); 
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.NORMAL);
+    });
 
     test('Ir a la opcion de Anular Transferencia Cuenta', async () => {
         // Captaciones

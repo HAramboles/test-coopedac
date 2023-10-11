@@ -2,6 +2,8 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, browserConfig, dataCheck } from './utils/dataTests';
 import { url_transacciones_caja, url_registro_tasa } from './utils/urls';
 import { formatDate } from './utils/fechas';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -27,6 +29,11 @@ test.describe.serial('No debe permitir Transacciones de Caja sin una Tasa Regist
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.NORMAL);
     });
 
     test('Ir a la opcion de Registro de Tasa Simple', async () => {

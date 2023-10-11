@@ -2,6 +2,8 @@ import { APIResponse, Browser, BrowserContext, chromium, Page, expect, Locator, 
 import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_certificados, url_cuentas_certificados_financieros_reinvertidas } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -78,6 +80,11 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                 cedulaFirmante = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
                 nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a la opcion de Apertura de cuentas de Certificados', async () => {

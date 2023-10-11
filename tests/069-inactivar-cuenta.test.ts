@@ -2,6 +2,8 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebasActivarInactivarCuentas } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_por_nomina } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables Globales
 let browser: Browser;
@@ -67,6 +69,11 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
                 // Boton de Inactivar Cuentas y de Aceptar
                 botonActivarInactivar = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'check-circle'});
                 botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.MINOR);
             });
 
             test('Ir a la opcion de Apertura de cuentas de Ahorros', async () => {

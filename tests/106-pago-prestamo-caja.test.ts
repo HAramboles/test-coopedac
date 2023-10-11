@@ -2,6 +2,8 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } fr
 import { url_base, browserConfig, selectBuscar, ariaCerrar, formBuscar } from './utils/dataTests';
 import { url_transacciones_caja } from './utils/urls';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -65,6 +67,11 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
 
                 // Nota almacendad en el state
                 nota = await page.evaluate(() => window.localStorage.getItem('nota'));
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.CRITICAL);
             });
 
             test('Ir a la opcion de Transacciones de Caja', async () => {

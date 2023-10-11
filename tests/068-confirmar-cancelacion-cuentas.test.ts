@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from "@playwright/test";
 import { url_base, ariaCerrar, formBuscar, browserConfig, dataCheck, formComentario } from "./utils/dataTests";
 import { url_confirmar_cancelacion_cuentas } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -36,6 +38,11 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.CRITICAL);
     });
 
     test('Ir a la opcion de Confirmar la Cancelacion de Cuentas', async () => {

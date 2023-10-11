@@ -3,6 +3,8 @@ import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
 import { url_registro_persona } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -92,6 +94,11 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                 inputApellido = page.locator('#person_APELLIDOS');
                 editarTelefono = page.getByRole('row', {name: 'CELULAR'}).getByRole('button', {name: 'edit'});
                 editarEmail = page.getByRole('row', {name: 'EMAIL'}).getByRole('button', {name: 'edit'});
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.MINOR);
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro

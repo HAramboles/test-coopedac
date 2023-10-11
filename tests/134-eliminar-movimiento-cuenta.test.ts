@@ -2,6 +2,8 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, 
 import { url_base, browserConfig, selectBuscar, dataEliminar } from './utils/dataTests';
 import { EscenariosEliminarMovimientos } from './utils/interfaces';
 import { url_consulta_movimientos_cuentas } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -61,6 +63,11 @@ test.describe.serial('Eliminar Movimiento en Consulta Movimientos Cuenats - Prue
 
                 // Input para buscar las cuentas del socio
                 buscadorCuenta = page.locator('#rc_select_1');
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.NORMAL);
             });
 
             test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {

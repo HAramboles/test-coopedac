@@ -2,6 +2,8 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { formatDate, primerDiaMes } from './utils/fechas';
 import { url_base, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
 import { url_prestamos_gerenciales } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -27,6 +29,11 @@ test.describe.serial('Pruebas con la Impresion de Prestamos Gerenciales', () => 
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.MINOR);
     });
 
     test('Ingresar a la opcion de Prestamos Gerenciales', async () => {

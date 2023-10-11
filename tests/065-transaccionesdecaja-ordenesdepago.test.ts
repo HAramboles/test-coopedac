@@ -3,6 +3,8 @@ import { url_base, dataCerrar, ariaCerrar, selectBuscar, formBuscar, browserConf
 import { diaSiguiente, formatDate } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables Globales
 let browser: Browser;
@@ -66,6 +68,11 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
         
                 // Nota almacenada en el state
                 nota = await page.evaluate(() => window.localStorage.getItem('nota'));
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a la opcion de Transacciones de Caja', async () => {

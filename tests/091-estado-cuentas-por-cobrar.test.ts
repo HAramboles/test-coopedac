@@ -2,6 +2,8 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { formatDate } from './utils/fechas';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 import { url_estado_cuentas_cobrar } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -35,6 +37,11 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         // Nombre y apellido de la persona fisica guardada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.NORMAL);
     });
 
     test('Ir a la opcion de Estado de Cuentas por Cobrar', async () => {

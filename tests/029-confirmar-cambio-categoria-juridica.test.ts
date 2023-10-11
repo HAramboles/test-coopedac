@@ -2,6 +2,8 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { formatDate } from './utils/fechas';
 import { url_base, formBuscar, browserConfig, dataCheck } from './utils/dataTests';
 import { url_aceptar_rechazar_cambio_categoria } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -35,6 +37,11 @@ test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la P
         // Cedula y nombre de la persona juridica almacenada en el state
         cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.NORMAL);
     });
 
     test('Ir a la opcion de Aceptar/Rechazar Cambio Categoria', async () => {

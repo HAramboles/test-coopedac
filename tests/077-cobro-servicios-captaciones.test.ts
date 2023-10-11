@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, formBuscar, browserConfig } from './utils/dataTests';
 import { url_cobro_servicios_captaciones, url_sesiones_transito, url_cobros_servicios_captaciones_caja } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables Globales
 let browser: Browser;
@@ -36,6 +38,11 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.CRITICAL);
     });
 
     test('Ir a la opcion de Cobro de Servicios de Captaciones', async () => {

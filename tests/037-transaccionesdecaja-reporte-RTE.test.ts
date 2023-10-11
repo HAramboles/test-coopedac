@@ -1,7 +1,9 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, formBuscar, dataCerrar, browserConfig, formComentario } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, formBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -65,6 +67,11 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
         
                 // Nota alamacenada en el state
                 nota = await page.evaluate(() => window.localStorage.getItem('nota'));
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a la opcion de Transacciones de Caja', async () => {
@@ -263,19 +270,19 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     // Debe mostrarse un boton para crear un intermediario
                     const botonCrearIntermediario = page.getByRole('button', {name: 'Crear Intermediario'});
                     await expect(botonCrearIntermediario).toBeVisible();
-                    // await botonCrearIntermediario.click();
+                    await botonCrearIntermediario.click();
 
                     // Debe salir un modal de registro de persona
-                    // await expect(page.locator('text=REGISTRAR INTERMEDIARIO')).toBeVisible();
+                    await expect(page.locator('text=REGISTRAR INTERMEDIARIO')).toBeVisible();
 
                     // Click al boton de Cancelar del modal de Crear Intermediario
-                    // await page.getByRole('button', {name: 'Cancelar'}).click();
+                    await page.getByRole('button', {name: 'Cancelar'}).click();
 
                     // Debe salir un modal de confirmacion
-                    // await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
+                    await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
 
                     // Click al boton de Aceptar del modal de confirmacion
-                    // await page.getByRole('button', {name: 'Aceptar'}).click();
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
 
                     // Boton de Cliente es Intermediario
                     const botonClienteIntermediario = page.getByText('Cliente Intermediario');

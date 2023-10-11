@@ -3,6 +3,8 @@ import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataT
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { formatDate } from './utils/fechas';
 import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -69,6 +71,11 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con l
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a la opcion de Apertura de cuentas de Ahorros', async () => {

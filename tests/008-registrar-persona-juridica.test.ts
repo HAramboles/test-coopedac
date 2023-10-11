@@ -7,10 +7,12 @@ import {
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig, fechaFinal } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, fechaFinal, dataCheck } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './000-nombresyapellidos-personas';
 import { url_registro_persona } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables Globales
 let browser: Browser;
@@ -89,6 +91,11 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
 
                 // Boton de Crear Nueva Persona
                 botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.CRITICAL);
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -321,6 +328,78 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // Cerrar el mensaje
                     await page.locator(`${ariaCerrar}`).click();
             
+                    // Hacer click en el boton de guardar y continuar
+                    guardarContinuar();
+                });
+
+                test('Registro de Persona Juridica - Persona expuesta politicamente (Peps)', async () => {
+                    // El titulo de persona expuesta politicamente debe estar visible
+                    await expect(page.locator('h1').filter({ hasText: 'PERSONA EXPUESTA POLÍTICAMENTE' })).toBeVisible();      
+            
+                    // Boton de agregar peps
+                    const botonPeps = page.locator('text=Agregar Peps');
+                    await expect(botonPeps).toBeVisible();
+                    await botonPeps.click();
+            
+                    // Debe de aparecer un modal
+                    await expect(page.locator('text=REGISTRAR PERSONA EXPUESTA POLÍTICAMENTE')).toBeVisible();
+            
+                    // Seleccionar el cargo del Peps
+                    const campoCargo = page.locator('#form_CARGO_PEP');
+                    await campoCargo.click();
+                    await campoCargo?.fill('1');
+            
+                    // Seleccionar una entidad del Peps
+                    const campoEntidad = page.locator('#form_ENTIDAD_PEP');
+                    await campoEntidad.click();
+                    await campoEntidad?.fill('36');
+            
+                    // Input de fecha de inicio
+                    await page.locator('#form_FECHA_INICIO')?.fill('25/03/2022');
+            
+                    // Input de fecha de final, solo es necesario hacer click, se pone una fecha automatica
+                    await page.locator(`${fechaFinal}`).click();
+            
+                    // Hacer click al boton de aceptar
+                    await page.locator('button:has-text("Aceptar")').click();
+            
+                    // El modal debe de desaparecer
+                    await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA EXPUESTA POLÍTICAMENTE'})).not.toBeVisible();
+
+                    // Datos del Pep creado
+
+                    // Cargo
+                    await expect(page.getByRole('columnheader', {name: 'Cargo'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: '1'})).toBeVisible();
+
+                    // Entidad
+                    await expect(page.getByRole('columnheader', {name: 'Entidad'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: '36'})).toBeVisible();
+
+                    // Estado
+                    await expect(page.getByRole('columnheader', {name: 'Estado'})).toBeVisible();
+                    const estadoActivo = page.getByRole('cell', {name: 'Activo'})
+                    await expect(estadoActivo).toBeVisible();
+
+                    // Boton de inhabilitar
+                    const botonInhabilitar = page.locator(`${dataCheck}`);
+                    await expect(botonInhabilitar).toBeVisible();
+                    await botonInhabilitar.click();
+
+                    // El estado ahora debe ser Inactivo
+                    await expect(page.getByRole('cell', {name: 'Inactivo'})).toBeVisible();
+
+                    // Debe cambiar la boton de habilitar
+                    const botonHabilitar = page.getByRole('button', {name: 'stop', exact: true});
+                    await expect(botonHabilitar).toBeVisible();
+                    await botonHabilitar.click();
+
+                    // El estado debe volver a ser Activo
+                    await expect(estadoActivo).toBeVisible();
+
+                    // Y el boton volver a ser inhabilitar
+                    await expect(botonInhabilitar).toBeVisible();
+                    
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();
                 });

@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
 import { url_transferencia_boveda_caja } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -26,6 +28,11 @@ test.describe.serial('Tranferir desde Boveda a Caja', async () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.CRITICAL);
     });
 
     test('Ir a la opcion de Transferir a Cajas', async () => {

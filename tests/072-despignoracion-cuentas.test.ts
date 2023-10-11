@@ -2,6 +2,8 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, 
 import { url_base, selectBuscar, browserConfig, dataCheck } from './utils/dataTests';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/interfaces';
 import { url_pignoracion_cuentas } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -61,6 +63,11 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
 
                 // Boton para liberar un monto
                 botonDespignorar = page.getByRole('row', {name: 'CONGELADO RD$ 150.00'}).locator(`${dataCheck}`);
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a la opcion de Pignoracion de Cuentas', async () => {

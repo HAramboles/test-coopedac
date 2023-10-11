@@ -2,6 +2,8 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, formBuscar, dataCheck } from './utils/dataTests';
 import { browserConfig } from './utils/dataTests'
 import { url_recepcion_transferencia_caja } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables Globales
 let browser: Browser;
@@ -27,6 +29,11 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Cajas', async () =>
 
         // Ir a la pagina 
         await page.goto(`${url_base}`);
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.NORMAL);
     });
 
     test('Ir a la opciond de Recepcion Transferencia Caja', async () => {

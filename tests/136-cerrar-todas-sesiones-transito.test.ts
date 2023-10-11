@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { url_base, browserConfig, formBuscar, userCorrecto, dataCerrar } from './utils/dataTests';
 import { url_cerrar_sesiones_transito } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -32,6 +34,11 @@ test.describe.serial('Pruebas Cerrando Todas las Sesiones en Transito que tenga 
 
         // Boton de Cerrar Sesion
         botonCerrarSesion = page.getByRole('button', {name: 'Cerrar'});
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.CRITICAL);
     });
 
     test('Ir a la pagina de Cerrar Sesiones en Transito', async () => {

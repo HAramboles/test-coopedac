@@ -2,6 +2,8 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, browserConfig, dataCheck, dataGuardar, formBuscar, dataCerrar } from './utils/dataTests';
 import { url_sesiones_transito, url_registro_tasa } from './utils/urls';
 import { formatDate } from './utils/fechas';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -37,6 +39,11 @@ test.describe.serial('Pruebas con la Creacion de una Sesion de Transito que no d
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.NORMAL);
     });
 
     test('Ingresar a la pagina de Registro de Tasa Simple', async () => {

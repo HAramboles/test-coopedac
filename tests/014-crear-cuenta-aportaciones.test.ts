@@ -3,6 +3,8 @@ import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -66,6 +68,11 @@ test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los difer
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a Apertura de Cuenta de Aportaciones', async () => {

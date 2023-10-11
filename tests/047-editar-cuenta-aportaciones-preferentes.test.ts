@@ -2,6 +2,8 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones_preferentes } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -73,6 +75,11 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
 
                 // Boton de Editar Cuentas
                 botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
+            });
+
+            test.beforeEach(async () => { // Info para el reporte de Allure
+                await allure.owner('Hector Aramboles');
+                await allure.severity(Severity.NORMAL);
             });
 
             test('Ir a Apertura de Cuenta de Aportaciones', async () => {

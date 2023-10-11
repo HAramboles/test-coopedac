@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { url_cuentas_ahorros, url_cuentas_ahorros_infantiles } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -44,6 +46,11 @@ test.describe.serial('Pruebas en el modo solo lectura, para ver una cuenta', asy
         // Nombre y apellido del firmante
         nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.TRIVIAL);
     });
 
     // Funcion con el boton de siguiente, que se repite en cada seccion del registro

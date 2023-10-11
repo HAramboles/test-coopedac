@@ -1,7 +1,17 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, formBuscar, browserConfig, inputFechaSolicitud, inputPrimerPago } from './utils/dataTests';
+import { 
+    url_base, 
+    dataCerrar, 
+    selectBuscar, 
+    formBuscar, 
+    browserConfig, 
+    inputFechaSolicitud, 
+    inputPrimerPago 
+} from './utils/dataTests';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -46,6 +56,11 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         // Nombre y apellido de la persona fisica relacionada almacenada en el state
         nombrePersona = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
         apellidoPersona = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.CRITICAL);
     });
 
     // Funcion con el boton de continuar, que se repite en cada seccion del registro

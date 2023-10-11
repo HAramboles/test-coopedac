@@ -1,7 +1,9 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { dosMesDespues } from './utils/fechas';
-import { url_base, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { url_solicitud_reprogramacion } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -49,6 +51,11 @@ test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes P
         cambioFecha = page.getByLabel('CAMBIO DE FECHA');
         cambioTasa = page.getByLabel('CAMBIO DE TASA');
         cambioPlazo = page.getByLabel('CAMBIO DE PLAZO');
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.CRITICAL);
     });
 
     test('Ir a la opcion de Solicitud de Reprogramacion', async () => {

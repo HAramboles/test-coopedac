@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { url_aceptar_rechazar_cambio_categoria } from './utils/urls';
+import { allure } from 'allure-playwright';
+import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -34,6 +36,11 @@ test.describe.serial('Pruebas con el Rechazo de Cambio de Categoria de la Person
         // Nombre y apellido de la pesona alamacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+    });
+
+    test.beforeEach(async () => { // Info para el reporte de Allure
+        await allure.owner('Hector Aramboles');
+        await allure.severity(Severity.TRIVIAL);
     });
 
     test('Ir a la opcion de Aceptar/Rechazar Cambio Categoria', async () => {
