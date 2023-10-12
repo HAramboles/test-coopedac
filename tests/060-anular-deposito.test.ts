@@ -2,8 +2,6 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, browserConfig, dataEliminar } from './utils/dataTests';
 import { url_anular_deposito } from './utils/urls';
 import { formatDate } from './utils/fechas';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -39,11 +37,6 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.NORMAL);
     });
 
     test('Ir a la opcion de Anular Deposito', async () => {

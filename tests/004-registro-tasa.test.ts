@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } fr
 import { formatDate } from './utils/fechas';
 import { url_base, ariaCerrar, dataGuardar, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
 import { url_registro_tasa } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -98,11 +96,6 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
 
                 // Go to project URL
                 await page.goto(`${url_base}`);
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.CRITICAL);
             });
 
             test('Ir a la opcion de Registrar Tasa', async () => {

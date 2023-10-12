@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 import { url_solicitud_transferencia_interbancaria } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -33,11 +31,6 @@ test.describe.serial('No permitir una Transferencia Interbancaria si la cuenta d
         
         // Cedula de la persona almacenada en el state
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.MINOR);
     });
     
     test('Ir a la opcion de Solicitud Transferencia Interbancaria', async () => {

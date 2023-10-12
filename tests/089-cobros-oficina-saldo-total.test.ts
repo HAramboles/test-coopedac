@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, dataCerrar, browserConfig, inputDiaPago, formComentario } from './utils/dataTests';
 import { url_cobros_oficina } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -38,11 +36,6 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem("apellidoPersona"));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.CRITICAL);
     });
 
     test('Ir a la opcion de Cobros de Oficina', async () => {

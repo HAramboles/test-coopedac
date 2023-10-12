@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig, dataVer, dataCerrar } from './utils/dataTests';
 import { url_carta_saldo } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -36,11 +34,6 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         // Nombre y apellido de la persona alamacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.NORMAL);
     });
 
     // Funcion con el boton de siguiente

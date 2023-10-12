@@ -2,8 +2,6 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { formatDate } from './utils/fechas';
 import { url_base, selectBuscar, dataGuardar, browserConfig, dataEdit, dataEliminar } from './utils/dataTests';
 import { url_tabla_amortizacion } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -59,11 +57,6 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.MINOR);
     });
 
     test('Ir a la opcion de la Tabla de Amortizacion', async () => {

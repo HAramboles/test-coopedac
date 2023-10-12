@@ -4,8 +4,6 @@ import { url_base, ariaCerrar, browserConfig, dataCheck, fechaInicio, fechaFinal
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 import { url_registro_persona } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -72,11 +70,6 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
 
                 // Boton de Crear Nueva Persona
                 botonNuevaPersona = page.getByRole('button', {name: 'Nueva persona'});
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.CRITICAL);
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro

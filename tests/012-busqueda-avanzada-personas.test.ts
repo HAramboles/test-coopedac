@@ -2,8 +2,6 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, browserConfig } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
 import { url_registro_persona } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -67,11 +65,6 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
         // Persona Casada
         nombrePersonaCasada = await page.evaluate(() => window.localStorage.getItem('nombrePersonaCasada'));
         apellidoPersonaCasada = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaCasada'));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.TRIVIAL);
     });
 
     test('Ir a la opcion de Registrar Persona', async () => {

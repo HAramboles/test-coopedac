@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { url_transferencia_cuentas } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -42,11 +40,6 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         // Cedula y nombre de la persona juridica almacenada en el state
         cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.NORMAL);
     });
     
     test('Ir a la opcion de Transferencias Cuentas Internas', async () => {

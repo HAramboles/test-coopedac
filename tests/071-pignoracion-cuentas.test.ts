@@ -3,8 +3,6 @@ import { formatDate } from './utils/fechas';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/interfaces';
 import { url_pignoracion_cuentas } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -70,11 +68,6 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                 razonPignoracion = page.locator('div').filter({ hasText: /^OTRAS RAZONES$/ }).nth(4);
                 montoPignoracion = page.locator('#form_MONTO');
                 descripcionPignoracion = page.locator('#form_DESC_PIGNORACION');
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a la opcion de Pignoracion de Cuentas', async () => {

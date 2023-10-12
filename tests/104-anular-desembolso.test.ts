@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, browserConfig, formBuscar, ariaCancelar } from './utils/dataTests';
 import { url_anular_desembolso, url_solicitud_credito } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables Globales
 let browser: Browser;
@@ -44,11 +42,6 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         modalAnularDesembolso = page.locator('h1').filter({hasText: 'ANULAR DESEMBOLSO'});
         razonAnulacion = page.locator('#form_RAZON_ANULACION');
         botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.CRITICAL);
     });
 
     test('Ir a la opcion de Anular Desembolso', async () => {

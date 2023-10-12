@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, Page, expect, Locator, 
 import { url_base, formBuscar, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 import { url_cuentas_certificados, url_cuentas_certificados_financieros_reinvertidas } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -77,11 +75,6 @@ test.describe.serial('Editar Cuenta de Certificado Financieros Reinvertidas', as
 
                 // Boton de Editar Cuentas
                 botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.CRITICAL);
             });
 
             test('Ir a la opcion de Apertura de cuentas de Certificados', async () => {

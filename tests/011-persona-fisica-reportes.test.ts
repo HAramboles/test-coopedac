@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarPersonas } from './utils/interfaces';
 import { url_registro_persona } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -67,11 +65,6 @@ test.describe.serial('Imprimir los Reportes de Admision y de Conozca a su Socio 
 
                 // Boton de Editar Cuenta
                 botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.NORMAL);
             });
         
             test('Ir a la opcion de Registro de Persona', async () => {

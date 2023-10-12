@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { url_base, dataPrinter, formBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables Globales
 let browser: Browser;
@@ -75,11 +73,6 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
 
                 // Boton de Editar Cuentas
                 botonEditarCuenta = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'});
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.NORMAL);
             });
         
             test('Ir a la opcion de Apertura de cuentas de Ahorros', async () => {

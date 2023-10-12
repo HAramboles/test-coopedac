@@ -5,8 +5,6 @@ import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './000-nombresyapellidos-personas';
 import { url_registro_persona } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Vaiables globales 
 let browser: Browser;
@@ -79,11 +77,6 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                 cedulaMadre = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombreMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellidoMadre = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.CRITICAL);
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro

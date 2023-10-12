@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, 
 import { url_base, browserConfig, selectBuscar } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
 import { EscenariosVerProcentajeCobros } from './utils/interfaces';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -70,11 +68,6 @@ test.describe.serial('Pruebas con el parametro de ver porcentaje de las cuentas 
                 botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
                 // Boton de Cancelar
                 botonCancelar = page.getByRole('button', {name: 'Cancelar'});
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.TRIVIAL);
             });
 
             // Funcion con el boton de continuar, que se repite en cada seccion del registro

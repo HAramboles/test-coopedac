@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones_crediautos } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -76,11 +74,6 @@ test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas co
                 // Cedula, nombre y apellido de la persona relacionada almacenada en el state
                 nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
                 apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a Apertura de Cuenta de Aportaciones Creiautos', async () => {

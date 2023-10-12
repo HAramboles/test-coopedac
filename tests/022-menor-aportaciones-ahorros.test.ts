@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones, url_cuentas_ahorros_infantiles } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -80,11 +78,6 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                 cedulaMadre = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombreMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellidoMadre = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a Apertura de cuenta de aportaciones', async () => {

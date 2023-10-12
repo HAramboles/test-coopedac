@@ -2,8 +2,6 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, browserConfig, selectBuscar, fechaInicio, fechaFinal, userCorrecto, dataPrinter } from './utils/dataTests';
 import { url_historico_caja } from './utils/urls';
 import { formatDate } from './utils/fechas';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -45,11 +43,6 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
 
         // Nombre de la empresa almacenada en el state
         nomrbeEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.MINOR);
     });
 
     test('Ir a la pagina de Historico de Caja', async () => {

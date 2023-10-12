@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } fr
 import { url_base, formBuscar, browserConfig, ariaAgregar } from './utils/dataTests';
 import { EscenariosAgregarCargosPrestamoDesembolsado } from './utils/interfaces';
 import { url_solicitud_credito } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -59,11 +57,6 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                 // Nombre y apellidos de la persona almacenada en el state
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.NORMAL);
             });
         
             test('Ir a la opcion de Solicitud de Credito', async () => {

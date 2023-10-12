@@ -2,8 +2,6 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { formatDate, primerDiaMes } from './utils/fechas';
 import { url_base, browserConfig, fechaFinal } from './utils/dataTests';
 import { url_desembolso_neto } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variabes globales
 let browser: Browser;
@@ -29,11 +27,6 @@ test.describe.serial('Pruebas con el Desembolso Neto', () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
-    }); 
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.MINOR);
     });
 
     test('Ir a la opcion de Desembolso Neto', async () => {

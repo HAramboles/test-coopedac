@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } fr
 import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -67,11 +65,6 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
         
                 // Nota alamacenada en el state
                 nota = await page.evaluate(() => window.localStorage.getItem('nota'));
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.CRITICAL);
             });
         
             test('Ir a la opcion de Transacciones de Caja', async () => {

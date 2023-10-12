@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig, dataEdit } from './utils/dataTests';
 import { url_solicitud_cambio_tasa_certificado } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -46,11 +44,6 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         // Nombre y apellidos del firmante almacenada en el state
         nombreFirmante = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
         apellidoFirmante = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.MINOR);
     });
 
     const AgregarCertificado = async () => {

@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, chromium, Cookie, expect, Locator, Page, test } from '@playwright/test';
 import { url_base, userCorrecto, passCorrecto, browserConfig } from './utils/dataTests';
 import { url_registro_persona } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -42,11 +40,6 @@ test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', async
 
         // Localizar el campo de la contraseña del usuario
         campoContraseña = page.locator('#form_password');
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.MINOR);
     });
 
     test('Eliminar la Cookie con la Sesion del Usuario', async () => {

@@ -2,8 +2,6 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { formatDate } from './utils/fechas';
 import { url_base, browserConfig } from './utils/dataTests';
 import { url_prestamos_por_vencer } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -29,11 +27,6 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.MINOR);
     });
 
     test('Ir a la opcion de Prestamos por Vencer', async () => {

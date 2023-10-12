@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_reversar_pago_prestamo } from './utils/urls';
 import { url_base, browserConfig, selectBuscar } from './utils/dataTests';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -38,11 +36,6 @@ test.describe.serial('Puebas con Reversar Pago a Prestamo', async () => {
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.CRITICAL);
     });
 
     test('Ir a la opcion de Reversar Pago a Prestamo', async () => {

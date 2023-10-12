@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, expect, Locator, Page, test, chromium } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
 import { url_consulta_movimientos_cuentas } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables Globales
 let browser: Browser;
@@ -42,11 +40,6 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // Inputs para buscar las cuentas del socio
         buscadorPersona = page.locator(`${selectBuscar}`);
         buscadorCuenta = page.locator('#rc_select_1');
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.NORMAL);
     });
 
     test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {

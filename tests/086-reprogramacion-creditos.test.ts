@@ -2,8 +2,6 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, formBuscar, browserConfig } from './utils/dataTests';
 import { dosMesDespues } from './utils/fechas';
 import { url_reprogramacion_creditos } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -53,11 +51,6 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_reprogramacion_creditos}?filter=pendientes`);
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.CRITICAL);
     });
 
     test('Confirmar la Solicitud de Reprogramacion del Socio', async () => {

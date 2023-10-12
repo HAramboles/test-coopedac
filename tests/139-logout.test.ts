@@ -1,8 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { url_base, browserConfig, userCorrecto } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -34,11 +32,6 @@ test.describe.serial('Pruebas Cerrando la Sesion', async () => {
 
         // Boton de Usuario
         botonUsuario = page.locator('[data-icon="user"]');
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.CRITICAL);
     });
 
     test('Header de la pagina', async () => {

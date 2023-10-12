@@ -2,8 +2,6 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { url_base, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
 import { formatDate, diaAnterior } from './utils/fechas';
 import { url_prestamos_cancelados } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables Globales
 let browser: Browser;
@@ -29,11 +27,6 @@ test.describe.serial('Pruebas con el Reporte de Prestamos Cancelados', async () 
 
         // Ir a la pagina
         await page.goto(`${url_base}`);
-    });
-
-    test.beforeEach(async () => { // Info para el reporte de Allure
-        await allure.owner('Hector Aramboles');
-        await allure.severity(Severity.MINOR);
     });
 
     test('Ir a la opcion de Pestamos Cancelados', async () => {

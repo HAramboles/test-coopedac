@@ -2,8 +2,6 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones } from './utils/urls';
-import { allure } from 'allure-playwright';
-import { Severity } from 'allure-js-commons';
 
 // Variables globales
 let browser: Browser;
@@ -63,11 +61,6 @@ test.describe.serial('No permitir Crear una Nueva Cuenta de Aportaciones al mism
 
                 // Cedula de la persona almacenada en el state
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
-            });
-
-            test.beforeEach(async () => { // Info para el reporte de Allure
-                await allure.owner('Hector Aramboles');
-                await allure.severity(Severity.NORMAL);
             });
         
             test('Ir a Apertura de cuenta de aportaciones', async () => { 
