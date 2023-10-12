@@ -201,6 +201,9 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Cerrar todas las paginas
         await page2.close();
         await page1.close();
+        
+        // En la pagina deberia aparecer una alerta de operacion exitosa
+        await expect(page.locator('text=Operación exitosa')).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

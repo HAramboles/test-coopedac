@@ -83,6 +83,9 @@ test.describe.serial('Pruebas con la Confirmacion de Transferencia Interbancaria
     });
     
     test('Click al boton de confirmar transferencia', async () => {
+        // Debe mostrarse el banco destino
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('cell', {name: 'BANRESERVAS'})).toBeVisible();
+
         // Seleccionar el boton de confirmar transferencia asociado al nombre y apellido de la persona
         const botonConfirmarTransferencia = page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'check-circle'});
         await expect(botonConfirmarTransferencia).toBeVisible();

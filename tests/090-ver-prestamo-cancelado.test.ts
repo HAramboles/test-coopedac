@@ -171,6 +171,17 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
     });
 
+    test('El prestamo debe seguir en estado Cancelado', async () => {
+        // El estado de las solicitudes debe estar en Cancelado
+        await expect(page.getByText('CANCELADO')).toBeVisible();
+
+        // Buscar la solicitud de la persona
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+        // Datos del prestamo
+        await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 50,000.00 48 RD$ 416.67`})).toBeVisible();
+    });
+
     test.afterAll(async () => { // Despues de todas las pruebas
         // Cerrar la page
         await page.close();

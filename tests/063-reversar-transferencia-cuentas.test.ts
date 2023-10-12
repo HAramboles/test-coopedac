@@ -1,15 +1,12 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig } from './utils/dataTests';
-import { url_reversar_transferencia } from './utils/urls';
+import { url_reversar_transferencia, url_reimprimir_contratos_cuentas } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
-
-// Cedula de la persona
-let cedula: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
@@ -30,9 +27,6 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
-
-        // Cedula de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
     });
 
     test('Ir a la opcion de Anular Transferencia Cuenta', async () => {
@@ -70,9 +64,17 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         // En la transaferencia buscada deben mostrarse la fecha y el monto
         await expect(page.getByRole('cell', {name: '1,500.00'})).toBeVisible();
 
-        // Click al boton de Anular
+        // Boton de Anular
         const botonAnular = page.getByRole('row', {name: '1,500.00'}).locator('[data-icon="stop"]');
         await expect(botonAnular).toBeVisible();
+
+        // Colocar el mouse encima del boton
+        await botonAnular.hover();
+
+        // El tooltip debe contener que es una Anulacion
+        await expect(page.getByRole('tooltip')).toHaveText('Reversar transferencia');
+
+        // Click al boton de Anular
         await botonAnular.click();
 
         // Aparece el mensaje modal de Anulacion
@@ -99,8 +101,16 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await expect(modalOperacionExitosa).not.toBeVisible();
     });
 
-    test.skip('La transferencia ya reversada no debe mostrarse', async () => {
-        await expect(page.getByRole('cell', {name: '1,500.00'})).not.toBeVisible();
+    test('Dirigirse a una pagina diferente y no deberia mostrar una alerta de error', async () => {
+        // Dirigirse a Reimprimir Contratos Cuentas
+        await page.getByRole('menuitem', {name: 'REIMPRESIONES'}).click();
+        await page.getByRole('menuitem', {name: 'Reimprimir contratos cuentas'}).click();
+        
+        // La URL debe cambiar
+        await expect(page).toHaveURL(`${url_reimprimir_contratos_cuentas}`);
+
+        // No debe mostrarse ninguna alerta de error
+        await expect(page.locator("text=Cannot read property 'replace' of undefined")).not.toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

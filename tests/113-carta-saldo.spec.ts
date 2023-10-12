@@ -99,6 +99,9 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         // Debe mostrarse el nombre del socio como un titulo
         await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
+        // Debe mostrarse el estado del prestamo
+        await expect(page.locator('text=(CANCELADO)')).toBeVisible();
+
         // El boton de finalizar no debe estar visible
         await expect(page.getByRole('button', {name: 'Finalizar'})).not.toBeVisible();
 

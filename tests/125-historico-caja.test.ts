@@ -137,11 +137,22 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`}).first()).toBeVisible();
 
         // Total de operaciones
-        //await expect(page.getByRole('row', {name: 'TOTAL DE OPERACIONES: 8'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'TOTAL DE OPERACIONES:'})).toBeVisible();
     });
 
-    test.skip('Resumen y Detalle de la Caja', async () => {
+    test('Resumen y Detalle de la Caja', async () => {
+        // Tabla del resumen
+        await expect(page.getByText('Resumen de Ingresos y Egresos de Caja')).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Cant.'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Descripción	'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Ingresos'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Egresos'})).toBeVisible();
 
+        // Tabla de los detalles
+        await expect(page.getByText('Detalles de caja')).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Descripción'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Ingresos'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Egresos'})).toBeVisible();
     });
 
     test('Imprimir el Recibo de una Transaccion', async () => {

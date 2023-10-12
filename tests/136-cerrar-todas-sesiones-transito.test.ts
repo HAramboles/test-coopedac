@@ -89,6 +89,9 @@ test.describe.serial('Pruebas Cerrando Todas las Sesiones en Transito que tenga 
 
             // Cerrar la alerta de Operacion Exitosa
             await page.locator(`${dataCerrar}`).click();
+
+            // La URL no debe cambiar
+            await expect(page).toHaveURL(`${url_cerrar_sesiones_transito}`);
     
             // Click al boton de Actualizar
             const botonActualizar = page.getByRole('button', {name: 'Actualizar'});

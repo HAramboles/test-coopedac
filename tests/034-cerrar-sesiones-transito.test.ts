@@ -93,6 +93,9 @@ test.describe.serial('Pruebas Cerrando Sesiones en Transito', async () => {
 
         // La sesion no debe estar visible
         await expect(titularSesion).not.toBeVisible();
+
+        // La URL no debe cambiar
+        await expect(page).toHaveURL(`${url_cerrar_sesiones_transito}`);
     });
     
     test.afterAll(async () => { // Despues de las pruebas
