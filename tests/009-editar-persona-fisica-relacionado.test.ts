@@ -431,7 +431,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
 
                     // La persona no debe tener ningun relacionado
-                    await expect(page.locator('text=No hay datos')).toBeVisible();
+                    await expect(page.locator('text=No data')).toBeVisible();
                 });
 
                 test('Finalizar con la Edicion de la Persona Fisica', async () => {

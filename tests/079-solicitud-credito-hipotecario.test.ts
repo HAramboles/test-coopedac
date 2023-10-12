@@ -300,7 +300,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
 
         // Colocar una cantidad para los cargos
-        const cargos = page.locator('(//td[@class="ant-table-cell montoPorcentajeSolicitud"])');
+        const cargos = page.locator('(//td[@class="ant-table-cell montoPorcentajeSolicitud"])').first();
         await cargos.click();
         // await page.locator('#VALOR').fill('50');
         await page.getByPlaceholder('MONTO O PORCENTAJE').fill('50');

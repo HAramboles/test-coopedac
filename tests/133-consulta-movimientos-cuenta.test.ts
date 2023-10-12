@@ -239,7 +239,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
 
         // No debe tener ningun movimiento
-        await expect(page.getByText('No hay datos')).toBeVisible();
+        await expect(page.getByText('No data')).toBeVisible();
 
         // Balance final
         await expect(page.getByRole('row', {name: 'BALANCE FINAL: 0.00'})).toBeVisible();

@@ -224,7 +224,7 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
         // En la tabla de los seguros no deben haber datos
-        await expect(page.locator('text=No hay datos')).toBeVisible();
+        await expect(page.locator('text=No data')).toBeVisible();
 
         // La Primera Cuota debe estar como estaba originalmente
         await expect(page.getByRole('row', {name: `1 ${formatDate(mesPrimerPago)} 2,036.02	104.17 0.00 2,140.19 22,963.98`})).toBeVisible();

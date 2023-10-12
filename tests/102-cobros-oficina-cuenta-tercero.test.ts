@@ -91,7 +91,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.getByText('LÍNEA DE CRÉDITO')).toBeVisible();
 
         // Hacer un pago al credito
-        await page.getByRole('row', {name: 'LÍNEA DE CRÉDITO'}).locator('[aria-label="Expandir fila"]').click();
+        await page.getByRole('row', {name: 'LÍNEA DE CRÉDITO'}).locator('[aria-label="Expand row"]').click();
 
         // Click al boton de Pagos
         const botonPagos = page.getByText('PAGOS');

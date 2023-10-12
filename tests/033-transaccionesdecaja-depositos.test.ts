@@ -196,7 +196,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
             
                 test('Boton de Deposito de la cuenta de Ahorros', async () => {
                     // Click a la cuenta de Ahorros del socio 
-                    await page.getByRole('row', {name: 'AHORROS NORMALES'}).getByRole('button', {name: 'Expandir fila'}).click();
+                    await page.getByRole('row', {name: 'AHORROS NORMALES'}).getByRole('button', {name: 'Expand row'}).click();
             
                     // Boton de Deposito debe estar visible
                     const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});

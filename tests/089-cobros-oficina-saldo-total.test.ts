@@ -81,7 +81,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.getByText('CRÉDITO HIPOTECARIO')).toBeVisible();
 
         // Hacer un pago al credito
-        await page.locator('[aria-label="Expandir fila"]').click();
+        await page.locator('[aria-label="Expand row"]').click();
 
         // Click al boton de Pagos
         const botonPagos = page.getByText('PAGOS');

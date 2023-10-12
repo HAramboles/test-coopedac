@@ -81,7 +81,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.getByText('CRÉDIAUTOS')).toBeVisible();
 
         // Hacer un pago al credito
-        await page.getByText('CRÉDIAUTOS').locator('[aria-label="Expandir fila"]').click();
+        await page.getByText('CRÉDIAUTOS').locator('[aria-label="Expand row"]').click();
 
         // Click al boton de Pagos
         const botonPagos = page.getByText('PAGOS');

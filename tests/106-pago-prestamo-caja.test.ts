@@ -166,7 +166,7 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     await expect(page.getByRole('cell', {name: 'CRÉDITO GERENCIAL / AHORROS'})).toBeVisible();
 
                     // Click al boton de expandir del prestamo
-                    await page.getByRole('row', {name: 'Expandir fila CRÉDITO GERENCIAL / AHORROS'}).getByRole('button', {name: 'Expandir fila'}).click();
+                    await page.getByRole('row', {name: 'Expand row CRÉDITO GERENCIAL / AHORROS'}).getByRole('button', {name: 'Expand row'}).click();
 
                     // Boton de Pagos
                     const botonPagos = page.getByRole('button', {name: 'Pagos'});

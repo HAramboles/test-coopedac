@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, dataEliminar } from './utils/dataTests';
+import { url_base, browserConfig, dataEliminar } from './utils/dataTests';
 import { url_anular_pago_prestamo } from './utils/urls';
 import { formatDate } from './utils/fechas';
 import { allure } from 'allure-playwright';
@@ -61,7 +61,7 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await expect(page).toHaveURL(`${url_anular_pago_prestamo}`);
     });
 
-    test.skip('Buscar los Pagos realizados al Prestamo de la persona', async () => {
+    test('Buscar los Pagos realizados al Prestamo de la persona', async () => {
         // El titulo deberia estar visible
         await expect(page.locator('h1').filter({hasText: 'ANULAR PAGO A PRÉSTAMO'})).toBeVisible();
 
@@ -71,12 +71,11 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         // El tipo de transaccion debe ser Pago a prestamo
         await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('RP - PAGOS A PRESTAMOS');
 
-        // Id documento y Cuenta de origen deben estar vacios por defecto
+        // Id documento debe estar vacio por defecto
         await expect(page.locator('#form_ID_DOCUMENTO')).toHaveValue('');
-        await expect(page.locator(`${selectBuscar}`)).toHaveValue('');
 
         // Buscar el usuario de la caja la cual hizo la transaccion
-        await page.getByTitle('TODAS').click();
+        await page.getByTitle('TODOS').click();
         // Elegir la primera caja que se muestra
         await page.getByRole('option').nth(0).click();
 

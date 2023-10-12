@@ -91,7 +91,7 @@ test.describe.serial('Reimpresion de resolucion aprobatoria - Pruebas con los di
                     await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
                     // No se deben mostrar ningun resultado, porque el socio no tiene ninguna solicitud en aprobado
-                    await expect(page.getByText('No hay datos')).toBeVisible();
+                    await expect(page.getByText('No data')).toBeVisible();
                 } else if ( escenario.ESTADO_DEFECTO === 'D') {
                     // El estado de las solicitudes deben estar en Aprobado
                     await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="DESEMBOLSADO"])')).toBeVisible();

@@ -713,7 +713,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await expect(campoBuscarRelacionado).toBeVisible();
                     
                     // En la tabla de los relacionados no debe haber ningun registro
-                    await expect(page.locator('text=No hay Datos')).toBeVisible();
+                    await expect(page.locator('text=No data')).toBeVisible();
 
                     // Seccion de Reportes
                     await expect(page.locator('h2').filter({hasText: 'REPORTES'})).toBeVisible();

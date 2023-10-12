@@ -276,7 +276,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     await expect(page.locator('text=REGISTRAR INTERMEDIARIO')).toBeVisible();
 
                     // Click al boton de Cancelar del modal de Crear Intermediario
-                    await page.getByRole('button', {name: 'Cancelar'}).click();
+                    await page.getByLabel('Registrar Intermediario').getByRole('button', {name: 'stop Cancelar'}).click();
 
                     // Debe salir un modal de confirmacion
                     await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();

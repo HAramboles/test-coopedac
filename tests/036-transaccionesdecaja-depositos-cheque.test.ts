@@ -212,7 +212,7 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                     await expect(modalDenominaciones).toBeVisible();
         
                     // Las denominaciones de la caja deben estar visibles
-                    const noDenominaciones = page.getByRole('dialog').locator('text=No hay datos');
+                    const noDenominaciones = page.getByRole('dialog').locator('text=No data');
                     if (await noDenominaciones.isVisible()) {
                         await page.close();
                         await context.close();

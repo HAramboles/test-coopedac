@@ -584,15 +584,6 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         
         // Dirigirse a la ultima seccion
         const seccionAnalisis = page.getByRole('button', {name: '7 Análisis'});
-
-        // if (await seccionAnalisis.isHidden()) {
-        //     await expect(page.getByRole('button', {name: '2 Datos Préstamos'})).toBeVisible();
-        //     await page.getByRole('button', {name: '7 Análisis'}).click();
-        // } else if (await seccionAnalisis.isVisible()) {
-        //     await expect(seccionAnalisis).toBeVisible();
-        //     await seccionAnalisis.click();
-        // }
-
         await expect(seccionAnalisis).toBeVisible();
         await seccionAnalisis.click();
 
@@ -690,6 +681,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // La url debe de tener que la solicitud esta en aprobado
         await expect(page).toHaveURL(/\/aprobado/);
+
+        // Esperar que carguen los datos
+        await page.waitForTimeout(10000);
 
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '7 Desembolso'});

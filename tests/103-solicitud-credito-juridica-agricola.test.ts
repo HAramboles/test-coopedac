@@ -587,6 +587,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         // La url debe de tener que la solicitud esta en aprobado
         await expect(page).toHaveURL(/\/aprobado/);
 
+        // Esperar que carguen los datos
+        await page.waitForTimeout(10000);
+
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
         await expect(seccionDesembolso).toBeVisible();

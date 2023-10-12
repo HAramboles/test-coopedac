@@ -159,7 +159,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
         // No debe mostrar resultados
-        await expect(page.getByText('No hay datos')).toBeVisible();
+        await expect(page.getByText('No data')).toBeVisible();
     });
 
     test('Buscar al cuenta del Socio en los Certificados Cancelados', async () => {

@@ -125,7 +125,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await expect(page.getByRole('cell', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Debe mostarse el tipo de firmante
-        // await expect(page.getByRole('cell', {name: 'CO-PROPIETARIO'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'CO-PROPIETARIO'})).toBeVisible();
     });
 
     test('En la Tabla de los Certificados debe agregarse el Certificado', async () => {
@@ -183,7 +183,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await expect(page.getByRole('cell', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
         // Debe mostarse el tipo de firmante
-        // await expect(page.getByRole('cell', {name: 'CO-PROPIETARIO'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'CO-PROPIETARIO'})).toBeVisible();
     });
 
         test('En la Tabla de los Certificados deben estar los dos Certificados Agregados', async () => {

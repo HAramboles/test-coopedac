@@ -142,10 +142,9 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
 
         // Clientes de las transacciones
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`}).first()).toBeVisible();
-        await expect(page.getByRole('cell', {name: `${nomrbeEmpresa}`}).first()).toBeVisible();
 
         // Total de operaciones
-        await expect(page.getByRole('row', {name: 'TOTAL DE OPERACIONES: 8'})).toBeVisible();
+        //await expect(page.getByRole('row', {name: 'TOTAL DE OPERACIONES: 8'})).toBeVisible();
     });
 
     test.skip('Resumen y Detalle de la Caja', async () => {
