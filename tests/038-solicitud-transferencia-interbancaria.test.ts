@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, formComentario, contextConfig } from './utils/dataTests';
 import { url_solicitud_transferencia_interbancaria } from './utils/urls';
 
 // Variables globales
@@ -15,15 +15,10 @@ let apellido: string | null;
 // Pruebas
 test.describe.serial('Pruebas con la Solicitud de Transferencia Interbancaria', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
-        browser = await chromium.launch({ 
-          headless: browserConfig.headless,
-          args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
     
         // Crear el context
-        context = await browser.newContext({
-          storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
     
         // Crear una nueva page
         page = await context.newPage();

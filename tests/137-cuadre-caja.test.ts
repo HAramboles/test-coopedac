@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, userCuadreCaja, passCuadreCaja, nombreOficialCuadre } from './utils/dataTests';
+import { url_base, browserConfig, userCuadreCaja, passCuadreCaja, nombreOficialCuadre, contextConfig } from './utils/dataTests';
 import { url_cuadre_caja } from './utils/urls';
 
 // Variables globales
@@ -11,15 +11,10 @@ let page: Page;
 test.describe.serial('Pruebas con el Mensaje de Aviso cuando hay Recepciones Pendientes en Cuadre de Caja', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una page
         page = await context.newPage();

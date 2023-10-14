@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, nombreTestigo, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaRemoverFirmantes } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_orden_pago } from './utils/urls';
 
@@ -27,15 +27,10 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
         test.describe(`Tests cuando el pamaetro es: ${Object.values(escenarios).toString()}`, async () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args,
-                });
+                browser = await chromium.launch(browserConfig);
         
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json',
-                });
+                context = await browser.newContext(contextConfig);
         
                 // Crear la page
                 page = await context.newPage();

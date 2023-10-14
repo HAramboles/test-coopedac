@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_notas_cuentas } from './utils/urls';
 
 // Variables globales
@@ -17,15 +17,10 @@ let apellido: string | null;
 test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financieros Pagaderas', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una page
         page = await context.newPage();

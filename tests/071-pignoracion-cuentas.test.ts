@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/interfaces';
 import { url_pignoracion_cuentas } from './utils/urls';
 
@@ -24,15 +24,10 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
         test.describe(`Tests cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
         
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
         
                 // Crear una page
                 page = await context.newPage();

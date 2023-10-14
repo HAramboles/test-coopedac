@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig } from './utils/dataTests';
+import { url_base, browserConfig, contextConfig } from './utils/dataTests';
 import { url_vencimiento_cobros } from './utils/urls';
 
 // Variables globales
@@ -11,15 +11,10 @@ let page: Page;
 test.describe.serial('Pruebas con el Vencimiento de Cobros', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

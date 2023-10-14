@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_base, browserConfig, fechaInicio, fechaFinal, contextConfig } from './utils/dataTests';
 import { formatDate, diaAnterior } from './utils/fechas';
 import { url_prestamos_cancelados } from './utils/urls';
 
@@ -12,15 +12,10 @@ let page: Page;
 test.describe.serial('Pruebas con el Reporte de Prestamos Cancelados', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

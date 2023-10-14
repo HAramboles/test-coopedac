@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_cancelar_certificado, url_cuentas_certificados, url_cuentas_certificados_financieros_pagaderas } from './utils/urls';
 
 // Variables Globales
@@ -16,15 +16,10 @@ let apellido: string | null;
 test.describe('Pruebas con la Cancelacion de Certificados', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una page
         page = await context.newPage();

@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, browserConfig, formComentario, contextConfig } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
 
@@ -17,15 +17,10 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
         test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => {
                 /* Crear el browser, con la propiedad headless */
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
         
                 /* Crear una nueva page usando el context */
                 page = await context.newPage();

@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones } from './utils/urls';
@@ -23,15 +23,10 @@ test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los difer
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser, con la propiedad headless
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
         
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json',
-                });
+                context = await browser.newContext(contextConfig);
         
                 // Crear una nueva page
                 page = await context.newPage();

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, formBuscar } from './utils/dataTests';
+import { url_base, browserConfig, formBuscar, contextConfig } from './utils/dataTests';
 import { url_cerrar_sesiones_transito } from './utils/urls';
 
 // Variables globales
@@ -15,15 +15,10 @@ let apellido: string | null;
 test.describe.serial('Pruebas Cerrando Sesiones en Transito', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
-        browser= await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser= await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

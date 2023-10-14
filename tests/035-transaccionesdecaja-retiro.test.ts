@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig, formComentario } from './utils/dataTests';
+import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig, formComentario, contextConfig } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
 
@@ -22,15 +22,10 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
         test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, async () => {
             test.beforeAll(async () => { // Antes de todas las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
         
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
         
                 // Crear una nueva page
                 page = await context.newPage();

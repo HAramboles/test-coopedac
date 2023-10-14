@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, dataCheck } from './utils/dataTests';
+import { url_base, browserConfig, dataCheck, contextConfig } from './utils/dataTests';
 import { url_transacciones_caja, url_registro_tasa } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
@@ -12,15 +12,10 @@ let page: Page;
 test.describe.serial('No debe permitir Transacciones de Caja sin una Tasa Registrada', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

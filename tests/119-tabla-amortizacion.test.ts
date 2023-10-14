@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, selectBuscar, dataGuardar, browserConfig, dataEdit, dataEliminar } from './utils/dataTests';
+import { url_base, selectBuscar, dataGuardar, browserConfig, dataEdit, dataEliminar, contextConfig } from './utils/dataTests';
 import { url_tabla_amortizacion } from './utils/urls';
 
 // Variables globales
@@ -37,15 +37,10 @@ mes12.setMonth(mes12.getMonth() + 12);
 test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

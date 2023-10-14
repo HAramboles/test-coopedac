@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, dataEliminar, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, dataEliminar, fechaInicio, fechaFinal, contextConfig } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
 import { url_anular_nota_credito_prestamo } from './utils/urls';
 
@@ -16,15 +16,10 @@ let apellido: string | null;
 test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una page
         page = await context.newPage();

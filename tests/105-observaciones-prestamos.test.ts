@@ -7,7 +7,8 @@ import {
     inputFechaSolicitud, 
     inputPrimerPago, 
     ariaAgregar, 
-    formComentario 
+    formComentario, 
+    contextConfig
 } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
@@ -30,15 +31,10 @@ const firma2 = './tests/firma2.jpg'; // Con este path la imagen de la firma debe
 test.describe.serial('Prueba con la Solicitud de Credito', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json',
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una nueva page
         page = await context.newPage();

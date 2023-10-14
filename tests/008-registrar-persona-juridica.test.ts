@@ -7,7 +7,7 @@ import {
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig, fechaFinal, dataCheck } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, fechaFinal, dataCheck, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './000-nombresyapellidos-personas';
 import { url_registro_persona } from './utils/urls';
@@ -51,15 +51,10 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
         test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
         
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json',
-                });
+                context = await browser.newContext(contextConfig);
         
                 // Crear una nueva page
                 page = await context.newPage();

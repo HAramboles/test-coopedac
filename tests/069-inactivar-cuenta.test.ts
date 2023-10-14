@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { EscenariosPruebasActivarInactivarCuentas } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_por_nomina } from './utils/urls';
 
@@ -23,15 +23,10 @@ test.describe.serial('Inactivar una Cuenta del Socio - Pruebas con los diferente
         test.describe(`Test cuando el parametro sea: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
 
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                }); 
+                context = await browser.newContext(contextConfig); 
 
                 // Crear una page
                 page = await context.newPage();

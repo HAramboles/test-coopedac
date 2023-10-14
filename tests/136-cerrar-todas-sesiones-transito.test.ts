@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, browserConfig, formBuscar, userCorrecto, dataCerrar } from './utils/dataTests';
+import { url_base, browserConfig, formBuscar, userCorrecto, dataCerrar, contextConfig } from './utils/dataTests';
 import { url_cerrar_sesiones_transito } from './utils/urls';
 
 // Variables globales
@@ -14,15 +14,10 @@ let botonCerrarSesion: Locator;
 test.describe.serial('Pruebas Cerrando Todas las Sesiones en Transito que tenga la Caja antes del Cuadre de Caja', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
-        browser= await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser= await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

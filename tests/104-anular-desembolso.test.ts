@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, browserConfig, formBuscar, ariaCancelar } from './utils/dataTests';
+import { url_base, browserConfig, formBuscar, ariaCancelar, contextConfig } from './utils/dataTests';
 import { url_anular_desembolso, url_solicitud_credito } from './utils/urls';
 
 // Variables Globales
@@ -19,15 +19,10 @@ let botonAceptar: Locator;
 test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();
@@ -79,7 +74,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await page.getByRole('checkbox').last().click();
 
         // Digitar una razon de la anulacion del desembolso
-        await razonAnulacion.fill('Debe aprobarse nuevamente el desembolso');
+        await razonAnulacion.fill('Debe desembolsarse nuevamente el prestamo');
 
         // Click al boton de Anular Desembolso
         const botonAnularDesembolso = page.getByRole('button', {name: 'Desembolso', exact: true});

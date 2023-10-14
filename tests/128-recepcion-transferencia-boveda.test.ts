@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, userCorrecto, formBuscar, dataCheck, ariaCancelar, formComentario } from './utils/dataTests';
+import { url_base, browserConfig, userCorrecto, formBuscar, dataCheck, ariaCancelar, formComentario, contextConfig } from './utils/dataTests';
 import { url_recepcion_transferencia_boveda } from './utils/urls';
 
 // Variables Globales
@@ -11,15 +11,10 @@ let page: Page;
 test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

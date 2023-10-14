@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, dataCheck } from './utils/dataTests';
+import { url_base, formBuscar, dataCheck, contextConfig } from './utils/dataTests';
 import { browserConfig } from './utils/dataTests'
 import { url_recepcion_transferencia_caja } from './utils/urls';
 
@@ -12,15 +12,10 @@ let page: Page;
 test.describe.serial('Pruebas con la Recepcion Transferencia Cajas', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

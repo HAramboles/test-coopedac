@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_solicitud_transferencia_interbancaria } from './utils/urls';
 
 // Variables globales
@@ -13,15 +13,10 @@ let cedula: string | null;
 // Pruebas
 test.describe.serial('No permitir una Transferencia Interbancaria si la cuenta de Ahorros no tiene un monto', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
     
         // Crear el context
-        context = await browser.newContext({
-          storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
     
         // Crear una nueva page
         page = await context.newPage();

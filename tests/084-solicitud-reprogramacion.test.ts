@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { dosMesDespues } from './utils/fechas';
-import { url_base, ariaCerrar, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_solicitud_reprogramacion } from './utils/urls';
 
 // Variables globales
@@ -23,15 +23,10 @@ let apellido: string | null;
 test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes Parametros', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json',
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una nueva page
         page = await context.newPage();

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, browserConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_transferencia_fondos_caja } from './utils/urls';
 
 // Variables globales
@@ -11,15 +11,10 @@ let page: Page;
 test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
     test.beforeAll(async () => {
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una page
         page = await context.newPage();

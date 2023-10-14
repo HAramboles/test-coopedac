@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
 import { url_registro_persona } from './utils/urls';
 
@@ -38,15 +38,10 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
         test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
         
                 // Crear el context
-                context =  await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
         
                 // Crear una page
                 page = await context.newPage();

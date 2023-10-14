@@ -6,7 +6,8 @@ import {
     formBuscar, 
     browserConfig, 
     inputFechaSolicitud, 
-    inputPrimerPago 
+    inputPrimerPago, 
+    contextConfig
 } from './utils/dataTests';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
@@ -31,15 +32,10 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona Juridica', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

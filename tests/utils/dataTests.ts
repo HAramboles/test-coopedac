@@ -48,8 +48,15 @@ export const inputPrimerPago:string = '#loan_form_DIA_PAGO';
 const browserOneScreen = ['--window-position=100,0'];
 const browserSecondScreen = ['--window-position=-1500,-100'];
 
+// Configuracion del context
+export const windowSize = {width: 1400, height: 768};
+export const contextConfig = {
+    viewport: windowSize,
+    storageState: 'state.json'
+};
+
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserSecondScreen
+    args: browserSecondScreen,
 };

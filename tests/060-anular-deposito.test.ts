@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, dataEliminar } from './utils/dataTests';
+import { url_base, browserConfig, dataEliminar, contextConfig } from './utils/dataTests';
 import { url_anular_deposito } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
@@ -17,15 +17,10 @@ let apellido: string | null;
 test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
     test.beforeAll(async () => {
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, fechaInicio, fechaFinal, userCorrecto, dataPrinter } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, fechaInicio, fechaFinal, userCorrecto, dataPrinter, contextConfig } from './utils/dataTests';
 import { url_historico_caja } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
@@ -20,15 +20,10 @@ let nomrbeEmpresa: string | null;
 test.describe.serial('Pruebas con el Historico de Caja', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

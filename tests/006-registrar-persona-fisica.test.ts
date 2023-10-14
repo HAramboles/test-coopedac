@@ -1,6 +1,15 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig, dataCheck, fechaInicio, fechaFinal, dataEdit, dataEliminar } from './utils/dataTests';
+import { 
+    url_base, 
+    ariaCerrar, 
+    browserConfig, 
+    dataCheck, 
+    fechaFinal, 
+    dataEdit, 
+    dataEliminar, 
+    contextConfig 
+} from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 import { url_registro_persona } from './utils/urls';
@@ -32,15 +41,10 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
         test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
         
                 /* Crear una nueva page usando el context */
                 page = await context.newPage();

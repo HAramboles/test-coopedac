@@ -8,7 +8,8 @@ import {
     inputPrimerPago, 
     dataEdit,
     ariaAgregar,
-    formBuscar
+    formBuscar,
+    contextConfig
 } from './utils/dataTests';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
@@ -30,15 +31,10 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona Fisica', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json',
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una nueva page
         page = await context.newPage();
@@ -457,6 +453,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(3).click();
         await page.getByPlaceholder('VALOR ATRIBUTO').fill('3840');
 
+        // Esperar a que se agregue el nuevo valor de la matricula
+        await page.waitForTimeout(2000);
+
         // Click fuera del input
         await page.locator('text=ATRIBUTOS DE LA GARANTÍA').click();
         
@@ -812,16 +811,28 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
 
+        // Esperar que la pagina cargue
+        await page.waitForTimeout(3000);
+
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
 
         // La url debe de tener que la solicitud esta en aprobado
         await expect(page).toHaveURL(/\/aprobado/);
 
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(5000);
+
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
         await expect(seccionDesembolso).toBeVisible();
         await seccionDesembolso.click();
+
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(2000);
 
         // El nombre y el apellido del socio deben estar visibles 
         await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible(); 

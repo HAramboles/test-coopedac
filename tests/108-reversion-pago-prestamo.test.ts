@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_reversar_pago_prestamo } from './utils/urls';
-import { url_base, browserConfig, selectBuscar } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, contextConfig } from './utils/dataTests';
 
 // Variables globales
 let browser: Browser;
@@ -16,15 +16,10 @@ let apellido: string | null;
 test.describe.serial('Puebas con Reversar Pago a Prestamo', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

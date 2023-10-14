@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, dataCerrar, browserConfig, inputDiaPago, formComentario } from './utils/dataTests';
+import { url_base, selectBuscar, dataCerrar, browserConfig, inputDiaPago, formComentario, contextConfig } from './utils/dataTests';
 import { url_cobros_oficina } from './utils/urls';
 
 // Variables globales
@@ -21,15 +21,10 @@ let apellidoTercero: string | null;
 test.describe.serial('Pruebas con Cobros de Oficina', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una page
         page = await context.newPage();

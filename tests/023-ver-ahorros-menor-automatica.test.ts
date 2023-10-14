@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_cuentas_ahorros, url_cuentas_ahorros_infantiles } from './utils/urls';
 
 // Variables globales
@@ -20,15 +20,10 @@ let apellidoFirmante: string | null;
 test.describe.serial('Pruebas en el modo solo lectura, para ver una cuenta', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser, con la propiedad headless
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
         
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json',
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

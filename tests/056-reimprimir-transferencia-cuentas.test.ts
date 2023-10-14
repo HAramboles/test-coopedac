@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate, primerDiaMes } from './utils/fechas';
-import { url_base, selectBuscar, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, fechaInicio, fechaFinal, contextConfig } from './utils/dataTests';
 import { url_reimprimir_transferencia_cuentas } from './utils/urls';
 
 // Variables globales
@@ -16,15 +16,10 @@ let apellido: string | null;
 test.describe.serial('Pruebas con la Reimpresion de la Transferencia entre Cuentas Internas', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json',
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, Cookie, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, userCorrecto, passCorrecto, browserConfig } from './utils/dataTests';
+import { url_base, userCorrecto, passCorrecto, browserConfig, contextConfig } from './utils/dataTests';
 import { url_registro_persona } from './utils/urls';
 
 // Variables globales
@@ -18,15 +18,10 @@ let campoContraseña: Locator;
 test.describe.serial('Pruebas con la Expiracion de la Sesion del Usuario', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una page
         page = await context.newPage();

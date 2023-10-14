@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, dataPrinter, formBuscar, browserConfig, nombreTestigo } from './utils/dataTests';
+import { url_base, dataPrinter, formBuscar, browserConfig, nombreTestigo, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
 
@@ -26,15 +26,10 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
         
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json',
-                });
+                context = await browser.newContext(contextConfig);
         
                 // Crear la page
                 page = await context.newPage();

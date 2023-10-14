@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, dataCheck, dataGuardar, formBuscar, dataCerrar } from './utils/dataTests';
+import { url_base, browserConfig, dataCheck, dataGuardar, formBuscar, dataCerrar, contextConfig } from './utils/dataTests';
 import { url_sesiones_transito, url_registro_tasa } from './utils/urls';
 import { formatDate } from './utils/fechas';
 
@@ -17,15 +17,10 @@ let apellido: string | null;
 test.describe.serial('Pruebas con la Creacion de una Sesion de Transito que no debe permitir operaciones sin una tasa registrada', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context 
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

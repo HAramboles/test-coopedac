@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, userCorrecto, passCorrecto, browserConfig, dataVer } from './utils/dataTests';
+import { url_base, userCorrecto, passCorrecto, browserConfig, dataVer, windowSize } from './utils/dataTests';
 import { formatDate } from './utils/fechas';
 
 /* Variables globales */
@@ -22,11 +22,13 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
         /* Crear el browser, en este caso el chromiun */
         browser = await chromium.launch({
             headless: browserConfig.headless,
-            args: browserConfig.args
+            args: browserConfig.args,
         });
 
         /* Crear un context */
-        context = await browser.newContext();
+        context = await browser.newContext({
+            viewport: windowSize
+        });
 
         /* Crear una nueva page usando el context */
         page = await context.newPage();

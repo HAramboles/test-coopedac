@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones_preferentes } from './utils/urls';
 
@@ -26,15 +26,10 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
         test.describe(`Test cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
 
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
 
                 // Crear una page
                 page = await context.newPage();

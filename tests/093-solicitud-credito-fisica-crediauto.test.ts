@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, browserConfig, inputFechaSolicitud, inputPrimerPago } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, browserConfig, inputFechaSolicitud, inputPrimerPago, contextConfig } from './utils/dataTests';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
 
@@ -19,15 +19,10 @@ const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe e
 test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona Juridica', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

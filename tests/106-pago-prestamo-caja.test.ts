@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, ariaCerrar, formBuscar } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, ariaCerrar, formBuscar, contextConfig } from './utils/dataTests';
 import { url_transacciones_caja } from './utils/urls';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 
@@ -22,15 +22,10 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
         test.describe(`Tests cuando el escenario es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
 
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
 
                 // Crear la page
                 page = await context.newPage();
@@ -123,7 +118,7 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     await expect(page.locator('h1').filter({hasText: 'EGRESOS EN TRÁNSITO'})).toBeVisible();      
                 });
 
-                test.skip('El balance de la caja debe ser diferente de 0', async () => {
+                test('El balance de la caja debe ser diferente de 0', async () => {
                     // No debe mostrarse 0 como balance de la caja
                     const balanceCero = page.locator('text=Balance en caja: RD$ 0.00');
                     if (await balanceCero.isVisible()) {

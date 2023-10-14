@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, browserConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_asignar_accesorios } from './utils/urls';
 
 // Variables globales
@@ -16,15 +16,10 @@ let apellido: string | null;
 test.describe.serial('Asignar una Secuencia de Orden de Pago a la cuenta de Orden de Pago de la persona', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el contex
-        context = await browser.newContext({
-            storageState: 'state.json',
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

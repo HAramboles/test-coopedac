@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, browserConfig } from './utils/dataTests';
+import { url_base, browserConfig, contextConfig } from './utils/dataTests';
 import { url_relacion_prestamos_seguros } from './utils/urls';
 
 // Variables globales
@@ -15,15 +15,10 @@ let inputCentroCosto: Locator;
 test.describe.serial('Pruebas con la Impresion del Reporte de Relacion Prestamos Seguros', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
 
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear la page
         page = await context.newPage();

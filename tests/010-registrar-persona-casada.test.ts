@@ -12,7 +12,7 @@ import {
     nombrePersonaFisicaConyuge, 
     apellidoPersonaFisicaConyuge  
 } from './000-nombresyapellidos-personas';
-import { url_base, ariaCerrar, browserConfig, fechaInicio, fechaFinal } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, fechaFinal, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { url_registro_persona } from './utils/urls';
 
@@ -58,15 +58,10 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
         test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de que se realicen todas las pruebas
                 /* Crear el browser, con la propiedad headless */
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
         
                 /* Crear un context con el storageState donde esta guardado el token de la sesion */
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
         
                 /* Crear una nueva page usando el context */
                 page = await context.newPage();

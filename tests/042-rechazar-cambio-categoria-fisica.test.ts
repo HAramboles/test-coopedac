@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig, formComentario } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, formComentario, contextConfig } from './utils/dataTests';
 import { url_aceptar_rechazar_cambio_categoria } from './utils/urls';
 
 // Variables globales
@@ -15,15 +15,10 @@ let apellido: string | null;
 test.describe.serial('Pruebas con el Rechazo de Cambio de Categoria de la Persona Fisica', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args
-        });
+        browser = await chromium.launch(browserConfig);
         
         // Crear el context
-        context = await browser.newContext({
-            storageState: 'state.json'
-        });
+        context = await browser.newContext(contextConfig);
 
         // Crear una page
         page = await context.newPage();

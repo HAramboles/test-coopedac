@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, contextConfig } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
 import { EscenariosVerProcentajeCobros } from './utils/interfaces';
 
@@ -23,15 +23,10 @@ test.describe.serial('Pruebas con el parametro de ver porcentaje de las cuentas 
         test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
                 
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
 
                 // Crear una page
                 page = await context.newPage();

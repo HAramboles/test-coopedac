@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, dataEliminar } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, dataEliminar, contextConfig } from './utils/dataTests';
 import { EscenariosEliminarMovimientos } from './utils/interfaces';
 import { url_consulta_movimientos_cuentas } from './utils/urls';
 
@@ -20,15 +20,10 @@ test.describe.serial('Eliminar Movimiento en Consulta Movimientos Cuenats - Prue
         test.describe(`Tests cuando el parametro es: ${Object.values(escenario).toString()}`, () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
-                browser = await chromium.launch({
-                    headless: browserConfig.headless,
-                    args: browserConfig.args
-                });
+                browser = await chromium.launch(browserConfig);
 
                 // Crear el context
-                context = await browser.newContext({
-                    storageState: 'state.json'
-                });
+                context = await browser.newContext(contextConfig);
 
                 // Crear la page
                 page = await context.newPage();
