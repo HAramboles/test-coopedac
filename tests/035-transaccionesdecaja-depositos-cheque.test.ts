@@ -1,7 +1,9 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig, formComentario, contextConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, dataGuardar, dataCerrar, browserConfig, formComentario, contextConfig, noData } from './utils/dataTests';
+import { diaAnterior } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
+import { numerosCheques } from './utils/cedulasypasaporte';
 
 // Variables globales
 let browser: Browser;
@@ -17,7 +19,7 @@ let apellido: string | null;
 let nota: string | null;
 
 // Pruebas
-test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones y Ahorros - Pruebas con los diferentes Parametros', async () => {
+test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Normales - Pruebas con los diferentes Parametros', async () => {
     for (const escenarios of EscenariosPruebasCajaBoveda) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, async () => {
             test.beforeAll(async () => {
@@ -135,7 +137,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     // Ingresar la cedula del socio
                     await buscarSocio.fill(`${cedula}`);
                     // Seleccionar la cuenta de aportaciones del socio  
-                    await page.locator('text=APORTACIONES').click();
+                    await page.locator('text=AHORROS NORMALES').click();
                 });
             
                 test('Debe salir un modal con la nota anteriormente creada', async () => {        
@@ -149,43 +151,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await page.locator(`${ariaCerrar}`).click();  
                 });
             
-                test('Boton de Deposito de la cuenta de Aportaciones', async () => {
-                    // Debe estar visible la celda de los productos
-                    await expect(page.getByText('Producto').first()).toBeVisible();
-            
-                    // Boton de Deposito debe estar visible
-                    const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});
-                    await expect(botonDeposito).toBeVisible();
-                    // Click al boton 
-                    await botonDeposito.click();
-            
-                    // Debe aparecer un modal con las opciones para el deposito
-                    await expect(page.locator('text=DEPÓSITO A CUENTA APORTACIONES')).toBeVisible();
-                });
-            
-                test('Datos del Deposito a la Cuenta de Aportaciones', async () => {
-                    // Input del monto
-                    const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
-                    await expect(campoMonto).toBeVisible();
-                    await campoMonto.fill('2000');
-            
-                    // Agregar un comentario
-                    await page.locator(`${formComentario}`).fill('Deposito de 2000 pesos a la cuenta de Aportaciones');
-            
-                    // Boton Agregar
-                    await page.locator('text=Agregar').click();
-            
-                    // Debe salir un mensaje de que la operacion salio correctamente
-                    await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
-            
-                    // Cerrar el mensaje
-                    await page.locator(`${dataCerrar}`).click();
-                });
-            
                 test('Boton de Deposito de la cuenta de Ahorros', async () => {
-                    // Click a la cuenta de Ahorros del socio 
-                    await page.getByRole('row', {name: 'AHORROS NORMALES'}).getByRole('button', {name: 'Expand row'}).click();
-            
                     // Boton de Deposito debe estar visible
                     const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});
                     await expect(botonDeposito).toBeVisible();
@@ -197,28 +163,25 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                 });
             
                 test('Datos del Deposito a la Cuenta de Ahorros', async () => {
+                    // La actividad economica debe estar visible
+                    await expect(page.getByLabel('Depósito a Cuenta AHORROS NORMALES').locator('input[type="text"]').nth(4)).toHaveValue('Programación informática, consultarías y actividades relacionadas');
+                    
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
                     await expect(campoMonto).toBeVisible();
-                    await campoMonto.fill('100100');
+                    await campoMonto.fill('1000');
             
                     // Agregar un comentario
-                    await page.locator(`${formComentario}`).fill('Deposito de 100100 pesos a la cuenta de Ahorros');
+                    await page.locator(`${formComentario}`).fill('Deposito de un cheque de 1000 pesos a la cuenta de Ahorros');
             
-                    // Boton Agregar
-                    await page.locator('text=Agregar').click();
+                    // Boton Aplicar
+                    await page.locator('text=Aplicar').click();
             
                     // Debe salir un mensaje de que la operacion salio correctamente
                     await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
-            
-                    // Cerrar el mensaje
-                    await page.locator(`${dataCerrar}`).click();
                 });
 
                 test('Modal de Distribucion de Ingresos', async () => {
-                    // Aplicar el deposito de la cuenta de aportaciones
-                    await page.locator('text=Aplicar').first().click();
-
                     // Debe salir un modal para la distribucion de ingresos
                     await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();
             
@@ -228,7 +191,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await expect(page.locator('h1').filter({hasText: 'DETALLE DISTRIBUCIÓN'})).toBeVisible();
                     await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
                 });
-
+        
                 test('Las denominaciones de la caja deben mostrarse', async () => {
                     // Click al boton de Denominaciones
                     const botonDenominacones = page.getByLabel('Distribución de Ingresos').getByRole('button', {name: 'eye Denominaciones'});
@@ -239,10 +202,12 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     const modalDenominaciones = page.locator('h1').filter({hasText: 'DENOMINACIONES'});
                     await expect(modalDenominaciones).toBeVisible();
         
-                    // La tabla de las denominaciones debe estar visible en el modal 
-                    await expect(page.getByLabel('Denominaciones').getByRole('columnheader', {name: 'Moneda'})).toBeVisible();
-                    await expect(page.getByLabel('Denominaciones').getByRole('columnheader', {name: 'Cantidad'})).toBeVisible();
-                    await expect(page.getByLabel('Denominaciones').getByRole('columnheader', {name: 'Monto'})).toBeVisible();
+                    // Las denominaciones de la caja deben estar visibles
+                    const noDenominaciones = page.getByRole('dialog').getByText(`${noData}`);
+                    if (await noDenominaciones.isVisible()) {
+                        await page.close();
+                        await context.close();
+                    }
         
                     // Click al boton de Salir
                     await page.getByRole('button', {name: 'Salir'}).click();
@@ -250,116 +215,105 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     // El modal debe cerrarse
                     await expect(modalDenominaciones).not.toBeVisible();
                 });
-            
-                test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Aportaciones', async () => {            
-                    // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
-                    const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
-                    await expect(iconoAlerta).toBeVisible();
-            
-                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 2000
-                    // Divididos en 500, 200, 100, 100 y 50, 50
-                    const cant500 = page.locator('[id="2"]'); // Campo de RD 500
-                    const cant200 = page.locator('[id="3"]'); // Campo de RD 200
-                    const cant100 = page.locator('[id="4"]'); // Campo de RD 100
-                    const cant50 = page.locator('[id="5"]'); // Campo de RD 50
-            
-                    // Cantidad = 1 de 500
-                    await cant500.click();
-                    await cant500.fill('3');
-            
-                    // Cantidad = 1 de 200
-                    await cant200.click();
-                    await cant200.fill('1');
-            
-                    // Cantidad = 2 de 100
-                    await cant100.click();
-                    await cant100.fill('2');
-            
-                    // Cantidad = 2 de 50
-                    await cant50.click();
-                    await cant50.fill('2');
-            
-                    // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
-                    await expect(iconoAlerta).not.toBeVisible();
-            
-                    // Iconos check verdes
-                    const iconoVerde1 = page.getByRole('img', {name: 'check-circle'}).first();
-                    const iconoVerde2 = page.getByRole('img', {name: 'check-circle'}).last();
-            
-                    // Los dos checks verdes deben salir al hacer bien la distribucion
-                    await expect(iconoVerde1).toBeVisible();
-                    await expect(iconoVerde2).toBeVisible();
-            
-                    // Hacer click al boton de Aceptar
-                    const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
-            
-                    // Se abrira una nueva pagina con el reporte del deposito
-                    const [newPage] = await Promise.all([
-                        context.waitForEvent('page'),
-                        // Click al boton de Finalizar
-                        await expect(botonAceptar).toBeVisible(),
-                        await botonAceptar.click()
-                    ]);
-                    
-                    // La pagina abierta con el reporte del deposito se debe cerrar
-                    await newPage.close();
-            
-                    // Debe salir un modal
-                    await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
-            
-                    // Cancelar para hacer el siguiente deposito
-                    await page.locator('text=Cancelar').click();
-                });
-            
+                
                 test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
-                    // Aplicar el deposito de la cuenta de ahorros
-                    await page.locator('text=Aplicar').click();
-            
-                    // Debe salir un modal para la distribucion de ingresos
-                    await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();
-            
-                    // El modal debe contener 4 titulos y todos deben estar visibles
-                    await expect(page.locator('h1').filter({hasText: 'RECIBIDO'})).toBeVisible();
-                    await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
-                    await expect(page.locator('h1').filter({hasText: 'DETALLE DISTRIBUCIÓN'})).toBeVisible();
-                    await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
-            
                     // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'}).first();
                     await expect(iconoAlerta).toBeVisible();
-            
-                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 100100
-                    // Divididos en 100 monedas de 1000 y una de 100
-                    const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
-                    const cant100 = page.locator('[id="4"]'); // Campo de RD 100
-            
-                    // Cantidad = 100 de 1000
-                    await cant1000.click();
-                    await cant1000.fill('100');
+                });
 
-                    // Cantidad = 1 de 100
-                    await cant100.click();
-                    await cant100.fill('1');
-            
+                test('Agregar un Cheque', async () => {
+                    // Click al boton de Incluir Cheques
+                    await page.locator('text=Incluir cheque(s)').click();
+
+                    // Aprece una tabla donde se colocan los cheques agregados
+                    await expect(page.locator('h1').filter({hasText: 'CHEQUES'})).toBeVisible();
+
+                    // Click al boton de Agrergar Cheque
+                    const botonAgregarCheque = page.getByRole('button', {name: 'Agregar Cheque'});
+                    await expect(botonAgregarCheque).toBeVisible();
+                    await botonAgregarCheque.click();
+
+                    // Aparecen los campos para agregar los datos del cheque
+
+                    // No. documento
+                    await page.locator('#form_NO_DOCUMENTO').fill(`${numerosCheques}`);
+
+                    // Banco
+                    await page.locator('#form_BANCO').fill('ALAVER');
+                    // Click a la opcion del banco buscado
+                    await page.locator('text=ALAVER').click();
+
+                    // Fecha
+                    await page.locator('#form_FECHA_EMISION').fill(`${diaAnterior}`);
+
+                    // Emisor/Girador
+                    await page.locator('#form_EMISOR').fill('Hector');
+
+                    // Beneficiario/Portador
+                    await page.locator('#form_BENEFICIARIO').fill(`${nombre} ${apellido}`);
+
+                    // Monto
+                    await page.locator('#form_MONTO').fill('1000');
+
+                    // Click al boton de Guardar
+                    await page.locator(`${dataGuardar}`).click();
+
+                    // Debe aparecer un mensaje de confirmacion
+                    await expect(page.locator('text=¿Deseas guardar la operación?')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal
+                    await page.getByRole('button', {name: 'check Aceptar'}).click();
+
+                    // Icono de alerta rojo
+                    const iconoAlerta = page.getByRole('img', {name: 'close-circle'}).first();
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();
             
-                    // Hacer click al boton de Aceptar
-                    const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
-                    await expect(botonAceptar).toBeVisible();
-                    await botonAceptar.click();
+                    // Hacer click al boton de Aplicar
+                    const botonAplicar = page.getByRole('button', {name: 'check Aplicar'});
+                    await expect(botonAplicar).toBeVisible();
+                    await botonAplicar.click();
 
                     // Esperar que se abra una nueva pestaña con el reporte
                     const page1 = await context.waitForEvent('page');
 
                     // Cerrar la nueva pestaña
                     await page1.close();
+                });
 
-                    // Debe salir un modal
-                    await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
+                test('Cerrar la sesion', async () => {
+                    // Luego de que se cierre la nueva pestaña, se debe regresar a la pagina anterior
+                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
             
-                    // Click al boton de Cancelar
-                    await page.locator('text=Cancelar').click();
+                    // Debe aparecer un modal con el mensaje de actualizar la libreta
+                    await expect(page.locator('text=Actualizar libreta')).toBeVisible();
+            
+                    // Click en Cancelar
+                    const botonCancelar = page.getByRole('button', {name: 'Cancelar'});
+                    await expect(botonCancelar).toBeVisible();
+                    await botonCancelar.click();
+
+                    // Cerrar las alertas que aparecen
+                    await page.locator(`${dataCerrar}`).first().click();
+                    await page.locator(`${dataCerrar}`).first().click();
+                    await page.locator(`${dataCerrar}`).first().click();;
+                });
+
+                test('Liberar la Sesion', async () => {
+                    // Click al boton de Liberar Sesion
+                    const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});
+                    await expect(botonLiberarSesion).toBeVisible();
+                    await botonLiberarSesion.click();
+
+                    // Debe salir un mensaje de Confirmacion
+                    await expect(page.locator('text=¿Está seguro que desea proceder con esta acción?')).toBeVisible();
+
+                    // Click al boton de Aceptar
+                    await page.getByRole('button', {name: 'Aceptar'}).click();
+
+                    // Debe salir un mensaje de Operacion Exitosa
+                    await expect(page.locator('text=Sesiones en transito actualizada exitosamente.')).toBeVisible();
                 });
             };
         

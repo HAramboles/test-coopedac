@@ -44,6 +44,9 @@ export const inputDiaPago:string = '#form_DIA_PAGO';
 export const inputFechaSolicitud:string = '#loan_form_FECHA_APERTURA';
 export const inputPrimerPago:string = '#loan_form_DIA_PAGO';
 
+// No hay datos en la pagina
+export const noData:string = 'No Data';
+
 // Abrir el browser en una pantalla u otra
 const browserOneScreen = ['--window-position=100,0'];
 const browserSecondScreen = ['--window-position=-1500,-100'];

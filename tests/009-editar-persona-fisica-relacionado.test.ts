@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, formBuscar, browserConfig, contextConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, contextConfig, noData } from './utils/dataTests';
 import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
 import { url_registro_persona } from './utils/urls';
 
@@ -284,9 +284,12 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     actualizarContinuar();
                 });
 
-                test('Agregar la informacion faltante del socio - Relacionados del Socio', async () => {
+                test('Debe dirigirse al paso de Relacionados del Socio y no debe haber ningun relacionado', async () => {
                     // El titulo principal debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
+
+                    // La persona no debe tener ningun relacionado
+                    await expect(page.getByText(`${noData}`)).toBeVisible();
                 });
 
                 test('Finalizar con la Edicion de la Persona Fisica', async () => {
@@ -419,7 +422,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
 
                     // La persona no debe tener ningun relacionado
-                    await expect(page.locator('text=No data')).toBeVisible();
+                    await expect(page.getByText(`${noData}`)).toBeVisible();
                 });
 
                 test('Finalizar con la Edicion de la Persona Fisica', async () => {

@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig, contextConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, contextConfig, noData } from './utils/dataTests';
 import { EscenariosReimpresionResolucionAprobatoria } from './utils/interfaces';
 import { url_reimprimir_resolucion_aprobatoria } from './utils/urls';
 
@@ -79,7 +79,7 @@ test.describe.serial('Reimpresion de resolucion aprobatoria - Pruebas con los di
                     await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
                     // No se deben mostrar ningun resultado, porque el socio no tiene ninguna solicitud en aprobado
-                    await expect(page.getByText('No data')).toBeVisible();
+                    await expect(page.getByText(`${noData}`)).toBeVisible();
                 } else if ( escenario.ESTADO_DEFECTO === 'D') {
                     // El estado de las solicitudes deben estar en Aprobado
                     await expect(page.locator('(//SPAN[@class="ant-select-selection-item"][text()="DESEMBOLSADO"])')).toBeVisible();

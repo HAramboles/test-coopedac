@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, selectBuscar, dataGuardar, browserConfig, dataEdit, dataEliminar, contextConfig } from './utils/dataTests';
+import { url_base, selectBuscar, dataGuardar, browserConfig, dataEdit, dataEliminar, contextConfig, noData } from './utils/dataTests';
 import { url_tabla_amortizacion } from './utils/urls';
 
 // Variables globales
@@ -212,7 +212,7 @@ test.describe.serial('Pruebas con la Tabla de Amortizacion', () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
         // En la tabla de los seguros no deben haber datos
-        await expect(page.locator('text=No data')).toBeVisible();
+        await expect(page.getByText(`${noData}`)).toBeVisible();
 
         // La Primera Cuota debe estar como estaba originalmente
         await expect(page.getByRole('row', {name: `1 ${formatDate(mesPrimerPago)} 2,036.02	104.17 0.00 2,140.19 22,963.98`})).toBeVisible();

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, expect, Locator, Page, test, chromium } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig, noData } from './utils/dataTests';
 import { url_consulta_movimientos_cuentas } from './utils/urls';
 
 // Variables Globales
@@ -227,7 +227,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
 
         // No debe tener ningun movimiento
-        await expect(page.getByText('No data')).toBeVisible();
+        await expect(page.getByText(`${noData}`)).toBeVisible();
 
         // Balance final
         await expect(page.getByRole('row', {name: 'BALANCE FINAL: 0.00'})).toBeVisible();

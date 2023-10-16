@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, contextConfig, noData } from './utils/dataTests';
 import { url_estado_cuentas_cobrar } from './utils/urls';
 
 // Variables globales
@@ -214,7 +214,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('columnheader', {name: 'Total'}).last()).toBeVisible();
 
         // No deben haber datos
-        await expect(page.locator('text=No data')).toBeVisible();
+        await expect(page.getByText(`${noData}`)).toBeVisible();
     });
 
     test('Ver Tabla de Amortización', async () => {

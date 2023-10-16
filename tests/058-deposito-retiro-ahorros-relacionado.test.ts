@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, formBuscar, browserConfig, formComentario, contextConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, formComentario, formBuscar, contextConfig } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
 
@@ -13,11 +13,8 @@ let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
 
-// Nota de la cuenta de aportaciones de la persona
-let nota: string | null;
-
 // Pruebas
-test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas con los diferentes Parametros', async () => {
+test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones y Ahorros - Pruebas con los diferentes Parametros', async () => {
     for (const escenarios of EscenariosPruebasCajaBoveda) {
         test.describe(`Test cuando el parametro es: ${Object.values(escenarios).toString()}`, async () => {
             test.beforeAll(async () => {
@@ -54,12 +51,9 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                 await page.goto(`${url_base}`);
         
                 // Cedula, ,ombre y apellido de la persona alamcenada en el state
-                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
-                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
-        
-                // Nota alamacenada en el state
-                nota = await page.evaluate(() => window.localStorage.getItem('nota'));
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
             });
         
             test('Ir a la opcion de Transacciones de Caja', async () => {
@@ -134,22 +128,15 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
             
                     // Ingresar la cedula del socio
                     await buscarSocio.fill(`${cedula}`);
-                    // Seleccionar la cuenta de aportaciones del socio  
+                    // Seleccionar la cuenta de ahorros normales del socio  
                     await page.locator('text=AHORROS NORMALES').click();
                 });
-            
-                test('Debe salir un modal con la nota anteriormente creada', async () => {        
-                    // Titulo del modal
-                    await expect(page.locator('h1').filter({hasText: `NOTAS PARA ${nombre} ${apellido}`})).toBeVisible();
-            
-                    // La nota debe estar visible
-                    await expect(page.getByRole('cell', {name: `${nota}`})).toBeVisible();
-            
-                    // Cerrar el modal
-                    await page.locator(`${ariaCerrar}`).click();  
+
+                test('No debe salir una alerta de Error de la Actividad Economica', async () => {
+                    await expect(page.locator("text=Cannot destructure property 'CONCEPTO'")).not.toBeVisible();
                 });
             
-                test('Boton de Deposito de la cuenta de Ahorros', async () => {
+                test('Boton de Deposito de la cuenta de Ahorros', async () => {            
                     // Boton de Deposito debe estar visible
                     const botonDeposito = page.getByRole('button', {name: 'DEPOSITO'});
                     await expect(botonDeposito).toBeVisible();
@@ -161,16 +148,16 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                 });
             
                 test('Datos del Deposito a la Cuenta de Ahorros', async () => {
+                    // La actividad economica debe estar visible
+                    await expect(page.getByLabel('Depósito a Cuenta AHORROS NORMALES').locator('input[type="text"]').nth(4)).toHaveValue('Agricultura. ganadería, caza y sivicultura');
+
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
                     await expect(campoMonto).toBeVisible();
-                    await campoMonto.fill('2000000');
-
-                    // Debe aparecer una alerta en el modal acerca del RTE
-                    await expect(page.getByText('Esta transacción genera un RTE')).toBeVisible();
+                    await campoMonto.fill('1000');
             
                     // Agregar un comentario
-                    await page.locator(`${formComentario}`).fill('Deposito de dos millones de pesos a la cuenta de Ahorros');
+                    await page.locator(`${formComentario}`).fill('Deposito de 1000 pesos a la cuenta de Ahorros');
             
                     // Boton Aplicar
                     await page.locator('text=Aplicar').click();
@@ -211,24 +198,18 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     // El modal debe cerrarse
                     await expect(modalDenominaciones).not.toBeVisible();
                 });
-                
+            
                 test('Datos de la Distribucion de Ingresos del Deposito a la Cuenta de Ahorros', async () => {
                     // En detalle distribucion, el monto pendiente a recibir tiene que tener una alerta roja
-                    const iconoAlerta = page.getByRole('img', {name: 'close-circle'}).first();
+                    const iconoAlerta = page.getByLabel('Distribución de Ingresos').getByLabel('close-circle');
                     await expect(iconoAlerta).toBeVisible();
             
-                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 100100
-                    // Divididos en 100 monedas de 1000 y una de 100
-                    const cant2000 = page.locator('[id="0"]'); // Campo de RD 2000
+                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 1000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
             
-                    // Cantidad = 1000 de 1000
+                    // Cantidad = 100 de 1000
                     await cant1000.click();
-                    await cant1000.fill('1000');
-
-                    // Cantidad = 500 de 2000
-                    await cant2000.click();
-                    await cant2000.fill('500');
+                    await cant1000.fill('1');
             
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();
@@ -258,19 +239,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     // Debe mostrarse un boton para crear un intermediario
                     const botonCrearIntermediario = page.getByRole('button', {name: 'Crear Intermediario'});
                     await expect(botonCrearIntermediario).toBeVisible();
-                    await botonCrearIntermediario.click();
-
-                    // Debe salir un modal de registro de persona
-                    await expect(page.locator('text=REGISTRAR INTERMEDIARIO')).toBeVisible();
-
-                    // Click al boton de Cancelar del modal de Crear Intermediario
-                    await page.getByLabel('Registrar Intermediario').getByRole('button', {name: 'stop Cancelar'}).click();
-
-                    // Debe salir un modal de confirmacion
-                    await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
-
-                    // Click al boton de Aceptar del modal de confirmacion
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // await botonCrearIntermediario.click();
 
                     // Boton de Cliente es Intermediario
                     const botonClienteIntermediario = page.getByText('Cliente Intermediario');
@@ -307,18 +276,93 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     // Debe regresar a la pagina
                     await expect(page).toHaveURL(`${url_transacciones_caja}`);
 
-                    // Debe mostrarse el modal de Actualizar en libreta
-                    const modalLibreta = page.locator('text=Actualizar libreta');
-                    await expect(modalLibreta).toBeVisible();
+                    // Debe salir un modal
+                    await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
 
-                    // Click al boton de Cancelar del modal
-                    await page.getByRole('button', {name: 'Cancelar'}).click();
+                    // Click al boton de Cancelar
+                    await page.locator('text=Cancelar').click();
+                });
 
-                    // El modal no debe estar visible
-                    await expect(modalLibreta).not.toBeVisible();
+                test('Boton de Retiro de la cuenta de Ahorros Normales', async () => {
+                    // Debe estar visible la celda de los productos
+                    await expect(page.getByText('Producto').first()).toBeVisible();
+                    
+                    // Boton de Retiro debe estar visible
+                    const botonRetiro = page.locator('text=RETIRO');
+                    await expect(botonRetiro).toBeVisible();
+                    // Click al boton
+                    await botonRetiro.click();
+            
+                    // Debe aparecer un modal con las opciones para el retiro
+                    await expect(page.locator('text=RETIRO CUENTAS DE AHORROS')).toBeVisible();
+                });
+
+                test('Datos del Retiro de la Cuenta de Ahorro', async () => {           
+                    // Input del monto
+                    const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
+                    await expect(campoMonto).toBeVisible();
+                    await campoMonto.fill('500.02');
+            
+                    // Agregar un comentario
+                    await page.locator(`${formComentario}`).fill('Retiro de 500.02 pesos de la cuenta de Ahorros');
+
+                    // Esperar un segundo antes de hacer click en Aceptar
+                    await page.waitForTimeout(1000);
+            
+                    // Aplicar el retiro
+                    await page.getByRole('button', {name: 'check Aplicar'}).click();
+                });
+
+                test('Datos de la Distribucion de Egresos', async () => {
+                    // Debe salir un modal para la distribucion de egresos
+                    await expect(page.locator('text=DISTRIBUCIÓN DE EGRESOS')).toBeVisible();
+            
+                    // El modal debe contener 4 titulos y todos deben estar visibles
+                    await expect(page.locator('h1').filter({hasText: 'MIS DENOMINACIONES'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'DETALLE DISTRIBUCIÓN'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
+            
+                    // Hacer la distribucion del dinero a retirar, en el caso de la prueba RD 500.02
+                    const cant500 = page.locator('[id="14"]');
+                    const cant01Decimal = page.locator('[id="22"]');
+            
+                    // Cantidad = 1 de 500
+                    await cant500.click();
+                    await cant500.fill('1');
+
+                    // El input de Pendiente no puede tener 0 en los decimales
+                    await expect(page.locator('(//INPUT[@autocomplete="off"])[54]')).toHaveValue('RD$ 0.02');
+
+                    // Cantidad = 2 de 0.01
+                    await cant01Decimal.click();
+                    await cant01Decimal.fill('2');
+            
+                    // Luego de distribuir la cantidad, debe aparecer una opcion de Guardar Entregado
+                    await expect(page.locator('text=Guardar Entregado')).toBeVisible();
+            
+                    // Hace click en Aceptar
+                    const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
+                    await expect(botonAceptar).toBeVisible();
+                    await botonAceptar.click();
+            
+                    // Se abrira una nueva pagina con el reporte del retiro
+                    const page1 = await context.newPage();
+                    
+                    // La pagina abierta con el reporte del retiro se debe cerrar
+                    await page1.close();
+
+                    // Debe salir un modal
+                    await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
+
+                    // Click al boton de Cancelar
+                    await page.locator('text=Cancelar').click();
                 });
 
                 test('Liberar la Sesion', async () => {
+                    // Se debe regresar a la pagina anterior
+                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
+
                     // Click al boton de Liberar Sesion
                     const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});
                     await expect(botonLiberarSesion).toBeVisible();

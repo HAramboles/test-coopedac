@@ -8,7 +8,8 @@ import {
     fechaFinal, 
     dataEdit, 
     dataEliminar, 
-    contextConfig 
+    contextConfig, 
+    noData
 } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
@@ -710,7 +711,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await expect(campoBuscarRelacionado).toBeVisible();
                     
                     // En la tabla de los relacionados no debe haber ningun registro
-                    await expect(page.locator('text=No data')).toBeVisible();
+                    await expect(page.getByText(`${noData}`)).toBeVisible();
 
                     // Seccion de Reportes
                     await expect(page.locator('h2').filter({hasText: 'REPORTES'})).toBeVisible();

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
+import { url_base, formBuscar, selectBuscar, browserConfig, contextConfig, noData } from './utils/dataTests';
 import { url_cancelar_certificado, url_cuentas_certificados, url_cuentas_certificados_financieros_pagaderas } from './utils/urls';
 
 // Variables Globales
@@ -147,7 +147,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
         // No debe mostrar resultados
-        await expect(page.getByText('No data')).toBeVisible();
+        await expect(page.getByText(`${noData}`)).toBeVisible();
     });
 
     test('Buscar al cuenta del Socio en los Certificados Cancelados', async () => {

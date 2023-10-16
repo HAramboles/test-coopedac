@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, formBuscar, contextConfig } from './utils/dataTests';
+import { url_base, browserConfig, formBuscar, contextConfig, noData } from './utils/dataTests';
 import { url_cerrar_sesiones_transito } from './utils/urls';
 
 // Variables globales
@@ -89,8 +89,8 @@ test.describe.serial('Pruebas Cerrando Sesiones en Transito', async () => {
         // La sesion no debe estar visible
         await expect(titularSesion).not.toBeVisible();
 
-        // La URL no debe cambiar
-        await expect(page).toHaveURL(`${url_cerrar_sesiones_transito}`);
+        // En la pagina no deben de haber datos
+        await expect(page.getByText(`${noData}`)).toBeVisible();
     });
     
     test.afterAll(async () => { // Despues de las pruebas

@@ -162,6 +162,9 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     
                     // El titulo de las firmas debe estar visible
                     await expect(page.getByRole('heading', {name: 'Firmas Autorizadas'})).toBeVisible();
+
+                    // La actividad economica debe estar visible
+                    await expect(page.getByLabel('Depósito a Cuenta AHORROS NORMALES').locator('input[type="text"]').nth(4)).toHaveValue('Programación informática, consultarías y actividades relacionadas');
             
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');

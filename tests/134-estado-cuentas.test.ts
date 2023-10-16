@@ -121,7 +121,7 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         await expect(page.getByRole('cell', {name: 'FINANCIEROS PAGADERAS', exact: true})).toBeVisible();
 
         // Cuenta de Orden de Pago
-        // await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();
 
         // Credito Hipotecario
         await expect(page.getByRole('cell', {name: 'CRÉDITO HIPOTECARIO', exact: true})).toBeVisible();

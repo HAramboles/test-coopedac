@@ -128,7 +128,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     await page.locator('text=AHORROS NORMALES').click();
                 });
 
-                test.skip('No debe salir un Error de la Actividad Economico', async () => {
+                test('No debe salir una alerta de Error de la Actividad Economica', async () => {
                     await expect(page.locator("text=Cannot destructure property 'CONCEPTO'")).not.toBeVisible();
                 });
             
@@ -144,6 +144,9 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                 });
             
                 test('Datos del Deposito a la Cuenta de Ahorros', async () => {
+                    // La actividad economica debe estar visible
+                    await expect(page.getByLabel('Depósito a Cuenta AHORROS NORMALES').locator('input[type="text"]').nth(4)).toHaveValue('Agricultura. ganadería, caza y sivicultura');
+
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
                     await expect(campoMonto).toBeVisible();
