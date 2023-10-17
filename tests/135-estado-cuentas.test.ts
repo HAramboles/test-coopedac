@@ -138,23 +138,33 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         await page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO'}).locator('[aria-label="export"]').first().click();
 
         // Debe abrirse una nueva ventana con la pagina de consulta movimientos
-        const page1 = await context.waitForEvent('page');
+        const pageEstadoCuentasCobrar = await context.waitForEvent('page');
 
         // La URL debe cambiar
-        await expect(page1).toHaveURL(/\/estado_cuenta_consolidado/);
+        await expect(pageEstadoCuentasCobrar).toHaveURL(/\/estado_cuenta_consolidado/);
 
         // El titulo debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTAS POR COBRAR'})).toBeVisible();
+        await expect(pageEstadoCuentasCobrar.locator('h1').filter({hasText: 'ESTADO DE CUENTAS POR COBRAR'})).toBeVisible();
+
+        // El prestamo Hipotecario debe estar seleccionado
+        await expect(pageEstadoCuentasCobrar.locator('(//INPUT[@type="radio"])[3]')).toBeChecked();
 
         // Las secciones de los datos del prestamo deben estar visibles
-        await expect(page.getByText('Situación del movimiento')).toBeVisible();
-        await expect(page.getByText('Datos de préstamo')).toBeVisible();
-        await expect(page.getByText('Historial de pagos')).toBeVisible();
-        await expect(page.getByText('Cuotas pendientes')).toBeVisible();
-        await expect(page.getByText('Ver Tabla de Amortización')).toBeVisible();
+        await expect(pageEstadoCuentasCobrar.getByText('Situación del movimiento')).toBeVisible();
+        await expect(pageEstadoCuentasCobrar.getByText('Historial de pagos')).toBeVisible();
+        await expect(pageEstadoCuentasCobrar.getByText('Cuotas pendientes')).toBeVisible();
+        await expect(pageEstadoCuentasCobrar.getByText('Ver Tabla de Amortización')).toBeVisible();
+        const seccionDatosPrestamos = pageEstadoCuentasCobrar.getByText('Datos de préstamo');
+        await expect(seccionDatosPrestamos).toBeVisible();
+
+        // Click a la seccion Datos Prestamos
+        await seccionDatosPrestamos.click();
+
+        //  El estado del prestamo debe ser cancelado
+        await expect(pageEstadoCuentasCobrar.getByRole('row', {name: 'Estado préstamo CANCELADO'})).toBeVisible();
 
         // Cerrar la nueva pestaña
-        await page1.close();
+        await pageEstadoCuentasCobrar.close();
 
         // Debe regresar a la pagina de Estado de Cuentas
         await expect(page).toHaveURL(`${url_estado_cuentas}`);

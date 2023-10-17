@@ -196,6 +196,9 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         // Debe aparecer un modal para anular el desembolso
         await expect(modalAnularDesembolso).toBeVisible();
 
+        // No debe mostrarse el desembolso anulado anteriormente
+        await expect(page.getByRole('cell', {name: 'RD$ 10,000.00'})).toBeVisible();
+
         // Seleccionar el desembolso del prestamo
         await page.getByRole('checkbox').last().click();
 

@@ -312,8 +312,8 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
 
         // Movimientos de la cuenta, deben de estar los 4 movimientos que se han hecho a la cuenta
         await expect(page.getByText('DEPOSITO INICIAL APERTURA CERTIFICADO FINANCIEROS PAGADERAS')).toBeVisible();
-        // await expect(page.getByText('INGRESO DE 2050 PESOS A LA CUENTA DE CERTIFICADO')).toBeVisible();
-        // await expect(page.getByText('DEBITO DE 600 PESOS A LA CUENTA DE CERTIFICADO')).toBeVisible();
+        await expect(page.getByText('INGRESO DE 2050 PESOS A LA CUENTA DE CERTIFICADO')).toBeVisible();
+        await expect(page.getByText('DEBITO DE 600 PESOS A LA CUENTA DE CERTIFICADO')).toBeVisible();
         await expect(page.getByText('CANCELACION DOCUMENTO POR PAGAR')).toBeVisible();
 
         // El balance final debe ser 0, ya que la cuenta esta cancelada
