@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, browserConfig, formComentario, formBuscar, contextConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, formComentario, formBuscar, contextConfig, actividadJuridicayRelacionado } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
 
@@ -149,7 +149,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
             
                 test('Datos del Deposito a la Cuenta de Ahorros', async () => {
                     // La actividad economica debe estar visible
-                    await expect(page.getByLabel('Depósito a Cuenta AHORROS NORMALES').locator('input[type="text"]').nth(4)).toHaveValue('Agricultura. ganadería, caza y sivicultura');
+                    await expect(page.getByLabel('Depósito a Cuenta AHORROS NORMALES').locator('input[type="text"]').nth(4)).toHaveValue(`${actividadJuridicayRelacionado}`);
 
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');

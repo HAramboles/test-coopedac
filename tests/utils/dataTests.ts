@@ -15,6 +15,10 @@ export const nombreTestigo:string = 'HECTOR ARAMBOLES';
 // Nombre del oficial de cuadre
 export const nombreOficialCuadre:string = 'CARLOS GIL';
 
+// Actividades economicas de las personas
+export const actividadPersonaFisica:string = 'PROGRAMACIÓN INFORMÁTICA, CONSULTARÍAS Y ACTIVIDADES RELACIONADAS';
+export const actividadJuridicayRelacionado:string = 'AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA';
+
 // Costantes utilizadas con regularidad
 export const dataCerrar:string = '[data-icon="close"]';
 export const dataPrinter:string = '[data-icon="printer"]';

@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, formBuscar, browserConfig, formComentario, contextConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, formBuscar, browserConfig, formComentario, contextConfig, actividadPersonaFisica } from './utils/dataTests';
 import { diaSiguiente, formatDate } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
@@ -163,7 +163,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
 
                 test('Colocar el monto del Deposito', async () => {
                     // La actividad economica debe estar visible
-                    await expect(page.getByLabel('Depósito a Cuenta ORDEN DE PAGO').locator('input[type="text"]').nth(4)).toHaveValue('Programación informática, consultarías y actividades relacionadas');
+                    await expect(page.getByLabel('Depósito a Cuenta ORDEN DE PAGO').locator('input[type="text"]').nth(4)).toHaveValue(`${actividadPersonaFisica}`);
 
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
@@ -327,7 +327,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await expect(page.getByRole('heading', {name: 'Firmas Autorizadas'})).toBeVisible();
 
                     // La actividad economica debe estar visible
-                    await expect(page.getByLabel('Depósito a Cuenta ORDEN DE PAGO').locator('input[type="text"]').nth(4)).toHaveValue('Programación informática, consultarías y actividades relacionadas');
+                    await expect(page.getByLabel('Depósito a Cuenta ORDEN DE PAGO').locator('input[type="text"]').nth(4)).toHaveValue(`${actividadPersonaFisica}`);
 
                     // Numero de orden
                     await page.locator('#form_NUM_ORDEN').fill('69');

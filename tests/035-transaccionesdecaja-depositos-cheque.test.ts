@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, dataGuardar, dataCerrar, browserConfig, formComentario, contextConfig, noData } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, dataGuardar, dataCerrar, browserConfig, formComentario, contextConfig, noData, actividadPersonaFisica } from './utils/dataTests';
 import { diaAnterior } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_transacciones_caja } from './utils/urls';
@@ -164,7 +164,7 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
             
                 test('Datos del Deposito a la Cuenta de Ahorros', async () => {
                     // La actividad economica debe estar visible
-                    await expect(page.getByLabel('Depósito a Cuenta AHORROS NORMALES').locator('input[type="text"]').nth(4)).toHaveValue('Programación informática, consultarías y actividades relacionadas');
+                    await expect(page.getByLabel('Depósito a Cuenta AHORROS NORMALES').locator('input[type="text"]').nth(4)).toHaveValue(`${actividadPersonaFisica}`);
                     
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
