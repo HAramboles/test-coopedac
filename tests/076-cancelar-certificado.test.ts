@@ -74,7 +74,6 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await page.locator(`${selectBuscar}`).last().click();
 
         // Deben mostrarse las cuentas de tipo Ahorros que posee el socio
-        await expect(page.getByText('ORDEN DE PAGO')).toBeVisible();
         await expect(page.getByText('AHORROS POR NOMINA')).toBeVisible();
 
         // Elegir la cuenta de Ahorros

@@ -9,7 +9,10 @@ const formatDate = (inputDate: Date) => {
     .padStart(2, '0')}/${month
       .toString()
       .padStart(2, '0')}/${year}`;
-  }
+  };
+
+  // Dia Actual con formato
+  const diaActualFormato = formatDate(new Date());
 
   // Dia Actual
   const diaActual = new Date();
@@ -37,6 +40,7 @@ const formatDate = (inputDate: Date) => {
   
   export {
     formatDate,
+    diaActualFormato,
     primerDiaMes,
     diaAnterior,
     diaSiguiente,

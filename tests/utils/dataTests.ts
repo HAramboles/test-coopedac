@@ -16,7 +16,7 @@ export const nombreTestigo:string = 'HECTOR ARAMBOLES';
 export const nombreOficialCuadre:string = 'CARLOS GIL';
 
 // Actividades economicas de las personas
-export const actividadPersonaFisica:string = 'PROGRAMACIÓN INFORMÁTICA, CONSULTARÍAS Y ACTIVIDADES RELACIONADAS';
+export const actividadPersonaFisica:string = 'Programación informática, consultarías y actividades relacionadas';
 export const actividadJuridicayRelacionado:string = 'AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA';
 
 // Costantes utilizadas con regularidad
@@ -37,9 +37,12 @@ export const ariaAgregar:string = '[aria-label="plus"]';
 export const formBuscar:string = '#form_search';
 export const selectBuscar:string = '#select-search';
 export const formComentario:string = '#form_COMENTARIO';   
+export const formComentarios:string = '#form_COMENTARIOS';
 
 export const fechaInicio = '#form_FECHA_INICIAL';
 export const fechaFinal = '#form_FECHA_FINAL';
+
+export const valorAdmisibleCredito:string = '#form_VALOR_ADMISIBLE';
 
 // Input Dia de pago para tests de Cobros de Oficina
 export const inputDiaPago:string = '#form_DIA_PAGO';
@@ -51,19 +54,24 @@ export const inputPrimerPago:string = '#loan_form_DIA_PAGO';
 // No hay datos en la pagina
 export const noData:string = 'No Data';
 
+// Fecha solicitud de prestamo
+export const fechaSolicitudCredito:string = '#form_FECHA_APERTURA';
+
 // Abrir el browser en una pantalla u otra
 const browserOneScreen = ['--window-position=100,0'];
 const browserSecondScreen = ['--window-position=-1500,-100'];
 
 // Configuracion del context
 export const windowSize = {width: 1400, height: 768};
+const windowSizeOneScreen = {width: 1366, height: 720};
+
 export const contextConfig = {
-    viewport: windowSize,
+    viewport: windowSizeOneScreen,
     storageState: 'state.json'
 };
 
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserSecondScreen,
+    args: browserOneScreen,
 };

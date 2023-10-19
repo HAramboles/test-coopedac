@@ -1,4 +1,4 @@
-import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { 
     url_base, 
     dataCerrar, 
@@ -11,6 +11,7 @@ import {
 } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
 import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { EscenariosEliminarSolicitudCredito } from './utils/interfaces';
 
 // Variables globales
 let browser: Browser;
@@ -26,6 +27,8 @@ let apellido: string | null;
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
 // Pruebas
+
+// Prueba 1 - Creando la Solicitud de Credito
 test.describe.serial('Prueba con la Solicitud de Credito', () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
@@ -452,74 +455,6 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page1.close();
     });
 
-    test('Anular la Solicitud Creada', async () => {
-        // La url debe regresar a las solicitudes solicitadas
-        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
-
-        // Cambiar el estado de las solicitudes a Aprobado
-        await expect(page.locator('text=SOLICITADO')).toBeVisible();
-
-        // Buscar la solicitud creada
-        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
-
-        // Click en el boton de Anular
-        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'delete'}).click();
-
-        // Aparece un mensaje de confirmacion
-        await expect(page.getByText('Anular solicitud', {exact: true})).toBeVisible();
-
-        // Click al boton de Aceptar
-        await page.getByRole('button', {name: 'check Aceptar'}).click();
-
-        // Aparece otro modal para colocar el motivo de la anulacion
-        await expect(page.locator('text=Escriba una razón de anulación')).toBeVisible();
-
-        // Ingresar la razon de la anulacion
-        await page.locator('#form_RAZON_ANULACION').fill('El socio necesita otro tipo de prestamo');
-
-        // Click al boton de Aceptar
-        await page.getByRole('dialog', { name: 'Escriba una razón de anulación' }).getByRole('button', {name: 'check Aceptar'}).click();
-
-        // Aparece una alerta de que la solicitud fue anulada
-        await expect(page.locator('text=Prestamo actualizado exitosamente')).toBeVisible();
-
-        // La solicitud de credito no debe estar visible
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).not.toBeVisible();
-    });
-
-    test('Al crear una nueva Solicitud no debe tener los datos de la persona de la Solicitud Anulada', async () => {
-        // El listado de las solicitudes debe ser solicitado
-        await expect(page.locator('text=SOLICITADO')).toBeVisible();
-
-        // Boton Nueva Solicitud
-        const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
-        await expect(botonNuevaSolicitud).toBeVisible();
-        await botonNuevaSolicitud.click();
-
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=1`);
-
-        // Deben estar visibles los tres titulos del primer paso
-        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
-
-        // El input de Buscar Socio debe estar vacio
-        await expect(page.locator(`${selectBuscar}`)).toHaveValue('');
-
-        // Click al boton de Cancelar
-        await page.getByRole('button', {name: 'Cancelar'}).click();
-
-        // Debe aparecer un mensaje de confirmacion
-        await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
-
-        // Click al boton de Aceptar del mensaje de confirmacion
-        await page.getByRole('button', {name: 'check Aceptar'}).click();
-
-        // La url debe regresar a las solicitudes solicitadas
-        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
-    });
-
     test.afterAll(async () => { // Despues de las pruebas
         // Cerrar la page
         await page.close();
@@ -527,4 +462,160 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Cerrar el context
         await context.close();
     });
+});
+
+// Paso 2 - Anulando la Solicitud
+test.describe.serial('Anular Solicitud de Credito - Pruebas con los diferentes parametros', async () => {
+    for (const escenarios of EscenariosEliminarSolicitudCredito) {
+        test.describe.serial(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
+            test.beforeAll(async () => { // Antes de todas las pruebas
+                // Crear el browser
+                browser = await chromium.launch(browserConfig);
+
+                // Crear el context
+                context = await browser.newContext(contextConfig);
+
+                // Crear una nueva page
+                page = await context.newPage();
+
+                // Eventos para la request relation
+                await page.route(/\/relation/, async route => {
+                    // Fetch a la peticion original
+                    const response: APIResponse = await page.request.fetch(route.request());
+
+                    // Constante con el body
+                    const body = await response.json();
+                    // Condicion para cambiar los parametros del body
+                    if (Object.keys(body?.data[23]).length > 1) {
+                        // Reemplazar el body con la response con los datos de los escenarios
+                        body.data[23] = Object.assign(body.data[23], escenarios);
+                        route.fulfill({
+                            response,
+                            body: JSON.stringify(body),
+                        });
+                    } else {
+                        route.continue();
+                    };
+                });
+
+                // Ingresar a la pagina
+                await page.goto(`${url_base}`);
+            });
+
+            test('Ir a la opcion de Solicitud de Credito', async () => {
+                // Negocios
+                await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
+
+                // Procesos
+                await page.getByRole('menuitem', {name: 'PROCESOS'}).click();
+                
+                // Solicitud de Credito
+                await page.getByRole('menuitem', {name: 'Solicitud de Crédito'}).click();
+
+                // La URL debe de cambiar
+                await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
+
+                // El titulo debe estar visible
+                await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
+            });
+
+            test('Buscar la solicitud de la persona creada', async () => {
+                // La url debe regresar a las solicitudes solicitadas
+                await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
+            
+                // Cambiar el estado de las solicitudes a Aprobado
+                await expect(page.locator('text=SOLICITADO')).toBeVisible();
+        
+                // Buscar la solicitud creada
+                await page.locator(`${formBuscar}`).fill(`${cedula}`);
+            });
+
+            if (escenarios.ID_OPERACION !== 18) {
+                test('No poder anular la solicitud', async () => {
+                    // Click en el boton de Anular
+                    await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'delete'}).click();
+
+                    // Debe aparecer un mensaje de error
+                    const modalError = await page.getByText('Error');
+                    await expect(modalError).toBeVisible();
+
+                    // Contenido del mensaje de error
+                    await expect(page.getByText('No tiene permisos para anular la solicitud.')).toBeVisible();
+
+                    // Click al boton de Aceptar del modal de Error
+                    await page.getByRole('button', {name: 'check Aceptar'}).click();
+
+                    // El modal debe desaparecer
+                    await expect(modalError).not.toBeVisible();
+                });
+            } else if (escenarios.ID_OPERACION === 18) {
+                test('Anular la Solicitud Creada', async () => {            
+                    // Click en el boton de Anular
+                    await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'delete'}).click();
+            
+                    // Aparece un mensaje de confirmacion
+                    await expect(page.getByText('Anular solicitud', {exact: true})).toBeVisible();
+            
+                    // Click al boton de Aceptar
+                    await page.getByRole('button', {name: 'check Aceptar'}).click();
+            
+                    // Aparece otro modal para colocar el motivo de la anulacion
+                    await expect(page.locator('text=Escriba una razón de anulación')).toBeVisible();
+            
+                    // Ingresar la razon de la anulacion
+                    await page.locator('#form_RAZON_ANULACION').fill('El socio necesita otro tipo de prestamo');
+            
+                    // Click al boton de Aceptar
+                    await page.getByRole('dialog', { name: 'Escriba una razón de anulación' }).getByRole('button', {name: 'check Aceptar'}).click();
+            
+                    // Aparece una alerta de que la solicitud fue anulada
+                    await expect(page.locator('text=Prestamo actualizado exitosamente')).toBeVisible();
+            
+                    // La solicitud de credito no debe estar visible
+                    await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).not.toBeVisible();
+                });
+
+                test('Al crear una nueva Solicitud no debe tener los datos de la persona de la Solicitud Anulada', async () => {
+                    // El listado de las solicitudes debe ser solicitado
+                    await expect(page.locator('text=SOLICITADO')).toBeVisible();
+            
+                    // Boton Nueva Solicitud
+                    const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
+                    await expect(botonNuevaSolicitud).toBeVisible();
+                    await botonNuevaSolicitud.click();
+            
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=1`);
+            
+                    // Deben estar visibles los tres titulos del primer paso
+                    await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+                    await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+                    await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+            
+                    // El input de Buscar Socio debe estar vacio
+                    await expect(page.locator(`${selectBuscar}`)).toHaveValue('');
+            
+                    // Click al boton de Cancelar
+                    await page.getByRole('button', {name: 'Cancelar'}).click();
+            
+                    // Debe aparecer un mensaje de confirmacion
+                    await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
+            
+                    // Click al boton de Aceptar del mensaje de confirmacion
+                    await page.getByRole('button', {name: 'check Aceptar'}).click();
+            
+                    // La url debe regresar a las solicitudes solicitadas
+                    await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
+                });
+            };
+
+            test.afterAll(async () => { // Despues de todas las pruebas
+                // Cerrar la page
+                await page.close();
+
+                // Cerrar el context
+                await context.close();
+            });
+        });
+    };
 });

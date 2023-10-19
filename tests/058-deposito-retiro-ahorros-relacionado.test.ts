@@ -1,7 +1,8 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, browserConfig, formComentario, formBuscar, contextConfig, actividadJuridicayRelacionado } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, formComentario, formBuscar, contextConfig, actividadJuridicayRelacionado, actividadPersonaFisica, noData } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
-import { url_transacciones_caja } from './utils/urls';
+import { url_sesiones_transito, url_transacciones_caja } from './utils/urls';
+import { servicio_check_session } from './utils/servicios';
 
 // Variables globales
 let browser: Browser;
@@ -297,7 +298,10 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await expect(page.locator('text=RETIRO CUENTAS DE AHORROS')).toBeVisible();
                 });
 
-                test('Datos del Retiro de la Cuenta de Ahorro', async () => {           
+                test('Datos del Retiro de la Cuenta de Ahorro', async () => {  
+                    // La actividad economica debe estar visible
+                    await expect(page.getByLabel('RETIRO CUENTAS DE AHORROS').locator('input[type="text"]').nth(6)).toHaveValue(`${actividadJuridicayRelacionado}`);
+                    
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
                     await expect(campoMonto).toBeVisible();
@@ -359,23 +363,35 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await page.locator('text=Cancelar').click();
                 });
 
-                test('Liberar la Sesion', async () => {
-                    // Se debe regresar a la pagina anterior
-                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
+                test('Ir a la pagina de Sesiones en Transito y comprobar que se haya cerrado la sesion', async () => {
+                    // Sesiones en Transito
+                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
 
-                    // Click al boton de Liberar Sesion
-                    const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});
-                    await expect(botonLiberarSesion).toBeVisible();
-                    await botonLiberarSesion.click();
+                    // Esperar a que el servicio de cerrar sesion responda
+                    await page.waitForResponse(`${servicio_check_session}`);
 
-                    // Debe salir un mensaje de Confirmacion
-                    await expect(page.locator('text=¿Está seguro que desea proceder con esta acción?')).toBeVisible();
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(`${url_sesiones_transito}`);
 
-                    // Click al boton de Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // Digitar el nombre de la persona 
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
-                    // Debe salir un mensaje de Operacion Exitosa
-                    await expect(page.locator('text=Sesiones en transito actualizada exitosamente.')).toBeVisible();
+                    // Si la sesion no aparece en la pagina
+                    if (await page.getByText(`${noData}`).isVisible()) {
+                        // Terminar con el test
+                        await page.close();
+                        await context.close();
+
+                    // Si la sesion aparece en la pagina    
+                    } else if (await page.getByText(`${noData}`).isHidden()) {
+                        // Click al boton de Actualizar
+                        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+                        await expect(botonActualizar).toBeVisible();
+                        await botonActualizar.click();
+
+                        // La sesion no debe aparecer en la pagina
+                        await expect(page.getByText(`${noData}`)).toBeVisible();
+                    }
                 });
             };
         

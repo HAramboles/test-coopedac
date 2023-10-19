@@ -106,9 +106,9 @@ test.describe.serial('Pruebas con la Reimpresion en Libreta', () => {
         await expect(page.locator('h4').filter({hasText: 'VISTA PREVIA'})).toBeVisible(); 
 
         // Deben estar las transacciones en la libreta de la Cuenta de Ahorros
-        // await expect(page.getByRole('cell', {name: '100.00'})).toBeVisible();
-        // await expect(page.getByRole('cell', {name: '2,000.00'})).toBeVisible();
-        // await expect(page.getByRole('cell', {name: '1,500.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '100.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '2,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '1,500.00'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

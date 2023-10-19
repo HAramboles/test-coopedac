@@ -146,7 +146,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await expect(page.getByRole('cell', {name: `${nota}`})).toBeVisible();
             
                     // Cerrar el modal
-                    await page.locator(`${ariaCerrar}`).click();  
+                    await page.getByLabel('Close', {exact: true}).click();  
                 });
             
                 test('Boton de Deposito de la cuenta de Aportaciones', async () => {
@@ -165,7 +165,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
             
                 test('Datos del Deposito a la Cuenta de Aportaciones', async () => {
                     // La actividad economica debe estar visible
-                    await expect(page.getByLabel('Depósito a Cuenta APORTACIONES').locator('input[type="text"]').nth(4)).toHaveValue(`${actividadPersonaFisica}`);
+                    await expect(page.getByLabel('DEPÓSITO A CUENTA APORTACIONES').locator('input[type="text"]').nth(4)).toHaveValue(`${actividadPersonaFisica}`);
 
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');

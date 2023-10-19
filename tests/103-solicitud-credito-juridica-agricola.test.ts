@@ -7,9 +7,10 @@ import {
     browserConfig, 
     inputFechaSolicitud, 
     inputPrimerPago, 
-    contextConfig
+    contextConfig,
+    fechaSolicitudCredito
 } from './utils/dataTests';
-import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { formatDate, unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
@@ -584,8 +585,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(seccionDesembolso).toBeVisible();
         await seccionDesembolso.click();
 
-        // El nombre y el apellido del socio deben estar visibles
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(2000);
+
+        // El nombre y el apellido del socio deben estar visibles 
         await expect(page.getByText(`Socio: ${nombreEmpresa}`)).toBeVisible(); 
+
+        // La fecha de solicitud dee estar visible y ser la fecha actual
+        await expect(page.locator(`${fechaSolicitudCredito}`)).toHaveValue(`${diaActualFormato}`);
 
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});

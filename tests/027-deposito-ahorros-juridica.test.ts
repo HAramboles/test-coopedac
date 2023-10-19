@@ -1,15 +1,17 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, browserConfig, formComentario, contextConfig, actividadJuridicayRelacionado } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, browserConfig, formComentario, contextConfig, actividadJuridicayRelacionado, formBuscar, noData } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
-import { url_transacciones_caja } from './utils/urls';
+import { url_sesiones_transito, url_transacciones_caja } from './utils/urls';
+import { servicio_check_session } from './utils/servicios';
 
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula de la persona juridica
+// Cedula y nombre de la persona juridica
 let cedulaEmpresa: string | null;
+let nombreJuridica: string | null;
 
 // Pruebas
 test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - Pruebas con los diferentes Parametror', async () => {
@@ -48,8 +50,9 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                 /* Ingresar a la pagina */
                 await page.goto(`${url_base}`);
         
-                // Cedula de la persona juridica almacenada en el state
+                // Cedula y nombre de la persona juridica almacenada en el state
                 cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
+                nombreJuridica = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
             });
         
             test('Ir a la opcion de Transacciones de Caja', async () => {
@@ -323,20 +326,35 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     await botonCancelarr.click();
                 });
 
-                test('Liberar la Sesion', async () => {
-                    // Click al boton de Liberar Sesion
-                    const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});
-                    await expect(botonLiberarSesion).toBeVisible();
-                    await botonLiberarSesion.click();
+                test('Ir a la pagina de Sesiones en Transito y comprobar que se haya cerrado la sesion', async () => {
+                    // Sesiones en Transito
+                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
 
-                    // Debe salir un mensaje de Confirmacion
-                    await expect(page.locator('text=¿Está seguro que desea proceder con esta acción?')).toBeVisible();
+                    // Esperar a que el servicio de cerrar sesion responda
+                    await page.waitForResponse(`${servicio_check_session}`);
 
-                    // Click al boton de Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(`${url_sesiones_transito}`);
 
-                    // Debe salir un mensaje de Operacion Exitosa
-                    await expect(page.locator('text=Sesiones en transito actualizada exitosamente.')).toBeVisible();
+                    // Digitar el nombre de la persona juridica
+                    await page.locator(`${formBuscar}`).fill(`${nombreJuridica}`);
+
+                    // Si la sesion no aparece en la pagina
+                    if (await page.getByText(`${noData}`).isVisible()) {
+                        // Terminar con el test
+                        await page.close();
+                        await context.close();
+
+                    // Si la sesion aparece en la pagina    
+                    } else if (await page.getByText(`${noData}`).isHidden()) {
+                        // Click al boton de Actualizar
+                        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+                        await expect(botonActualizar).toBeVisible();
+                        await botonActualizar.click();
+
+                        // La sesion no debe aparecer en la pagina
+                        await expect(page.getByText(`${noData}`)).toBeVisible();
+                    }
                 });
             };
         

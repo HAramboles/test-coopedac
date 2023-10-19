@@ -172,6 +172,23 @@ const EscenariosPruebasAgregarEliminarPignoracion: AgregarPignoracion[] = [
     }
 ];
 
+// Interfaz para Eliminar Solicitudes de Creditos
+interface EliminarSolicitudCredito {
+    ID_OPERACION: '' | 10 | 18
+};
+
+const EscenariosEliminarSolicitudCredito: EliminarSolicitudCredito[] = [
+    {
+        ID_OPERACION: ''
+    },
+    {
+        ID_OPERACION: 10
+    },
+    {
+        ID_OPERACION: 18
+    }
+];
+
 // Interfaz para Agregar Cargos a Prestamos Desembolsados
 interface AgregarCargos {
     ID_OPERACION: '' | 10 | 32
@@ -245,6 +262,7 @@ export {
     EscenariosPruebasActivarInactivarCuentas,
     EscenariosPruebasCajaBoveda,
     EscenariosPruebasAgregarEliminarPignoracion,
+    EscenariosEliminarSolicitudCredito,
     EscenariosAgregarCargosPrestamoDesembolsado,
     EscenariosReimpresionResolucionAprobatoria,
     EscenariosVerProcentajeCobros,

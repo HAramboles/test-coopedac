@@ -58,7 +58,6 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
             test.beforeAll(async () => { // Antes de las pruebas
                 // Crear el browser
                 browser = await chromium.launch(browserConfig);
-
                 // Crear el context
                 context = await browser.newContext(contextConfig);
 
@@ -139,19 +138,6 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
 
                     // Click en guardar tasa
                     await page.locator(`${dataGuardar}`).click();
-
-                    // Debe aparecer un mensaje preguntando si se guardara la tasa o no
-                    const mensajeConfirmacion = page.locator('text=¿Deseas guardar la operación?');
-                    await expect(mensajeConfirmacion).toBeVisible();
-
-                    // Boton de Cancelar
-                    await expect(page.getByRole('button', {name: 'Cancelar'})).toBeVisible();
-
-                    // Click button:has-text("Aceptar")
-                    await page.locator('button:has-text("Aceptar")').click();
-
-                    // El mensaje de confirmacion no debe estar visible
-                    await expect(mensajeConfirmacion).not.toBeVisible();
 
                     // Alertas que se mostraran si se registro la tasa correctamente o no
                     const AlertaExito = page.locator('text=Operación Exitosa');

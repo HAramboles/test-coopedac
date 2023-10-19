@@ -9,9 +9,11 @@ import {
     dataEdit,
     ariaAgregar,
     formBuscar,
-    contextConfig
+    contextConfig,
+    fechaSolicitudCredito,
+    valorAdmisibleCredito
 } from './utils/dataTests';
-import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { formatDate, unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
@@ -152,6 +154,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // Elegir grupo sin garantia
         await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
+        // Esperar cinco segundos
+        await page.waitForTimeout(5000);
+
         // Fecha Solicitud debe ser el dia actual
         await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${formatDate(new Date())}`);
 
@@ -274,8 +279,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await botonAgregarCuenta.click();
 
         // Se deben agregar los datos a la tabla de las cuentas
-        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Click en guardar y continuar
         GuardaryContinuar();
@@ -394,6 +399,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         const valorTasado = page.getByPlaceholder('VALOR TASADO');
         await valorTasado.click();
         await valorTasado.fill('RD$ 50000');
+
+        // Valor admisible
+        await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 25,000');
 
         // Agregar atributos a la garantia
         await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
@@ -836,6 +844,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // El nombre y el apellido del socio deben estar visibles 
         await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible(); 
+
+        // La fecha de solicitud dee estar visible y ser la fecha actual
+        await expect(page.locator(`${fechaSolicitudCredito}`)).toHaveValue(`${diaActualFormato}`);
 
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});

@@ -64,7 +64,6 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         // Estado de los productos
         const estadoDesembolsado = page.locator('text=CUENTAS ACTIVAS Y PRÉSTAMOS DESEMBOLSADOS');
         await expect(estadoDesembolsado).toBeVisible();
-        //await estadoDesembolsado.click();
 
         // Deben estar visibles solo las cuentas activas
         

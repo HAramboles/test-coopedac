@@ -9,7 +9,7 @@ let context: BrowserContext;
 let page: Page;
 
 // Pruebas
-test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
+test.describe.serial('Pruebas con Reversar Transferencia Cuentas', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch(browserConfig);

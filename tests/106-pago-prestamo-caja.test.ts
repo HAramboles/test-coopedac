@@ -1,7 +1,8 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, ariaCerrar, formBuscar, contextConfig } from './utils/dataTests';
-import { url_transacciones_caja } from './utils/urls';
+import { url_base, browserConfig, selectBuscar, ariaCerrar, formBuscar, contextConfig, noData } from './utils/dataTests';
+import { url_sesiones_transito, url_transacciones_caja } from './utils/urls';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
+import { servicio_check_session } from './utils/servicios';
 
 // Variables globales
 let browser: Browser;
@@ -423,20 +424,35 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     await expect(page).toHaveURL(`${url_transacciones_caja}`);
                 });
 
-                test('Liberar la Sesion', async () => {
-                    // Click al boton de Liberar Sesion
-                    const botonLiberarSesion = page.getByRole('button', {name: 'Liberar Sesión'});
-                    await expect(botonLiberarSesion).toBeVisible();
-                    await botonLiberarSesion.click(); 
+                test('Ir a la pagina de Sesiones en Transito y comprobar que se haya cerrado la sesion', async () => {
+                    // Sesiones en Transito
+                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
 
-                    // Debe salir un mensaje de Confirmacion
-                    await expect(page.locator('text=¿Está seguro que desea proceder con esta acción?')).toBeVisible();
+                    // Esperar a que el servicio de cerrar sesion responda
+                    await page.waitForResponse(`${servicio_check_session}`);
 
-                    // Click al boton de Aceptar
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    // La URL debe cambiar
+                    await expect(page).toHaveURL(`${url_sesiones_transito}`);
 
-                    // Debe salir un mensaje de Operacion Exitosa
-                    await expect(page.locator('text=Sesiones en transito actualizada exitosamente.')).toBeVisible();
+                    // Digitar el nombre de la persona 
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+                    // Si la sesion no aparece en la pagina
+                    if (await page.getByText(`${noData}`).isVisible()) {
+                        // Terminar con el test
+                        await page.close();
+                        await context.close();
+
+                    // Si la sesion aparece en la pagina    
+                    } else if (await page.getByText(`${noData}`).isHidden()) {
+                        // Click al boton de Actualizar
+                        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+                        await expect(botonActualizar).toBeVisible();
+                        await botonActualizar.click();
+
+                        // La sesion no debe aparecer en la pagina
+                        await expect(page.getByText(`${noData}`)).toBeVisible();
+                    }
                 });
             };
 

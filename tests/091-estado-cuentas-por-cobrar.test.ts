@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { formatDate } from './utils/fechas';
-import { url_base, selectBuscar, browserConfig, contextConfig, noData } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, contextConfig, noData, dataVer } from './utils/dataTests';
 import { url_estado_cuentas_cobrar } from './utils/urls';
 
 // Variables globales
@@ -101,6 +101,20 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await page1.close();
     });
 
+    test('Los inputs de aseguradora, oferta/negocio, banco y sucursal no deben estar visibles', async () => {
+        // Aseguradora
+        await expect(page.getByText('Aseguradora')).not.toBeVisible();
+
+        // Oferta/Negocio
+        await expect(page.getByText('Oferta/Negocio')).not.toBeVisible();
+
+        // Banco
+        await expect(page.getByText('Banco')).not.toBeVisible();
+
+        // Sucursal
+        await expect(page.getByText('Sucursal')).not.toBeVisible();
+    });
+
     test('Situación del movimiento', async () => {
         // Seleccionar el Prestamo
         await page.getByRole('radio').click();
@@ -195,6 +209,59 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
 
         // Totales
         await expect(page.getByRole('row', {name: 'TOTALES: 50,000.00 0.00 50,000.00 0.00 0.00 0.00	0.00 100,000.00'})).toBeVisible();
+    });
+
+    test('Ver las actividades de uno de los pagos al prestamo', async () => {
+        // Click al boton de Ver Actividades del primer prestamo
+        const verActividades = page.locator(`${dataVer}`).nth(1);
+        await expect(verActividades).toBeVisible();
+        await verActividades.click();
+
+        // Debe aparecer un modal con las actividades de ese pago
+        const modalAcitividadesPrestamo = page.locator('h1').filter({hasText: 'ACTIVIDADES DEL PRÉSTAMO'});
+        await expect(modalAcitividadesPrestamo).toBeVisible();
+
+        // Informacion de la actividad
+        await expect(page.getByText('Información de la Actividad')).toBeVisible();
+
+        // Actividad
+        await expect(page.locator('#form_DESC_TIPO_TRANS')).toHaveValue('NOTAS CREDITO PRESTAMOS');
+
+        // Monto
+        await expect(page.locator('#form_TOTAL_RECIBIDO')).toHaveValue(' 25,000.00');
+
+        // Oferta
+        await expect(page.locator('#form_DESC_OFERTA')).toHaveValue('CRÉDITO HIPOTECARIO');
+
+        // Socio
+        await expect(page.locator('#form_NOMBRE')).toHaveValue(`${nombre} ${apellido}`);
+
+        // Descripcion
+        await expect(page.getByText(' ABONO A CAPITAL')).toBeVisible();
+
+        // Comentario
+        await expect(page.getByText('PAGO POR INTERNET BANKING DE 25,000 PARA EL PRESTAMO')).toBeVisible();
+
+        // Valores de la actividad
+        await expect(page.getByText('Valores de la actividad')).toBeVisible();
+
+        // Capital
+        await expect(page.locator('#form_CAPITAL')).toHaveValue(' 25,000.00');
+
+        // Total Recibido
+        await expect(page.locator('#form_TOTAL_RECIBIDO')).toHaveValue(' 25,000.00');
+
+        // Cuotas afectadas
+        await expect(page.getByText('Cuotas afectadas')).toBeVisible();
+
+        // Informacion del usuario
+        await expect(page.getByText('Información del usuario')).toBeVisible();
+
+        // Origen del cobro
+        await expect(page.getByText('Origen del cobro')).toBeVisible();
+
+        // Detalle contable
+        await expect(page.getByText('Detalle contable')).toBeVisible();
     });
 
     test('Cuotas pendientes', async () => {
