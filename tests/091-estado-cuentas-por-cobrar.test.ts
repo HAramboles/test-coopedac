@@ -300,6 +300,20 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByText('Cargos').last()).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Total'}).last()).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Balance'})).toBeVisible();
+
+        // Boton de Imprimir
+        const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+
+        // Esperar que se abra una nueva pestaña con el reporte de la tabla de amortizacion
+        const page1 = await context.newPage();
+        
+        // Cerrar la pagina con el reporte de la tabla de amortizacion
+        await page1.close();
+
+        // Debe regresar a la pagina de Estado de Cuentas por Cobrar
+        await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTAS POR COBRAR'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

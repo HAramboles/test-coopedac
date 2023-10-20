@@ -8,7 +8,7 @@ let context: BrowserContext;
 let page: Page;
 
 // Numero del Documento
-const numeroRecibo = '419548';
+const numeroRecibo = ''; // Esperar a tener un numero de recibo
 
 // Pruebas
 test.describe.serial('Pruebas con la Reimpresion de un Recibo', () => {

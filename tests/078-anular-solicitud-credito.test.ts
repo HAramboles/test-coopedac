@@ -396,14 +396,30 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Se debe agregar la cuenta seleccionada
         await expect(page.locator('#form_TIPO_CUENTA_DESC').first()).toHaveValue('AHORROS NORMALES');
 
-        // Ingresar el monto a usar
-        await page. getByRole('spinbutton', {name: 'VALOR DE LA GARANTÍA'}).fill('20000');
+        // Ingresar un monto mayor al monto del prestamo
+        const inputMontoPrestamo = page.getByRole('spinbutton', {name: 'VALOR DE LA GARANTÍA'});
+        await inputMontoPrestamo.fill('50000');
+
+        // Boton de Aceptar del modal de Agregar Garantia Liquida
+        const botonAceptarModal = page.getByRole('button', {name: 'Aceptar'}).nth(1);
+        await expect(botonAceptarModal).toBeVisible();
+        await botonAceptarModal.click();
+
+        // Debe aparecer una alerta de error
+        await expect(page.getByText('El total de las garantías no debe ser mayor al monto del préstamo.')).toBeVisible();
+
+        // Click al boton de Aceptar del modal de error
+        await page.locator('div').filter({ hasText: /^Aceptar$/ }).getByRole('button').click();
+
+        // Ingresar el monto correctao a usar
+        await inputMontoPrestamo.clear();
+        await inputMontoPrestamo.fill('20000');
 
         // Click fuera del input y al mismo tiempo debe mostrarse el monto maximo a utilizar
         await page.locator('text=El monto máximo utilizable es').nth(1).click();
 
         // Click al boton de Aceptar del modal
-        await page.getByRole('button', {name: 'Aceptar'}).nth(1).click();
+        await botonAceptarModal.click();
 
         // Debe aparecer una alerta indicando que la garantia se agrego correctamente
         await expect(page.locator('text=Garantías del préstamo guardadas exitosamente.')).toBeVisible();

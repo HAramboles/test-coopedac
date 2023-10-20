@@ -262,8 +262,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await botonAgregarCuenta.click();
 
         // Se deben agregar los datos a la tabla de las cuentas
-        // await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
-        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Click en guardar y continuar
         GuardaryContinuar();

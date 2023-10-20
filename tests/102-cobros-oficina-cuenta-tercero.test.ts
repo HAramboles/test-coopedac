@@ -37,7 +37,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem("apellidoPersona"));
 
-        // Cedula, nombre y apellido de la persona relacioanda almacenada en el state
+        // Cedula, nombre y apellido de la persona relacionada almacenada en el state
         cedulaTercero = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionada'));
         nombreTercero = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
         apellidoTercero = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
