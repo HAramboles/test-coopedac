@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate } from './utils/fechas';
-import { url_base, ariaCerrar, dataGuardar, browserConfig, fechaInicio, fechaFinal, contextConfig } from './utils/dataTests';
+import { diaActualFormato } from './utils/fechas';
+import { url_base, ariaCerrar, dataGuardar, browserConfig, fechaInicial, fechaFinal, contextConfig } from './utils/dataTests';
 import { url_registro_tasa } from './utils/urls';
 
 // Variables globales
@@ -116,7 +116,7 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
                 // check for scenaries
                 const form_FECHA = await page.locator('#form_FECHA').inputValue()
                 if (scenarie.FECHA_DIA_AUTO === 'S') {
-                    expect(form_FECHA).toBe(formatDate(new Date()));
+                    expect(form_FECHA).toBe(diaActualFormato);
                 } else if (scenarie.FECHA_DIA_AUTO === 'N' || scenarie.FECHA_DIA_AUTO === '') {
                     expect(form_FECHA).toBe('');
                 };
@@ -171,10 +171,10 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
                     await expect(page.locator('h1').filter({hasText: 'Historial De Tasas Registradas'})).toBeVisible();
 
                     // Cambiar las fechas de incio y fin para que solo se muestre la tasa registrada en el dia actual
-                    await page.locator(`${fechaInicio}`).clear();
-                    await page.locator(`${fechaInicio}`).fill(formatDate(new Date()));
+                    await page.locator(`${fechaInicial}`).clear();
+                    await page.locator(`${fechaInicial}`).fill(diaActualFormato);
                     await page.waitForTimeout(3000);
-                    await expect(page.locator(`${fechaFinal}`)).toHaveValue(formatDate(new Date()));
+                    await expect(page.locator(`${fechaFinal}`)).toHaveValue(diaActualFormato);
 
                     // Click al boton de buscar
                     const botonBuscar = page.getByRole('button', {name: 'Buscar'});
@@ -182,8 +182,8 @@ test.describe.serial('Pruebas con el Registro de Tasa', async () => {
                     await botonBuscar.click();
 
                     // Solo deben mostrarse las dos tasas registradas en el dia actual
-                    await expect(page.getByRole('row', {name: `${formatDate(new Date())} PESO (RD) 1.0000 TRANSACCIONAL`})).toBeVisible();
-                    await expect(page.getByRole('row', {name: `${formatDate(new Date())} DOLARES (US) 56.0000 TRANSACCIONAL`})).toBeVisible();
+                    await expect(page.getByRole('row', {name: `${diaActualFormato} PESO (RD) 1.0000 TRANSACCIONAL`})).toBeVisible();
+                    await expect(page.getByRole('row', {name: `${diaActualFormato} DOLARES (US) 56.0000 TRANSACCIONAL`})).toBeVisible();
 
                     await page.waitForTimeout(3000);
 

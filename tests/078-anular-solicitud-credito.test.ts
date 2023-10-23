@@ -7,10 +7,11 @@ import {
     browserConfig, 
     inputFechaSolicitud, 
     inputPrimerPago, 
-    contextConfig
+    contextConfig,
+    dataVer
 } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
-import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 import { EscenariosEliminarSolicitudCredito } from './utils/interfaces';
 
 // Variables globales
@@ -153,8 +154,28 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Elegir grupo sin garantia
         await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
-        // tipo de cuota
+        // Tipo de cuota
         await expect(page.getByText('INSOLUTO')).toBeVisible();
+
+        // Ver los rangos de la oferta
+        await page.locator(`${dataVer}`).click();
+
+        // Debe aparecer un modal qe ue contenga los efectos
+        const modalRangos = page.locator('h1').filter({hasText: 'DETALLES DE RANGO'});
+        await expect(modalRangos).toBeVisible();
+
+        // Debe mostrarse la tabla con los rangos
+        await expect(page.getByRole('columnheader', {name: 'Moneda'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Monto'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Tasa'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Plazo'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Mora'})).toBeVisible();
+
+        // Click al boton de Aceptar
+        await page.getByRole('button', {name: 'check Aceptar'}).click();
+
+        // El modal debe desaparecer
+        await expect(modalRangos).not.toBeVisible();
 
         // Monto
         await page.locator('#loan_form_MONTO').click();
@@ -236,7 +257,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
         // Fecha Solicitud debe ser el dia actual
-        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${diaActualFormato}`);
 
         // Fecha Primer Pago debe ser 31 dias despues de la fecha de solicitud
         await expect(page.locator(`${inputPrimerPago}`)).toHaveValue(`${unMesDespues}`);
@@ -253,7 +274,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Colocar la fecha de solicitud correcta
         await page.locator(`${inputFechaSolicitud}`).clear();
-        await page.locator(`${inputFechaSolicitud}`).fill(`${formatDate(new Date())}`);
+        await page.locator(`${inputFechaSolicitud}`).fill(`${diaActualFormato}`);
 
         // Colocar en la fecha de primer pago una fecha anterior a la de solicitud
         await page.locator(`${inputPrimerPago}`).clear();
@@ -516,6 +537,11 @@ test.describe.serial('Anular Solicitud de Credito - Pruebas con los diferentes p
 
                 // Ingresar a la pagina
                 await page.goto(`${url_base}`);
+
+                // Cedula, nombre y apellidos de la persona almacenada en el state
+                cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+                nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
+                apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
 
             test('Ir a la opcion de Solicitud de Credito', async () => {

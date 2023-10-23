@@ -9,7 +9,7 @@ export const nombrePersonaMenorEdad:string = ''; // (Masculino)
 export const apellidoPersonaMenorEdad:string = '';
 
 // Persona Juridica y Relacionado. Test = 008-registrar-persona-juridica.test.ts
-export const nombreJuridica:string = ''; 
+export const nombreJuridica:string = '';
 
 export const nombreRelacionadoJuridica:string = ''; // (Masculino)
 export const apellidoRelacionadoJuridica:string = '';

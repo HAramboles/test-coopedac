@@ -1,7 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, fechaInicio, fechaFinal, userCorrecto, dataPrinter, contextConfig } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, fechaInicial, fechaFinal, userCorrecto, dataPrinter, contextConfig } from './utils/dataTests';
 import { url_historico_caja } from './utils/urls';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -68,11 +68,11 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
         await expect(page.locator(`${selectBuscar}`)).toHaveValue('');
 
         // Las fechas de incio y fin deben ser el dia actual
-        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${formatDate(new Date())}`);
-        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaInicial}`)).toHaveValue(`${diaActualFormato}`);
+        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${diaActualFormato}`);
 
         // Los inputs de fechas deben estar deshabilitados
-        await expect(page.locator(`${fechaInicio}`)).toBeDisabled();
+        await expect(page.locator(`${fechaInicial}`)).toBeDisabled();
         await expect(page.locator(`${fechaFinal}`)).toBeDisabled();
 
         // Se debe mostrar la caja en uso y el input debe estar deshabilitado
@@ -118,7 +118,7 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
         await expect(page.getByRole('columnheader', {name: 'Acciones'})).toBeVisible();
 
         // Todas las transacciones realizadas
-        const fechaTransacciones = page.getByRole('cell', {name: `${formatDate(new Date())}`});
+        const fechaTransacciones = page.getByRole('cell', {name: `${diaActualFormato}`});
         await expect(fechaTransacciones.nth(0)).toBeVisible();
         await expect(fechaTransacciones.nth(1)).toBeVisible();
         await expect(fechaTransacciones.nth(2)).toBeVisible();

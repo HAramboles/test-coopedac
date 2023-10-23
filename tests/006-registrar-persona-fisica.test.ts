@@ -9,7 +9,8 @@ import {
     dataEdit, 
     dataEliminar, 
     contextConfig, 
-    noData
+    noData,
+    fechaInicio
 } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
@@ -429,7 +430,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await campoEntidad?.fill('36');
             
                     // Input de fecha de inicio
-                    await page.locator('#form_FECHA_INICIO')?.fill('25/03/2022');
+                    await page.locator(`${fechaInicio}`)?.fill('25/03/2022');
             
                     // Input de fecha de final, solo es necesario hacer click, se pone una fecha automatica
                     await page.locator(`${fechaFinal}`).click();

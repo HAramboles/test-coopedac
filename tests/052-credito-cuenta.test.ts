@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate } from './utils/fechas';
-import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
+import { diaActualFormato } from './utils/fechas';
+import { url_base, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_notas_cuentas } from './utils/urls';
 
 // Variables globales
@@ -94,7 +94,7 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
         await page.locator('text=APLICACION DE DEPOSITO').click();
 
         // Fecha documento
-        await expect(page.locator('#form_FECHA_DOCUMENTO')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator('#form_FECHA_DOCUMENTO')).toHaveValue(`${diaActualFormato}`);
 
         // Comentario
         await page.getByPlaceholder('Comentario de la nota').fill('Ingreso de 2050 pesos a la cuenta de Certificado');

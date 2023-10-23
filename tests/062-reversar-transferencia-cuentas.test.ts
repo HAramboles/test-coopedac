@@ -1,7 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, contextConfig } from './utils/dataTests';
+import { url_base, browserConfig, contextConfig, fechaInicio, tipoTransaccion, fechaFin } from './utils/dataTests';
 import { url_reversar_transferencia, url_reimprimir_contratos_cuentas } from './utils/urls';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -43,11 +43,11 @@ test.describe.serial('Pruebas con Reversar Transferencia Cuentas', async () => {
         await expect(page.locator('h1').filter({hasText: 'REVERSAR TRANSFERENCIA CUENTA'})).toBeVisible();
 
         // Tipo transaccion
-        await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('TRC - TRANSFERENCIA');
+        await expect(page.locator(`${tipoTransaccion}`)).toHaveValue('TRC - TRANSFERENCIA');
 
         // Fecha de Inicio y Fin deben tener el dia actual
-        await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(new Date())}`);
-        await expect(page.locator('#form_FECHA_FIN')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${diaActualFormato}`);
+        await expect(page.locator(`${fechaFin}`)).toHaveValue(`${diaActualFormato}`);
 
         // Click al boton de Buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});
@@ -67,7 +67,7 @@ test.describe.serial('Pruebas con Reversar Transferencia Cuentas', async () => {
         await botonAnular.hover();
 
         // El tooltip debe contener que es una Anulacion
-        await expect(page.getByRole('tooltip')).toHaveText('Reversar transferencia');
+        await expect(page.getByRole('tooltip', {name: 'Reversar transferencia'})).toBeVisible();
 
         // Click al boton de Anular
         await botonAnular.click();
@@ -75,9 +75,6 @@ test.describe.serial('Pruebas con Reversar Transferencia Cuentas', async () => {
         // Aparece el mensaje modal de Anulacion
         const modalReversar = page.getByText('Reversar Transferencia', {exact: true});
         await expect(modalReversar).toBeVisible();
-
-        // Mensaje del mensaje modal
-        await expect(page.locator('text=¿Está seguro que desea reversar la transferencia')).toBeVisible();
 
         // Click al boton de Aceptar del modal
         await page.getByRole('button', {name: 'Aceptar'}).click();

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate, primerDiaMes } from './utils/fechas';
-import { url_base, browserConfig, fechaFinal, contextConfig } from './utils/dataTests';
+import { diaActualFormato, primerDiaMes } from './utils/fechas';
+import { url_base, browserConfig, fechaFinal, contextConfig, fechaInicio } from './utils/dataTests';
 import { url_desembolso_neto } from './utils/urls';
 
 // Variabes globales
@@ -43,10 +43,10 @@ test.describe.serial('Pruebas con el Desembolso Neto', () => {
         await expect(page.locator('h1').filter({hasText: 'DESEMBOLSO NETO'})).toBeVisible();
         
         // Fecha Inicial
-        await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${primerDiaMes}`);
+        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${primerDiaMes}`);
 
         // Fecha Final
-        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${diaActualFormato}`);
 
         // Tipo Prestamo
         await expect(page.locator('#form_ID_TIPO_PRESTAMO')).toBeVisible();

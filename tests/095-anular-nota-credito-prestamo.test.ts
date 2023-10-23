@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, dataEliminar, fechaInicio, fechaFinal, contextConfig } from './utils/dataTests';
-import { formatDate } from './utils/fechas';
+import { url_base, browserConfig, selectBuscar, dataEliminar, fechaInicial, fechaFinal, contextConfig, razonAnulacion } from './utils/dataTests';
+import { diaActualFormato } from './utils/fechas';
 import { url_anular_nota_credito_prestamo } from './utils/urls';
 
 // Variables globales
@@ -63,10 +63,10 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         await expect(page.locator(`${selectBuscar}`)).toBeVisible();
 
         // Fecha documento inicio
-        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaInicial}`)).toHaveValue(`${diaActualFormato}`);
 
         // Fecha documento final
-        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${diaActualFormato}`);
 
         // Usuario
         await page.locator('#form_USUARIO_INSERCION').click();
@@ -97,7 +97,7 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         await expect(page.locator('text=Motivo de la Anulación')).toBeVisible();
 
         // Colocar una razon de la anulacion en el input de comentario
-        await page.locator('#form_CONCEPTO_ANULACION').fill('Nota Credito a Prestamo Rechazada');
+        await page.locator(`${razonAnulacion}`).fill('Nota Credito a Prestamo Rechazada');
 
         // Click al boton Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();

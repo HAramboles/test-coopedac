@@ -1,8 +1,9 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, ariaCerrar, selectBuscar, browserConfig, formComentario, contextConfig, actividadPersonaFisica, formBuscar, noData } from './utils/dataTests';
+import { url_base, dataCerrar, selectBuscar, browserConfig, formComentario, contextConfig, actividadPersonaFisica, formBuscar, noData } from './utils/dataTests';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_sesiones_transito, url_transacciones_caja } from './utils/urls';
 import { servicio_check_session } from './utils/servicios';
+import { diaActualFormato } from './utils/fechas';
 
 // Variables Globales
 let browser: Browser;
@@ -246,8 +247,8 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     await expect(page1.locator('text=VISTA PREVIA')).toBeVisible();
 
                     // Deben mostrarse las dos transacciones realizadas
-                    // await expect(page.getByRole('row', {name: `${formatDate(new Date())} 100,100.00			100,000.00	`})).toBeVisible();
-                    // await expect(page.getByRole('row', {name: `${formatDate(new Date())}			100.00	99,900.00	`})).toBeVisible();
+                    await expect(page.getByRole('row', {name: `${diaActualFormato} 100,100.00 100,000.00 `})).toBeVisible();
+                    await expect(page.getByRole('row', {name: `${diaActualFormato} 100.00 99,900.00 `})).toBeVisible();
             
                     // La pagina abierta con la vista previa de la libreta se debe cerrar
                     await page1.close();
@@ -255,7 +256,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
 
                 test('Ir a la pagina de Sesiones en Transito y comprobar que se haya cerrado la sesion', async () => {
                     // Sesiones en Transito
-                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
+                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito', exact: true}).click();
 
                     // Esperar a que el servicio de cerrar sesion responda
                     await page.waitForResponse(`${servicio_check_session}`);

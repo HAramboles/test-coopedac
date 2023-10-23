@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, formBuscar, contextConfig, noData } from './utils/dataTests';
+import { url_base, browserConfig, formBuscar, contextConfig, noData, razonAnulacion } from './utils/dataTests';
 import { url_cerrar_sesiones_transito } from './utils/urls';
 
 // Variables globales
@@ -33,16 +33,16 @@ test.describe.serial('Pruebas Cerrando Sesiones en Transito', async () => {
 
     test('Ir a la pagina de Cerrar Sesiones en Transito', async () => {
         // TESORERIA
-        await page.getByRole('menuitem', { name: 'TESORERIA' }).click();
+        await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
 
         // CAJAS
-        await page.getByRole('menuitem', { name: 'CAJAS' }).click();
+        await page.getByRole('menuitem', {name: 'CAJAS'}).click();
 
         // OPERACIONES 
-        await page.getByRole('menuitem', { name: 'OPERACIONES' }).click();
+        await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Cerrar Sesiones en Transito
-        await page.getByRole('menuitem', { name: 'Cerrar Sesiones en Tránsito' }).click();
+        await page.getByRole('menuitem', {name: 'Cerrar Sesiones en Tránsito'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_cerrar_sesiones_transito}`);
@@ -70,7 +70,7 @@ test.describe.serial('Pruebas Cerrando Sesiones en Transito', async () => {
         await expect(modalCierre).toBeVisible();
 
         // Digitar una razon por la cual se cierra la sesion
-        await page.locator('#form_CONCEPTO_ANULACION').fill('Se ha terminado de trabajar con la sesion');
+        await page.locator(`${razonAnulacion}`).fill('Se ha terminado de trabajar con la sesion');
 
         // Clicl al boton de Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();

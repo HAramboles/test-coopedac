@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { url_base, userCorrecto, passCorrecto, browserConfig, dataVer, windowSize } from './utils/dataTests';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 
 /* Variables globales */
 let browser: Browser;
@@ -20,10 +20,7 @@ const pass:string = 'abc';
 test.describe.serial('Pruebas con el Login de Coopedac', async () => {
     test.beforeAll(async () => { /* Antes de las pruebas */
         /* Crear el browser, en este caso el chromiun */
-        browser = await chromium.launch({
-            headless: browserConfig.headless,
-            args: browserConfig.args,
-        });
+        browser = await chromium.launch(browserConfig);
 
         /* Crear un context */
         context = await browser.newContext({
@@ -166,7 +163,7 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
 
     test('La Fecha del Dia debe estar visible', async () => {
         // Fecha del dia actual en el Header
-        await expect(page.getByText(`${formatDate(new Date())}`)).toBeVisible();
+        await expect(page.getByText(`${diaActualFormato}`)).toBeVisible();
     });
 
     test('Menu de Navegacion de la pagina', async () => {

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, fechaInicio, fechaFinal, contextConfig } from './utils/dataTests';
-import { formatDate, diaAnterior } from './utils/fechas';
+import { url_base, browserConfig, fechaInicial, fechaFinal, contextConfig } from './utils/dataTests';
+import { diaActualFormato, diaAnterior } from './utils/fechas';
 import { url_prestamos_cancelados } from './utils/urls';
 
 // Variables Globales
@@ -46,10 +46,10 @@ test.describe.serial('Pruebas con el Reporte de Prestamos Cancelados', async () 
         await expect(page.locator('text=Criterio de búsqueda')).toBeVisible();
 
         // Fecha inicial
-        await page.locator(`${fechaInicio}`).fill(`${diaAnterior}`);
+        await page.locator(`${fechaInicial}`).fill(`${diaAnterior}`);
 
         // Fecha final
-        await page.locator(`${fechaFinal}`).fill(`${formatDate(new Date())}`);
+        await page.locator(`${fechaFinal}`).fill(`${diaActualFormato}`);
 
         // Click al boton de Generar Reporte
         await page.getByRole('button', {name: 'Generar Reporte'}).click();

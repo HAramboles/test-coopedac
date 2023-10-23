@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig, contextConfig } from './utils/dataTests';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 import { url_cartera_prestamos } from './utils/urls';
 
 // Variables globales
@@ -49,7 +49,7 @@ test.describe('Pruebas con la Cartera de Prestamos', () => {
         await page.getByRole('option', {name: 'OFICINA PRINCIPAL'}).click();
 
         // Fecha de corte
-        await page.locator('#form_FECHA').fill(`${formatDate(new Date())}`);
+        await page.locator('#form_FECHA').fill(`${diaActualFormato}`);
 
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});

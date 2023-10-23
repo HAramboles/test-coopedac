@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, contextConfig, selectBuscar, fechaFinal, fechaInicio, dataPrinter } from './utils/dataTests';
+import { url_base, browserConfig, contextConfig, selectBuscar, fechaFinal, fechaInicial, dataPrinter } from './utils/dataTests';
 import { url_reportes_uaf } from './utils/urls';
 import { diaActualFormato } from './utils/fechas';
 
@@ -71,7 +71,7 @@ test.describe.serial('Pruebas con el Historico del Reporte de UAF', async () => 
         await expect(page.getByTitle('TODAS')).toBeVisible();
 
         // Fecha Inicial
-        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${diaActualFormato}`);
+        await expect(page.locator(`${fechaInicial}`)).toHaveValue(`${diaActualFormato}`);
 
         // Fecha Final
         await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${diaActualFormato}`);

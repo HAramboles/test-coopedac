@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, dataCerrar, contextConfig } from './utils/dataTests';
+import { url_base, browserConfig, dataCerrar, contextConfig, tipoTransaccion } from './utils/dataTests';
 import { url_reimprimir_recibo } from './utils/urls';
 
 // Variables globales
@@ -8,7 +8,7 @@ let context: BrowserContext;
 let page: Page;
 
 // Numero del Documento
-const numeroRecibo = ''; // Esperar a tener un numero de recibo
+const numeroRecibo = '419838'; // Esperar a tener un numero de recibo
 
 // Pruebas
 test.describe.serial('Pruebas con la Reimpresion de un Recibo', () => {
@@ -48,7 +48,7 @@ test.describe.serial('Pruebas con la Reimpresion de un Recibo', () => {
         await expect(page.locator('h1').filter({hasText: 'REIMPRESIÓN DE RECIBO'})).toBeVisible();
 
         // Colocar el Tipo de Transaccion
-        await page.locator('#form_ID_TIPO_TRANS').fill('DE');
+        await page.locator(`${tipoTransaccion}`).fill('DE');
 
         // Colocar el Numero del Documento
         await page.locator('#form_ID_DOCUMENTO').fill(`${numeroRecibo}`);

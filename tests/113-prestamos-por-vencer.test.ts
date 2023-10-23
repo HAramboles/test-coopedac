@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate } from './utils/fechas';
+import { formatDate, diaActualFormato } from './utils/fechas';
 import { url_base, browserConfig, contextConfig } from './utils/dataTests';
 import { url_prestamos_por_vencer } from './utils/urls';
 
@@ -43,7 +43,7 @@ test.describe('Pruebas con los Prestamos por Vencer', async () => {
         await expect(page.locator('h1').filter({hasText: 'PRÉSTAMOS POR VENCER'})).toBeVisible();
 
         // La fecha de fin debe ser la fecha actual
-        await expect(page.getByPlaceholder('Fecha Final')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.getByPlaceholder('Fecha Final')).toHaveValue(`${diaActualFormato}`);
 
         // Imprimir los prestamos por vencer
         const botonImprimir = page.getByRole('button', {name: 'Imprimir'});

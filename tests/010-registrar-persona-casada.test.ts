@@ -2,7 +2,7 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { 
     numerosCedulas, 
     numerosCedulas2,
-    numerosPasaporte2, 
+    numerosPasaporte, 
     numerosCorreo, 
     numerosCelular 
 } from './utils/cedulasypasaporte';
@@ -12,7 +12,7 @@ import {
     nombrePersonaFisicaConyuge, 
     apellidoPersonaFisicaConyuge  
 } from './000-nombresyapellidos-personas';
-import { url_base, ariaCerrar, browserConfig, fechaFinal, contextConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, fechaFinal, contextConfig, fechaInicio } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { url_registro_persona } from './utils/urls';
 
@@ -29,7 +29,7 @@ const cedulaPersonaCasada = numerosCedulas;
 const cedulaPersonaConyuge = numerosCedulas2;
 
 // Pasaporte de la persona
-const pasaportePersonaCasada = numerosPasaporte2;
+const pasaportePersonaCasada = numerosPasaporte;
 
 // Celulares de las personas
 const celularPersonaCasada = numerosCelular;
@@ -323,7 +323,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                     await campoEntidad?.fill('36');
             
                     // Input de fecha de inicio
-                    await page.locator('#form_FECHA_INICIO')?.fill('25/03/2022');
+                    await page.locator(`${fechaInicio}`)?.fill('25/03/2022');
             
                     // Input de fecha de final, solo es necesario hacer click, se pone una fecha automatica
                     await page.locator(`${fechaFinal}`).click();
@@ -578,7 +578,7 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                     await page.locator('#form_ENTIDAD_PEP').fill('1');
             
                     // Fecha inicio
-                    await page.locator('#form_FECHA_INICIO').fill('06/08/2022');
+                    await page.locator(`${fechaInicio}`).fill('06/08/2022');
             
                     // Click al input de fecha final, coloca una fecha automatica
                     await page.locator(`${fechaFinal}`).click();

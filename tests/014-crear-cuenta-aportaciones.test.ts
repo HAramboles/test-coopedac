@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_aportaciones } from './utils/urls';
 
@@ -126,7 +126,7 @@ test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los difer
                     // Fecha de apertura, debe ser la fecha actual
                     const fechaApetura = page.locator('#APORTACIONES_FECHA_APERTURA');
                     await expect(fechaApetura).toBeDisabled();
-                    await expect(fechaApetura).toHaveValue(`${formatDate(new Date())}`);
+                    await expect(fechaApetura).toHaveValue(`${diaActualFormato}`);
             
                     // Ingresar el titular
                     const campoTitular = page.locator(`${selectBuscar}`);

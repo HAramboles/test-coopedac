@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { url_base, browserConfig, userCorrecto, contextConfig } from './utils/dataTests';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -31,7 +31,7 @@ test.describe.serial('Pruebas Cerrando la Sesion', async () => {
 
     test('Header de la pagina', async () => {
         // La fecha del dia debe estar visible en el header
-        await expect(page.getByText(`${formatDate(new Date())}`)).toBeVisible();
+        await expect(page.getByText(`${diaActualFormato}`)).toBeVisible();
 
         // El nombre del usuario debe estar visible en el header
         await expect(page.locator('span').filter({hasText: `${userCorrecto}`})).toBeVisible();

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataPrinter, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 import { url_consulta_movimientos_prestamos } from './utils/urls';
 
 // Variables globales
@@ -73,7 +73,7 @@ test.describe.serial('Pruebas con la Consulta de los Movimientos de un Prestamo'
         await expect(page.locator('#form_TASA_MONEDA')).toHaveValue('RD$ 1');
 
         // Fecha corte
-        await expect(page.locator('#form_FECHA_CORTE')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator('#form_FECHA_CORTE')).toHaveValue(`${diaActualFormato}`);
 
         // Estado prestamo
         await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('CANCELADO');

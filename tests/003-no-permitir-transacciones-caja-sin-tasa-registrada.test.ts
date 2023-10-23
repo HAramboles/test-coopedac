@@ -1,7 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig, dataCheck, contextConfig } from './utils/dataTests';
 import { url_transacciones_caja, url_registro_tasa } from './utils/urls';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -51,7 +51,7 @@ test.describe.serial('No debe permitir Transacciones de Caja sin una Tasa Regist
         // Condicion si hay o no una tasa del dia registrada
         if (await tasaDia.isVisible()) {
             // Click al boton de Inhabilitar
-            const botonInhabilitar = page.getByRole('row', {name: `${formatDate(new Date())} DOLARES (US) 56.0000`}).locator(`${dataCheck}`);
+            const botonInhabilitar = page.getByRole('row', {name: `${diaActualFormato} DOLARES (US) 56.0000`}).locator(`${dataCheck}`);
             await expect(botonInhabilitar).toBeVisible();
             await botonInhabilitar.click();
 

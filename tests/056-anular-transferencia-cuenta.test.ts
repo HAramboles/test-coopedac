@@ -1,7 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, contextConfig } from './utils/dataTests';
+import { url_base, browserConfig, contextConfig, fechaInicio, tipoTransaccion, razonAnulacion, fechaFin } from './utils/dataTests';
 import { url_anular_transferencia_cuenta } from './utils/urls';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato, formatDate } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -49,11 +49,11 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await expect(page.locator('h1').filter({hasText: 'ANULAR TRANSFERENCIA CUENTA'})).toBeVisible();
 
         // Tipo transaccion
-        await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('TRC - TRANSFERENCIA');
+        await expect(page.locator(`${tipoTransaccion}`)).toHaveValue('TRC - TRANSFERENCIA');
 
         // Fecha de Inicio y Fin deben tener el dia actual
-        await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(new Date())}`);
-        await expect(page.locator('#form_FECHA_FIN')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${diaActualFormato}`);
+        await expect(page.locator(`${fechaFin}`)).toHaveValue(`${diaActualFormato}`);
 
         // Click al boton de Buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});
@@ -63,7 +63,6 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
 
     test('Anular la transferencia buscada', async () => {
         // En la transaferencia buscada deben mostrarse la fecha y el monto
-        // await expect(page.getByRole('cell', {name: `${formatDate(new Date())}`})).toBeVisible();
         await expect(page.getByRole('cell', {name: '1,000.00'})).toBeVisible();
 
         // Click al boton de Anular
@@ -76,7 +75,7 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await expect(modalAnulacion).toBeVisible();
 
         // Colocar una razon de anulacion
-        await page.locator('#form_CONCEPTO_ANULACION').fill('Transferencia rechazada');
+        await page.locator(`${razonAnulacion}`).fill('Transferencia rechazada');
 
         // Click al boton de Aceptar del modal
         await page.getByRole('button', {name: 'Aceptar'}).click();

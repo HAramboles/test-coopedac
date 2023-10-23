@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataCerrar, selectBuscar, formBuscar, browserConfig, inputFechaSolicitud, inputPrimerPago, contextConfig } from './utils/dataTests';
-import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
@@ -140,7 +140,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
         // Fecha Solicitud debe ser el dia actual
-        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${diaActualFormato}`);
 
         // Fecha Primer Pago debe ser 31 dias despues de la fecha de solicitud
         await expect(page.locator(`${inputPrimerPago}`)).toHaveValue(`${unMesDespues}`);
@@ -157,7 +157,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Colocar la fecha de solicitud correcta
         await page.locator(`${inputFechaSolicitud}`).clear();
-        await page.locator(`${inputFechaSolicitud}`).fill(`${formatDate(new Date())}`);
+        await page.locator(`${inputFechaSolicitud}`).fill(`${diaActualFormato}`);
 
         // Colocar en la fecha de primer pago una fecha anterior a la de solicitud
         await page.locator(`${inputPrimerPago}`).clear();

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 import { url_base, selectBuscar, browserConfig, contextConfig, noData, dataVer } from './utils/dataTests';
 import { url_estado_cuentas_cobrar } from './utils/urls';
 
@@ -56,7 +56,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Fecha de Corte, debe ser la fecha actual
-        await expect(page.locator('#form_FECHA_DE_CORTE')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator('#form_FECHA_DE_CORTE')).toHaveValue(`${diaActualFormato}`);
 
         // Oficial de Cobro
         await expect(page.locator('#form_NOMBRE_OFICIAL_COBRO')).toHaveValue('CLIENTE INACTIVO');

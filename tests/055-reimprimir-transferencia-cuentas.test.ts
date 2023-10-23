@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate, primerDiaMes } from './utils/fechas';
-import { url_base, selectBuscar, browserConfig, fechaInicio, fechaFinal, contextConfig } from './utils/dataTests';
+import { diaActualFormato, primerDiaMes } from './utils/fechas';
+import { url_base, selectBuscar, browserConfig, fechaInicial, fechaFinal, contextConfig } from './utils/dataTests';
 import { url_reimprimir_transferencia_cuentas } from './utils/urls';
 
 // Variables globales
@@ -54,10 +54,10 @@ test.describe.serial('Pruebas con la Reimpresion de la Transferencia entre Cuent
         await expect(page.getByText('Criterios de Búsqueda')).toBeVisible();
 
         // Fecha Inicial
-        await page.locator(`${fechaInicio}`).fill(`${primerDiaMes}`);
+        await page.locator(`${fechaInicial}`).fill(`${primerDiaMes}`);
 
         // Fecha Final
-        await page.locator(`${fechaFinal}`).fill(`${formatDate(new Date())}`);
+        await page.locator(`${fechaFinal}`).fill(`${diaActualFormato}`);
 
         // Buscar la cuenta de origen del socio
         await page.locator(`${selectBuscar}`).first().fill(`${nombre} ${apellido}`);

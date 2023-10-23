@@ -7,7 +7,7 @@ import {
     numerosCelular, 
     numerosTelefono
 } from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig, fechaFinal, dataCheck, contextConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, fechaFinal, dataCheck, contextConfig, fechaInicio } from './utils/dataTests';
 import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
 import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './000-nombresyapellidos-personas';
 import { url_registro_persona } from './utils/urls';
@@ -343,7 +343,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await campoEntidad?.fill('36');
             
                     // Input de fecha de inicio
-                    await page.locator('#form_FECHA_INICIO')?.fill('25/03/2022');
+                    await page.locator(`${fechaInicio}`)?.fill('25/03/2022');
             
                     // Input de fecha de final, solo es necesario hacer click, se pone una fecha automatica
                     await page.locator(`${fechaFinal}`).click();
@@ -503,7 +503,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await page.locator('#form_ENTIDAD_PEP').fill('1');
             
                     // Fecha inicio
-                    await page.locator('#form_FECHA_INICIO').fill('06/08/2022');
+                    await page.locator(`${fechaInicio}`).fill('06/08/2022');
             
                     // Click al input de fecha final, coloca una fecha automatica
                     await page.locator(`${fechaFinal}`).click();

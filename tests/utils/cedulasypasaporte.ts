@@ -31,8 +31,7 @@ const generarLetrasPasaporte = () => {
 export const numerosCedulas = generarNumerosAleatorios(11); 
 export const numerosCedulas2 = generarNumerosAleatorios(11); 
 
-export const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosAleatorios(11)); // Pasaporte para la persona fisica
-export const numerosPasaporte2 = (generarLetrasPasaporte() + generarNumerosAleatorios(11)); // Pasaporte para la persona fisica casada
+export const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosAleatorios(11));
 
 export const numerosRegistroMercantil = generarNumerosAleatorios(15); // Registro Mercantil de la persona juridica
 

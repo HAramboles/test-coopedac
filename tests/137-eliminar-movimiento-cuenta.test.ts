@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, dataEliminar, contextConfig } from './utils/dataTests';
+import { url_base, browserConfig, selectBuscar, dataEliminar, contextConfig, razonAnulacion } from './utils/dataTests';
 import { EscenariosEliminarMovimientos } from './utils/interfaces';
 import { url_consulta_movimientos_cuentas } from './utils/urls';
 
@@ -123,7 +123,7 @@ test.describe.serial('Eliminar Movimiento en Consulta Movimientos Cuenats - Prue
                     await expect(page.locator('text=Razón anulación')).toBeVisible();
 
                     // Digitar la razon de la anulacion
-                    await page.locator('#form_CONCEPTO_ANULACION').fill('Movimiento Erroneo');
+                    await page.locator(`${razonAnulacion}`).fill('Movimiento Erroneo');
 
                     // Click al boton de Aceptar
                     await page.getByRole('button', {name: 'Aceptar'}).click();

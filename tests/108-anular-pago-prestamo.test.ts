@@ -1,7 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, dataEliminar, contextConfig } from './utils/dataTests';
+import { url_base, browserConfig, dataEliminar, contextConfig, fechaInicio, tipoTransaccion, razonAnulacion, fechaFin } from './utils/dataTests';
 import { url_anular_pago_prestamo } from './utils/urls';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -57,7 +57,7 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await expect(page.locator('text=Criterio de búsqueda')).toBeVisible();
 
         // El tipo de transaccion debe ser Pago a prestamo
-        await expect(page.locator('#form_ID_TIPO_TRANS')).toHaveValue('RP - PAGOS A PRESTAMOS');
+        await expect(page.locator(`${tipoTransaccion}`)).toHaveValue('RP - PAGOS A PRESTAMOS');
 
         // Id documento debe estar vacio por defecto
         await expect(page.locator('#form_ID_DOCUMENTO')).toHaveValue('');
@@ -68,12 +68,13 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await page.getByRole('option').nth(0).click();
 
         // Fecha inicio
-        await expect(page.locator('#form_FECHA_INICIO')).toHaveValue(`${formatDate(new Date())}`);
-        await expect(page.locator('#form_FECHA_INICIO')).toHaveAttribute('readonly', '');
+        const fechaDeInicio = page.locator(`${fechaInicio}`);
+        await expect(fechaDeInicio).toHaveValue(`${diaActualFormato}`);
+        await expect(fechaDeInicio).toHaveAttribute('readonly', '');
 
         // Fecha Fin
-        await expect(page.locator('#form_FECHA_FIN')).toHaveValue(`${formatDate(new Date())}`);
-        await expect(page.locator('#form_FECHA_FIN')).toHaveAttribute('readonly', '');
+        await expect(page.locator(`${fechaFin}`)).toHaveValue(`${diaActualFormato}`);
+        await expect(page.locator(`${fechaFin}`)).toHaveAttribute('readonly', '');
 
         // Click al boton de Buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});
@@ -94,7 +95,7 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await expect(modalAnulacion).toBeVisible();
 
         // Colocar una razon en el input de comentario
-        await page.locator('#form_CONCEPTO_ANULACION').fill('Anular pago de 6000 pesos realizado por caja');
+        await page.locator(`${razonAnulacion}`).fill('Anular pago de 6000 pesos realizado por caja');
 
         // Click al boton de Aceptar del modal de Razon de Anulacion
         await page.getByRole('button', {name: 'Aceptar'}).click();

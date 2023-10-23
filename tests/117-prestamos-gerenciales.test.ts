@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate, primerDiaMes } from './utils/fechas';
-import { url_base, browserConfig, fechaInicio, fechaFinal, contextConfig } from './utils/dataTests';
+import { diaActualFormato, primerDiaMes } from './utils/fechas';
+import { url_base, browserConfig, fechaInicial, fechaFinal, contextConfig } from './utils/dataTests';
 import { url_prestamos_gerenciales } from './utils/urls';
 
 // Variables globales
@@ -78,16 +78,16 @@ test.describe.serial('Pruebas con la Impresion de Prestamos Gerenciales', () => 
         await expect(page.locator('#form_MONTO_FINAL')).toHaveValue('RD$ 1,000,000');
 
         // Fecha Desembolso Inicial
-        const fechaInicial = page.locator(`${fechaInicio}`);
-        await fechaInicial.clear();
+        const fechaDeInicio = page.locator(`${fechaInicial}`);
+        await fechaDeInicio.clear();
         // Ingresar la fecha de inicio del mes
-        await fechaInicial.fill(`${primerDiaMes}`);
+        await fechaDeInicio.fill(`${primerDiaMes}`);
 
         // Fecha Desembolso Final
         const fechaFin = page.locator(`${fechaFinal}`);
         await fechaFin.clear();
         // Colocar la fecha actual
-        await fechaFin.fill(`${formatDate(new Date())}`);
+        await fechaFin.fill(`${diaActualFormato}`);
 
         // Centro Costos
         await expect(page.getByText('OFICINA PRINCIPAL', {exact: true})).toBeVisible();

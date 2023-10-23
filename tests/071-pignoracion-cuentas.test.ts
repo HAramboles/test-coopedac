@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/interfaces';
 import { url_pignoracion_cuentas } from './utils/urls';
@@ -128,7 +128,7 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                 // Test cuando ID_OPERACION es igual a 29
                 test('Pignorar un monto', async () => {
                     // Fecha de pignoracion
-                    await expect(fechaPignoracion).toHaveValue(`${formatDate(new Date())}`);
+                    await expect(fechaPignoracion).toHaveValue(`${diaActualFormato}`);
             
                     // Cambiar la razon a motivos legales
                     await razonPignoracion.click();

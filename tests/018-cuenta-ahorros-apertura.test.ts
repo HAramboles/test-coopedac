@@ -1,7 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
 
 // Variables globales
@@ -148,7 +148,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con l
                     // Fecha de apertura, debe ser la fecha actual
                     const fechaApetura = page.locator('#AHORROS\\ NORMALES_FECHA_APERTURA');
                     await expect(fechaApetura).toBeDisabled();
-                    await expect(fechaApetura).toHaveValue(`${formatDate(new Date())}`);
+                    await expect(fechaApetura).toHaveValue(`${diaActualFormato}`);
                     
                     // Titular
                     const campoTitular = page.locator(`${selectBuscar}`);

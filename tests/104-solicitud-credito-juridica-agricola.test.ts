@@ -8,9 +8,12 @@ import {
     inputFechaSolicitud, 
     inputPrimerPago, 
     contextConfig,
-    fechaSolicitudCredito
+    fechaSolicitudCredito,
+    usuarioAproboSolicitud,
+    userCorrecto,
+    dataVer
 } from './utils/dataTests';
-import { formatDate, unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/fechas';
+import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
@@ -152,7 +155,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
         // Fecha Solicitud debe ser el dia actual
-        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${diaActualFormato}`);
 
         // Fecha Primer Pago debe ser 31 dias despues de la fecha de solicitud
         await expect(page.locator(`${inputPrimerPago}`)).toHaveValue(`${unMesDespues}`);
@@ -169,7 +172,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
         // Colocar la fecha de solicitud correcta
         await page.locator(`${inputFechaSolicitud}`).clear();
-        await page.locator(`${inputFechaSolicitud}`).fill(`${formatDate(new Date())}`);
+        await page.locator(`${inputFechaSolicitud}`).fill(`${diaActualFormato}`);
 
         // Colocar en la fecha de primer pago una fecha anterior a la de solicitud
         await page.locator(`${inputPrimerPago}`).clear();
@@ -187,6 +190,26 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
         // El tipo de cuota debe ser Insoluto
         await expect(page.getByText('INSOLUTO')).toBeVisible();
+
+        // Ver los rangos de la oferta
+        await page.locator(`${dataVer}`).click();
+
+        // Debe aparecer un modal qe ue contenga los efectos
+        const modalRangos = page.locator('h1').filter({hasText: 'DETALLES DE RANGO'});
+        await expect(modalRangos).toBeVisible();
+
+        // Debe mostrarse la tabla con los rangos
+        await expect(page.getByRole('columnheader', {name: 'Moneda'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Monto'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Tasa'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Plazo'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Mora'})).toBeVisible();
+
+        // Click al boton de Aceptar
+        await page.getByRole('button', {name: 'check Aceptar'}).click();
+
+        // El modal debe desaparecer
+        await expect(modalRangos).not.toBeVisible();
 
         // Monto
         await page.locator('#loan_form_MONTO').click();
@@ -593,6 +616,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
         // La fecha de solicitud dee estar visible y ser la fecha actual
         await expect(page.locator(`${fechaSolicitudCredito}`)).toHaveValue(`${diaActualFormato}`);
+
+        // El usuario que aprobro debe estar visible
+        await expect(page.locator(`${usuarioAproboSolicitud}`)).toHaveValue(`${userCorrecto}`);
 
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});

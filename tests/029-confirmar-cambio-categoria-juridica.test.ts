@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 import { url_base, formBuscar, browserConfig, dataCheck, contextConfig } from './utils/dataTests';
 import { url_aceptar_rechazar_cambio_categoria } from './utils/urls';
 
@@ -62,7 +62,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la P
         await expect(page.locator('text=¿Seguro que desea aprobar el cambio de categoria?')).toBeVisible();
 
         // Fecha de aprobacion
-        await page.locator('#FECHA_APROBACION').fill(`${formatDate(new Date())}`);
+        await page.locator('#FECHA_APROBACION').fill(`${diaActualFormato}`);
 
         // Click en Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});

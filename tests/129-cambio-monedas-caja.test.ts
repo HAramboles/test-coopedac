@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig, contextConfig } from './utils/dataTests';
-import { url_cambio_monedas_caja } from './utils/urls';
+import { url_cambio_monedas_boveda, url_cambio_monedas_caja } from './utils/urls';
 
 // Variables globales
 let browser: Browser;
@@ -166,6 +166,37 @@ test.describe.serial('Pruebas con el Cambio de Moneda', () => {
 
         // Debe regresar a la pagina anterior
         await expect(page.locator('h1').filter({hasText: 'CAMBIO DE MONEDAS'})).toBeVisible();
+    });
+
+    test('Ir a la pagina de Cambio de Monedas de Boveda', async () => {
+        // Click a Contraer todo
+        await page.getByText('Contraer todo').click();
+
+        // Tesoreria
+        await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
+
+        // Boveda
+        await page.getByRole('menuitem', {name: 'BOVEDA'}).click();
+
+        // Operaciones
+        await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
+
+        // Cambio de monedas
+        await page.getByRole('menuitem', {name: 'Cambio de Monedas'}).click();
+
+        // La URL debe cambiar
+        await expect(page).toHaveURL(`${url_cambio_monedas_boveda}`);
+    });
+
+    test('El input de Caja debe estar vacio', async () => {
+        // El titulo principal debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'CAMBIO DE MONEDAS'})).toBeVisible();
+
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(2000);
+
+        // No debe mostrarse la caja
+        await expect(page.locator('#form_ID_CAJA')).toHaveValue('');
     });
 
     test.afterAll(async () => {

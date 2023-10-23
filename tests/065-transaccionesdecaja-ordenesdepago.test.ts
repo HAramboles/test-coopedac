@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, formBuscar, browserConfig, formComentario, contextConfig, actividadPersonaFisica, noData } from './utils/dataTests';
-import { diaSiguiente, formatDate } from './utils/fechas';
+import { diaActualFormato, diaSiguiente } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
 import { url_sesiones_transito, url_transacciones_caja } from './utils/urls';
 import { servicio_check_session } from './utils/servicios';
@@ -345,7 +345,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await expect(page.locator('text=Rango de Fecha inválido.')).toBeVisible();
 
                     // Colocar una fecha de orden valida
-                    await fechaOrden.fill(`${formatDate(new Date())}`);
+                    await fechaOrden.fill(`${diaActualFormato}`);
 
                     // Click al boton Titular es Beneficiario
                     await page.getByText('Titular es Beneficiario').click();
@@ -436,7 +436,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
 
                 test('Ir a la pagina de Sesiones en Transito y comprobar que se haya cerrado la sesion', async () => {
                     // Sesiones en Transito
-                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
+                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito', exact: true}).click();
 
                     // Esperar a que el servicio de cerrar sesion responda
                     await page.waitForResponse(`${servicio_check_session}`);

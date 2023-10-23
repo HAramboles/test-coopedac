@@ -11,7 +11,7 @@ import {
     contextConfig
 } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
-import { formatDate, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -153,7 +153,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
         // Fecha Solicitud debe ser el dia actual
-        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${diaActualFormato}`);
 
         // Fecha Primer Pago debe ser 31 dias despues de la fecha de solicitud
         await expect(page.locator(`${inputPrimerPago}`)).toHaveValue(`${unMesDespues}`);
@@ -170,7 +170,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Colocar la fecha de solicitud correcta
         await page.locator(`${inputFechaSolicitud}`).clear();
-        await page.locator(`${inputFechaSolicitud}`).fill(`${formatDate(new Date())}`);
+        await page.locator(`${inputFechaSolicitud}`).fill(`${diaActualFormato}`);
 
         // Colocar en la fecha de primer pago una fecha anterior a la de solicitud
         await page.locator(`${inputPrimerPago}`).clear();
@@ -498,7 +498,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.locator('text=SIN FECHA').click();
 
         // Colocar una fecha como posible entrega
-        await page.locator('#form_FECHA_ENTREGA').fill(`${formatDate(new Date())}`);
+        await page.locator('#form_FECHA_ENTREGA').fill(`${diaActualFormato}`);
 
         // Click a Enter
         await page.keyboard.press('Enter');

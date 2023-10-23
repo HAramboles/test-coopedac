@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 import { url_base, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_notas_cuentas } from './utils/urls';
 
@@ -94,7 +94,7 @@ test.describe.serial('Pruebas con el Debito a la Cuenta de Certificado - Financi
         await page.locator('text=Ajuste Balance').click();
 
         // Fecha documento
-        await expect(page.locator('#form_FECHA_DOCUMENTO')).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator('#form_FECHA_DOCUMENTO')).toHaveValue(`${diaActualFormato}`);
 
         // Comentario
         await page.getByPlaceholder('Comentario de la nota').fill('Debito de 600 pesos a la cuenta de Certificado');

@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, browserConfig, contextConfig } from './utils/dataTests';
-import { formatDate } from './utils/fechas';
+import { diaActualFormato } from './utils/fechas';
 import { url_registro_persona } from './utils/urls';
 
 // Variables globales
@@ -109,7 +109,7 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
         await page.getByRole('option', {name: 'Cliente Inactivo'}).click();
 
         // Colocar como fecha minima la fecha actual
-        await page.locator('#form_FECHA_INSERCION_MINIMA').fill(`${formatDate(new Date())}`);
+        await page.locator('#form_FECHA_INSERCION_MINIMA').fill(`${diaActualFormato}`);
 
         // Click al boton de Aplicar Filtro
         await page.getByRole('button', {name: 'Aplicar filtro'}).click();

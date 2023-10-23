@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, userCorrecto, userCuadreCaja, dataPrinter, fechaInicio, fechaFinal, contextConfig } from './utils/dataTests';
-import { formatDate } from './utils/fechas';
+import { url_base, browserConfig, userCorrecto, userCuadreCaja, dataPrinter, fechaFinal, contextConfig, fechaInicial } from './utils/dataTests';
+import { diaActualFormato } from './utils/fechas';
 import { url_reimprimir_cuadre_caja } from './utils/urls';
 
 // Variables globales
@@ -52,8 +52,8 @@ test.describe.serial('Pruebas con la Reimprimiseion de Cuadre de Caja', async ()
         await expect(page.locator('#form_ID_CUADRE')).toHaveValue('');
 
         // La Fecha inio y fin deben tener el dia actual
-        await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${formatDate(new Date())}`);
-        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${formatDate(new Date())}`);
+        await expect(page.locator(`${fechaInicial}`)).toHaveValue(`${diaActualFormato}`);
+        await expect(page.locator(`${fechaFinal}`)).toHaveValue(`${diaActualFormato}`);
 
         // En el input Sucursal debe estar el valor Todas
         await expect(page.getByTitle('TODAS').last()).toBeVisible();

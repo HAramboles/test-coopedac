@@ -39,32 +39,44 @@ export const selectBuscar:string = '#select-search';
 export const formComentario:string = '#form_COMENTARIO';   
 export const formComentarios:string = '#form_COMENTARIOS';
 
-export const fechaInicio = '#form_FECHA_INICIAL';
-export const fechaFinal = '#form_FECHA_FINAL';
+// Diferentes id de los inputs de fecha
+export const fechaInicial:string = '#form_FECHA_INICIAL';
+export const fechaInicio:string = '#form_FECHA_INICIO';
+
+export const fechaFinal:string = '#form_FECHA_FINAL';
+export const fechaFin:string = '#form_FECHA_FIN';
+
+// Tipo Transaccion de los tests de Anular
+export const tipoTransaccion:string = '#form_ID_TIPO_TRANS';
 
 export const valorAdmisibleCredito:string = '#form_VALOR_ADMISIBLE';
 
-// Input Dia de pago para tests de Cobros de Oficina
+// Inputs para los tests de Anulacion
 export const inputDiaPago:string = '#form_DIA_PAGO';
+export const razonAnulacion:string = '#form_CONCEPTO_ANULACION';
 
-// Input Fecha Solicitud y Primer Pago para los tests de Solcitud de Credito
+// Inputs para los tests de Solicitud de Credito
+
+// Input Fecha Solicitud y Primer Pago para los tests de Solicitud de Credito
 export const inputFechaSolicitud:string = '#loan_form_FECHA_APERTURA';
 export const inputPrimerPago:string = '#loan_form_DIA_PAGO';
-
-// No hay datos en la pagina
-export const noData:string = 'No Data';
-
 // Fecha solicitud de prestamo
 export const fechaSolicitudCredito:string = '#form_FECHA_APERTURA';
+// Usuario que aprobo la solicitud
+export const usuarioAproboSolicitud:string = '#form_USUARIO_APROBO';
+
+// No hay datos en la pagina
+export const noData:string = 'No data';
 
 // Abrir el browser en una pantalla u otra
 const browserOneScreen = ['--window-position=100,0'];
 const browserSecondScreen = ['--window-position=-1500,-100'];
 
-// Configuracion del context
+// Tamaño de la pantalla
 export const windowSize = {width: 1400, height: 768};
 const windowSizeOneScreen = {width: 1366, height: 720};
 
+// Configuracion del context
 export const contextConfig = {
     viewport: windowSizeOneScreen,
     storageState: 'state.json'
