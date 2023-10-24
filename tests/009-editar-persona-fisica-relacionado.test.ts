@@ -120,7 +120,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
             // Condicion para los diferentes parametros que pueden llegar en el ID_OPERACION
             if (escenarios.ID_OPERACION_MODIFICA_PER !== '4') {
                 // Test cuando el ID_OPERACION_MODIFICA_PER sea diferente de 4
-                test('El boton de Editar no debe esatr visible', async () => {
+                test('El boton de Editar no debe estar visible', async () => {
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).not.toBeVisible();
                 });

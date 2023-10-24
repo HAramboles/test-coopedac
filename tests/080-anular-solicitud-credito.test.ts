@@ -367,6 +367,23 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // El titulo principal debe estar visible
         await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
+
+        // Click a la seccion de Tabla de amortizacion
+        await page.getByText('Amortización').click();
+
+        // Boton de Imprimir
+        const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+        
+        // Esperar a que se abra una nueva pagina con el reporte de la tabla de amortizacion
+        const page1 = await context.waitForEvent('page');
+        
+        // Cerrar la pagina con el reporte de la tabla de amortizacion
+        await page1.close();
+
+        // Debe regresar a la pagina de Solicitud de Credito
+        await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
         
         // Click en guardar y continuar
         GuardaryContinuar();
@@ -432,7 +449,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Click al boton de Aceptar del modal de error
         await page.locator('div').filter({ hasText: /^Aceptar$/ }).getByRole('button').click();
 
-        // Ingresar el monto correctao a usar
+        // Ingresar el monto correcto a usar
         await inputMontoPrestamo.clear();
         await inputMontoPrestamo.fill('20000');
 

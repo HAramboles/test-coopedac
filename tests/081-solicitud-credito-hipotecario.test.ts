@@ -32,7 +32,8 @@ let apellido: string | null;
 // Imagen de los documentos
 const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
 
-const comentarioPrueba:string ='Prueba automatica 1';
+// Monto solicitado para el prestamo
+const cantMonto:string = '50,000';
 
 // Pruebas
 test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona Fisica', () => {
@@ -222,7 +223,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Monto
         await page.locator('#loan_form_MONTO').click();
-        await page.locator('#loan_form_MONTO').fill('50000');
+        await page.locator('#loan_form_MONTO').fill(cantMonto);
 
         // Tasa
         const campoTasa = page.getByLabel('Tasa');
@@ -276,11 +277,10 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Destino o proposito
         await page.getByPlaceholder('Destino o propósito').click();
-        // await page.getByPlaceholder('Destino o propósito').fill('comprar una casa');
-        await page.getByPlaceholder('Destino o propósito').fill(`${comentarioPrueba}`);
+        await page.getByPlaceholder('Destino o propósito').fill('comprar una casa');
 
         // Los valores del monto, tasa y plazo deben estar correctos
-        await expect(page.locator('#loan_form_MONTO')).toHaveValue('RD$ 50,000');
+        await expect(page.locator('#loan_form_MONTO')).toHaveValue(`RD$ ${cantMonto}`);
         await expect(page.locator('#loan_form_TASA')).toHaveValue('10%');
         await expect(page.locator('#loan_form_PLAZO')).toHaveValue('48');
 
@@ -351,6 +351,23 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Debe aparecer la alerta de que se han guardadp los cargos
         await expect(page.locator('text=Cargos del préstamo guardados exitosamente.')).toBeVisible();
+
+        // Click a la seccion de Tabla de amortizacion
+        await page.getByText('Amortización').click();
+
+        // Boton de Imprimir
+        const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
+        await expect(botonImprimir).toBeVisible();
+        await botonImprimir.click();
+        
+        // Esperar a que se abra una nueva pagina con el reporte de la tabla de amortizacion
+        const page1 = await context.waitForEvent('page');
+        
+        // Cerrar la pagina con el reporte de la tabla de amortizacion
+        await page1.close();
+
+        // Debe regresar a la pagina de Solicitud de Credito
+        await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
         
         // Click en guardar y continuar
         GuardaryContinuar();
@@ -424,7 +441,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // Valor tasado
         const valorTasado = page.getByPlaceholder('VALOR TASADO');
         await valorTasado.click();
-        await valorTasado.fill('RD$ 50000');
+        await valorTasado.fill(`RD$ ${cantMonto}`);
 
         // Valor admisible
         await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 40,000');
@@ -890,6 +907,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // La cuenta de cobro debe estar visible
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+        // El monto a desembolsar debe estar visible
+        await expect(page.getByText(`RD$ ${cantMonto}`).nth(1)).toBeVisible();
 
         // Desembolsar la solicitud
         const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
