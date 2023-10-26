@@ -104,7 +104,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator(`${inputDiaPago}`)).toBeDisabled();
     });
 
-    test.skip('Ver la o las cuentas de cobro pertenecientes al prestamo', async () => {
+    test('Ver la o las cuentas de cobro pertenecientes al prestamo', async () => {
         // Click al boton de Ver cuentas
         const botonVerCobros = page.getByRole('button', {name: 'Cuenta(s) de cobro'});
         await expect(botonVerCobros).toBeVisible();

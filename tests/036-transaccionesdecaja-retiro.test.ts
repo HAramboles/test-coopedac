@@ -247,8 +247,8 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     await expect(page1.locator('text=VISTA PREVIA')).toBeVisible();
 
                     // Deben mostrarse las dos transacciones realizadas
-                    await expect(page.getByRole('row', {name: `${diaActualFormato} 100,100.00 100,000.00 `})).toBeVisible();
-                    await expect(page.getByRole('row', {name: `${diaActualFormato} 100.00 99,900.00 `})).toBeVisible();
+                    await expect(page1.getByRole('row', {name: `${diaActualFormato} 100,100.00 100,000.00 `})).toBeVisible();
+                    await expect(page1.getByRole('row', {name: `${diaActualFormato} 100.00 99,900.00 `})).toBeVisible();
             
                     // La pagina abierta con la vista previa de la libreta se debe cerrar
                     await page1.close();

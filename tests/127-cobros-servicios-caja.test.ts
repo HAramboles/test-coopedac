@@ -55,7 +55,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Caja', () => {
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${nombre} ${apellido}`);
         // Elegir al socio
-        await page.getByText(`${nombre} ${apellido}`).click();
+        await page.getByText(`| ${nombre} ${apellido}`).click();
 
         // Referencia
         await page.locator('#form_DOC_REF_NAME').fill('Venta de');

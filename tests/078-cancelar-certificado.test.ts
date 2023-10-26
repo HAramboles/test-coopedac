@@ -13,7 +13,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-test.describe('Pruebas con la Cancelacion de Certificados', () => {
+test.describe.serial('Pruebas con la Cancelacion de Certificados', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch(browserConfig);
@@ -77,7 +77,7 @@ test.describe('Pruebas con la Cancelacion de Certificados', () => {
         await expect(page.getByText('AHORROS POR NOMINA')).toBeVisible();
 
         // Elegir la cuenta de Ahorros
-        await page.getByText('AHORROS NORMALES').click();
+        await page.getByText('AHORROS NORMALES |').getByText(`| ${nombre} ${apellido}`).click();
 
         // Cancelar el certificado
         const botonCancelar = page.getByRole('button', {name: 'Cancelar'});

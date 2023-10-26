@@ -17,7 +17,7 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Pruebas
-test.describe.serial('Pruebas en el modo solo lectura, para ver una cuenta', async () => {
+test.describe.serial('Pruebas en el modo solo lectura para ver una cuenta', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser, con la propiedad headless
         browser = await chromium.launch(browserConfig);

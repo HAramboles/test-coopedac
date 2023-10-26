@@ -385,7 +385,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     await expect(page.getByText('Seleccionar Testigo', {exact: true})).toBeVisible();
 
                     if (await page.locator('(//SPAN[@class="ant-select-selection-item"][text()="HECTOR ARAMBOLES"])').isVisible()) {
-                        const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
+                        const botonAceptar = page.getByLabel('Seleccionar Testigo').getByRole('button', {name: 'check Aceptar'})
                         await expect(botonAceptar).toBeVisible();
                         await botonAceptar.click();
 

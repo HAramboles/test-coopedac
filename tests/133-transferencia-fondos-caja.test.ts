@@ -45,7 +45,7 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIA FONDOS DE CAJA'})).toBeVisible();
 
         // Placeholder del Input Hasta Caja
-        await expect(page.getByPlaceholder('Seleccione una Bóveda')).toBeVisible();
+        await expect(page.locator('div').filter({ hasText: /^Seleccione una Bóveda$/ }).nth(4)).toBeVisible();
 
         // Click al selector de Hasta Caja
         await page.locator('#form_ID_CAJA_HASTA').click();

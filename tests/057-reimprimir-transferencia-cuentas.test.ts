@@ -62,12 +62,12 @@ test.describe.serial('Pruebas con la Reimpresion de la Transferencia entre Cuent
         // Buscar la cuenta de origen del socio
         await page.locator(`${selectBuscar}`).first().fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de ahorros del socio
-        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
+        await page.getByText('AHORROS NORMALES |').getByText(`| ${nombre} ${apellido}`).click();
 
         // Buscar la cuenta de destino del socio
         await page.locator(`${selectBuscar}`).last().fill(`${nombre} ${apellido}`);
         // Elegir la cuenta de aportaciones del socio
-        await page.getByRole('option', {name: '| APORTACIONES |'}).nth(1).click();
+        await page.getByText('| APORTACIONES |').getByText(`| ${nombre} ${apellido}`).nth(1).click();
 
         // Click en buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});

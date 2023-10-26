@@ -328,7 +328,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
 
                 test('Ir a la pagina de Sesiones en Transito y comprobar que se haya cerrado la sesion', async () => {
                     // Sesiones en Transito
-                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
+                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito', exact: true}).click();
 
                     // Esperar a que el servicio de cerrar sesion responda
                     await page.waitForResponse(`${servicio_check_session}`);
