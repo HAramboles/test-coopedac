@@ -11,7 +11,8 @@ import {
     fechaSolicitudCredito,
     usuarioAproboSolicitud,
     userCorrecto,
-    dataVer
+    dataVer,
+    formComentario
 } from './utils/dataTests';
 import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
@@ -30,7 +31,7 @@ let nombrePersona: string | null;
 let apellidoPersona: string | null;
 
 // Imagen de los documentos
-const firma = './img/firma.jpg';
+const firma = './tests/img/firma.jpg';
 
 // Monto solicitado para el prestamo
 const cantMonto:string = '10,000';
@@ -675,6 +676,51 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         
         // Cerrar la pagina con el reporte 
         await page1.close();
+    });
+
+    test('Agregarle una Observacion al Prestamo', async () => {
+        // La url debe regresar a las solicitudes en aprobado
+        await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=aprobado`);
+
+        // Cambiar el estado de las solicitudes de Aprobado a Desembolsado
+        await page.locator('text=APROBADO').click();
+        await page.locator('text=DESEMBOLSADO').click();
+
+        // Buscar a la persona juridica
+        await page.locator(`${formBuscar}`).fill(`${cedulaEmpresa}`);
+
+        // Debe mostrarse el prestamo desembolsado en la tabla
+        await expect(page.getByRole('row', {name: `${nombreEmpresa}`})).toBeVisible();
+
+        // Elegir la solicitud creada anteriormente
+        await page.getByRole('row', {name: `${nombreEmpresa}`}).getByRole('button', {name: 'file-search'}).click();
+
+        // Debe aparecer un modal para agregar las observaciones al prestamo
+        const modalObservaciones = page.locator('text=OBSERVACIONES SOLICITUD DE CRÉDITO');
+        await expect(modalObservaciones).toBeVisible();
+
+        // Nombre del Socio en el modal de obvercaciones
+        await expect(page.locator('#form_NOMBRE_SOCIO')).toHaveValue(`${nombreEmpresa}`);
+
+        // El tipo de Observacion debe ser Control Interno
+        await expect(page.getByTitle('CONTROL INTERNO')).toBeVisible();
+
+        // Click al selector de observacion para elegir una
+        await page.locator(`${formComentario}`).click();
+        // Elegir una observacion
+        await page.getByTitle('En solicitud de crédito firma socio deudor').getByText('En solicitud de crédito firma socio deudor').click();
+
+        // Se debe agregar la observacion a la tabla de observaciones
+        await expect(page.getByRole('cell', {name: 'En solicitud de crédito firma socio deudor'})).toBeVisible();
+
+        // Click al boton de Aplicar sin agregar ninguna fecha
+        await page.getByRole('button', {name: 'Aplicar'}).click();
+
+        // El mensaje de error del departamento no debe aparecer
+        await expect(page.locator('text="DEPARTAMENTO" is not allowed')).not.toBeVisible();
+
+        // El modal de Observaciones debe desaparecer
+        await expect(modalObservaciones).not.toBeVisible(); 
     });
     
     test.afterAll(async () => { // Despues de las pruebas

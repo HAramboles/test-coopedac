@@ -20,7 +20,7 @@ let nombreFirmante: string | null;
 let apellidoFirmante: string | null;
 
 // Imagen de la firma
-const firma = './img/firma.jpg';
+const firma = './tests/img/firma.jpg';
 
 // Pruebas
 test.describe.serial('Creacion de Cuenta de Aportaciones Crediautos - Pruebas con los diferentes parametros', async () => {

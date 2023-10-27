@@ -14,7 +14,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Imagen de los documentos
-const firma = './img/firma.jpg';
+const firma = './tests/img/firma.jpg';
 
 // Pruebas
 test.describe.serial('Prueba con la Solicitud de Credito', () => {

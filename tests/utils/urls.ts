@@ -57,6 +57,7 @@ export const url_consulta_movimientos_prestamos = `${url_base}/consulta_movimien
 export const url_desembolso_lineas_credito = `${url_base}/desembolso_linea_credito/01-3-3-3/`;
 export const url_anular_cobro_oficina = `${url_base}/anular_cobro_oficina/01-3-6-2/`;
 export const url_anular_nota_credito_prestamo = `${url_base}/anula_nota_cr_prestamo/01-3-6-1/`;
+export const url_observaciones_pendientes = `${url_base}/observaciones_pendientes/01-3-4-1/`;
 export const url_anular_desembolso = `${url_base}/anular_desembolso/01-3-6-4/`;
 export const url_anular_pago_prestamo = `${url_base}/anular_pago_prestamo/01-4-1-6-4/`;
 export const url_reversar_pago_prestamo = `${url_base}/reversar_pago_prestamo/01-4-1-7-1/`;

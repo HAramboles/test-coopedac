@@ -28,8 +28,8 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Imagen de los documentos
-const firma = './img/firma.jpg';
-const firma2 = './img/firma2.jpg';
+const firma = './tests/img/firma.jpg';
+const firma2 = './tests/img/firma2.jpg';
 
 // Monto solicitado para el prestamo
 const cantMonto:string = '20,000';

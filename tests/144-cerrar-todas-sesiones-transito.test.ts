@@ -33,7 +33,7 @@ test.describe.serial('Pruebas Cerrando todas las Sesiones de un usuario', async 
         await page.goto(`${url_base}`);
     });
 
-    test.skip('Ir a la opcion de Sesiones en Transito', async () => {
+    test('Ir a la opcion de Sesiones en Transito', async () => {
         // TESORERIA
         await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
 
@@ -50,7 +50,7 @@ test.describe.serial('Pruebas Cerrando todas las Sesiones de un usuario', async 
         await expect(page).toHaveURL(`${url_sesiones_transito}`);
     });
 
-    test.skip('Debe mostrarse por lo menos una Sesion en Transito de la Caja en uso', async () => {
+    test('Debe mostrarse por lo menos una Sesion en Transito de la Caja en uso', async () => {
         // Digitar el nombre de la caja
         await page.locator(`${formBuscar}`).fill(`${userCorrecto}`);
 
@@ -80,7 +80,7 @@ test.describe.serial('Pruebas Cerrando todas las Sesiones de un usuario', async 
 
     test('Cerrar todas las Sesiones en Transito de un Usuario', async () => {
         // Esperar a que el servicio de cajas responda
-        // await page.waitForResponse(`${servicio_cajas}`);
+        await page.waitForResponse(`${servicio_cajas}`);
 
         // El titulo de la pagina debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CERRAR SESIONES EN TRÁNSITO'})).toBeVisible();
