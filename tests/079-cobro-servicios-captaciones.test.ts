@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, formBuscar, browserConfig, contextConfig, userCorrecto, nombreTestigo } from './utils/dataTests';
+import { url_base, selectBuscar, formBuscar, browserConfig, contextConfig, userCorrecto, nombreTestigoCajero } from './utils/dataTests';
 import { url_cobro_servicios_captaciones, url_sesiones_transito, url_cobros_servicios_captaciones_caja } from './utils/urls';
 
 // Variables Globales
@@ -76,7 +76,7 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
         await selectorCajero.click();
 
         // Seleccionar la caja en uso
-        await page.getByRole('option', {name: `CAJA ${userCorrecto} - ${nombreTestigo}`}).click();
+        await page.getByRole('option', {name: `CAJA ${userCorrecto} - ${nombreTestigoCajero}`}).click();
 
         // Digitar un comentario
         await page.locator('#form_NOTAS').fill('Cobro de Servicios de Otros Ingresos');

@@ -5,11 +5,12 @@ import {
     contextConfig, 
     formBuscar, 
     userCorrecto, 
-    nombreTestigo, 
+    nombreTestigoCajero, 
     razonAnulacion, 
     noData 
 } from './utils/dataTests';
-import { url_cerrar_sesiones_transito } from './utils/urls';
+import {  url_sesiones_transito, url_cerrar_sesiones_transito } from './utils/urls';
+import { servicio_cajas } from './utils/servicios';
 
 // Variables globales
 let browser: Browser;
@@ -18,7 +19,7 @@ let page: Page;
 
 // Pruebas
 test.describe.serial('Pruebas Cerrando todas las Sesiones de un usuario', async () => {
-    test.beforeAll(async () => { // Anres de las pruebas
+    test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch(browserConfig);
 
@@ -32,7 +33,35 @@ test.describe.serial('Pruebas Cerrando todas las Sesiones de un usuario', async 
         await page.goto(`${url_base}`);
     });
 
+    test.skip('Ir a la opcion de Sesiones en Transito', async () => {
+        // TESORERIA
+        await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
+
+        // CAJAS
+        await page.getByRole('menuitem', {name: 'CAJAS'}).click();
+
+        // OPERACIONES 
+        await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
+
+        // Sesiones en Transito
+        await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
+        
+        // La URL debe cambiar
+        await expect(page).toHaveURL(`${url_sesiones_transito}`);
+    });
+
+    test.skip('Debe mostrarse por lo menos una Sesion en Transito de la Caja en uso', async () => {
+        // Digitar el nombre de la caja
+        await page.locator(`${formBuscar}`).fill(`${userCorrecto}`);
+
+        // Debe aparecer por lo menos una sesion en transito
+        await expect(page.getByRole('cell', {name: `${userCorrecto}`})).toBeVisible();
+    });
+
     test('Ir a la pagina de Cerrar Sesiones en Transito', async () => {
+        // Click a contraer todo
+        await page.getByText('Contraer todo').click();
+
         // TESORERIA
         await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
 
@@ -50,6 +79,9 @@ test.describe.serial('Pruebas Cerrando todas las Sesiones de un usuario', async 
     });
 
     test('Cerrar todas las Sesiones en Transito de un Usuario', async () => {
+        // Esperar a que el servicio de cajas responda
+        // await page.waitForResponse(`${servicio_cajas}`);
+
         // El titulo de la pagina debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CERRAR SESIONES EN TRÁNSITO'})).toBeVisible();
 
@@ -71,7 +103,7 @@ test.describe.serial('Pruebas Cerrando todas las Sesiones de un usuario', async 
         // Elegir la caja/usuario
         await page.locator('#form_ID_PERSONAL_ASIGNADO').click();
         // Elegir la caja/usuario en uso
-        await page.getByRole('option', {name: `${userCorrecto} - ${nombreTestigo}`}).click();
+        await page.getByRole('option', {name: `${userCorrecto} - ${nombreTestigoCajero}`}).click();
 
         // Esperar a que la caja/usuario se seleccione
         await page.waitForTimeout(1000);

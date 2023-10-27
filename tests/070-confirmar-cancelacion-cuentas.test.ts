@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from "@playwright/test";
 import { url_base, ariaCerrar, formBuscar, browserConfig, dataCheck, formComentario, contextConfig } from "./utils/dataTests";
 import { url_confirmar_cancelacion_cuentas } from './utils/urls';
+import { diaActualFormato } from './utils/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -50,6 +51,9 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
     test('Datos de la Solicitud de la Cancelacion', async () => {
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();
+
+        // Los resultados de la tabla deben estar ordenados de mas recienta a mas antiguo
+        await expect(page.getByRole('cell', {name: `${diaActualFormato}`}).first()).toBeVisible();
 
         // Buscar un socio
         await page.locator(`${formBuscar}`).fill(`${cedula}`);

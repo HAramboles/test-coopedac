@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigo, contextConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigoCajero, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
 
@@ -12,7 +12,7 @@ let page: Page;
 let botonNuevaCuenta: Locator;
 
 // Imagen de la firma
-const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
+const firma = './img/firma.jpg';
 
 // Cedula y nombre de la empresa
 let cedulaEmpresa: string | null;
@@ -244,8 +244,8 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                     await seleccionarTestigo.click();
 
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigoCajero}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigoCajero}`}).click();
 
                     // Esperar dos segundos antes de dar click al boton de Aceptar
                     await page.waitForTimeout(2000)

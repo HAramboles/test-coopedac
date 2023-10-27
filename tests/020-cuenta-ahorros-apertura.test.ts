@@ -13,7 +13,7 @@ let page: Page;
 let botonNuevaCuenta: Locator;
 
 // Imagen de la firma
-const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
+const firma = './img/firma.jpg';
 
 // Cedula, nombre y apellido de la persona
 let cedula: string | null;

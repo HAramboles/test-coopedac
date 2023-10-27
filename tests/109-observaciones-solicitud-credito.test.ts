@@ -11,7 +11,8 @@ import {
     contextConfig,
     fechaSolicitudCredito,
     usuarioAproboSolicitud,
-    userCorrecto
+    userCorrecto,
+    dataVer
 } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
 import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
@@ -27,8 +28,8 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Imagen de los documentos
-const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
-const firma2 = './tests/firma2.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
+const firma = './img/firma.jpg';
+const firma2 = './img/firma2.jpg';
 
 // Monto solicitado para el prestamo
 const cantMonto:string = '20,000';
@@ -89,6 +90,17 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
         await expect(botonNuevaSolicitud).toBeVisible();
         await botonNuevaSolicitud.click();
+    });
+
+    test('No debe mostrarse un Error Innterno', async () => {
+        // Titulo del error
+        await expect(page.getByText('Error Interno')).not.toBeVisible();
+
+        // Subtitulo del error
+        await expect(page.getByText('AUTOMATIC_INTERNAL_ERROR')).not.toBeVisible();
+
+        // Mensaje del error
+        await expect(page.getByText("Cannot read properties of undefined (reading 'ESTADO_PRESTAMO')")).not.toBeVisible();
     });
 
     test('Paso 1 - Datos del Solicitante', async () => {
@@ -192,8 +204,28 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.locator(`${inputPrimerPago}`).clear();
         await page.locator(`${inputPrimerPago}`).fill(`${unMesDespues}`);
 
-        // tipo de cuota
+        // Tipo de cuota
         await expect(page.getByText('INSOLUTO')).toBeVisible();
+
+        // Ver los rangos de la oferta
+        await page.locator(`${dataVer}`).click();
+
+        // Debe aparecer un modal qe ue contenga los efectos
+        const modalRangos = page.locator('h1').filter({hasText: 'DETALLES DE RANGO'});
+        await expect(modalRangos).toBeVisible();
+
+        // Debe mostrarse la tabla con los rangos
+        await expect(page.getByRole('columnheader', {name: 'Moneda'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'Monto'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'Tasa'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'Plazo'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'Mora'})).toBeVisible();
+
+        // Click al boton de Aceptar
+        await page.getByRole('button', {name: 'check Aceptar'}).click();
+
+        // El modal debe desaparecer
+        await expect(modalRangos).not.toBeVisible();
 
         // Monto
         await page.locator('#loan_form_MONTO').click();

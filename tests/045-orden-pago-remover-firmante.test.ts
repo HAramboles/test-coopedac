@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig, nombreTestigo, contextConfig } from './utils/dataTests';
+import { url_base, formBuscar, browserConfig, nombreTestigoCajero, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaRemoverFirmantes } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_orden_pago } from './utils/urls';
 
@@ -209,8 +209,8 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                     await seleccionarTestigo.click();
 
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigoCajero}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigoCajero}`}).click();
 
                     // Esperar dos segundos antes de dar click al boton de Aceptar
                     await page.waitForTimeout(2000)

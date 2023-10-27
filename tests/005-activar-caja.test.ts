@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, browserConfig, ariaAgregar, contextConfig } from './utils/dataTests';
+import { url_base, ariaCerrar, browserConfig, ariaAgregar, contextConfig, nombreTestigoCajero, userCorrecto, formBuscar } from './utils/dataTests';
 import { url_activar_caja } from './utils/urls';
+import { diaActualFormato } from './utils/fechas';
 
 /* Variables globales */
 let browser: Browser;
@@ -25,16 +26,16 @@ test.describe.serial('Pruebas con Activar Caja', async () => {
 
     test('Ir a la opcion de Activar Caja', async () => {
         // Tesoreria
-        await page.locator('text=TESORERIA').click();
-
+        await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
+            
         // Cajas
-        await page.locator('text=CAJAS').click();
+        await page.getByRole('menuitem', {name: 'CAJAS'}).click();
 
         // Operaciones
-        await page.locator('text=Operaciones').click();
+        await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Activar Caja
-        await page.locator('text=Activar Caja').click();
+        await page.getByRole('menuitem', {name: 'Activar Caja'}).click();
 
         // La url debe de cambiar
         await expect(page).toHaveURL(`${url_activar_caja}`);
@@ -43,7 +44,7 @@ test.describe.serial('Pruebas con Activar Caja', async () => {
         await expect(page.locator('h1').filter({hasText: 'Activar Caja'})).toBeVisible();
     });
 
-    test('Activar Nueva Caja', async () => {
+    test('Activar la Caja', async () => {
         // Boton Activar Caja
         const activarCaja = page.locator(`${ariaAgregar}`);
         await expect(activarCaja).toBeVisible();
@@ -53,6 +54,15 @@ test.describe.serial('Pruebas con Activar Caja', async () => {
 
         // Esperar que aparezca el modal
         await expect(page.getByRole('dialog', {name: ' Activar Caja'})).toBeVisible();
+
+        // Debe mostrarse el cajero
+        await expect(page.getByTitle(`${nombreTestigoCajero}`)).toBeVisible();
+
+        // Debe mostrarse la caja
+        await expect(page.getByTitle(`CAJA ${userCorrecto}`)).toBeVisible();
+
+        // La fecha debe ser el dia actual
+        await expect(page.locator('#FormNewShifts_FECHA_APERTURA_TURNO')).toHaveValue(`${diaActualFormato}`);
 
         // Input del turno de la caja
         const turnoCaja = page.locator('#FormNewShifts_SELECTTURNO');
@@ -70,21 +80,41 @@ test.describe.serial('Pruebas con Activar Caja', async () => {
         // Debe salir el modal
         await expect(page.locator('text=¿Desea confirmar los datos del formulario?')).toBeVisible();
         // Click en Aceptar 
-        const botonAceptarConfirmacion = page.getByRole('dialog')
-            .filter({hasText: 'Confirmar¿Desea confirmar los datos del formulario?CancelarAceptar'})
-            .getByRole('button', {name: 'check Aceptar'});
+        const botonAceptarConfirmacion = page.getByRole('button', {name: 'check Aceptar'}).nth(1);
         await botonAceptarConfirmacion.click();  
 
-        /* Mensaje si ya existia un turno con esa caja, por lo que dio error */
-        const error = page.locator('text=ya tiene un turno abierto'); 
-        /* Mensaje si no existia un turno con esa caja, por lo que se realizo correctamenta la operacion */
-        const exito = page.locator('text=Operación Exitosa'); 
+        // Esperar tres segundos
+        await page.waitForTimeout(3000);
 
-        if (await error.isVisible()) { /* El mensaje de Error debe de estar visible */
-            await page.locator(`${ariaCerrar}`).click(); /* Hacer click a la x para cerrar el mensaje */
-        } else if (await exito.isVisible()) { /* El mensaje de Operación Exitosa debe de estar visible */
-            await page.locator(`${ariaCerrar}`).click(); /* Hacer click a la x para cerrar el mensaje */
-        };
+        // Alerta de turno aperturado
+        const alertaTurnoAperturado = page.locator('text=Apertura Turno almacenada correctamente.');
+
+        // Modal de caja con un turno ya abierto
+        const modalCajaAbierta = page.locator('text=Caja 130 ya tiene un turno abierto');
+
+        // Condicion si tiene o no un turno abierto
+        if (await alertaTurnoAperturado.isVisible()) {
+            // Cerrar la alerta
+            await page.locator(`${ariaCerrar}`).click();
+        } else if (await modalCajaAbierta.isVisible()) {
+            // Click al boton de Aceptar del modal
+            await page.getByRole('button', {name: 'check Aceptar'}).click();
+            
+            // El modal debe cerrarse
+            await expect(modalCajaAbierta).not.toBeVisible();
+        }
+    });
+
+    test('Buscar la caja activada', async () => {
+        // Digitar el nombre de la caja
+        await page.locator(`${formBuscar}`).fill(`${userCorrecto}`);
+
+        // Esperar a que cargue la pagina
+        await page.waitForTimeout(2000);
+
+        // La caja buscada debe mostrarse en la tabla
+        await expect(page.getByRole('cell', {name: `${userCorrecto}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombreTestigoCajero}`})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de todas las pruebas

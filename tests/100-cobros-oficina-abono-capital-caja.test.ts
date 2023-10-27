@@ -6,7 +6,7 @@ import {
     browserConfig, 
     inputDiaPago, 
     contextConfig, 
-    nombreTestigo,
+    nombreTestigoCajero,
     userCorrecto,
     formBuscar,
     noData
@@ -204,7 +204,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Elegir la caja a la que se le enviara el pago
         await page.getByTitle('TODOS - TODOS').click();
         // Elegir la caja en uso
-        await page.getByRole('option', {name: `CAJA ${userCorrecto} - ${nombreTestigo}`}).click();
+        await page.getByRole('option', {name: `CAJA ${userCorrecto} - ${nombreTestigoCajero}`}).click();
 
         // Boton Aplicar
         const botonAplicar = page.getByRole('button', {name: 'Aplicar'});

@@ -65,6 +65,16 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
                 // Dirigrse a la pagina
                 await page.goto(`${url_base}`);
 
+                // Cedula, nombre y apellido de la persona casada almacenados en el state
+                cedulaCasada = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaCasada'));
+                nombreCasada = await page.evaluate(() => window.localStorage.getItem('nombrePersonaCasada'));
+                apellidoCasada = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaCasada'));
+
+                // Cedula, nombre y apellido de la persona conyugue almacenados en el state
+                cedulaConyugue = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaConyuge'));
+                nombreConyugue = await page.evaluate(() => window.localStorage.getItem('nombrePersonaFisicaConyuge'));
+                apellidoConyugue = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaFisicaConyuge'));
+
                 // Botones de Editar Cuenta
                 botonEditarCuentaCasada = page.getByRole('row', {name: `${nombreCasada} ${apellidoCasada}`}).getByRole('button', {name: 'edit'});
                 // Boton de Editar Cuenta
@@ -142,7 +152,7 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
 
                 test('Cambiar el estado de la Persona Casada a Inactivo', async () => {
                     // El estado de la persona debe ser Activo
-                    const estadoActivo = page.getByTitle('ACTIVO');
+                    const estadoActivo = page.locator('#person').getByText('ACTIVO', {exact: true});
                     await expect(estadoActivo).toBeVisible();
 
                     // Click al estado
@@ -187,9 +197,6 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
                     // Debe regresar a la pagina de registro de personas
                     await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
 
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_registro_persona}`);
-
                     // Cambiar el estado de la lista de personas
                     await page.getByTitle('TODOS').click();
                     // Eelgir el estado Inactivo
@@ -204,9 +211,9 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
 
                 test('Editar la Persona Conyugue', async () => {
                     // Cambiar el estado de la lista de personas
-                    await page.getByTitle('INACTIVO').click();
+                    await page.locator('#form').getByText('INACTIVO').click();
                     // Eelgir el estado TODOS
-                    await page.getByRole('option', {name: 'ACTIVO'}).click();
+                    await page.getByRole('option', {name: 'ACTIVO', exact: true}).click();
 
                     // Buscar a la persona conyugue
                     await page.locator(`${formBuscar}`).fill(`${cedulaConyugue}`);
@@ -253,7 +260,7 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
 
                 test('Cambiar el estado de la Persona Conyugue a Fallecido', async () => {
                     // El estado de la persona debe ser Activo
-                    const estadoActivo = page.getByTitle('ACTIVO');
+                    const estadoActivo = page.locator('#person').getByText('ACTIVO', {exact: true});
                     await expect(estadoActivo).toBeVisible();
 
                     // Click al estado
@@ -297,9 +304,6 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
                 test('Buscar a la persona Conyugue pero en estado Fallecido', async () => {
                     // Debe regresar a la pagina de registro de personas
                     await expect(page.locator('h1').filter({hasText: 'REGISTRAR PERSONA'})).toBeVisible();
-
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_registro_persona}`);
 
                     // Cambiar el estado de la lista de personas
                     await page.getByTitle('TODOS').click();

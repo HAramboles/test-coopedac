@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, formBuscar, selectBuscar, ariaCerrar, browserConfig, dataEliminar, nombreTestigo, contextConfig } from './utils/dataTests';
+import { url_base, formBuscar, selectBuscar, ariaCerrar, browserConfig, dataEliminar, nombreTestigoCajero, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
 import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
 
@@ -12,10 +12,10 @@ let page: Page;
 let botonEditarCuenta: Locator;
 
 // Imagen de la Firma
-const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
+const firma = './img/firma.jpg';
 
 // Imagen de la nueva firma agregada
-const firma2 = './tests/firma2.jpg' // Con este path la imagen de la nueva firma debe estar en la carpeta tests
+const firma2 = './img/firma2.jpg';
 
 // Cedula, nombre y apellido de la persona
 let cedula: string | null;
@@ -282,8 +282,8 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await seleccionarTestigo.click();
 
                     // Seleccionar un testigo, la primera opcion que aparezca
-                    await expect(page.getByRole('option', {name: `${nombreTestigo}`})).toBeVisible();
-                    await page.getByRole('option', {name: `${nombreTestigo}`}).click();
+                    await expect(page.getByRole('option', {name: `${nombreTestigoCajero}`})).toBeVisible();
+                    await page.getByRole('option', {name: `${nombreTestigoCajero}`}).click();
 
                     // Esperar dos segundos antes de dar click al boton de Aceptar
                     await page.waitForTimeout(2000);

@@ -98,6 +98,21 @@ test.describe.serial('Pruebas con el Mensaje de Aviso cuando hay Recepciones Pen
         await expect(page.locator('#form_OFFICER_NAME')).toHaveValue(`${nombreOficialCuadre}`);
     });
 
+    test('Distribuir decimales y no debe mostrarse erroneamente el formato de los decimales', async () => {
+        // Hacer la distribucion del dinero para probar el formato de los decimales
+        const cantDecimales = page.locator('[id="23"]'); // Campo de RD 0.1
+
+        // Cantidad = 35 de 0.1
+        await cantDecimales.click();
+        await cantDecimales.fill('35');
+
+        // El total de los decimales no deben tener el formato erroneo
+        await expect(page.locator('[step="1"]')).not.toHaveValue('RD$ 0.35,000,000,000,000,003');
+
+        // Borrar la cantidad agregada
+        await cantDecimales.clear();
+    });
+
     test('Distribuir el efectivo de la caja a cuadrar', async () => {
         // Hacer la distribucion del dinero para el cuadre de caja
         const cant2000 = page.locator('[id="13"]'); // Campo de RD 2000

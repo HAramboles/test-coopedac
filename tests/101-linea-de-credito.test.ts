@@ -14,7 +14,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Imagen de los documentos
-const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
+const firma = './img/firma.jpg';
 
 // Pruebas
 test.describe.serial('Prueba con la Solicitud de Credito', () => {

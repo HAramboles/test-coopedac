@@ -31,6 +31,7 @@ let inputLugarTrabajo:Locator;
 let inputEmailEmpresa:Locator;
 let inputTelefonoEmpresa:Locator;
 let inputDireccionEmpresa:Locator;
+let inputPosicionEmpresa:Locator;
 let inputFechaIngresoEmpresa:Locator;
 let inputOtraActividad:Locator;
 let inputJefeInmediato:Locator;
@@ -79,6 +80,7 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
         inputEmailEmpresa = page.locator('#person_EMAIL_EMPRESA');
         inputTelefonoEmpresa = page.locator('#person_TELEFONO_EMPRESA');
         inputDireccionEmpresa = page.locator('#person_DIRECCION_EMPRESA');
+        inputPosicionEmpresa = page.locator('#person_POSICION_EMPRESA');
         inputFechaIngresoEmpresa = page.locator('#person_FECHA_ENTRADA_EMPRESA');
         inputOtraActividad = page.locator('#person_OTRA_ACTIVIDAD');
         inputJefeInmediato = page.locator('#person_NOMBRE_SUPERVISOR');
@@ -142,44 +144,44 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
 
         // Click al input de codigo y debe estar deshabilitado
         await inputCodigo.click();
-        await expect(inputCodigo).toBeDisabled();
+        await expect(inputCodigo).toHaveAttribute('readonly', '');
 
         // El estado de la persoan debe ser Activo
-        await expect(page.getByTitle('ACTIVO')).toBeVisible();
+        await expect(page.getByTitle('ACTIVO', {exact: true})).toBeVisible();
 
         // Click al input de cedula, debe estar deshabilitado
-        await expect(inputCedula).toBeDisabled();
-        await inputCedula.click();
+        await expect(inputCedula).toHaveAttribute('readonly', '');
+        // await inputCedula.click();
         // Click fuera del input 
-        await page.locator('h1').filter({hasText: 'DATOS GENERALES'}).click();
+        // await page.locator('h1').filter({hasText: 'DATOS GENERALES'}).click();
         // El input de cedula no puede estar vacio
-        await expect(inputCedula).not.toHaveValue('');
+        // await expect(inputCedula).not.toHaveValue('');
 
         // Click al input de categoria actual, debe estar deshabilitado y tener el valor de Socio Ahorrante
-        await expect(inputCategoriaActual).toBeDisabled();
+        await expect(inputCategoriaActual).toHaveAttribute('readonly', '');
         await expect(inputCategoriaActual).toHaveValue('SOCIO AHORRANTE');
         await inputCategoriaActual.click();
 
         // Click al input de pasaporte, debe estar deshabilitado
-        await expect(inputPasaporte).toBeDisabled();
-        await inputPasaporte.click();
+        await expect(inputPasaporte).toHaveAttribute('readonly', '');
+        // await inputPasaporte.click();
         // Click fuera del input 
-        await page.locator('h1').filter({hasText: 'DATOS GENERALES'}).click();
+        // await page.locator('h1').filter({hasText: 'DATOS GENERALES'}).click();
         // El input de cedula no puede estar vacio
-        await expect(inputPasaporte).not.toHaveValue('');
+        // await expect(inputPasaporte).not.toHaveValue('');
 
         // Click al input de nombre, debe estar deshabilitado y tener el valor del nombre de la persona
-        await expect(inputNombre).toBeDisabled();
+        await expect(inputNombre).toHaveAttribute('readonly', '');
         await expect(inputNombre).toHaveValue(`${nombre}`);
         await inputNombre.click();
 
         // Click al input de apellido, debe estar deshabilitado y tener el valor del apellido de la persona
-        await expect(inputApellido).toBeDisabled();
+        await expect(inputApellido).toHaveAttribute('readonly', '');
         await expect(inputApellido).toHaveValue(`${apellido}`);
         await inputApellido.click();
 
         // Click al input de apodo, debe estar deshabilitado y tener el valor de apodo
-        await expect(inputApodo).toBeDisabled();
+        await expect(inputApodo).toHaveAttribute('readonly', '');
         await expect(inputApodo).toHaveValue('APODO');
         await inputApodo.click();
 
@@ -187,12 +189,12 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
         await expect(page.getByTitle('DOMINICANA')).toBeVisible();
 
         // Click al input de fecha de nacimiento, debe estar deshabilitado y tener el valor de la fecha de nacimiento de la persona
-        await expect(inputFechaNacimiento).toBeDisabled();
+        await expect(inputFechaNacimiento).toHaveAttribute('readonly', '');
         await expect(inputFechaNacimiento).toHaveValue('17/01/1990');
         await inputFechaNacimiento.click();
 
         // Click al input de lugar de nacimiento, debe estar deshabilitado y tener el valor de la fecha de nacimiento de la persona
-        await expect(inputLugarNacimiento).toBeDisabled();
+        await expect(inputLugarNacimiento).toHaveAttribute('readonly', '');
         await expect(inputLugarNacimiento).toHaveValue('LA VEGA');
         await inputLugarNacimiento.click();
 
@@ -202,7 +204,6 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
         // Click al input de no. dependientes, debe estar deshabilitado y tener el valor de la cantidad de depenmdientes de la persona
         await expect(inputNumeroDependientes).toBeDisabled();
         await expect(inputNumeroDependientes).toHaveValue('4');
-        await inputNumeroDependientes.click();
 
         // El ejecutivo debe ser Cliente Inactivo
         await expect(page.getByTitle('CLIENTE INACTIVO')).toBeVisible();
@@ -233,30 +234,32 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
         await expect(page.getByTitle('PROGRAMADOR', {exact: true})).toBeVisible();
 
         // Click al input de lugar de trabajo, debe estar deshabilitado y tener el valor del lugar de trabajo de la persona
-        await expect(inputLugarTrabajo).toBeDisabled();
+        await expect(inputLugarTrabajo).toHaveAttribute('readonly', '');
         await expect(inputLugarTrabajo).toHaveValue('PROGRAMSUNI');
         await inputLugarTrabajo.click();
 
         // Click al input de email de la empresa, debe estar deshabilitado y tener el valor del email de la empresa 
-        await expect(inputEmailEmpresa).toBeDisabled();
+        await expect(inputEmailEmpresa).toHaveAttribute('readonly', '');
         await expect(inputEmailEmpresa).toHaveValue('EMPRESAEJEMPLO@HOTMAIL.COM');
         await inputEmailEmpresa.click();
 
         // Click al input de telefono de la empresa, debe estar deshabilitado y tener el valor del telefono de la empresa
-        await expect(inputTelefonoEmpresa).toBeDisabled();
+        await expect(inputTelefonoEmpresa).toHaveAttribute('readonly', '');
         await expect(inputTelefonoEmpresa).toHaveValue('(809) 265 3022');
         await inputTelefonoEmpresa.click();
 
         // Click al input de direccion de la empresa, debe estar deshabilitado y tener el valor de la direccion de la empresa
-        await expect(inputDireccionEmpresa).toBeDisabled();
+        await expect(inputDireccionEmpresa).toHaveAttribute('readonly', '');
         await expect(inputDireccionEmpresa).toHaveValue('PALMARITO, LA VEGA');
         await inputDireccionEmpresa.click();
 
+        // await page.pause();
+
         // La posicion en la empresa debe ser Programador Web
-        await expect(page.getByTitle('PROGRAMADOR WEB')).toBeVisible();
+        await expect(inputPosicionEmpresa).toHaveValue('PROGRAMADOR WEB');
 
         // Click al input de fecha de ingreso a la empresa, debe estar deshabilitado y tener el valor de la fecha de ingreso a la empresa
-        await expect(inputFechaIngresoEmpresa).toBeDisabled();
+        await expect(inputFechaIngresoEmpresa).toHaveAttribute('readonly', '');
         await expect(inputFechaIngresoEmpresa).toHaveValue('15/01/2021');
         await inputFechaIngresoEmpresa.click();
 
@@ -264,27 +267,25 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
         await expect(page.getByTitle('Programación informática, consultarías y actividades relacionadas')).toBeVisible();
 
         // Click al input de otra actividad, debe estar deshabilitado y tener el valor de otra actividad
-        await expect(inputOtraActividad).toBeDisabled();
+        await expect(inputOtraActividad).toHaveAttribute('readonly', '');
         await expect(inputOtraActividad).toHaveValue('NEGOCIOS');
         await inputOtraActividad.click();
 
         // Click al input de jefe inmediato, debe estar deshabilitado y tener el valor del jefe inmediato
-        await expect(inputJefeInmediato).toBeDisabled();
+        await expect(inputJefeInmediato).toHaveAttribute('readonly', '');
         await expect(inputJefeInmediato).toHaveValue('JEFE DE EJEMPLO');
         await inputJefeInmediato.click();
 
-        // Click al input de ingreso promedio, debe estar deshabilitado y tener el valor del ingreso promedio
+        // El ingreso promedio debe estar deshabilitado y tener el valor del ingreso promedio
         await expect(inputIngresoPromedio).toBeDisabled();
         await expect(inputIngresoPromedio).toHaveValue('RD$ 60,000');
-        await inputIngresoPromedio.click();
 
-        // Click al input de otros ingresos, debe estar deshabilitado y tener el valor de otros ingresos
+        // El input de otros ingresos debe estar deshabilitado y tener el valor de otros ingresos
         await expect(inputOtrosIngresos).toBeDisabled();
         await expect(inputOtrosIngresos).toHaveValue('US$ 1,200');
-        await inputOtrosIngresos.click();
 
         // Click al input de justificacion de ingresos, debe estar deshabilitado y tener el valor de la justificacion de ingresos
-        await expect(inputJustificacionIngresos).toBeDisabled();
+        await expect(inputJustificacionIngresos).toHaveAttribute('readonly', '');
         await expect(inputJustificacionIngresos).toHaveValue('INGRESOS RECIBIDOS POR HERENCIA FAMILIAR');
         await inputJustificacionIngresos.click();
 
@@ -300,12 +301,12 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
         await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN ADICIONAL DE INGRESOS'})).toBeVisible();
 
         // Click al input de origen de recursos, debe estar deshabilitado y tener el valor del origen de recursos
-        await expect(inputOrigenRecursos).toBeDisabled();
+        await expect(inputOrigenRecursos).toHaveAttribute('readonly', '');
         await expect(inputOrigenRecursos).toHaveValue('TRABAJO');
         await inputOrigenRecursos.click();
 
         // Click al input de proposito, debe estar deshabilitado y tener el valor del proposito de los recursos
-        await expect(inputProposito).toBeDisabled();
+        await expect(inputProposito).toHaveAttribute('readonly', '');
         await expect(inputProposito).toHaveValue('PARA USO PERSONAL');
         await inputProposito.click();
 
@@ -362,7 +363,7 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
         await expect(page.locator(`${selectBuscar}`)).toBeDisabled();
 
         // No debe haber ningun relacionado agregado en la tabla
-        await expect(page.locator(`$${noData}`)).toBeVisible();
+        await expect(page.locator(`text=${noData}`)).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

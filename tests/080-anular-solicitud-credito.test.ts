@@ -25,7 +25,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Imagen de los documentos
-const firma = './tests/firma.jpg'; // Con este path la imagen de la firma debe estar en la carpeta tests
+const firma = './img/firma.jpg';
 
 // Pruebas
 test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', async () => {
@@ -85,6 +85,17 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
             await expect(botonNuevaSolicitud).toBeVisible();
             await botonNuevaSolicitud.click();
+        });
+
+        test('No debe mostrarse un Error Innterno', async () => {
+            // Titulo del error
+            await expect(page.getByText('Error Interno')).not.toBeVisible();
+
+            // Subtitulo del error
+            await expect(page.getByText('AUTOMATIC_INTERNAL_ERROR')).not.toBeVisible();
+
+            // Mensaje del error
+            await expect(page.getByText("Cannot read properties of undefined (reading 'ESTADO_PRESTAMO')")).not.toBeVisible();
         });
 
         test('Paso 1 - Datos del Solicitante', async () => {
