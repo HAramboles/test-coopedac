@@ -1,9 +1,8 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, formBuscar, browserConfig, formComentario, contextConfig, actividadPersonaFisica, noData } from './utils/dataTests';
+import { url_base, ariaCerrar, selectBuscar, formBuscar, browserConfig, formComentario, contextConfig, actividadPersonaFisica } from './utils/dataTests';
 import { diaActualFormato, diaSiguiente } from './utils/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
-import { url_sesiones_transito, url_transacciones_caja } from './utils/urls';
-import { servicio_check_session } from './utils/servicios';
+import { url_transacciones_caja } from './utils/urls';
 
 // Variables Globales
 let browser: Browser;

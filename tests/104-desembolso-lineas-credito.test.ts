@@ -65,13 +65,13 @@ test.describe.serial('Pruebas con el Desembolso de Lineas de Credito', () => {
         await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('LÍNEA DE CRÉDITO')).toBeVisible();
 
         // Monto
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 10,000.00')).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 200,000.00')).toBeVisible();
 
         // Plazo 
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('24')).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('12')).toBeVisible();
 
         // Cuota
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 41.67')).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 1,162.50')).toBeVisible();
     });
 
     test('Desembolsar la otra mitad de la Linea de Credito', async () => {
@@ -82,7 +82,7 @@ test.describe.serial('Pruebas con el Desembolso de Lineas de Credito', () => {
         await expect(page.getByText('DESEMBOLSO DE PRÉSTAMO')).toBeVisible();
 
         // Debe mostrarse el monto disponible luego de desembolsar la mitad de la linea
-        await expect(page.locator('text=RD$ 5,000.00')).toBeVisible();
+        await expect(page.locator('text=RD$ 100,000.00')).toBeVisible();
 
         // Click al boton de Desembolsar Todo
         const botonDesembolsarTodo = page.locator('(//INPUT[@type="checkbox"])[2]');
@@ -93,7 +93,7 @@ test.describe.serial('Pruebas con el Desembolso de Lineas de Credito', () => {
         await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
 
         // Neto a Entegar
-        await expect(page.getByRole('row', {name: 'Neto a Entregar : RD$ 5,000.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Neto a Entregar : RD$ 100,000.00'})).toBeVisible();
 
         // Click al boton de Aceptar
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});

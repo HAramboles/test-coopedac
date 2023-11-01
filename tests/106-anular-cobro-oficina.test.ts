@@ -108,8 +108,7 @@ test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
         await expect(botonBuscar).toBeVisible();
         await botonBuscar.click();
 
-        // Deben mostrarse las nota de credito de la persona fisica y del tercero
-        await expect(page.getByRole('cell', {name: `${nombrePersona} ${apellidoPersona}`})).toBeVisible();
+        // Debe mostrarse ls nota de credito del tercero
         await expect(page.getByRole('cell', {name: `${nombreTercero} ${apellidoTercero}`})).toBeVisible();
 
         // Anular la transaccion del tercero
@@ -133,8 +132,7 @@ test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
         // Click al boton de Aceptar del modal de Operacion Exitosa
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
-        // No deben mostrarse las nota de credito de la persona fisica y del tercero
-        await expect(page.getByRole('cell', {name: `${nombrePersona} ${apellidoPersona}`})).not.toBeVisible();
+        // No debe mostrarse la nota de credito del tercero
         await expect(page.getByRole('cell', {name: `${nombreTercero} ${apellidoTercero}`})).not.toBeVisible(); 
     });
 

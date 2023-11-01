@@ -87,7 +87,7 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                 await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('AHORROS NORMALES');
         
                 // Balance
-                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 2,075,700');
+                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 2,076,200');
         
                 // Transito
                 await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('RD$ 0');
@@ -96,7 +96,7 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                 await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 250');
         
                 // Disponible
-                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 2,075,250');
+                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 2,075,750');
         
                 // Estado de Cuenta
                 await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');

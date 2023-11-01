@@ -139,8 +139,8 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await expect(page.getByTitle('RETENCION PERSONA FISICA 10%')).toBeVisible();
 
                     // Descripcion de Cuenta
-                    const descripcion = page.locator('#APORTACIONES\\ PREFERENTES_DESCRIPCION');
-                    await expect(descripcion).toHaveValue('APORTACIONES PREFERENTES');
+                    const descripcion = page.locator('#APORTACIONES\\ REFERENTES_DESCRIPCION');
+                    await expect(descripcion).toHaveValue('APORTACIONES REFERENTES');
 
                     // Titular
                     await expect(page.getByTitle(`${nombre} ${apellido}`)).toBeVisible();
@@ -149,7 +149,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await expect(page.getByTitle('SOCIO AHORRANTE')).toBeVisible();
 
                     // Monto de Apertura
-                    await expect(page.locator('#APORTACIONES\\ REFERENTES_MONTO_APERTURA')).toHaveValue('RD$ 1000');
+                    await expect(page.locator('#APORTACIONES\\ REFERENTES_MONTO_APERTURA')).toHaveValue('RD$ 1,000');
 
                     // Tasa Anual
                     await expect(page.locator('#APORTACIONES\\ REFERENTES_TASA')).toHaveValue('8%');

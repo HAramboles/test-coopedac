@@ -301,6 +301,7 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
                     const montoConfirmacion = page.getByPlaceholder('MONTO DE CONFIRMACIÓN');
                     await expect(montoConfirmacion).toBeVisible();
                     await montoConfirmacion.clear();
+                    await page.waitForTimeout(1000);
                     await montoConfirmacion.fill('25,000');
             
                     // Subir la imagen de la firma

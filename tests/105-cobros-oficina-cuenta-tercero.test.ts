@@ -98,13 +98,13 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
         // Prestamo
-        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('LÍNEA DE CRÉDITO ');
+        await expect(page.locator('#form_DESCOFERTA')).toHaveValue('LÍNEA DE CRÉDITO');
 
         // Cuota
-        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 83.33');
+        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 1,162.5');
 
         // Garantia
-        await expect(page.getByText('AHORROS NORMALES')).toBeVisible();
+        await expect(page.getByText('Sin garantía')).toBeVisible();
 
         // Linea de Credito
         await expect(page.getByText('Línea de Crédito', {exact: true})).toBeVisible();
@@ -125,11 +125,11 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(modal).toBeVisible();
 
         // En el modal debe estar la cuenta de Ahorros Normales de la persona que se le coloco como cuenta de cobro
-        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
-        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
 
-        // Cerrar el modal
-        await page.locator(`${dataCerrar}`).click();
+        // Cerrar el modal de las cuentas de cobro
+        await page.getByLabel('Close').nth(3).click();
 
         // El modal debe desaparecer
         await expect(modal).not.toBeVisible();

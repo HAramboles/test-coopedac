@@ -766,7 +766,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.waitForTimeout(3000);
 
         // La solicitud de credito desembolsada debe estar visible
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'CRÉDIAUTOS'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

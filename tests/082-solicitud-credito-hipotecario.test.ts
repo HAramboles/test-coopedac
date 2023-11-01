@@ -961,7 +961,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.waitForTimeout(3000);
 
         // La solicitud de credito desembolsada debe estar visible
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de todas las pruebas

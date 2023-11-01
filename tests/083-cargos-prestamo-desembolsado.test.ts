@@ -166,8 +166,8 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
 
                     // Cambiar la via de cobro
                     await page.getByText('FIJO EN CUOTAS').click();
-                    // La via de cobro por defecto debe ser cobro en desembolso
-                    await expect(page.getByText('COBRO EN DESEMBOLSO')).toBeVisible();
+                    // Elegir cobro en desembolso
+                    await page.getByText('COBRO EN DESEMBOLSO').click();
                 
                     // Guardar el cargo agregado
                     await page.getByRole('button', {name: 'save Guardar'}).click();
@@ -184,8 +184,8 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                     await expect(page.getByRole('cell', {name: 'BURO DE CREDITO (DATACREDITO)'})).toBeVisible();
                     await expect(page.getByRole('cell', {name: 'SEGURO DE INCENDIO'})).toBeVisible();
                 
-                    // Click en Siguiente
-                    await page.getByRole('button', {name: 'Siguiente'}).click();
+                    // Click en Actualizar y continuar
+                    await page.getByRole('button', {name: 'Actualizar y continuar'}).click();
                 
                     // Debe mostrarse el titulo de la siguiente seccion
                     await expect(page.locator('h1').filter({hasText: 'DEUDAS PENDIENTES'})).toBeVisible();

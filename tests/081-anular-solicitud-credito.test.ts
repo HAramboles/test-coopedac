@@ -396,13 +396,13 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             // Boton de Imprimir
             const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
             await expect(botonImprimir).toBeVisible();
-            // await botonImprimir.click();
+            await botonImprimir.click();
             
-            // // Esperar a que se abra una nueva pagina con el reporte de la tabla de amortizacion
-            // const page1 = await context.waitForEvent('page');
+            // Esperar a que se abra una nueva pagina con el reporte de la tabla de amortizacion
+            const page1 = await context.waitForEvent('page');
             
-            // // Cerrar la pagina con el reporte de la tabla de amortizacion
-            // await page1.close();
+            // Cerrar la pagina con el reporte de la tabla de amortizacion
+            await page1.close();
 
             // Debe regresar a la pagina de Solicitud de Credito
             await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
@@ -676,8 +676,8 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
                     });
 
                     test('Al crear una nueva Solicitud no debe tener los datos de la persona de la Solicitud Anulada', async () => {
-                        // El listado de las solicitudes debe ser solicitado
-                        await expect(page.locator('text=APROBADO')).toBeVisible();
+                        // El listado de las solicitudes debe ser aprobado
+                        await expect(page.locator('#form').getByText('APROBADO')).toBeVisible();
                 
                         // Boton Nueva Solicitud
                         const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
@@ -694,6 +694,10 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
                 
                         // El input de Buscar Socio debe estar vacio
                         await expect(page.locator(`${selectBuscar}`)).toHaveValue('');
+
+                        // Click al input y no debe aparecer una opcion con el nombre del socio
+                        await page.locator(`${selectBuscar}`).click();
+                        await expect(page.getByRole('option', {name: `${nombre} ${apellido}`})).not.toBeVisible();
                 
                         // Click al boton de Cancelar
                         await page.getByRole('button', {name: 'Cancelar'}).click();
@@ -704,8 +708,8 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
                         // Click al boton de Aceptar del mensaje de confirmacion
                         await page.getByRole('button', {name: 'check Aceptar'}).click();
                 
-                        // La url debe regresar a las solicitudes solicitadas
-                        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
+                        // La url debe regresar a las solicitudes aprobadas
+                        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=aprobado`);
                     });
                 };
 
