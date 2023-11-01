@@ -284,6 +284,9 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     // Cantidad = 2 de 50
                     await cant50.click();
                     await cant50.fill('2');
+
+                    // Esperar dos segundos
+                    await page.waitForTimeout(2000);
             
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();
@@ -346,6 +349,9 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     // Cantidad = 1 de 100
                     await cant100.click();
                     await cant100.fill('1');
+
+                    // Esperar dos segundos
+                    await page.waitForTimeout(2000);
             
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();

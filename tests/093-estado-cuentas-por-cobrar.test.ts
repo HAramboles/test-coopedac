@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { diaActualFormato } from './utils/fechas';
-import { url_base, selectBuscar, browserConfig, contextConfig, noData, dataVer } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, contextConfig, noData, dataVer, dataCerrar } from './utils/dataTests';
 import { url_estado_cuentas_cobrar } from './utils/urls';
 
 // Variables globales
@@ -81,21 +81,24 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('cell', {name: 'RD'})).toBeVisible();
 
         // Tasa del Credito
-        await expect(page.getByRole('cell', {name: '10.00%'}).first()).toBeVisible();
+        await expect(page.getByRole('cell', {name: '15.00%'}).first()).toBeVisible();
 
         // Monto Desembolsado del Credito
-        await expect(page.getByText('50,000.00').first()).toBeVisible();
+        await expect(page.getByText('300,000.00').first()).toBeVisible();
 
         // Estado del Credito
         await expect(page.getByRole('cell', {name: 'CANCELADO'})).toBeVisible();
 
         // Imprimir Estado a la Fecha de Corte
         const botonImprimirEstado = page.getByRole('button', {name: 'printer', exact: true});
-        await expect(botonImprimirEstado).toBeVisible();
-        await botonImprimirEstado.click();
 
         // Esperar que se abra una nueva pestaña
-        const page1 = await context.newPage();
+        const [page1] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Finalizar
+            await expect(botonImprimirEstado).toBeVisible(),
+            await botonImprimirEstado.click()
+        ]);
         
         // Cerrar la pagina con el reporte del Estado a la Fecha de Corte
         await page1.close();
@@ -151,7 +154,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('row', {name: 'Descripción Oferta CRÉDITO HIPOTECARIO'})).toBeVisible();
 
         // Monto Cuota
-        await expect(page.getByRole('row', {name: 'Monto Cuota 416.67'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Monto Cuota 3,885.00'})).toBeVisible();
 
         // Plazo
         await expect(page.getByRole('row', {name: 'Plazo 48'})).toBeVisible();
@@ -160,7 +163,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('row', {name: 'Frecuencia MENSUAL'})).toBeVisible();
 
         // Tasa de Interes
-        await expect(page.getByRole('row', {name: 'Tasa de Interés 10.00 %'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Tasa de Interés 15.00 %'})).toBeVisible();
 
         // Gracia Interes
         await expect(page.getByRole('row', {name: 'Gracia Interés 0.00'})).toBeVisible();
@@ -178,10 +181,10 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('row', {name: 'VÍa Desembolso DEPOSITO'})).toBeVisible();
 
         // Monto Aprobado
-        await expect(page.getByRole('row', {name: 'Monto aprobado 50,000.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Monto aprobado 300,000.00'})).toBeVisible();
 
         // Monto Desembolsado
-        await expect(page.getByRole('row', {name: 'Monto desembolsado 50,000.00'})).toBeVisible();  
+        await expect(page.getByRole('row', {name: 'Monto desembolsado 300,000.00'})).toBeVisible();  
 
         // Tipo Prestamo
         await expect(page.getByRole('row', {name: 'Tipo préstamo HIPOTECARIOS'})).toBeVisible();
@@ -198,21 +201,24 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
 
         // Boton de Imprimir todos los recibos de los pagos
         const botonRecibos = page.getByRole('button', {name: 'Todos los Recibos'});
-        await expect(botonRecibos).toBeVisible();
-        await botonRecibos.click();
 
         // Esperar que se abra una nueva ventana con el reporte 
-        const page1 = await context.newPage();
+        const [page1] = await Promise.all([
+            context.waitForEvent('page'),
+            // Click al boton de Finalizar
+            await expect(botonRecibos).toBeVisible(),
+            await botonRecibos.click()
+        ]);
         
         // Cerrar la pagina con el reporte de todos los recibos
         await page1.close();
 
         // Totales
-        await expect(page.getByRole('row', {name: 'TOTALES: 50,000.00 0.00 50,000.00 0.00 0.00 0.00	0.00 100,000.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'TOTALES: 300,000.00 0.00 300,000.00 0.00 0.00 0.00 0.00 600,000.00'})).toBeVisible();
     });
 
     test('Ver las actividades de uno de los pagos al prestamo', async () => {
-        // Click al boton de Ver Actividades del primer prestamo
+        // Click al boton de Ver Actividades del primer pago
         const verActividades = page.locator(`${dataVer}`).nth(1);
         await expect(verActividades).toBeVisible();
         await verActividades.click();
@@ -228,7 +234,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.locator('#form_DESC_TIPO_TRANS')).toHaveValue('NOTAS CREDITO PRESTAMOS');
 
         // Monto
-        await expect(page.locator('#form_TOTAL_RECIBIDO')).toHaveValue(' 25,000.00');
+        await expect(page.getByLabel('Monto')).toHaveValue(' 150,000.00');
 
         // Oferta
         await expect(page.locator('#form_DESC_OFERTA')).toHaveValue('CRÉDITO HIPOTECARIO');
@@ -240,16 +246,18 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByText(' ABONO A CAPITAL')).toBeVisible();
 
         // Comentario
-        await expect(page.getByText('PAGO POR INTERNET BANKING DE 25,000 PARA EL PRESTAMO')).toBeVisible();
+        await expect(page.getByText('PAGO POR INTERNET BANKING DE 150,000 PARA EL PRESTAMO')).toBeVisible();
 
         // Valores de la actividad
         await expect(page.getByText('Valores de la actividad')).toBeVisible();
 
         // Capital
-        await expect(page.locator('#form_CAPITAL')).toHaveValue(' 25,000.00');
+        await expect(page.locator('#form_CAPITAL')).toHaveValue(' 150,000.00');
+
+        //await page.pause();
 
         // Total Recibido
-        await expect(page.locator('#form_TOTAL_RECIBIDO')).toHaveValue(' 25,000.00');
+        await expect(page.locator('form').filter({hasText: 'CapitalAbonoInterésCargosMoraSeguroTotal recibido'}).locator('#form_TOTAL_RECIBIDO')).toHaveValue(' 150,000.00');
 
         // Cuotas afectadas
         await expect(page.getByText('Cuotas afectadas')).toBeVisible();
@@ -262,6 +270,9 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
 
         // Detalle contable
         await expect(page.getByText('Detalle contable')).toBeVisible();
+
+        // Cerrar el modal de las actividades del pago
+        await page.locator(`${dataCerrar}`).click();
     });
 
     test('Cuotas pendientes', async () => {
@@ -302,7 +313,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('columnheader', {name: 'Balance'})).toBeVisible();
 
         // Boton de Imprimir
-        const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
+        const botonImprimir = page.getByLabel('Ver Tabla de Amortización').getByRole('button', {name: 'printer Imprimir'});
         await expect(botonImprimir).toBeVisible();
         await botonImprimir.click();
 

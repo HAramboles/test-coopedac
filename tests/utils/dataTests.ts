@@ -2,6 +2,9 @@
 export const userCorrecto = process.env.REACT_APP_WEB_SERVICE_API_USER;
 export const passCorrecto = process.env.REACT_APP_WEB_SERVICE_API_PASS;
 
+// Usuario en mayusculas
+export const userCorrectoUpperCase = userCorrecto?.toLocaleUpperCase();
+
 // Usuario y password para realizar el cuadre de caja
 export const userCuadreCaja = process.env.REACT_APP_WEB_SERVICE_API_USER_CUADRE_CAJA;
 export const passCuadreCaja = process.env.REACT_APP_WEB_SERVICE_API_PASS_CUADRE_CAJA;
@@ -61,7 +64,7 @@ export const razonAnulacion:string = '#form_CONCEPTO_ANULACION';
 export const inputFechaSolicitud:string = '#loan_form_FECHA_APERTURA';
 export const inputPrimerPago:string = '#loan_form_DIA_PAGO';
 // Fecha solicitud de prestamo
-export const fechaSolicitudCredito:string = '#form_FECHA_APERTURA';
+export const fechaSolicitudCredito:string = '#form__FECHA_APERTURA';
 // Usuario que aprobo la solicitud
 export const usuarioAproboSolicitud:string = '#form_USUARIO_APROBO';
 

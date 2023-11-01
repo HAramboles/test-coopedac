@@ -65,16 +65,16 @@ test.describe.serial('Pruebas con la Reimpresion de Desembolso', () => {
         await expect(page.getByText('CRÉDITO HIPOTECARIO')).toBeVisible();
 
         // Monto
-        await expect(page.getByText('50,000.00')).toBeVisible();
+        await expect(page.getByText('300,000.00')).toBeVisible();
 
         // Plazo
         await expect(page.getByText('48')).toBeVisible();
 
         // Cuota
-        await expect(page.getByText('416.67')).toBeVisible();
+        await expect(page.getByText('3,750.00')).toBeVisible();
     });
 
-    test('Reimprimir el Desembolso de una Solicitud de un Socio', async () => {
+    test('Reimprimir el Desembolso de la Solicitud del Socio', async () => {
         // Boton Imprimir de la pagina
         const botonImprimir = page.locator(`${dataPrinter}`);
         await botonImprimir.click();

@@ -10,7 +10,7 @@ import {
     contextConfig,
     fechaSolicitudCredito,
     usuarioAproboSolicitud,
-    userCorrecto,
+    userCorrectoUpperCase,
     dataVer,
     formComentario
 } from './utils/dataTests';
@@ -68,6 +68,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(botonGuardaryContinuar).toBeVisible();
         // presionar el boton
         await botonGuardaryContinuar.click();
+    };
+
+    // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
+    const CerrarPaginasReportes = async () => {
+        context.on('page', async (page) => {
+            await page.waitForTimeout(1000);
+            await page.close();
+        });
     };
 
     test('Ir a la opcion de Solicitud de Credito', async () => {
@@ -511,15 +519,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(botonFinalizar).toBeVisible();
         await botonFinalizar.click();
 
-        // Esperar que se abran tres nuevas pestañas con los reportes
-        const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-        const page3 = await context.waitForEvent('page');
-
-        // Cerrar todas las paginas
-        await page3.close();
-        await page2.close();
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Cambiar el estado de la Solicitud de Solicitado a En Proceso (Analisis)', async () => {
@@ -552,15 +553,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Esperar que se abran tres nuevas pestañas con los reportes
-        const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-        const page3 = await context.waitForEvent('page');
-
-        // Cerrar todas las paginas
-        await page3.close();
-        await page2.close();
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Aprobado', async () => {
@@ -611,11 +605,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Esperar que se abra una pagina con el reporte de Aprobacion
-        const page1 = await context.waitForEvent('page');
-
-        // Cerrar la pagina con el reporte
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Desembolsar la solicitud', async () => {
@@ -650,7 +641,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(page.locator(`${fechaSolicitudCredito}`)).toHaveValue(`${diaActualFormato}`);
 
         // El usuario que aprobro debe estar visible
-        await expect(page.locator(`${usuarioAproboSolicitud}`)).toHaveValue(`${userCorrecto}`);
+        await expect(page.locator(`${usuarioAproboSolicitud}`)).toHaveValue(`${userCorrectoUpperCase}`);
 
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
@@ -671,11 +662,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(botonDesembolsar).toBeVisible();
         await botonDesembolsar.click();
 
-        // Esperar que se abra una nueva pestaña con el reporte
-        const page1 = await context.waitForEvent('page');
-        
-        // Cerrar la pagina con el reporte 
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Agregarle una Observacion al Prestamo', async () => {

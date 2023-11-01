@@ -61,7 +61,7 @@ test.describe.serial('Pruebas con la Consulta de los Movimientos de un Prestamo'
         await expect(page.locator('#form_PRESTAMOS')).toHaveValue('PRESTAMOS');
 
         // Cuota
-        await expect(page.locator('#form_CUOTA')).toHaveValue('RD$ 416.67');
+        await expect(page.locator('#form_CUOTA')).toHaveValue('RD$ 3,885');
 
         // Balance
         await expect(page.locator('#form_DEUDA_CAPTITAL')).toHaveValue('RD$ 0');

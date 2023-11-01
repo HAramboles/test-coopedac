@@ -97,7 +97,7 @@ test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes P
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL CRÉDITO'})).toBeVisible();
 
         // Monto Desembolsado
-        await expect(page.locator('#form_DESEMBOLSADO')).toHaveValue('RD$ 50,000');
+        await expect(page.locator('#form_DESEMBOLSADO')).toHaveValue('RD$ 300,000');
 
         // Tipo de garantia
         await expect(page.locator('#form_ID_CLASE_GARANTIA')).toHaveValue('HIPOTECARIAS');
@@ -130,7 +130,7 @@ test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes P
         await cambioFecha.check();
 
         // Tipo de cuota
-        const tipoCuota = page.locator('text=Cuota Original: RD$ 416.67');
+        const tipoCuota = page.locator('text=Cuota Original: RD$ 3,750.00');
 
         // El tipo de cuota debe estar visible 
         await expect(tipoCuota).toBeVisible();

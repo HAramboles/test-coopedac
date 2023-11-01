@@ -59,6 +59,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await botonGuardaryContinuar.click();
     };
 
+    // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
+    const CerrarPaginasReportes = async () => {
+        context.on('page', async (page) => {
+            await page.waitForTimeout(1000);
+            await page.close();
+        });
+    };
+
     test('Ir a la opcion de Solicitud de Credito', async () => {
         // Negocios
         await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -474,15 +482,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(botonFinalizar).toBeVisible();
         await botonFinalizar.click();
 
-        // Esperar que se abran tres nuevas pestañas con los reportes
-        const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-        const page3 = await context.waitForEvent('page');
-
-        // Cerrar todas las paginas
-        await page3.close();
-        await page2.close();
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Cambiar el estado de la Solicitud de Solicitado a En Proceso (Analisis)', async () => {
@@ -520,8 +521,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // la cuenta de cobros agregada debe estar visible
         await expect(page.locator('text=Cuentas de cobro')).toBeVisible();
-        // await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
-        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
         
         // Ir a la ultima seccion 
         const seccionDocumentos = page.getByRole('button', {name: '9 Documentos'});
@@ -555,15 +556,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Esperar que se abran tres nuevas pestañas con los reportes
-        const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-        const page3 = await context.waitForEvent('page');
-
-        // Cerrar todas las paginas
-        await page3.close();
-        await page2.close();
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Rechazado', async () => {
@@ -629,15 +623,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Esperar que se abran tres nuevas pestañas con los reportes
-        const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-        const page3 = await context.waitForEvent('page');
-
-        // Cerrar todas las paginas
-        await page3.close();
-        await page2.close();
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Buscar la Solicitud de Credito Rechazada', async () => {

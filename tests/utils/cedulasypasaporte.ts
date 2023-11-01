@@ -41,3 +41,7 @@ export const numerosCelular = ('829' + generarNumerosAleatorios(10)); // Numeros
 export const numerosTelefono = ('809' + generarNumerosAleatorios(10)); // Numeros para los telefonos
 
 export const numerosCheques = generarNumerosAleatorios(4); // Numeros para los cheques
+
+// Valores para la garantia de vehiculos
+export const numerosChasis = (generarLetrasPasaporte() + generarNumerosAleatorios(4)); 
+export const numerosPlaca = (generarLetrasPasaporte() + generarNumerosAleatorios(4));

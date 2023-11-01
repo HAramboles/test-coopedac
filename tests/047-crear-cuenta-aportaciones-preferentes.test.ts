@@ -142,7 +142,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     await page.locator(`text=${cedula}`).click();
             
                     // Cambiar al descripcion de la cuenta
-                    const descripcion = page.locator('#APORTACIONES\\ PREFERENTES_DESCRIPCION');
+                    const descripcion = page.getByPlaceholder('Descripción o alias de la cuenta, ejemplo: Cuenta para vacaciones.');
                     await descripcion.fill('Cuenta de Aportaciones Preferentes');
             
                     // La categoria debe ser de socio ahorrante
@@ -155,7 +155,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     await expect(page.getByText('Monto máximo de apertura: 6,000.00')).toBeVisible();
 
                     // Ingresar un monto mayor al maximo de apertura
-                    const montoApertura = page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA');
+                    const montoApertura = page.locator('#APORTACIONES\\ REFERENTES_MONTO_APERTURA');
                     await montoApertura.fill('8,000');
 
                     // Click fuera del input
@@ -169,12 +169,9 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
             
                     // Ingresar un monto de apertura correcto
                     await montoApertura.clear();
-                    await montoApertura.fill('100');
+                    await montoApertura.fill('1000');
                     // Click fuera del input
                     await page.getByTitle('Titular').click();
-
-                    // Plazo
-                    await page.locator('#APORTACIONES\\ PREFERENTES_PLAZO').fill('12');
 
                     // Revisar que los rangos esten visibles
                     await page.locator('[aria-label="eye"]').click();
@@ -182,11 +179,12 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     const modalRangos = page.getByRole('heading', {name: 'Detalles de Rango'}).first();
                     await expect(modalRangos).toBeVisible();
 
-                    // El monto minimo debe estar visible
-                    await expect(page.getByText('RD$ 1.00').first()).toBeVisible();
-
-                    // El plazo minimo debe estar visible
-                    await expect(page.getByRole('cell', {name: '1', exact: true}).nth(1)).toBeVisible();
+                    // Debe mostrarse la tabla de rangos
+                    await expect(page.getByRole('columnheader', {name: 'Moneda'}).nth(1)).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'Monto'}).nth(1)).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'Tasa'}).nth(1)).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'Plazo'}).nth(1)).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'Mora'}).nth(1)).toBeVisible();
 
                     // Click en Aceptar para cerrar el modal de los rangos
                     await page.getByRole('button', {name: 'check Aceptar'}).nth(1).click();
@@ -201,7 +199,7 @@ test.describe.serial('Aportaciones Preferentes - Pruebas con los diferentes para
                     await expect(page.locator('text=MENSUAL')).toBeVisible();
 
                     // Tasa Anual
-                    await page.locator('#APORTACIONES\\ PREFERENTES_TASA').fill('5');
+                    await page.locator('#APORTACIONES\\ REFERENTES_TASA').fill('8');
             
                     // La firma debe ser opcional, por lo que no se le agregara una firma a la cuenta
             

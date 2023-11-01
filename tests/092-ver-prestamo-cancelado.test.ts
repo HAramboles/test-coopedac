@@ -66,7 +66,7 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Datos del prestamo
-        await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 50,000.00 48 RD$ 416.67`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 300,000.00 48 RD$ 3,750.00`})).toBeVisible();
     });
 
     test('Ver la Solictud', async () => {
@@ -150,12 +150,12 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         // Paso 9
         
         // Los documentos deben estar visibles
-        await expect(page.getByRole('link', {name: 'CARTA DE TRABAJO'}).first()).toBeVisible();
+        await expect(page.getByRole('link', {name: 'SOLICTUD DE PRESTAMO LLENA Y FIRMADA'}).first()).toBeVisible();
         await expect(page.getByRole('link', {name: 'INFORME BURO CREDITO (DATACREDITO)'}).first()).toBeVisible();
         await expect(page.getByRole('link', {name: 'INFORME DEL SUBGERENTE DE NEGOCIOS'}).first()).toBeVisible();
         await expect(page.getByRole('link', {name: 'INSTANCIA DE CREDITO LLENA Y FIRMADA'}).first()).toBeVisible();
         await expect(page.getByRole('link', {name: 'TABLA AMORTIZACION'}).first()).toBeVisible();
-        await expect(page.getByRole('link', {name: 'CEDULA DEUDOR'}).first()).toBeVisible();;
+        await expect(page.getByRole('link', {name: 'CEDULA DEUDOR'}).first()).toBeVisible();
 
         // Click al boton de Finalizar
         const botonFinalizar = page.getByRole('button', {name: 'Finalizar'});
@@ -174,7 +174,7 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Datos del prestamo
-        await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 50,000.00 48 RD$ 416.67`})).toBeVisible();
+        await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 300,000.00 48 RD$ 3,750.00`})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de todas las pruebas

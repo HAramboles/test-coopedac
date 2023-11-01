@@ -149,13 +149,13 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await expect(page.getByTitle('SOCIO AHORRANTE')).toBeVisible();
 
                     // Monto de Apertura
-                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_MONTO_APERTURA')).toHaveValue('RD$ 100');
+                    await expect(page.locator('#APORTACIONES\\ REFERENTES_MONTO_APERTURA')).toHaveValue('RD$ 1000');
 
                     // Tasa Anual
-                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_TASA')).toHaveValue('5%');
+                    await expect(page.locator('#APORTACIONES\\ REFERENTES_TASA')).toHaveValue('8%');
 
                     // Plazo
-                    await expect(page.locator('#APORTACIONES\\ PREFERENTES_PLAZO')).toHaveValue('24');
+                    await expect(page.locator('#APORTACIONES\\ REFERENTES_PLAZO')).toHaveValue('24');
 
                     // Origen de Inversion
                     await expect(page.locator('h1').filter({hasText: 'ORIGEN DE INVERSIÓN'})).toBeVisible();

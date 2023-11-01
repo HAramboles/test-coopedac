@@ -97,10 +97,10 @@ test.describe.serial('Anular Cobro de Servicios', async () => {
         await page.getByRole('button', {name: 'Aceptar'}).click();
         
         // Se abre una nueva ventana del navegador con el reporte de la anulacion
-        const pag1 = await context.waitForEvent('page');
+        const page1 = await context.waitForEvent('page');
 
         // Cerrar la ventana del reporte
-        await pag1.close();
+        await page1.close();
 
         // En la pagina de la Anular Deposito debe mostrarse un mensaje modal de operacion exitosa
         await expect(page.locator('text=Operación Exitosa')).toBeVisible();

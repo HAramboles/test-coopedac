@@ -75,13 +75,13 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         await page.locator(`${ariaCerrar}`).click();
     });
 
-    test('Reimprimir Contrato - Cuenta de Aportaciones Preferentes', async () => {
+    test('Reimprimir Contrato - Cuenta de Aportaciones Referentes', async () => {
         // Cuenta de Aportaciones Preferentes
-        const cuentaAportacionesPreferentes = page.getByRole('row', {name: 'APORTACIONES PREFERENTES'});
-        await expect(cuentaAportacionesPreferentes).toBeVisible();
+        const cuentaAportacionesReferentes = page.getByRole('row', {name: 'APORTACIONES REFERENTES'});
+        await expect(cuentaAportacionesReferentes).toBeVisible();
 
         // Generar contrato
-        const contratoAportacionesPreferentes = cuentaAportacionesPreferentes.locator(`${dataFile}`);
+        const contratoAportacionesPreferentes = cuentaAportacionesReferentes.locator(`${dataFile}`);
 
         // Click al boton de Aceptar
         expect(contratoAportacionesPreferentes).toBeVisible();

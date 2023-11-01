@@ -83,15 +83,13 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`}).last()).toBeVisible();
 
         // Concepto
-        // await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'}).last()).toBeVisible();
 
         // Monto Ingreso
         await expect(page.getByRole('cell', {name: 'RD$ 125,000.00'})).toBeVisible();
 
         // Boton Eliminar
-        // await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator(`${dataEliminar}`).click();
-        await page.getByRole('row', {name: `${nombre} ${apellido}`}).locator(`${dataEliminar}`).last().click();
+        await page.getByRole('row', {name: 'RD$ 125,000.00'}).locator(`${dataEliminar}`).click();
 
         // Aparece un modal
         await expect(page.locator('text=Motivo de la Anulación')).toBeVisible();

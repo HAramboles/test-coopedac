@@ -53,7 +53,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();
 
         // Los resultados de la tabla deben estar ordenados de mas recienta a mas antiguo
-        // await expect(page.getByRole('cell', {name: `${diaActualFormato}`}).first()).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${diaActualFormato}`}).first()).toBeVisible();
 
         // Buscar un socio
         await page.locator(`${formBuscar}`).fill(`${cedula}`);

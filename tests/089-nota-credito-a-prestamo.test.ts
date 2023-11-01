@@ -67,15 +67,15 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
         await page.getByLabel('', {exact: true}).first().uncheck();
 
         // Monto total a aplicar
-        await page.locator('#monto_a_pagar').fill('25,000');
+        await page.locator('#monto_a_pagar').fill('150,000');
 
         // Cuota
         const cuota = page.locator('#form_CUOTA');
-        await expect(cuota).toHaveValue('RD$ 416.67');
+        await expect(cuota).toHaveValue('RD$ 3,885');
 
         // Deuda total
         const deudaTotal = page.locator('#form_DEUDA_CAPTITAL');
-        await expect(deudaTotal).toHaveValue('RD$ 50,000');
+        await expect(deudaTotal).toHaveValue('RD$ 300,000');
 
         // Moneda
         // const moneda = page.locator('#form_ID_MONEDA');
@@ -91,11 +91,11 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
         await page.locator('text=NC PAGO PRESTAMOS INTERNET BANKING').click();
 
         // Comentario
-        await page.locator('#form_NOTA').fill('Pago por internet Banking de 25,000 para el prestamo');
+        await page.locator('#form_NOTA').fill('Pago por internet Banking de 150,000 para el prestamo');
 
         // Agregar un monto
         await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').first().click();
-        await page.getByPlaceholder('MONTO NOTA').fill('RD$ 25000');
+        await page.getByPlaceholder('MONTO NOTA').fill('RD$ 150000');
 
         // Los nombres de las etiquetas deben estar visibles
         await expect(page.getByRole('columnheader', {name: 'Concepto'})).toBeVisible();
@@ -107,7 +107,7 @@ test.describe.serial('Pruebas con la opcion de Credito a Prestamos', () => {
 
         // El total debe ser el monto total a aplicar
         await expect(page.locator('h1').filter({hasText: 'TOTAL'})).toBeVisible();
-        await expect(page.locator('span').filter({hasText: 'RD$ 25,000.00'})).toBeVisible();
+        await expect(page.locator('span').filter({hasText: 'RD$ 150,000.00'})).toBeVisible();
     });
 
     test('Guardar el Credito al Prestamo', async () => {

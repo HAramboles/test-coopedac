@@ -114,9 +114,11 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                     await expect(seccionCargos).toBeVisible();
                     await seccionCargos.click();
 
+                    await page.waitForTimeout(3000);
+
                     // Boton de agregar cargos 
-                    const agregarCuota = page.locator(`${ariaAgregar}`);
-                    await expect(agregarCuota).toBeDisabled();
+                    const agregarCargos = page.locator(`${ariaAgregar}`);
+                    await expect(agregarCargos).toBeDisabled();
                 });
 
             } else if (escenario.ID_OPERACION === 32) {
@@ -129,6 +131,11 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                 
                     // Titulo de la seccion
                     await expect(page.locator('h1').filter({hasText: 'CARGOS'})).toBeVisible();
+
+                    // Deben estar visibles los tres cargos de la solicitud de credito
+                    await expect(page.getByRole('cell', {name: 'CONTRATO'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'SEGURO DE VIDA'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'BURO DE CREDITO (DATACREDITO)'})).toBeVisible();
                     
                     // Boton de agregar cargos 
                     const agregarCuota = page.locator(`${ariaAgregar}`);
@@ -141,8 +148,8 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                 
                     // Buscar un seguro
                     await page.locator('#form_DESC_CARGO').fill('SEGURO DE');
-                    // Elegir el seguro de vida
-                    await page.getByRole('option', {name: 'SEGURO DE VIDA'}).click();
+                    // Elegir el seguro de incendio
+                    await page.getByRole('option', {name: 'SEGURO DE INCENDIO'}).click();
                 
                     // Debe de colocarse automaticamente que es un seguro
                     await expect(page.locator('(//INPUT[@type="radio"])[1]')).toBeChecked();
@@ -156,7 +163,9 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                     const campoValor = page.locator('#form_VALOR');
                     await campoValor.clear();
                     await campoValor.fill('50');
-                
+
+                    // Cambiar la via de cobro
+                    await page.getByText('FIJO EN CUOTAS').click();
                     // La via de cobro por defecto debe ser cobro en desembolso
                     await expect(page.getByText('COBRO EN DESEMBOLSO')).toBeVisible();
                 
@@ -168,6 +177,12 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
             
                     // Se debe mostrar un mensaje de que la operacion fue exitosa
                     await expect(page.locator('text=Cargos del préstamo guardados exitosamente.')).toBeVisible();
+
+                    // Ahora la solicitud debe tener 4 cargos
+                    await expect(page.getByRole('cell', {name: 'CONTRATO'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'SEGURO DE VIDA'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'BURO DE CREDITO (DATACREDITO)'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: 'SEGURO DE INCENDIO'})).toBeVisible();
                 
                     // Click en Siguiente
                     await page.getByRole('button', {name: 'Siguiente'}).click();

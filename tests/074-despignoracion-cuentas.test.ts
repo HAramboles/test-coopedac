@@ -86,17 +86,17 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                 // Tipo de cuenta
                 await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('AHORROS NORMALES');
         
-                // // Balance
-                // await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 2,073,700');
+                // Balance
+                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 2,075,700');
         
-                // // Transito
-                // await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('RD$ 0');
+                // Transito
+                await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('RD$ 0');
         
-                // // Pignorado
-                // await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 250');
+                // Pignorado
+                await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 250');
         
-                // // Disponible
-                // await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 2,073,250');
+                // Disponible
+                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 2,075,250');
         
                 // Estado de Cuenta
                 await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');
@@ -131,7 +131,7 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                     await expect(page.getByText('¿Está seguro de liberar el registro?')).toBeVisible();
             
                     // Click en Aceptar
-                    await page.getByRole('dialog').filter({ hasText: 'Confirmar¿Está seguro de liberar el registro?CancelarAceptar' }).getByRole('button', { name: 'check Aceptar' }).click();
+                    await page.getByRole('dialog').filter({hasText: 'Confirmar¿Está seguro de liberar el registro?CancelarAceptar'}).getByRole('button', {name: 'check Aceptar'}).click();
             
                     // Los 150 pesos ya no deben mostrarse en la tabla despues de despignorarlos
                     await expect(page.getByRole('row', {name: 'CONGELADO RD$ 150.00'})).not.toBeVisible();

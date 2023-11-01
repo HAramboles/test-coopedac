@@ -60,6 +60,14 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             await botonGuardaryContinuar.click();
         };
 
+            // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
+            const CerrarPaginasReportes = async () => {
+                context.on('page', async (page) => {
+                    await page.waitForTimeout(1000);
+                    await page.close();
+                });
+            };
+
         test('Ir a la opcion de Solicitud de Credito', async () => {
             // Negocios
             await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -152,7 +160,7 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             // Tipo de garantia
             await page.getByLabel('Tipo Garantía').click();
             // Click en garantia ahorros
-            await page.getByText('AHORROS', {exact: true}).click();
+            await page.getByText('CERTIFICADOS', {exact: true}).click();
 
             // Oferta
             await page.getByLabel('Oferta').click();
@@ -166,7 +174,7 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             await page.getByRole('option', {name: 'SIN GARANTIA'}).click();
 
             // Tipo de cuota
-            await expect(page.getByText('INSOLUTO')).toBeVisible();
+            await expect(page.getByText('SOLO INTERES')).toBeVisible();
 
             // Ver los rangos de la oferta
             await page.locator(`${dataVer}`).click();
@@ -190,14 +198,17 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
             // Monto
             await page.locator('#loan_form_MONTO').click();
-            await page.locator('#loan_form_MONTO').fill('10000');
+            await page.locator('#loan_form_MONTO').fill('300000');
 
             // Plazo
             await page.getByPlaceholder('CANTIDAD').click();
-            await page.getByPlaceholder('CANTIDAD').fill('12');
+            await page.getByPlaceholder('CANTIDAD').fill('24');
 
-            // Los plazos deben ser mensuales
-            await expect(page.locator('text=MENSUAL')).toBeVisible();
+            // Los plazos deben ser semestrales
+            await expect(page.locator('text=SEMESTRAL')).toBeVisible();
+
+            // La tasa debe tener un valor por defecto
+            await expect(page.locator('#loan_form_TASA')).toHaveValue('13.95%');
 
             // Agregar una cuenta del socio para desembolsar
             await page.locator(`${selectBuscar}`).first().click();
@@ -259,7 +270,7 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             // Oferta
             await page.getByLabel('Oferta').click();
             // Elegir credito gerencial / ahorros
-            await page.getByText('CRÉDITO GERENCIAL / AHORROS').click();
+            await page.getByText('CRÉDITO GERENCIAL / AHORROS -1M').click();
 
             // Grupo
             await page.getByLabel('Grupo').click();
@@ -313,7 +324,7 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             await campoTasa.click();
             await campoTasa.clear();;
 
-            // Ingresar una Tasa Correcta
+            // Ingresar una Tasa 
             await campoTasa.fill('5');
 
             // Plazo
@@ -501,6 +512,28 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
             // Cerrar la imagen de la firma
             await page.getByRole('button', {name: 'Close'}).click();
+
+            // Subir Solicitud de Prestamo Llena y Firmada
+            const subirInstanciaCreditoPromesa = page.waitForEvent('filechooser');
+            await page.getByRole('row', {name: '5 SOLICTUD DE PRESTAMO LLENA Y FIRMADA upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
+            const subirInstanciaCredito = await subirInstanciaCreditoPromesa;
+            await subirInstanciaCredito.setFiles(`${firma}`);
+
+            await page.waitForTimeout(3000);
+
+            // Esperar que la Solicitud de Prestamo Llena y Firmada se haya subido
+            await expect(page.getByRole('link', {name: 'SOLICTUD DE PRESTAMO LLENA Y FIRMADA'})).toBeVisible();
+
+            // Subir Tabla de amortizacion
+            const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');
+            await page.getByRole('row', {name: '10 TABLA AMORTIZACION upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
+            const subirTablaAmortizacion = await subirTablaAmortizacionPromesa;
+            await subirTablaAmortizacion.setFiles(`${firma}`);
+
+            await page.waitForTimeout(3000);
+
+            // Esperar que la Tabla de Amortizacion se haya subido
+            await expect(page.getByRole('link', {name: 'TABLA AMORTIZACION'})).toBeVisible();
         });
 
         test('Finalizar con la creacion de la Solicitud', async () => {
@@ -509,15 +542,8 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             await expect(botonFinalizar).toBeVisible();
             await botonFinalizar.click();
 
-            // Esperar que se abran tres nuevas pestañas con los reportes
-            const page1 = await context.waitForEvent('page');
-            const page2 = await context.waitForEvent('page');
-            const page3 = await context.waitForEvent('page');
-
-            // Cerrar todas las paginas
-            await page3.close();
-            await page2.close();
-            await page1.close();
+            // Cerrar las paginas que se abren con los diferentes reportes
+            CerrarPaginasReportes();
         });
 
         test.afterAll(async () => { // Despues de las pruebas
@@ -594,10 +620,14 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
                     await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
                 
                     // Cambiar el estado de las solicitudes a Aprobado
-                    await expect(page.locator('text=SOLICITADO')).toBeVisible();
+                    await page.locator('text=SOLICITADO').click();
+                    await page.locator('text=APROBADO').click();
+
+                    // La URL debe cambiar a las solicitudes aprobadas
+                    await expect(page).toHaveURL(`${url_solicitud_credito}?filter=aprobado`);
             
                     // Buscar la solicitud creada
-                    await page.locator(`${formBuscar}`).fill(`${cedula}`);
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
                 });
 
                 if (escenarios.ID_OPERACION !== 18) {
@@ -647,7 +677,7 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
                     test('Al crear una nueva Solicitud no debe tener los datos de la persona de la Solicitud Anulada', async () => {
                         // El listado de las solicitudes debe ser solicitado
-                        await expect(page.locator('text=SOLICITADO')).toBeVisible();
+                        await expect(page.locator('text=APROBADO')).toBeVisible();
                 
                         // Boton Nueva Solicitud
                         const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});

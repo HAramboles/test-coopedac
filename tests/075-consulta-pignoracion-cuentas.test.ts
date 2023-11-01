@@ -64,8 +64,8 @@ test.describe.serial('Pruebas con el Historial de Pignoracion de Cuentas', () =>
         // Solo debe estar el monto pignorado
         await expect(page.getByRole('row', {name: 'CONGELADO RD$ 100.00'})).toBeVisible(); 
 
-        // Esperar cinco segundos
-        await page.waitForTimeout(5000);
+        // Esperar tres segundos
+        await page.waitForTimeout(3000);
     });
 
     test.afterAll(async () => { // Despues de las pruebas

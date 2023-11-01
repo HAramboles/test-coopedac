@@ -214,6 +214,9 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     // Cantidad = 5000 de 1000
                     await cant1000.click();
                     await cant1000.fill('500');
+
+                    // Esperar dos segundos
+                    await page.waitForTimeout(2000);
             
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();

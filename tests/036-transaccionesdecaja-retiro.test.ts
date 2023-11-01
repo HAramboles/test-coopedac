@@ -205,6 +205,9 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     // Cantidad = 2 de 50
                     await cant100.click();
                     await cant100.fill('1');
+
+                    // Esperar dos segundos
+                    await page.waitForTimeout(2000);
             
                     // Luego de distribuir la cantidad, debe aparecer una opcion de Guardar Entregado
                     await expect(page.locator('text=Guardar Entregado')).toBeVisible();

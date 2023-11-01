@@ -9,11 +9,13 @@ import {
     contextConfig, 
     fechaSolicitudCredito, 
     usuarioAproboSolicitud, 
-    userCorrecto, 
-    dataVer 
+    userCorrectoUpperCase, 
+    dataVer, 
+    formBuscar
 } from './utils/dataTests';
 import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/fechas';
 import { url_solicitud_credito } from './utils/urls';
+import { numerosChasis, numerosPlaca } from './utils/cedulasypasaporte';
 
 // Variables globales
 let browser: Browser;
@@ -60,6 +62,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(botonGuardaryContinuar).toBeVisible();
         // presionar el boton
         await botonGuardaryContinuar.click();
+    };
+
+    // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
+    const CerrarPaginasReportes = async () => {
+        context.on('page', async (page) => {
+            await page.waitForTimeout(1000);
+            await page.close();
+        });
     };
 
     test('Ir a la opcion de Solicitud de Credito', async () => {
@@ -159,13 +169,16 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Oferta
         await page.getByLabel('Oferta').click();
         // Elegir credito crediautos
-        await page.getByText('CRÉDIAUTOS').click();
+        await page.getByText('CRÉDIAUTOS', {exact: true}).click();
 
         // Grupo
         await page.getByLabel('Grupo').click();
         await page.getByLabel('Grupo').fill('vegamovil');
         // Elegir grupo vegamovil
         await page.getByRole('option', {name: 'VEGAMOVIL', exact: true}).click();
+
+        // Esperar tres segundos
+        await page.waitForTimeout(3000);
 
         // Fecha Solicitud debe ser el dia actual
         await expect(page.locator(`${inputFechaSolicitud}`)).toHaveValue(`${diaActualFormato}`);
@@ -322,8 +335,20 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // La cuota debe calcularse nuevamente
         await expect(page.getByText('Calculando Cuotas')).toBeVisible();
 
+        // Click en algun lugar de la pagina
+        await tituloPrincipal.click();
+
         // La cuota debe cambiar al agregarse un abono programado
         await expect(inputCuota).toHaveValue('RD$ 2,461.21');
+
+        // // Cerrar y abrir la seccion de Abonos programados
+        // await seccionAbonosProgramados.click();
+        // await page.waitForTimeout(2000);
+        // await seccionAbonosProgramados.click();
+
+        // // El abono programado agregado debe estar visible
+        // await expect(page.getByRole('cell', {name: '60'})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: '50,000'})).toBeVisible();
 
         // Click en guardar y continuar
         GuardaryContinuar();
@@ -337,7 +362,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
 
         // Debe de haber un cargo
-        await expect(page.getByRole('row', {name: 'CUOTA ADMISION X CAMBIO CATEGORIA'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'CONTRATO'})).toBeVisible();
 
         // Click al boton de Guardar Cargos
         await page.getByRole('button', {name: 'Guardar Cargos'}).click();
@@ -408,6 +433,10 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=7`);
 
+        // Cerrar las alertas que aparecen
+        await page.locator(`${dataCerrar}`).last().click();
+        await page.locator(`${dataCerrar}`).last().click();
+
         // Click al boton de agregar garantia
         await page.getByRole('button', {name: 'Agregar Garantía'}).click();
 
@@ -419,7 +448,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
         await page.getByRole('combobox').click();
-        await page.getByText('VEHÍCULO PRIVADO', {exact: true}).click();
+        await page.getByText('GARANTIA VEHICULO', {exact: true}).click();
 
         // Elegir que el socio es propietario de la garantia
         await page.getByRole('checkbox').click();
@@ -430,38 +459,26 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Valor tasado
         const valorTasado = page.getByPlaceholder('VALOR TASADO');
         await valorTasado.click();
-        await valorTasado.fill('RD$ 200000');
+        await valorTasado.fill('RD$ 125000');
 
         // Agregar atributos a la garantia
         await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
 
-        // Placa
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
-        await page.getByPlaceholder('Valor Atributo').fill('HGIT159');
-
         // Chasis
         await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
-        await page.getByPlaceholder('Valor Atributo').fill('LKER752');
+        await page.getByPlaceholder('Valor Atributo').fill(`${numerosChasis}`);
 
-        // Tipo de Vehiculo
+        // Placa
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
+        await page.getByPlaceholder('Valor Atributo').fill(`${numerosPlaca}`);
+
+        // Modelo
         await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(1).click();
-        await page.getByPlaceholder('Valor Atributo').fill('CARRO');
+        await page.getByPlaceholder('Valor Atributo').fill('350Z');
 
         // Marca
         await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(2).click();
         await page.getByPlaceholder('Valor Atributo').fill('NISSAN');
-
-        // Modelo
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(3).click();
-        await page.getByPlaceholder('Valor Atributo').fill('350Z');
-
-        // Color
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(4).click();
-        await page.getByPlaceholder('Valor Atributo').fill('GRIS');
-
-        // Año
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(5).click();
-        await page.getByPlaceholder('Valor Atributo').fill('2016');
 
         // Click en guardar
         await page.getByRole('button', {name: 'save Guardar'}).click();
@@ -487,11 +504,53 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=9`);
 
+        // Subir el Informe Buro Credito (DataCredito)
+        const subirInformeBuroCreditoPromesa = page.waitForEvent('filechooser');
+        await page.getByRole('row', {name: '3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
+        const subirInformeBuroCredito = await subirInformeBuroCreditoPromesa;
+        await subirInformeBuroCredito.setFiles(`${firma}`);
+
+        // Cerrar la alerta que se genera al subir la imagen
+        await page.locator(`${dataCerrar}`).last().click();
+
+        // Esperar que el Informe Buro Credito (DataCredito) se haya subido
+        await expect(page.getByRole('link', {name: 'INFORME BURO CREDITO (DATACREDITO)'})).toBeVisible();
+
+        // Subir el Evidencia de Ingresos
+        const subirEvidenciaIngresosPromesa = page.waitForEvent('filechooser');
+        await page.getByRole('row', {name: '4 EVIDENCIA DE INGRESOS upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
+        const subirEvidenciaIngresos = await subirEvidenciaIngresosPromesa;
+        await subirEvidenciaIngresos.setFiles(`${firma}`);
+
+        // Cerrar la alerta que se genera al subir la imagen
+        await page.locator(`${dataCerrar}`).last().click();
+
+        // Esperar que el Informe Buro Credito (DataCredito) se haya subido
+        await expect(page.getByRole('link', {name: 'EVIDENCIA DE INGRESOS'})).toBeVisible();
+
+        // Subir Solicitud de Prestamo Llena y Firmada
+        const subirSolicitudPrestamoPromesa = page.waitForEvent('filechooser');
+        await page.getByRole('row', {name: '5 SOLICTUD DE PRESTAMO LLENA Y FIRMADA upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
+        const subirSolicitudPrestamo = await subirSolicitudPrestamoPromesa;
+        await subirSolicitudPrestamo.setFiles(`${firma}`);
+
+        // Esperar que la Solicitud de Prestamo Llena y Firmada se haya subido
+        await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
+
+        // Cerrar la alerta que se genera al subir la imagen
+        await page.locator(`${dataCerrar}`).last().click();
+
+        // Esperar que el Informe Buro Credito (DataCredito) se haya subido
+        await expect(page.getByRole('link', {name: 'EVIDENCIA DE INGRESOS'})).toBeVisible();
+
         // Subir Tabla de amortizacion
         const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');
         await page.getByRole('row', {name: '10 TABLA AMORTIZACION upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
         const subirTablaAmortizacion = await subirTablaAmortizacionPromesa;
         await subirTablaAmortizacion.setFiles(`${firma}`);
+
+        // Cerrar la alerta que se genera al subir la imagen
+        await page.locator(`${dataCerrar}`).last().click();
 
         // Esperar que la Tabla de Amortizacion se haya subido
         await expect(page.getByRole('link', {name: 'TABLA AMORTIZACION'})).toBeVisible();
@@ -501,6 +560,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.getByRole('row', {name: '11 CONTRATO upload Cargar delete'}).getByRole('button', {name: 'upload Cargar'}).first().click();
         const subirContrato = await subirContratoPromesa;
         await subirContrato.setFiles(`${firma}`);
+
+        // Cerrar la alerta que se genera al subir la imagen
+        await page.locator(`${dataCerrar}`).last().click();
 
         // Esperar que el Contrato se haya subido
         await expect(page.getByRole('link', {name: 'CONTRATO'})).toBeVisible();
@@ -530,20 +592,16 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(botonFinalizar).toBeVisible();
         await botonFinalizar.click();
 
-        // Esperar que se abran tres nuevas pestañas con los reportes
-        const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-        const page3 = await context.waitForEvent('page');
-
-        // Cerrar todas las paginas
-        await page3.close();
-        await page2.close();
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Cambiar el estado de la Solicitud de Solicitado a En Proceso (Analisis)', async () => {
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
+
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
@@ -571,15 +629,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Esperar que se abran tres nuevas pestañas con los reportes
-        const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-        const page3 = await context.waitForEvent('page');
-
-        // Cerrar todas las paginas
-        await page3.close();
-        await page2.close();
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Cambiar el estado de la Solicitud de En Proceso (Analisis) a Aprobado', async () => {
@@ -589,6 +640,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Cambiar el estado de las solicitudes de Solicitado a En Proceso (Analisis)
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=EN PROCESO (ANALISIS)').click();
+
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
@@ -630,11 +684,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Esperar que se abran dos nuevas pestañas con los reportes
-        const page1 = await context.waitForEvent('page');
-
-        // Cerrar la segunda pagina
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
     });
 
     test('Desembolsar la solicitud', async () => {
@@ -645,6 +696,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
 
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
 
@@ -652,7 +706,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page).toHaveURL(/\/aprobado/);
 
         // Esperar que carguen los datos
-        await page.waitForTimeout(10000);
+        await page.waitForTimeout(5000);
 
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
@@ -669,7 +723,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.locator(`${fechaSolicitudCredito}`)).toHaveValue(`${diaActualFormato}`);
 
         // El usuario que aprobro debe estar visible
-        await expect(page.locator(`${usuarioAproboSolicitud}`)).toHaveValue(`${userCorrecto}`);
+        await expect(page.locator(`${usuarioAproboSolicitud}`)).toHaveValue(`${userCorrectoUpperCase}`);
 
         // La cuenta de cobro debe estar visible
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
@@ -690,11 +744,29 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(botonDesembolsar).toBeVisible();
         await botonDesembolsar.click();
 
-        // Esperar que se abra una nueva pestaña con el reporte
-        const page1 = await context.waitForEvent('page');
-        
-        // Cerrar la pagina con el reporte 
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
+    });
+
+    test('Buscar la Solicitud de Credito en estado Desembolsado', async () => {
+        // La url debe regresar a las solicitudes en proceso
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=aprobado`);
+
+        // Cambiar el estado de las solicitudes de En Proceso a Aprobado
+        await page.locator('text=APROBADO').click();
+        await page.locator('text=DESEMBOLSADO').click();
+
+        // Esperar que la pagina cargue
+        await page.waitForTimeout(3000);
+
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+        // Esperar que se muestre la solicitud buscada
+        await page.waitForTimeout(3000);
+
+        // La solicitud de credito desembolsada debe estar visible
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

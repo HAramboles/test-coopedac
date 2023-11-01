@@ -70,17 +70,20 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
     });
 
     test('Debe mostrarse el Credito al Prestamo para Imprimir', async () => {
+        // Esperar que carguen los datos
+        await page.waitForTimeout(3000);
+
         // Estado
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Concepto
-        await expect(page.getByText('ABONO A CAPITAL')).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'})).toBeVisible();
 
         // Cliente
         await expect(page.getByRole('cell', { name: `${nombre} ${apellido}`})).toBeVisible();
         
         // Monto
-        await expect(page.getByText('25,000.00')).toBeVisible();
+        await expect(page.getByText('150,000.00')).toBeVisible();
 
         // Boton Imprimir
         const botonImprimir = page.getByRole('button', {name: 'printer'});

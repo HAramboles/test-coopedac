@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, dataCerrar, browserConfig, inputDiaPago, formComentario, contextConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, inputDiaPago, formComentario, contextConfig } from './utils/dataTests';
 import { url_cobros_oficina } from './utils/urls';
 
 // Variables globales
@@ -91,7 +91,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO HIPOTECARIO');
 
         // Cuota
-        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 416.67');
+        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 3,885');
 
         // Garantia
         await expect(page.getByText('Sin garantía')).toBeVisible();
@@ -115,11 +115,11 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(modal).toBeVisible();
 
         // En el modal debe estar la cuenta de Ahorros Normales de la persona que se le coloco como cuenta de cobro
-        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
-        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await page.getByRole('cell', {name: `${nombre} ${apellido}`}).click();
+        await page.getByRole('cell', {name: 'AHORROS NORMALES'}).click();
 
         // Cerrar el modal
-        await page.locator(`${dataCerrar}`).click();
+        await page.getByLabel('Close').nth(3).click();
 
         // El modal debe desaparecer
         await expect(modal).not.toBeVisible();
@@ -161,6 +161,9 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Click a la opcion de Saldo total
         await page.getByText('Saldo total').click();
+
+        // En el input de total a pagar debe colocarse el saldo total
+        await expect(page.locator('#form_A_PAGAR')).toHaveValue('RD$ 150,000');
 
         // Agregar un comnetario
         await page.locator(`${formComentario}`).fill('Saldar el Prestamo');

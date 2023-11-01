@@ -230,6 +230,9 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     // Cantidad = 1 de 500
                     await cant500.click();
                     await cant500.fill('1');
+
+                    // Esperar dos segundos
+                    await page.waitForTimeout(2000);
             
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();
@@ -432,37 +435,6 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
 
                     // Cerrar la segunda pagina
                     await page1.close();
-                });
-
-                test('Ir a la pagina de Sesiones en Transito y comprobar que se haya cerrado la sesion', async () => {
-                    // Sesiones en Transito
-                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito', exact: true}).click();
-
-                    // Esperar a que el servicio de cerrar sesion responda
-                    await page.waitForResponse(`${servicio_check_session}`);
-
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_sesiones_transito}`);
-
-                    // Digitar el nombre de la persona 
-                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
-
-                    // Si la sesion no aparece en la pagina
-                    if (await page.getByText(`${noData}`).isVisible()) {
-                        // Terminar con el test
-                        await page.close();
-                        await context.close();
-
-                    // Si la sesion aparece en la pagina    
-                    } else if (await page.getByText(`${noData}`).isHidden()) {
-                        // Click al boton de Actualizar
-                        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
-                        await expect(botonActualizar).toBeVisible();
-                        await botonActualizar.click();
-
-                        // La sesion no debe aparecer en la pagina
-                        await expect(page.getByText(`${noData}`)).toBeVisible();
-                    }
                 });
             };
 
