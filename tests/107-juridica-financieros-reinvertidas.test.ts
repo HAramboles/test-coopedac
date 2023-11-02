@@ -12,7 +12,7 @@ let page: Page;
 let botonNuevaCuenta: Locator;
 
 // Imagen de la firma
-const firma = './tests/img/firma.jpg';
+const firma = './tests/utils/img/firma.jpg';
 
 // Cedula y nombre de la empresa
 let cedulaEmpresa: string | null;
@@ -214,7 +214,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                     // Ingresar un monto valido
                     const campoMonto = page.getByPlaceholder('MONTO');
                     await campoMonto.clear();
-                    await campoMonto.fill('300000');
+                    await campoMonto.fill('400000');
             
                     // Desmarcar el via de cobro, debito a cuenta
                     const casillaDebitoCuenta = page.getByLabel('Débito a cuenta(s)');
@@ -293,6 +293,9 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
             
                     // El socio relacionado a la persona juridica debe estar visible en el modal
                     await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
+
+                    // Click en Seleccionar
+                    await page.getByRole('button', {name: 'Seleccionar'}).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();

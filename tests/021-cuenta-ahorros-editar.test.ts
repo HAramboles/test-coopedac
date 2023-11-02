@@ -12,10 +12,10 @@ let page: Page;
 let botonEditarCuenta: Locator;
 
 // Imagen de la Firma
-const firma = './tests/img/firma.jpg';
+const firma = './tests/utils/img/firma.jpg';
 
 // Imagen de la nueva firma agregada
-const firma2 = './tests/img/firma2.jpg';
+const firma2 = './tests/utils/img/firma2.jpg';
 
 // Cedula, nombre y apellido de la persona
 let cedula: string | null;

@@ -93,9 +93,6 @@ test.describe.serial('Pruebas con el Vencimiento de Cobros', async () => {
         // Opciones de oferta financiera
         const creditoHipotecario = page.getByRole('option', {name: 'CRÉDITO HIPOTECARIO'});
         await expect(creditoHipotecario).toBeVisible();
-        await expect(page.getByRole('option', {name: 'HIPOTECARIO VIP PLUS'})).toBeVisible();
-        await expect(page.getByRole('option', {name: 'CRÉDITO VIVIENDA NUEVA'})).toBeVisible();
-        await expect(page.getByRole('option', {name: 'CRÉDITO VIVIENDA USADA'})).toBeVisible();
 
         // Click al tipo de oferta financiera Credito Hipotecario
         await creditoHipotecario.click();

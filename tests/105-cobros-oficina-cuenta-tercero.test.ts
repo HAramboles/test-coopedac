@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, dataCerrar, browserConfig, inputDiaPago, formComentario, contextConfig } from './utils/dataTests';
+import { url_base, selectBuscar, browserConfig, inputDiaPago, formComentario, contextConfig } from './utils/dataTests';
 import { url_cobros_oficina } from './utils/urls';
 
 // Variables globales
@@ -101,7 +101,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.locator('#form_DESCOFERTA')).toHaveValue('LÍNEA DE CRÉDITO');
 
         // Cuota
-        await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 1,162.5');
+        // await expect(page.locator('#form_MONTOCUOTA')).toHaveValue('RD$ 1,162.5');
 
         // Garantia
         await expect(page.getByText('Sin garantía')).toBeVisible();

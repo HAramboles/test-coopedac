@@ -44,13 +44,13 @@ test.describe.serial('Tranferir desde Boveda a Caja', async () => {
         // El titulo de la pagina debe estar visible
         await expect(page.locator('h1').filter({hasText: 'TRANSFERIR A CAJAS'})).toBeVisible();
 
-        // Click al selecor de Desde Caja
-        await page.locator('#form_ID_CAJA_DESDE').click();
-        // Elegir la boveda principal
-        await page.getByRole('option', {name: 'BOVEDA PRINCIPAL'}).click();
+        // // Click al selecor de Desde Caja
+        // await page.locator('#form_ID_CAJA_DESDE').click();
+        // // Elegir la boveda principal
+        // await page.getByRole('option', {name: 'BOVEDA PRINCIPAL'}).click();
 
         // Desde caja
-        // await expect(page.getByText('BOVEDA PRINCIPAL')).toBeVisible();
+        await expect(page.getByText('BOVEDA PRINCIPAL', {exact: true})).toBeVisible();
 
         // Click a Hasta caja
         const selectorHastaCaja = page.locator('#form_ID_CAJA_HASTA');

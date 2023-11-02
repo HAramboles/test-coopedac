@@ -40,6 +40,14 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
         nomrbeEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
 
+    // Funcion para cerrar las paginas que se abren con los diferentes reportes
+    const CerrarPaginasReportes = async () => {
+        context.on('page', async (page) => {
+            await page.waitForTimeout(1000);
+            await page.close();
+        });
+    };
+
     test('Ir a la pagina de Historico de Caja', async () => {
         // Tesoreria
         await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
@@ -92,10 +100,7 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
         await botonImprimir.click();
 
         // Esperar a que se abra una nueva pestaña con el reporte
-        const page1 = await context.waitForEvent('page');
-
-        // Cerrar la nueva pestaña
-        await page1.close(); 
+        CerrarPaginasReportes();
 
         // Debe regresar a la pagina de Historico de Caja
         await expect(page).toHaveURL(`${url_historico_caja}`);
@@ -132,22 +137,22 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`}).first()).toBeVisible();
 
         // Total de operaciones
-        await expect(page.getByRole('row', {name: 'TOTAL DE OPERACIONES:'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Total de Operaciones'})).toBeVisible();
     });
 
     test('Resumen y Detalle de la Caja', async () => {
         // Tabla del resumen
         await expect(page.getByText('Resumen de Ingresos y Egresos de Caja')).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Cant.'})).toBeVisible();
-        await expect(page.getByRole('columnheader', {name: 'Descripción	'})).toBeVisible();
-        await expect(page.getByRole('columnheader', {name: 'Ingresos'})).toBeVisible();
-        await expect(page.getByRole('columnheader', {name: 'Egresos'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Descripción	'}).first()).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Ingresos'}).first()).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Egresos'}).first()).toBeVisible();
 
         // Tabla de los detalles
         await expect(page.getByText('Detalles de caja')).toBeVisible();
-        await expect(page.getByRole('columnheader', {name: 'Descripción'})).toBeVisible();
-        await expect(page.getByRole('columnheader', {name: 'Ingresos'})).toBeVisible();
-        await expect(page.getByRole('columnheader', {name: 'Egresos'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Descripción'}).nth(1)).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Ingresos'}).nth(1)).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Egresos'}).nth(1)).toBeVisible();
     });
 
     test('Imprimir el Recibo de una Transaccion', async () => {
@@ -159,10 +164,7 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
         await imprimirTransaccion.click();
 
         // Esperar a que se abra una nueva pestaña con el recibo
-        const page1 = await context.waitForEvent('page');
-
-        // Cerrar la nueva pestaña
-        await page1.close(); 
+        CerrarPaginasReportes();
 
         // Debe regresar a la pagina de Historico de Caja
         await expect(page).toHaveURL(`${url_historico_caja}`);
@@ -184,7 +186,10 @@ test.describe.serial('Pruebas con el Historico de Caja', async () => {
         await botonBuscar.click();
 
         // Deben mostrarse solo los retiros realizados 
-        await expect(page.getByRole('cell', {name: 'RETIRO'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'DEPOSITO'})).not.toBeVisible();
+        await expect(page.getByRole('cell', {name: 'ORDENES'})).not.toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RECIBO DE PRESTAMOS'})).not.toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RECIBO OTROS SERVICIOS'})).not.toBeVisible();
     });
 
     test('Buscar las transacciones de la persona', async () => {

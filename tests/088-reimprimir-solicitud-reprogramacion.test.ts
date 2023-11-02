@@ -1,4 +1,4 @@
-import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, formBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { url_reimprimir_solicitud_reprogramacion } from './utils/urls';
 
@@ -8,8 +8,8 @@ let context: BrowserContext;
 let page: Page;
 
 // Cedula, nombre y apellido de la persona
-let cedula: string|null;
-let nombre: string|null;
+let cedula: string | null;
+let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas

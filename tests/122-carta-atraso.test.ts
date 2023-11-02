@@ -38,6 +38,9 @@ test.describe.serial('Prueba con la Carta de Atraso', async () => {
     });
 
     test('Ver una Solicitud y no debe estar en estado undefined', async () => {
+        
+        await page.waitForTimeout(9000);
+
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CARTA DE ATRASO'})).toBeVisible();
 

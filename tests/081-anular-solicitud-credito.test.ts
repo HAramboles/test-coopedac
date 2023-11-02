@@ -11,7 +11,7 @@ import {
     dataVer
 } from './utils/dataTests';
 import { url_solicitud_credito } from './utils/urls';
-import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/functions/fechas';
 import { EscenariosEliminarSolicitudCredito } from './utils/interfaces';
 
 // Variables globales
@@ -25,7 +25,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Imagen de los documentos
-const firma = './tests/img/firma.jpg';
+const firma = './tests/utils/img/firma.jpg';
 
 // Pruebas
 test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', async () => {

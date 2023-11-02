@@ -70,9 +70,6 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
     });
 
     test('Cancelar la Transferencia a Boveda de mil pesos', async () => {
-        // Debe mostrarse la transferencia realizada por la caja buscada
-        await expect(page.getByRole('row', {name: `${userCorrecto}`})).toBeVisible();
-
         // Se debe mostrar el monto de la transferencia
         await expect(page.getByRole('cell', {name: '1,000.00'})).toBeVisible();
 

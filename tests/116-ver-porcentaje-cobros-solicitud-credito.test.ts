@@ -102,12 +102,12 @@ test.describe.serial('Pruebas con el parametro de ver porcentaje de las cuentas 
                     await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=1`);
 
                     // Buscar al socio
-                    await page.locator(`${selectBuscar}`).fill('ARYA CRUZ');
+                    await page.locator(`${selectBuscar}`).fill(`${cedula}`);
                     // Seleccionar al socio
-                    await page.locator('text=ARYA CRUZ').click();
+                    await page.locator(`text=${nombre} ${apellido}`).click();
 
                     // El nombre de la persona debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'ARYA CRUZ'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
                     // Click al boton de guardar y continuar 
                     GuardaryContinuar();
@@ -137,7 +137,7 @@ test.describe.serial('Pruebas con el parametro de ver porcentaje de las cuentas 
 
                     // Se deben agregar los datos a la tabla de las cuentas
                     await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
-                    // await expect(page.getByRole('cell', {name: 'ARYA CRUZ'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
                     // La columna de porcentaje no debe visualizarse
                     await expect(page.getByRole('columnheader', {name: '% Cobro'})).not.toBeVisible();
@@ -166,12 +166,12 @@ test.describe.serial('Pruebas con el parametro de ver porcentaje de las cuentas 
                     await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=1`);
 
                     // Buscar al socio
-                    await page.locator(`${selectBuscar}`).fill('ARYA CRUZ');
+                    await page.locator(`${selectBuscar}`).fill(`${cedula}`);
                     // Seleccionar al socio
-                    await page.locator('text=ARYA CRUZ').click();
+                    await page.locator(`text=${nombre} ${apellido}`).click();
 
                     // El nombre de la persona debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'ARYA CRUZ'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
 
                     // Click al boton de guardar y continuar 
                     GuardaryContinuar();
@@ -205,7 +205,7 @@ test.describe.serial('Pruebas con el parametro de ver porcentaje de las cuentas 
 
                     // Se deben agregar los datos a la tabla de las cuentas
                     await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
-                    // await expect(page.getByRole('cell', {name: 'ARYA CRUZ'})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
                     // La columna de porcentaje debe visualizarse
                     await expect(page.getByRole('columnheader', {name: '% Cobro'})).toBeVisible();

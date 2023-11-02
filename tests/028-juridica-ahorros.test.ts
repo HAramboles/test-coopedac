@@ -12,7 +12,7 @@ let page: Page;
 let botonNuevaCuenta: Locator;
 
 // Imagen de la firma
-const firma = './tests/img/firma.jpg';
+const firma = './tests/utils/img/firma.jpg';
 
 // Cedula y nombre de la empresa
 let cedulaEmpresa: string | null;

@@ -44,7 +44,7 @@ test.describe.serial('Pruebas Cerrando todas las Sesiones de un usuario', async 
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Sesiones en Transito
-        await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
+        await page.getByRole('menuitem', {name: 'Sesiones en Tránsito', exact: true}).click();
         
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_sesiones_transito}`);
@@ -55,7 +55,7 @@ test.describe.serial('Pruebas Cerrando todas las Sesiones de un usuario', async 
         await page.locator(`${formBuscar}`).fill(`${userCorrecto}`);
 
         // Debe aparecer por lo menos una sesion en transito
-        await expect(page.getByRole('cell', {name: `${userCorrecto}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${userCorrecto}`}).first()).toBeVisible();
     });
 
     test('Ir a la pagina de Cerrar Sesiones en Transito', async () => {

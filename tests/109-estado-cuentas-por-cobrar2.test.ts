@@ -38,6 +38,14 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
 
+    // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
+    const CerrarPaginasReportes = async () => {
+        context.on('page', async (page) => {
+            await page.waitForTimeout(1000);
+            await page.close();
+        });
+    };
+
     test('Ir a la opcion de Estado de Cuentas por Cobrar', async () => {
         // Negocios
         await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -86,10 +94,10 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('cell', {name: 'RD'})).toBeVisible();
 
         // Tasa del Credito
-        await expect(page.getByRole('cell', {name: '10.00%'}).first()).toBeVisible();
+        await expect(page.getByRole('cell', {name: '13.95%'}).first()).toBeVisible();
 
         // Monto Desembolsado del Credito
-        await expect(page.getByText('10,000.00').first()).toBeVisible();
+        await expect(page.getByText('300,000.00').first()).toBeVisible();
 
         // Estado del Credito
         await expect(page.getByRole('cell', {name: 'DESEMBOLSADO'})).toBeVisible();
@@ -100,10 +108,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await botonImprimirEstado.click();
 
         // Esperar que se abra una nueva pestaña
-        const page1 = await context.newPage();
-        
-        // Cerrar la pagina con el reporte del Estado a la Fecha de Corte
-        await page1.close();
+        CerrarPaginasReportes();
     });
 
     test('Los inputs de aseguradora, oferta/negocio, banco y sucursal no deben estar visibles', async () => {
@@ -153,19 +158,19 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         // Deben estar visibles todos los datos del prestamo del socio
 
         // Descripcion Oferta
-        await expect(page.getByRole('row', {name: 'Descripción Oferta CRÉDITO HIPOTECARIO'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Descripción Oferta CRÉDITO AGRÍCOLA'})).toBeVisible();
 
         // Monto Cuota
-        await expect(page.getByRole('row', {name: 'Monto Cuota 416.67'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Monto Cuota 20,925.00'})).toBeVisible();
 
         // Plazo
         await expect(page.getByRole('row', {name: 'Plazo 48'})).toBeVisible();
 
         // Frecuencia
-        await expect(page.getByRole('row', {name: 'Frecuencia MENSUAL'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Frecuencia SEMESTRAL'})).toBeVisible();
 
         // Tasa de Interes
-        await expect(page.getByRole('row', {name: 'Tasa de Interés 10.00 %'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Tasa de Interés 13.95 %'})).toBeVisible();
 
         // Gracia Interes
         await expect(page.getByRole('row', {name: 'Gracia Interés 0.00'})).toBeVisible();
@@ -174,7 +179,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('row', {name: 'Base Calc. Interés Año fiscal (360 días)'})).toBeVisible();
 
         // Tipo Financ
-        await expect(page.getByRole('row', {name: 'Tipo Financ. HIPOTECARIOS'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Tipo Financ. COMERCIALES'})).toBeVisible();
 
         // Tasa Mora
         await expect(page.getByRole('row', {name: 'Tasa Mora 6.00'})).toBeVisible();
@@ -183,16 +188,16 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('row', {name: 'VÍa Desembolso DEPOSITO'})).toBeVisible();
 
         // Monto Aprobado
-        await expect(page.getByRole('row', {name: 'Monto aprobado 10,000.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Monto aprobado 300,000.00'})).toBeVisible();
 
         // Monto Desembolsado
-        await expect(page.getByRole('row', {name: 'Monto desembolsado 10,000.00'})).toBeVisible();  
+        await expect(page.getByRole('row', {name: 'Monto desembolsado 300,000.00'})).toBeVisible();  
 
         // Tipo Prestamo
-        await expect(page.getByRole('row', {name: 'Tipo préstamo HIPOTECARIOS'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Tipo préstamo COMERCIALES'})).toBeVisible();
 
         // Estado Prestamo
-        await expect(page.getByRole('row', {name: 'Estado préstamo CANCELADO'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'Estado préstamo DESEMBOLSADO'})).toBeVisible();
     });
 
     test('Historial de pagos', async () => {
@@ -213,7 +218,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await page1.close();
 
         // Totales
-        await expect(page.getByRole('row', {name: 'TOTALES: 50,000.00 0.00 50,000.00 0.00 0.00 0.00	0.00 100,000.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'TOTALES: 300,000.00 0.00 0.00 0.00 0.00 0.00 0.00 300,000.00'})).toBeVisible();
     });
 
     test('Cuotas pendientes', async () => {
@@ -254,7 +259,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('columnheader', {name: 'Balance'})).toBeVisible();
 
         // Boton de Imprimir
-        const botonImprimir = page.getByRole('button', {name: 'Imprimir'});
+        const botonImprimir = page.getByLabel('Ver Tabla de Amortización').getByRole('button', {name: 'printer Imprimir'});
         await expect(botonImprimir).toBeVisible();
         await botonImprimir.click();
 
@@ -266,6 +271,11 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
 
         // Debe regresar a la pagina de Estado de Cuentas por Cobrar
         await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTAS POR COBRAR'})).toBeVisible();
+
+        // Ir a la seccion de situacion del movimiento
+        const datosPrestamo = page.getByText('Situación del movimiento');
+        await expect(datosPrestamo).toBeVisible();
+        await datosPrestamo.click();
     });
 
     test('Cambiar de Socio y la seccion de Movimientos debe limpiarse', async () => {

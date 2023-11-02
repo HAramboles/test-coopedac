@@ -69,7 +69,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.getByText('CRÉDIAUTOS')).toBeVisible();
 
         // Hacer un pago al credito
-        await page.getByText('CRÉDIAUTOS').locator('[aria-label="Expand row"]').click();
+        await page.getByLabel('Expand row').click();
 
         // Click al boton de Pagos
         const botonPagos = page.getByText('PAGOS');
@@ -115,11 +115,11 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(modal).toBeVisible();
 
         // En el modal debe estar la cuenta de Ahorros Normales de la persona que se le coloco como cuenta de cobro
-        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
-        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
 
         // Cerrar el modal
-        await page.locator(`${dataCerrar}`).click();
+        await page.getByLabel('Close').nth(3).click();
 
         // El modal debe desaparecer
         await expect(modal).not.toBeVisible();

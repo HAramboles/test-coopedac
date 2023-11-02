@@ -1,7 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
 import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
-import { diaActualFormato } from './utils/fechas';
+import { diaActualFormato } from './utils/functions/fechas';
 import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
 
 // Variables globales
@@ -13,7 +13,7 @@ let page: Page;
 let botonNuevaCuenta: Locator;
 
 // Imagen de la firma
-const firma = './tests/img/firma.jpg';
+const firma = './tests/utils/img/firma.jpg';
 
 // Cedula, nombre y apellido de la persona
 let cedula: string | null;

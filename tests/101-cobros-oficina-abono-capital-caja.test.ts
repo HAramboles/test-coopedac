@@ -84,10 +84,10 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Debe estar visible el credito de la persona
-        await expect(page.getByText('CRÉDITO HIPOTECARIO')).toBeVisible();
+        await expect(page.getByText('CRÉDIAUTOS')).toBeVisible();
 
         // Hacer un pago al credito
-        await page.locator('[aria-label="Expand row"]').click();
+        await page.getByLabel('Expand row').click();
 
         // Click al boton de Pagos
         const botonPagos = page.getByText('PAGOS');
@@ -133,11 +133,11 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(modal).toBeVisible();
 
         // En el modal debe estar la cuenta de Ahorros Normales de la persona que se le coloco como cuenta de cobro
-        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
-        await expect(page.getByLabel('CUENTA(S) DE COBRO DEL PRÉSTAMO').getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
 
         // Cerrar el modal
-        await page.locator(`${dataCerrar}`).click();
+        await page.getByLabel('Close').nth(3).click();
 
         // El modal debe desaparecer
         await expect(modal).not.toBeVisible();
@@ -232,7 +232,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.getByRole('menuitem', {name: 'OPERACIONES'}).click();
 
         // Sesiones en Transito
-        await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
+        await page.getByRole('menuitem', {name: 'Sesiones en Tránsito', exact: true}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_sesiones_transito}`);
@@ -262,7 +262,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
     test('Aplicar el pago al prestamo desde Caja', async () => {
         // La URL debe cambiar a la transacciones de caja
-        await expect(page).toHaveURL(`${url_transacciones_caja}`);
+        await expect(page).toHaveURL(`${url_base}/transacciones_caja/01-4-1-2-2`);
 
         // Debe aparecer una alerta de operacion exitosa
         await expect(page.locator('text=Sesiones en transito actualizada exitosamente.')).toBeVisible();

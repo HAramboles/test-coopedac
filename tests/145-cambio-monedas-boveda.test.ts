@@ -48,10 +48,13 @@ test.describe.serial('Pruebas con el Cambio de Monedas de Boveda', async () => {
         await page.waitForTimeout(2000);
 
         // Elegir la boveda principal
-        await page.locator('#form_ID_CAJA').click();
-        await page.waitForTimeout(2000);
-        // Elegir la opcion de Boveda Principal
-        await page.getByRole('option', {name: 'BOVEDA PRINCIPAL'}).click();
+        // await page.locator('#form_ID_CAJA').click();
+        // await page.waitForTimeout(2000);
+        // // Elegir la opcion de Boveda Principal
+        // await page.getByRole('option', {name: 'BOVEDA PRINCIPAL'}).click();
+
+        // La Boveda Principal debe estar seleccionada
+        await expect(page.getByText('BOVEDA PRINCIPAL')).toBeVisible();
 
         // Tabla de Recibido
         await expect(page.locator('h1').filter({hasText: 'RECIBIDO'})).toBeVisible();

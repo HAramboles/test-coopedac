@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { url_base, dataCerrar, selectBuscar, formBuscar, browserConfig, inputFechaSolicitud, inputPrimerPago, contextConfig, valorAdmisibleCredito } from './utils/dataTests';
-import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/fechas';
+import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/functions/fechas';
 import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
@@ -17,7 +17,7 @@ let apellido: string | null;
 const cantMonto:string = '200,000';
 
 // Imagen de los documentos
-const firma = './tests/img/firma.jpg';
+const firma = './tests/utils/img/firma.jpg';
 
 // Pruebas
 test.describe.serial('Prueba con la Solicitud de Credito', () => {

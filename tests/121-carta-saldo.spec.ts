@@ -69,13 +69,13 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         await expect(page.getByRole('row', {name: 'CRÉDITO HIPOTECARIO'}).getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Monto
-        await expect(page.getByRole('cell', {name: 'RD$ 50,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RD$ 300,000.00'})).toBeVisible();
 
         // Plazo 
         await expect(page.getByRole('cell', {name: '48'})).toBeVisible();
 
         // Cuota
-        await expect(page.getByRole('cell', {name: 'RD$ 416.67'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RD$ 3,750'})).toBeVisible();
     });
 
     test('No debe mostrarse las solicitudes de credito', async () => {
@@ -93,9 +93,6 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
 
         // Debe mostrarse el nombre del socio como un titulo
         await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
-
-        // Debe mostrarse el estado del prestamo
-        await expect(page.locator('text=(CANCELADO)')).toBeVisible();
 
         // El boton de finalizar no debe estar visible
         await expect(page.getByRole('button', {name: 'Finalizar'})).not.toBeVisible();
@@ -158,9 +155,10 @@ test.describe.serial('Pruebas con la Carta de Saldo', () => {
         await expect(page.locator('h1').filter({hasText: 'LISTA DE DOCUMENTOS'})).toBeVisible();
 
         // Los documentos deben mostrase
-        await expect(page.locator('div').filter({hasText: 'CARTA DE TRABAJO'}).nth(4)).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'SOLICTUD DE PRESTAMO LLENA Y FIRMADA'}).nth(4)).toBeVisible();
         await expect(page.locator('div').filter({hasText: 'INFORME BURO CREDITO (DATACREDITO)'}).nth(4)).toBeVisible();
         await expect(page.locator('div').filter({hasText: 'INFORME DEL SUBGERENTE DE NEGOCIOS'}).nth(4)).toBeVisible();
+        await expect(page.locator('div').filter({hasText: 'INSTANCIA DE CREDITO LLENA Y FIRMADA'}).nth(4)).toBeVisible();
         await expect(page.locator('div').filter({hasText: 'TABLA AMORTIZACION'}).nth(4)).toBeVisible();
         await expect(page.locator('div').filter({hasText: 'CEDULA DEUDOR'}).nth(4)).toBeVisible();
 

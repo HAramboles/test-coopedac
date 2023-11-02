@@ -41,13 +41,13 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
 
     test('Ir a la opcion de Anular Desembolso', async () => {
         // Negocios
-        await page.getByRole('menuitem', { name: 'NEGOCIOS'}).click();
+        await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
 
         // Anulaciones
-        await page.getByRole('menuitem', { name: 'ANULACIONES'}).click();
+        await page.getByRole('menuitem', {name: 'ANULACIONES'}).click();
 
         // Anular Desembolso
-        await page.getByRole('menuitem', { name: 'Anular Desembolso'}).click();
+        await page.getByRole('menuitem', {name: 'Anular Desembolso'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_anular_desembolso}`);
@@ -112,6 +112,13 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await page.getByRole('menuitem', {name: 'Solicitud de Crédito'}).click();
 
         // La URL debe de cambiar
+        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
+
+        // Cambiar el estado a aprobado
+        await page.locator('text=SOLICITADO').click();
+        await page.locator('text=APROBADO').click();
+
+        // La URL debe cambiar
         await expect(page).toHaveURL(`${url_solicitud_credito}?filter=aprobado`);
 
         // El titulo debe estar visible
@@ -167,13 +174,13 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await page.locator('text=Contraer todo').click();
 
         // Negocios
-        await page.getByRole('menuitem', { name: 'NEGOCIOS'}).click();
+        await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
 
         // Anulaciones
-        await page.getByRole('menuitem', { name: 'ANULACIONES'}).click();
+        await page.getByRole('menuitem', {name: 'ANULACIONES'}).click();
 
         // Anular Desembolso
-        await page.getByRole('menuitem', { name: 'Anular Desembolso'}).click();
+        await page.getByRole('menuitem', {name: 'Anular Desembolso'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_anular_desembolso}`);
@@ -197,7 +204,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await expect(modalAnularDesembolso).toBeVisible();
 
         // No debe mostrarse el desembolso anulado anteriormente
-        await expect(page.getByRole('cell', {name: 'RD$ 10,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RD$ 300,000.00'})).toBeVisible();
 
         // Seleccionar el desembolso del prestamo
         await page.getByRole('checkbox').last().click();

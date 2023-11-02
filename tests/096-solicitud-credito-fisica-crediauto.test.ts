@@ -13,9 +13,9 @@ import {
     dataVer, 
     formBuscar
 } from './utils/dataTests';
-import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/fechas';
+import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/functions/fechas';
 import { url_solicitud_credito } from './utils/urls';
-import { numerosChasis, numerosPlaca } from './utils/cedulasypasaporte';
+import { numerosChasis, numerosPlaca } from './utils/functions/cedulasypasaporte';
 
 // Variables globales
 let browser: Browser;
@@ -28,7 +28,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Imagen de los documentos
-const firma = './tests/img/firma.jpg';
+const firma = './tests/utils/img/firma.jpg';
 
 // Monto solicitado para el prestamo
 const cantMonto:string = '125,000';
@@ -341,14 +341,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // La cuota debe cambiar al agregarse un abono programado
         await expect(inputCuota).toHaveValue('RD$ 2,461.21');
 
-        // // Cerrar y abrir la seccion de Abonos programados
-        // await seccionAbonosProgramados.click();
-        // await page.waitForTimeout(2000);
-        // await seccionAbonosProgramados.click();
+        // Cerrar y abrir la seccion de Abonos programados
+        await seccionAbonosProgramados.click();
+        await page.waitForTimeout(2000);
+        await seccionAbonosProgramados.click();
 
-        // // El abono programado agregado debe estar visible
-        // await expect(page.getByRole('cell', {name: '60'})).toBeVisible();
-        // await expect(page.getByRole('cell', {name: '50,000'})).toBeVisible();
+        // El abono programado agregado debe estar visible
+        await expect(page.getByRole('cell', {name: '60'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '50,000'})).toBeVisible();
 
         // Click en guardar y continuar
         GuardaryContinuar();

@@ -84,18 +84,18 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
 
     test('Anular uno de los Pagos al Prestamo', async () => {
         // Deben mostrarse los dos pagos realizados
-        await expect(page.getByRole('cell', {name: '6,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '16,000.00'})).toBeVisible();
         await expect(page.getByRole('cell', {name: '4,000.00'})).toBeVisible();
 
         // Click al boton de Anular del pago de 6000
-        await page.getByRole('row', {name: '6,000.00'}).locator(`${dataEliminar}`).click();
+        await page.getByRole('row', {name: '16,000.00'}).locator(`${dataEliminar}`).click();
 
         // Aparece un modal para colocar la razon de la anulacion
         const modalAnulacion = page.locator('text=Razón de la Anulación');
         await expect(modalAnulacion).toBeVisible();
 
         // Colocar una razon en el input de comentario
-        await page.locator(`${razonAnulacion}`).fill('Anular pago de 6000 pesos realizado por caja');
+        await page.locator(`${razonAnulacion}`).fill('Anular pago de 16000 pesos realizado por caja');
 
         // Click al boton de Aceptar del modal de Razon de Anulacion
         await page.getByRole('button', {name: 'Aceptar'}).click();

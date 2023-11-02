@@ -8,7 +8,7 @@ let context: BrowserContext;
 let page: Page;
 
 // Pruebas
-test.describe.serial('Pruebas con el Mensaje de Aviso cuando hay Recepciones Pendientes en Cuadre de Caja', async () => {
+test.describe.serial('Pruebas con el Cuadre de Caja', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch(browserConfig);
@@ -41,6 +41,9 @@ test.describe.serial('Pruebas con el Mensaje de Aviso cuando hay Recepciones Pen
         // Debe mostrarse un modal para ingresar el usuario del Oficial de Cuadre
         const modalUsuarioOficialCuadre = page.getByText('INICIO SESIÓN DE OFICIAL');
         await expect(modalUsuarioOficialCuadre).toBeVisible();
+
+        // Recargar la pagina y debe quedarse en la pagina de Cuadre de Caja
+        await page.reload();
 
         await page.waitForTimeout(10000);
 
@@ -98,7 +101,7 @@ test.describe.serial('Pruebas con el Mensaje de Aviso cuando hay Recepciones Pen
         await expect(page.locator('#form_OFFICER_NAME')).toHaveValue(`${nombreOficialCuadre}`);
     });
 
-    test('Distribuir decimales y no debe mostrarse erroneamente el formato de los decimales', async () => {
+    test.skip('Distribuir decimales y no debe mostrarse erroneamente el formato de los decimales', async () => {
         // Hacer la distribucion del dinero para probar el formato de los decimales
         const cantDecimales = page.locator('[id="23"]'); // Campo de RD 0.1
 

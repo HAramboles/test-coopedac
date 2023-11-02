@@ -177,17 +177,17 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
                     // Prestamo
-                    await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO GERENCIAL / AHORROS');
+                    await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO GERENCIAL / AHORROS -1M');
 
                     // Seccion Opciones de Pago
                     await expect(page.locator('h1').filter({hasText: 'OPCIONES DE PAGO'})).toBeVisible();
 
                     // Colocar un monto en Abono a Capital
                     const inputAbonoCapital = page.locator('#form_MONTO_ABONO_CAPITAL');
-                    await inputAbonoCapital.fill('6000');
+                    await inputAbonoCapital.fill('16000');
 
                     // Debe colocarse el monto en el campo de Abono a Capital
-                    await expect(inputAbonoCapital).toHaveValue('RD$ 6,000');
+                    await expect(inputAbonoCapital).toHaveValue('RD$ 16,000');
 
                     // Click al boton de Aplicar
                     const botonAplicar = page.locator('button').filter({hasText: 'Aplicar'});
@@ -210,12 +210,12 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
                     await expect(iconoAlerta).toBeVisible();
 
-                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 6000
+                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 16000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
 
-                    // Cantidad = 6 de 1000
+                    // Cantidad = 16 de 1000
                     await cant1000.click();
-                    await cant1000.fill('6');
+                    await cant1000.fill('16');
 
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();
@@ -310,17 +310,17 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     await expect(page.locator('#form_NOMBREPERSONA')).toHaveValue(`${nombre} ${apellido}`);
 
                     // Prestamo
-                    await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO GERENCIAL / AHORROS');
+                    await expect(page.locator('#form_DESCOFERTA')).toHaveValue('CRÉDITO GERENCIAL / AHORROS -1M');
 
                     // Seccion Opciones de Pago
                     await expect(page.locator('h1').filter({hasText: 'OPCIONES DE PAGO'})).toBeVisible();
 
                     // Colocar un monto en Abono a Capital
                     const inputAbonoCapital = page.locator('#form_MONTO_ABONO_CAPITAL');
-                    await inputAbonoCapital.fill('4000');
+                    await inputAbonoCapital.fill('2000');
 
                     // Debe colocarse el monto en el campo de Abono a Capital
-                    await expect(inputAbonoCapital).toHaveValue('RD$ 4,000');
+                    await expect(inputAbonoCapital).toHaveValue('RD$ 2,000');
 
                     // Click al boton de Aplicar
                     const botonAplicar = page.locator('button').filter({hasText: 'Aplicar'});
@@ -343,12 +343,12 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
                     await expect(iconoAlerta).toBeVisible();
 
-                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 4000
+                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 2000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
 
-                    // Cantidad = 4 de 1000
+                    // Cantidad = 2 de 1000
                     await cant1000.click();
-                    await cant1000.fill('4');
+                    await cant1000.fill('2');
 
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();

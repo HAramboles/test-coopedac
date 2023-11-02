@@ -71,10 +71,10 @@ test.describe.serial('Puebas con Reversar Pago a Prestamo', async () => {
 
     test('Entrar al modal Revesar Pago a Prestamo', async () => {
         // Debe mostrarse el movimiento del pago realizado por caja
-        await expect(page.getByRole('cell', {name: '4,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '2,000.00'})).toBeVisible();
 
         // Click al boton de Reversar Prestamo
-        await page.getByRole('row', {name: '4,000.00'}).locator('[data-icon="left-circle"]').click();
+        await page.getByRole('row', {name: '2,000.00'}).locator('[data-icon="left-circle"]').click();
     });
 
     test('Modal de Revesar Pago a Prestamo', async () => {
@@ -92,10 +92,10 @@ test.describe.serial('Puebas con Reversar Pago a Prestamo', async () => {
 
     test('En la seccion Valores de la activdad se debe mostrar el pago al prestamo realizado', async () => {
         // Capital
-        await expect(page.locator('#form_CAPITAL')).toHaveValue('4,000.00');
+        await expect(page.locator('#form_CAPITAL')).toHaveValue('2,000.00');
 
         // Total recibido
-        await expect(page.locator('#form_TOTAL_RECIBIDO')).toHaveValue('4,000.00');
+        await expect(page.locator('#form_TOTAL_RECIBIDO')).toHaveValue('2,000.00');
     });
 
     test.skip('', async () => {

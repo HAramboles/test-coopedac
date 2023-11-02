@@ -14,7 +14,7 @@ import {
     dataVer,
     formComentario
 } from './utils/dataTests';
-import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/fechas';
+import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/functions/fechas';
 import { url_solicitud_credito } from './utils/urls';
 
 // Variables globales
@@ -31,7 +31,7 @@ let nombrePersona: string | null;
 let apellidoPersona: string | null;
 
 // Imagen de los documentos
-const firma = './tests/img/firma.jpg';
+const firma = './tests/utils/img/firma.jpg';
 
 // Monto solicitado para el prestamo
 const cantMonto:string = '300,000';
@@ -246,8 +246,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.getByPlaceholder('CANTIDAD').click();
         await page.getByPlaceholder('CANTIDAD').fill('48');
 
-        // Los plazos deben ser mensuales
-        await expect(page.locator('text=MENSUAL')).toBeVisible();
+        // Los plazos deben ser semestrales
+        await expect(page.locator('text=SEMESTRAL')).toBeVisible();
 
         // Agregar una cuenta del socio para desembolsar
         await page.locator(`${selectBuscar}`).first().click();
@@ -372,6 +372,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         // Colocar un monto en el campo de Total Ingresos
         await page.getByText('RD$ 0.00').first().click();
         await page.getByPlaceholder('MONTO').fill('RD$ 5,00000');
+
+        await page.waitForTimeout(2000);
 
         // Click fuera del input
         await page.getByText('TOTAL INGRESOS').click();
@@ -758,7 +760,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.locator('text=DESEMBOLSADO').click();
 
         // Buscar a la persona juridica
-        await page.locator(`${formBuscar}`).fill(`${cedulaEmpresa}`);
+        await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
 
         // Debe mostrarse el prestamo desembolsado en la tabla
         await expect(page.getByRole('row', {name: `${nombreEmpresa}`})).toBeVisible();
