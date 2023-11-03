@@ -1,7 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { diaActualFormato, primerDiaMes } from './utils/fechas';
-import { url_base, browserConfig, fechaInicial, fechaFinal, contextConfig } from './utils/dataTests';
-import { url_prestamos_gerenciales } from './utils/urls';
+import { diaActualFormato, primerDiaMes } from './utils/functions/fechas';
+import { fechaInicial, fechaFinal } from './utils/data/inputsButtons';
+import { url_base, url_prestamos_gerenciales } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

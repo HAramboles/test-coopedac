@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, browserConfig, contextConfig, formBuscar, dataVer, noData, selectBuscar, dataCheck, dataEdit, dataEliminar } from './utils/dataTests';
-import { url_registro_persona } from './utils/urls';
+import { formBuscar, dataVer, noData, selectBuscar, dataCheck, dataEdit, dataEliminar } from './utils/data/inputsButtons';
+import { url_base, url_registro_persona } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;
@@ -151,11 +152,11 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
 
         // Click al input de cedula, debe estar deshabilitado
         await expect(inputCedula).toHaveAttribute('readonly', '');
-        // await inputCedula.click();
+        await inputCedula.click();
         // Click fuera del input 
-        // await page.locator('h1').filter({hasText: 'DATOS GENERALES'}).click();
+        await page.locator('h1').filter({hasText: 'DATOS GENERALES'}).click();
         // El input de cedula no puede estar vacio
-        // await expect(inputCedula).not.toHaveValue('');
+        await expect(inputCedula).not.toHaveValue('');
 
         // Click al input de categoria actual, debe estar deshabilitado y tener el valor de Socio Ahorrante
         await expect(inputCategoriaActual).toHaveAttribute('readonly', '');
@@ -164,11 +165,11 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
 
         // Click al input de pasaporte, debe estar deshabilitado
         await expect(inputPasaporte).toHaveAttribute('readonly', '');
-        // await inputPasaporte.click();
+        await inputPasaporte.click();
         // Click fuera del input 
-        // await page.locator('h1').filter({hasText: 'DATOS GENERALES'}).click();
+        await page.locator('h1').filter({hasText: 'DATOS GENERALES'}).click();
         // El input de cedula no puede estar vacio
-        // await expect(inputPasaporte).not.toHaveValue('');
+        await expect(inputPasaporte).not.toHaveValue('');
 
         // Click al input de nombre, debe estar deshabilitado y tener el valor del nombre de la persona
         await expect(inputNombre).toHaveAttribute('readonly', '');

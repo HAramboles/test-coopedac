@@ -1,16 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { 
-    url_base, 
-    browserConfig, 
-    dataEliminar, 
-    contextConfig, 
-    fechaInicio, 
-    tipoTransaccion, 
-    razonAnulacion, 
-    fechaFin 
-} from './utils/dataTests';
-import { url_anular_retiro } from './utils/urls';
-import { diaActualFormato } from './utils/fechas';
+import { dataEliminar, fechaInicio, tipoTransaccion, razonAnulacion, fechaFin } from './utils/data/inputsButtons';
+import { url_base, url_anular_retiro } from './utils/dataPages/urls';
+import { diaActualFormato } from './utils/functions/fechas';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

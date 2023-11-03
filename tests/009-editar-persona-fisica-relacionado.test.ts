@@ -1,8 +1,9 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { numerosPasaporte, numerosCelular } from './utils/cedulasypasaporte';
-import { url_base, formBuscar, browserConfig, contextConfig, noData } from './utils/dataTests';
-import { EscenariosActividadParametrosEditarPersona } from './utils/interfaces';
-import { url_registro_persona } from './utils/urls';
+import { numerosPasaporte, numerosCelular } from './utils/functions/cedulasypasaporte';
+import { formBuscar, noData } from './utils/data/inputsButtons';
+import { EscenariosActividadParametrosEditarPersona } from './utils/dataPages/interfaces';
+import { url_base, url_registro_persona } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

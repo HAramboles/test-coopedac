@@ -1,16 +1,9 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { 
-    url_base, 
-    browserConfig, 
-    contextConfig, 
-    formBuscar, 
-    userCorrecto, 
-    nombreTestigoCajero, 
-    razonAnulacion, 
-    noData 
-} from './utils/dataTests';
-import {  url_sesiones_transito, url_cerrar_sesiones_transito } from './utils/urls';
-import { servicio_cajas } from './utils/servicios';
+import { formBuscar, razonAnulacion, noData } from './utils/data/inputsButtons';
+import { url_base, url_sesiones_transito, url_cerrar_sesiones_transito } from './utils/dataPages/urls';
+import { servicio_cajas } from './utils/dataPages/servicios';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { nombreTestigoCajero, userCorrecto } from './utils/data/usuarios';
 
 // Variables globales
 let browser: Browser;

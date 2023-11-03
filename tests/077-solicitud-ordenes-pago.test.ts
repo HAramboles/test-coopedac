@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, browserConfig, contextConfig } from './utils/dataTests';
-import { url_solicitud_ordenes_pago } from './utils/urls';
+import { selectBuscar } from './utils/data/inputsButtons';
+import { url_base, url_solicitud_ordenes_pago } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig'
 
 // Variables globales
 let browser: Browser;

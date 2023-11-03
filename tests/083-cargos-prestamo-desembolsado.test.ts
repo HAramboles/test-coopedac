@@ -1,7 +1,8 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, formBuscar, browserConfig, ariaAgregar, contextConfig } from './utils/dataTests';
-import { EscenariosAgregarCargosPrestamoDesembolsado } from './utils/interfaces';
-import { url_solicitud_credito } from './utils/urls';
+import { formBuscar, ariaAgregar } from './utils/data/inputsButtons';
+import { EscenariosAgregarCargosPrestamoDesembolsado } from './utils/dataPages/interfaces';
+import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

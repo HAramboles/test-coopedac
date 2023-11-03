@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, browserConfig, formBuscar, ariaCancelar, contextConfig } from './utils/dataTests';
-import { url_anular_desembolso, url_solicitud_credito } from './utils/urls';
+import { formBuscar, ariaCancelar } from './utils/data/inputsButtons';
+import { url_base, url_anular_desembolso, url_solicitud_credito } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables Globales
 let browser: Browser;

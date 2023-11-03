@@ -1,6 +1,9 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, userCorrecto, passCorrecto, browserConfig, dataVer, windowSize } from './utils/dataTests';
-import { diaActualFormato } from './utils/fechas';
+import { dataVer } from './utils/data/inputsButtons';
+import { diaActualFormato } from './utils/functions/fechas';
+import { url_base } from './utils/dataPages/urls';
+import { browserConfig, windowSize } from './utils/data/testConfig';
+import { userCorrecto, passCorrecto } from './utils/data/usuarios';
 
 /* Variables globales */
 let browser: Browser;
@@ -54,10 +57,10 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
         await botonLogin.click();
 
         // Mensaje de que que campo de usuario es requerido
-        await expect(page.locator('text=El campo Usuario es requerido')).toBeVisible();
+        await expect(page.locator('text=username es requerido.')).toBeVisible();
 
         // Mensaje de que el campo de contraseña es requerido
-        await expect(page.locator('text=El campo Contraseña es requerido')).toBeVisible();
+        await expect(page.locator('text=password es requerido.')).toBeVisible();
 
         // Presionar la tecla F5
         await page.keyboard.press('F5'); // No debe hacer nada
@@ -112,10 +115,10 @@ test.describe.serial('Pruebas con el Login de Coopedac', async () => {
         await expect(page).toHaveURL(/\/login/);
 
         // Titulo del modal del error
-        await expect(page.getByText('Error', {exact: true})).toBeVisible();
+        await expect(page.getByText('Error de credenciales')).toBeVisible();
 
         /* Esperar que aparezca un mensaje de error */
-        await expect(page.locator('text=Ocurrió un error al iniciar sesión, por favor verifique sus datos.')).toBeVisible();
+        await expect(page.locator('text=El usuario o contraseña es incorrecto.')).toBeVisible();
 
         /* Dar click al boton de aceptar que aparece en el mensaje de error */
         const botonAceptar = page.getByRole('button', {name: 'Aceptar'});

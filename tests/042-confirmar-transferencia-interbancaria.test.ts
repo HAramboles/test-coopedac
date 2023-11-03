@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, contextConfig } from './utils/dataTests';
-import { url_confirmar_transferencia_interbancaria } from './utils/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { url_base, url_confirmar_transferencia_interbancaria } from './utils/dataPages/urls';
 
 // Variables globales
 let browser: Browser;

@@ -1,9 +1,10 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, selectBuscar, dataGuardar, browserConfig, formComentario, contextConfig, actividadPersonaFisica } from './utils/dataTests';
-import { diaAnterior } from './utils/fechas';
-import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
-import { url_transacciones_caja } from './utils/urls';
-import { numerosCheques } from './utils/cedulasypasaporte';
+import { selectBuscar, dataGuardar, formComentario, actividadPersonaFisica } from './utils/data/inputsButtons';
+import { diaAnterior } from './utils/functions/fechas';
+import { EscenariosPruebasCajaBoveda } from './utils/dataPages/interfaces';
+import { url_base, url_transacciones_caja } from './utils/dataPages/urls';
+import { numerosCheques } from './utils/functions/cedulasypasaporte';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

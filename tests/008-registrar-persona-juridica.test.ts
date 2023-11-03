@@ -6,11 +6,12 @@ import {
     numerosCorreo, 
     numerosCelular, 
     numerosTelefono
-} from './utils/cedulasypasaporte';
-import { url_base, ariaCerrar, browserConfig, fechaFinal, dataCheck, contextConfig, fechaInicio } from './utils/dataTests';
-import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
+} from './utils/functions/cedulasypasaporte';
+import { ariaCerrar, fechaFinal, dataCheck, fechaInicio } from './utils/data/inputsButtons';
+import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
 import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './000-nombresyapellidos-personas';
-import { url_registro_persona } from './utils/urls';
+import { url_base, url_registro_persona } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables Globales
 let browser: Browser;

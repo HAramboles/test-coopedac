@@ -1,23 +1,3 @@
-// Usuario y password para ingresar a la pagina
-export const userCorrecto = process.env.REACT_APP_WEB_SERVICE_API_USER;
-export const passCorrecto = process.env.REACT_APP_WEB_SERVICE_API_PASS;
-
-// Usuario en mayusculas
-export const userCorrectoUpperCase = userCorrecto?.toLocaleUpperCase();
-
-// Usuario y password para realizar el cuadre de caja
-export const userCuadreCaja = process.env.REACT_APP_WEB_SERVICE_API_USER_CUADRE_CAJA;
-export const passCuadreCaja = process.env.REACT_APP_WEB_SERVICE_API_PASS_CUADRE_CAJA;
-
-// URL de la pagina
-export const url_base = process.env.REACT_APP_WEB_SERVICE_API;
-
-// Nombre del testigo de los firmantes
-export const nombreTestigoCajero:string = 'HECTOR ARAMBOLES';
-
-// Nombre del oficial de cuadre
-export const nombreOficialCuadre:string = 'CARLOS GIL';
-
 // Actividades economicas de las personas
 export const actividadPersonaFisica:string = 'Programación informática, consultarías y actividades relacionadas';
 export const actividadJuridicayRelacionado:string = 'AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA';
@@ -71,22 +51,4 @@ export const usuarioAproboSolicitud:string = '#form_USUARIO_APROBO';
 // No hay datos en la pagina
 export const noData:string = 'No data';
 
-// Abrir el browser en una pantalla u otra
-const browserOneScreen = ['--window-position=100,0'];
-const browserSecondScreen = ['--window-position=-1500,-100'];
 
-// Tamaño de la pantalla
-export const windowSize = {width: 1400, height: 768};
-const windowSizeOneScreen = {width: 1366, height: 720};
-
-// Configuracion del context
-export const contextConfig = {
-    viewport: windowSizeOneScreen,
-    storageState: 'state.json'
-};
-
-// Configuracion del browser
-export const browserConfig = {
-    headless: false,
-    args: browserOneScreen,
-};

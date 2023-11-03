@@ -1,7 +1,8 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, contextConfig } from './utils/dataTests';
-import { url_solicitud_credito } from './utils/urls';
-import { EscenariosVerProcentajeCobros } from './utils/interfaces';
+import { selectBuscar } from './utils/data/inputsButtons';
+import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
+import { EscenariosVerProcentajeCobros } from './utils/dataPages/interfaces';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

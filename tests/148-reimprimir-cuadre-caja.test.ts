@@ -1,7 +1,9 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, userCorrecto, userCuadreCaja, dataPrinter, fechaFinal, contextConfig, fechaInicial } from './utils/dataTests';
-import { diaActualFormato } from './utils/fechas';
-import { url_reimprimir_cuadre_caja } from './utils/urls';
+import { dataPrinter, fechaFinal, fechaInicial } from './utils/data/inputsButtons';
+import { diaActualFormato } from './utils/functions/fechas';
+import { url_base, url_reimprimir_cuadre_caja } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { userCorrecto, userCuadreCaja } from './utils/data/usuarios';
 
 // Variables globales
 let browser: Browser;

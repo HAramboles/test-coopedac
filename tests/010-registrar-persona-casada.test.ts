@@ -5,16 +5,17 @@ import {
     numerosPasaporte, 
     numerosCorreo, 
     numerosCelular 
-} from './utils/cedulasypasaporte';
+} from './utils/functions/cedulasypasaporte';
 import { 
     nombrePersonaFisicaCasada, 
     apellidoPersonaFisicaCasada, 
     nombrePersonaFisicaConyuge, 
     apellidoPersonaFisicaConyuge  
 } from './000-nombresyapellidos-personas';
-import { url_base, ariaCerrar, browserConfig, fechaFinal, contextConfig, fechaInicio } from './utils/dataTests';
-import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
-import { url_registro_persona } from './utils/urls';
+import { ariaCerrar, fechaFinal, fechaInicio } from './utils/data/inputsButtons';
+import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
+import { url_base, url_registro_persona } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

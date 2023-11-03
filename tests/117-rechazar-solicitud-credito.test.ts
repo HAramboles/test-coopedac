@@ -1,21 +1,19 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { 
-    url_base, 
     dataCerrar, 
-    selectBuscar, 
-    browserConfig, 
+    selectBuscar,
     inputFechaSolicitud, 
     inputPrimerPago, 
     formBuscar,
-    contextConfig,
     valorAdmisibleCredito,
     formComentarios,
     dataVer,
     dataEdit,
     ariaAgregar
-} from './utils/dataTests';
+} from './utils/data/inputsButtons';
 import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/functions/fechas';
-import { url_solicitud_credito } from './utils/urls';
+import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

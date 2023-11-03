@@ -1,20 +1,10 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/cedulasypasaporte';
-import { 
-    url_base, 
-    ariaCerrar, 
-    browserConfig, 
-    dataCheck, 
-    fechaFinal, 
-    dataEdit, 
-    dataEliminar, 
-    contextConfig, 
-    noData,
-    fechaInicio
-} from './utils/dataTests';
-import { EscenariosPruebaCrearPersonas } from './utils/interfaces';
+import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/functions/cedulasypasaporte';
+import { ariaCerrar, dataCheck, fechaFinal, dataEdit, dataEliminar, noData,fechaInicio } from './utils/data/inputsButtons';
+import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
-import { url_registro_persona } from './utils/urls';
+import { url_base, url_registro_persona } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

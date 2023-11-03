@@ -1,8 +1,9 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, dataCerrar, selectBuscar, browserConfig, formComentario, contextConfig, actividadJuridicayRelacionado, formBuscar, noData } from './utils/dataTests';
-import { EscenariosPruebasCajaBoveda } from './utils/interfaces';
-import { url_sesiones_transito, url_transacciones_caja } from './utils/urls';
-import { servicio_check_session } from './utils/servicios';
+import { selectBuscar, formComentario, actividadJuridicayRelacionado, formBuscar, noData } from './utils/data/inputsButtons';
+import { EscenariosPruebasCajaBoveda } from './utils/dataPages/interfaces';
+import { url_base, url_sesiones_transito, url_transacciones_caja } from './utils/dataPages/urls';
+import { servicio_check_session } from './utils/dataPages/servicios';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;
@@ -156,7 +157,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     await campoMonto.fill('750000');
             
                     // Agregar un comentario
-                    await page.locator(`${formComentario}`).fill('Deposito de 500000 pesos a la cuenta de Ahorros');
+                    await page.locator(`${formComentario}`).fill('Deposito de 830000 pesos a la cuenta de Ahorros');
             
                     // Boton Agregar
                     await page.locator('text=Agregar').click();
@@ -208,12 +209,12 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                     // El monto para el cambio de categoria de Ahorrante a Empresarial es de 25000, colocar un monto mayor
             
-                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 750000. Divididos en 1000
+                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 830000. Divididos en 1000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
             
                     // Cantidad = 750 de 1000
                     await cant1000.click();
-                    await cant1000.fill('750');
+                    await cant1000.fill('830');
 
                     // Esperar dos segundos
                     await page.waitForTimeout(2000);

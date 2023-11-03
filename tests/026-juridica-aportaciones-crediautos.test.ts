@@ -1,7 +1,9 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, ariaCerrar, selectBuscar, browserConfig, nombreTestigoCajero, contextConfig } from './utils/dataTests';
-import { EscenariosPruebaCrearCuentas } from './utils/interfaces';
-import { url_cuentas_aportaciones_crediautos } from './utils/urls';
+import { ariaCerrar, selectBuscar } from './utils/data/inputsButtons';
+import { EscenariosPruebaCrearCuentas } from './utils/dataPages/interfaces';
+import { url_base, url_cuentas_aportaciones_crediautos } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { nombreTestigoCajero } from './utils/data/usuarios';
 
 // Variables globales
 let browser: Browser;

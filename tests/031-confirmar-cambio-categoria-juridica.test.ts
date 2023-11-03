@@ -1,7 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { diaActualFormato } from './utils/fechas';
-import { url_base, formBuscar, browserConfig, dataCheck, contextConfig } from './utils/dataTests';
-import { url_aceptar_rechazar_cambio_categoria } from './utils/urls';
+import { diaActualFormato } from './utils/functions/fechas';
+import { formBuscar, dataCheck } from './utils/data/inputsButtons';
+import { url_base, url_aceptar_rechazar_cambio_categoria } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

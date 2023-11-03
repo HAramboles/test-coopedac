@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, userCorrecto, formBuscar, dataCheck, ariaCancelar, formComentario, contextConfig } from './utils/dataTests';
-import { url_recepcion_transferencia_boveda } from './utils/urls';
+import { formBuscar, dataCheck, ariaCancelar, formComentario } from './utils/data/inputsButtons';
+import { url_base, url_recepcion_transferencia_boveda } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { userCorrecto } from './utils/data/usuarios';
 
 // Variables Globales
 let browser: Browser;

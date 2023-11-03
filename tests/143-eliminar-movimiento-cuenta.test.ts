@@ -1,7 +1,8 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { url_base, browserConfig, selectBuscar, dataEliminar, contextConfig, razonAnulacion } from './utils/dataTests';
-import { EscenariosEliminarMovimientos } from './utils/interfaces';
-import { url_consulta_movimientos_cuentas } from './utils/urls';
+import { selectBuscar, dataEliminar, razonAnulacion } from './utils/data/inputsButtons';
+import { EscenariosEliminarMovimientos } from './utils/dataPages/interfaces';
+import { url_base, url_consulta_movimientos_cuentas } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

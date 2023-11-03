@@ -1,4 +1,5 @@
-import { url_base } from "./dataTests";
+// URL de la pagina
+export const url_base = process.env.REACT_APP_WEB_SERVICE_API;
 
 // Enlaces de la pagina
 export const url_registro_tasa = `${url_base}/registro_tasa/01-99-4-2/`;

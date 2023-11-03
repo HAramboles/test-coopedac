@@ -1,7 +1,9 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { url_base, dataPrinter, formBuscar, browserConfig, nombreTestigoCajero, contextConfig } from './utils/dataTests';
-import { EscenariosPruebaEditarCuentas } from './utils/interfaces';
-import { url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/urls';
+import { dataPrinter, formBuscar } from './utils/data/inputsButtons';
+import { EscenariosPruebaEditarCuentas } from './utils/dataPages/interfaces';
+import { url_base, url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { nombreTestigoCajero } from './utils/data/usuarios';
 
 // Variables Globales
 let browser: Browser;

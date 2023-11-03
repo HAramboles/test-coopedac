@@ -1,7 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, contextConfig, fechaInicio, tipoTransaccion, fechaFin } from './utils/dataTests';
-import { url_reversar_transferencia, url_reimprimir_contratos_cuentas } from './utils/urls';
-import { diaActualFormato } from './utils/fechas';
+import { fechaInicio, tipoTransaccion, fechaFin } from './utils/data/inputsButtons';
+import { url_base, url_reversar_transferencia, url_reimprimir_contratos_cuentas } from './utils/dataPages/urls';
+import { diaActualFormato } from './utils/functions/fechas';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

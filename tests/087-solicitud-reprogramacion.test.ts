@@ -1,7 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { dosMesDespues } from './utils/fechas';
-import { url_base, ariaCerrar, selectBuscar, browserConfig, contextConfig, formComentarios } from './utils/dataTests';
-import { url_solicitud_reprogramacion } from './utils/urls';
+import { dosMesDespues } from './utils/functions/fechas';
+import { ariaCerrar, selectBuscar, formComentarios } from './utils/data/inputsButtons';
+import { url_base, url_solicitud_reprogramacion } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
 let browser: Browser;

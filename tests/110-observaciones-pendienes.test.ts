@@ -1,6 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { url_base, browserConfig, contextConfig, nombreTestigoCajero, userCorrecto, dataEliminar } from './utils/dataTests';
-import { url_observaciones_pendientes } from './utils/urls';
+import { dataEliminar } from './utils/data/inputsButtons';
+import { url_base, url_observaciones_pendientes } from './utils/dataPages/urls';
+import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { nombreTestigoCajero, userCorrecto } from './utils/data/usuarios';
 
 // Variables globales
 let browser: Browser;
