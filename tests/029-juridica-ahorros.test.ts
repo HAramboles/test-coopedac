@@ -209,7 +209,7 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                    await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
             
                    // Seleccionar el representante
-                   await page.getByRole('button', {name: 'Seleccionar'}).click();
+                   await page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`}).getByRole('button', {name: 'Seleccionar'}).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();

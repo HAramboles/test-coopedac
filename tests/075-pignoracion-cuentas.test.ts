@@ -131,9 +131,8 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                     // Fecha de pignoracion
                     await expect(fechaPignoracion).toHaveValue(`${diaActualFormato}`);
             
-                    // Cambiar la razon a motivos legales
-                    await razonPignoracion.click();
-                    await page.locator('text=MOTIVOS LEGALES').click();
+                    // Por defecto el motivo de pignoracion debe ser Pignoracion Manual
+                    await page.getByTitle('PIGNORACION MANUAL').click();
             
                     // Monto
                     await montoPignoracion.fill('100');

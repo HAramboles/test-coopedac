@@ -17,7 +17,7 @@ export const apellidoRelacionadoJuridica:string = '';
 export const nombreRelacionadoReferenciaJuridica:string = ''; // (Femenino)
 export const apellidoRelacionadoReferenciaJuridica:string = '';
 
-// Persona Fisica Casada. Test = 010-registrar-persona-fisica-casada.test.ts
+// Persona Fisica Casada y Conyugue. Test = 010-registrar-persona-fisica-casada.test.ts
 export const nombrePersonaFisicaCasada:string = ''; // (Femenino)
 export const apellidoPersonaFisicaCasada:string = '';
 

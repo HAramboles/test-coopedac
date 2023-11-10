@@ -711,6 +711,9 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // Digitar una cedula 
                     await page.getByPlaceholder('Elige el tipo de documento (Opcional)').fill(`${cedulaPersonaJuridicaRelacionadoReferencia}`);
 
+                    // Esperar que la cedula de la persona se agregue correctamente
+                    await page.waitForTimeout(3000);
+
                     // Digitar el nombre
                     await page.getByPlaceholder('Nombres').fill(`${nombreRelacionadoReferencia}`);
 
@@ -740,6 +743,9 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
 
                     // Seleccionar el estado civil
                     await page.getByLabel('Soltero(a)').check();
+
+                    // Esperar que todos los datos agregados esten correctos
+                    await page.waitForTimeout(2000);
 
                     // Click al boton de Aceptar
                     await page.locator('div').filter({ hasText: /^Aceptar$/ }).click();

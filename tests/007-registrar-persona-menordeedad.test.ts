@@ -191,8 +191,6 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     const campoEstado = page.locator('#person_ESTADO_CIVIL');
                     await campoEstado?.fill('Soltero');
                     await page.locator('text=Soltero(a)').click();
-
-                    await page.pause();
             
                     // Buscar un referido
                     await page.locator(`${selectBuscar}`).click();

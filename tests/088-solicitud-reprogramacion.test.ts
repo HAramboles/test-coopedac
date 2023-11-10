@@ -21,7 +21,7 @@ let nombre: string|null;
 let apellido: string | null;
 
 // Pruebas
-test.describe.serial('Solicitud de Reprogramacion - Pruebas con los diferentes Parametros', async () => {
+test.describe.serial('Pruebas con la Solicitud de Reprogramacion de Creditos', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch(browserConfig);

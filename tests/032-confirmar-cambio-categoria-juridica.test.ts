@@ -69,7 +69,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la P
 
         // Deben mostrarse la categoria actual y la solicitada
         // await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: 'SOCIO EMPRESARIAL'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'SOCIO EMPRESARIAL', exact: true})).toBeVisible();
 
         // Click a confirmar cambio de categoria
         await page.getByRole('row', {name: `${nombreEmpresa} SOCIO EMPRESARIAL`}).locator(`${dataCheck}`).click();

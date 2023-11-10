@@ -201,9 +201,6 @@ test.describe.serial('Pruebas editando una Persona Juridica', () => {
 
         // Relacionado Completo
         await expect(page.getByRole('cell', {name: `${nombrePersonaRelacionada} ${apellidoPersonaRelacionada}`})).toBeVisible();
-
-        // Click al boton de Actualizar y continuar
-        actualizarContinuar();
     });
 
     test('Finalizar con la Edicion de la Persona Juridica', async () => {
