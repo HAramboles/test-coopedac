@@ -30,6 +30,7 @@ const generarLetrasPasaporte = () => {
 // Exportar las funciones como constantes
 export const numerosCedulas = generarNumerosAleatorios(11); 
 export const numerosCedulas2 = generarNumerosAleatorios(11); 
+export const numerosCedulas3 = generarNumerosAleatorios(11); 
 
 export const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosAleatorios(11));
 
@@ -38,9 +39,14 @@ export const numerosRegistroMercantil = generarNumerosAleatorios(15); // Registr
 export const numerosCorreo = generarNumerosAleatorios(2); // Numeros para el correo de las personas
 
 export const numerosCelular = ('829' + generarNumerosAleatorios(10)); // Numeros para los celulares
+export const numerosCelular2 = ('829' + generarNumerosAleatorios(10));
 export const numerosTelefono = ('809' + generarNumerosAleatorios(10)); // Numeros para los telefonos
 
 export const numerosCheques = generarNumerosAleatorios(4); // Numeros para los cheques
+
+// Valor para la garantia hipotecaria
+export const numerosMatriculaHipoteca1 = generarNumerosAleatorios(4);
+export const numerosMatriculaHipoteca2 = generarNumerosAleatorios(4);
 
 // Valores para la garantia de vehiculos
 export const numerosChasis = (generarLetrasPasaporte() + generarNumerosAleatorios(4)); 

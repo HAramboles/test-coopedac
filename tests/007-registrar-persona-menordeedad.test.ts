@@ -1,7 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas, numerosTelefono, numerosCorreo } from './utils/functions/cedulasypasaporte';
 import { formatDate } from './utils/functions/fechas';
-import { ariaCerrar } from './utils/data/inputsButtons';
+import { ariaCerrar, selectBuscar } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
 import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './000-nombresyapellidos-personas';
 import { url_base, url_registro_persona } from './utils/dataPages/urls';
@@ -191,9 +191,15 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     const campoEstado = page.locator('#person_ESTADO_CIVIL');
                     await campoEstado?.fill('Soltero');
                     await page.locator('text=Soltero(a)').click();
+
+                    await page.pause();
             
-                    // Marcar la casilla de No Referido
-                    await page.locator('#person_NO_REFERIDO').click();
+                    // Buscar un referido
+                    await page.locator(`${selectBuscar}`).click();
+                    // Digitar el nombre de la madre
+                    await page.locator(`${selectBuscar}`).fill(`${nombreMadre} ${apellidoMadre}`);
+                    // Eelgir la opcion con el nombre de la madre
+                    await page.getByRole('option', {name: `${nombreMadre} ${apellidoMadre}`}).click();
             
                     // Categoria Solicitada
                     const campoCategoria = page.locator('#person_ID_CATEGORIA_SOLICITADA');

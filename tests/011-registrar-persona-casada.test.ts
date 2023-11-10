@@ -474,6 +474,11 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
             
                     // Se debe abrir un modal con los tipos de relacionado
                     await expect(page.locator('h1').filter({hasText: 'TIPO DE RELACIONADO'})).toBeVisible();
+                    // await expect(page.locator('h1').filter({hasText: 'SELECCIONE TIPO DE RELACIONADO'})).toBeVisible();
+
+                    // // Deben estar las descripciones de los tipos de relacionados en el modal
+                    // await expect(page.getByText('Referencia: Registrar una persona solo con información básica.')).toBeVisible();
+                    // await expect(page.getByText('Registro completo: Registrar una persona con toda su información (Documento de identidad, dirección, etc.)')).toBeVisible();
             
                     // Click al boton de referencia
                     await page.locator('text=Registro Completo').click();

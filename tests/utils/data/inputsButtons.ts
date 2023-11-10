@@ -1,6 +1,9 @@
+// Clase requerido para los inputs de los formularios
+export const inputRequerido:string = 'ant-form-item-required';
+
 // Actividades economicas de las personas
 export const actividadPersonaFisica:string = 'Programación informática, consultarías y actividades relacionadas';
-export const actividadJuridicayRelacionado:string = 'AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA';
+export const actividadJuridicayRelacionado:string = 'Agricultura, ganadería, caza y actividades de servicios conexos.';
 
 // Costantes utilizadas con regularidad
 export const dataCerrar:string = '[data-icon="close"]';

@@ -105,11 +105,17 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         // Click en Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
-        // Deben salir dos mensajes, cerrar uno de los mensajes
-        await page.locator(`${ariaCerrar}`).first().click();
+        // // Debe abrirse una ventana con el reporte de la transferencia
+        // const page1 = await context.waitForEvent('page');
+
+        // // Cerrar la nueva pestaña
+        // await page1.close();
 
         // Debe redirigirse a la Confirmacion de Cancelacion de Cuentas
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();
+
+        // La solicitud de cancelacion no debe mostrarse en la tabla de las solicitudes
+        await expect(page.getByText('OTRAS RAZONES')).not.toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

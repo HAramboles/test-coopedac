@@ -2,14 +2,22 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { 
     numerosCedulas, 
     numerosCedulas2, 
+    numerosCedulas3, 
     numerosRegistroMercantil, 
     numerosCorreo, 
     numerosCelular, 
+    numerosCelular2, 
     numerosTelefono
 } from './utils/functions/cedulasypasaporte';
-import { ariaCerrar, fechaFinal, dataCheck, fechaInicio } from './utils/data/inputsButtons';
+import { ariaCerrar, fechaFinal, dataCheck, fechaInicio, inputRequerido, actividadJuridicayRelacionado } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
-import { nombreJuridica, nombreRelacionadoJuridica, apellidoRelacionadoJuridica } from './000-nombresyapellidos-personas';
+import { 
+    nombreJuridica, 
+    nombreRelacionadoJuridica, 
+    apellidoRelacionadoJuridica,
+    nombreRelacionadoReferenciaJuridica,
+    apellidoRelacionadoReferenciaJuridica 
+} from './000-nombresyapellidos-personas';
 import { url_base, url_registro_persona } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
@@ -24,6 +32,7 @@ let botonNuevaPersona: Locator;
 // Cedulas
 const cedulaPersonaJuridica = numerosCedulas;
 const cedulaPersonaJuridicaRelacionado = numerosCedulas2;
+const cedulaPersonaJuridicaRelacionadoReferencia = numerosCedulas3;
 
 // Registro Mercantil
 const registroMercantil = numerosRegistroMercantil;
@@ -35,6 +44,7 @@ const correoRelacionado = numerosCorreo;
 // Numeros telefonicos
 const telefonoJuridica = numerosTelefono;
 const celularRelacionado = numerosCelular;
+const celularRelacionadoReferencia = numerosCelular2;
 
 // Nombre Persona Juridica
 const nombrePersonaJuridica = nombreJuridica;
@@ -45,6 +55,10 @@ const correoEmpresa = nombrePersonaJuridica.split(' ').join('') + correoJuridica
 // Nombres y apellidos del relacionado de la persona juridica
 const nombreRelacionado = nombreRelacionadoJuridica;
 const apellidoRelacionado = apellidoRelacionadoJuridica;
+
+// Nombres y apellidos del relacionado por referencia de la persona juridica
+const nombreRelacionadoReferencia = nombreRelacionadoReferenciaJuridica;
+const apellidoRelacionadoReferencia = apellidoRelacionadoReferenciaJuridica;
 
 // Pruebas
 test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parametros', async () => {
@@ -141,10 +155,16 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // El titulo de datos generales debe estra visible
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
 
-                    await page.waitForLoadState();
+                    // El input Razon Social debe ser requerido
+                    const labelRazonSocial = page.getByTitle('Razón Social');
+                    await expect(labelRazonSocial).toHaveClass(`${inputRequerido}`);
             
                     // Razon social / nombre de la empresa
                     await page.locator('#legalPerson_NOMBRE_EMPRESA').fill(`${nombrePersonaJuridica}`);
+
+                    // El input Rnc / cedula debe ser requerido
+                    const labelCedula = page.getByTitle('RNC/Cédula');
+                    await expect(labelCedula).toHaveClass(`${inputRequerido}`);
             
                     // RNC / cedula
                     const campoRNC = page.locator('#legalPerson_RNC');
@@ -164,13 +184,17 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // Fecha de Vencimiento
                     const fechaVencimiento = page.locator('#legalPerson_FECHA_VENC_REG_MERCANTIL');
                     await fechaVencimiento.fill('25/09/2030');
+
+                    // El selector de Actividad Economica debe ser requerido
+                    const labelActividadEconomica = page.getByTitle('Actividad Económica');
+                    await expect(labelActividadEconomica).toHaveClass(`${inputRequerido}`);
             
                     // Actividad Economica
                     const actividadEconomica = page.locator("(//input[@id='legalPerson_ID_ACTIVIDAD_ECONOMICA'])[2]");
                     await actividadEconomica.click();
                     await actividadEconomica.fill('Agricultura, ganadería, ');
                     // Seleccionar una actividad economica
-                    await page.locator('text=AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA').click();
+                    await page.locator(`text=${actividadJuridicayRelacionado}`).click();
             
                     // Fecha de fundacion
                     const fechaFundacion = page.locator('#legalPerson_FECHA_NAC');
@@ -178,6 +202,10 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
             
                     // Cantidad de empleados
                     await page.locator('#legalPerson_CANT_COLABORADORES').fill('56');
+
+                    // El selector de Ejecutivo debe ser requerido
+                    const labelEjecutivo = page.getByTitle('Ejecutivo');
+                    await expect(labelEjecutivo).toHaveClass(`${inputRequerido}`);
             
                     // Ejecutivo
                     const inputEjecutivo = page.locator('#legalPerson_ID_EJECUTIVO');
@@ -193,6 +221,10 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // Input de Referido por
                     const referidoPor = page.locator('#legalPerson_NOMBRE_REFERIDO');
                     await expect(referidoPor).toHaveValue('Cooperativa Empresarial de A Y C (COOPEDAC)  ');
+                    
+                    // El selector de Categoria Solicitada debe ser requerido
+                    const labelCategoriaSolicitada = page.getByTitle('Categoría Solicitada');
+                    await expect(labelCategoriaSolicitada).toHaveClass(`${inputRequerido}`);
             
                     // Categoria Solicitada
                     const categoriaSolicitada = page.locator('#legalPerson_ID_CATEGORIA_SOLICITADA');
@@ -393,7 +425,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     guardarContinuar();
                 });
             
-                test('Registro de Persona Juridica - Relacionados del socio - Datos Generales', async () => {
+                test('Registro de Persona Juridica - Relacionados del socio - Registro Completo - Datos Generales', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();
             
@@ -404,7 +436,12 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
             
                     // Se debe abrir un modal con los tipos de relacionado
                     await expect(page.locator('h1').filter({hasText: 'TIPO DE RELACIONADO'})).toBeVisible();
-            
+                    // await expect(page.locator('h1').filter({hasText: 'SELECCIONE TIPO DE RELACIONADO'})).toBeVisible();
+
+                    // // Deben estar las descripciones de los tipos de relacionados en el modal
+                    // await expect(page.getByText('Referencia: Registrar una persona solo con información básica.')).toBeVisible();
+                    // await expect(page.getByText('Registro completo: Registrar una persona con toda su información (Documento de identidad, dirección, etc.)')).toBeVisible();
+
                     // Click al boton de referencia
                     await page.locator('text=Registro Completo').click();
             
@@ -447,7 +484,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     guardarContinuar();
                 });
             
-                test('Registro de Persona Juridica - Relacionados del socio - Informacion de Ingresos', async () => {
+                test('Registro de Persona Juridica - Relacionados del socio - Registro Completo - Informacion de Ingresos', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
             
@@ -472,7 +509,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await actividadEconomicaRelacionado.click();
                     await actividadEconomicaRelacionado.fill('Agricultura, ganadería, ');
                     // Elegir una opcion
-                    await page.locator('text=AGRICULTURA, GANADERÍA, CAZA Y SILVICULTURA').click();
+                    await page.locator(`text=${actividadJuridicayRelacionado}`).click();
             
                     // Fecha de ingreso
                     await page.locator('#relatedRecord_FECHA_ENTRADA_EMPRESA').fill('20/10/2005');
@@ -484,7 +521,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     guardarContinuar();
                 });
             
-                test('Registro de Persona Juridica - Relacionados del socio - Peps', async () => {
+                test('Registro de Persona Juridica - Relacionados del socio - Registro Completo - Peps', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'PERSONA EXPUESTA POLÍTICAMENTE'})).toBeVisible();
             
@@ -519,7 +556,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     guardarContinuar();
                 });
 
-                test('Registro de Persona Juridica - Relacionados del socio - Telefonos', async () => {
+                test('Registro de Persona Juridica - Relacionados del socio - Registro Completo - Telefonos', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'TELÉFONOS'})).toBeVisible();
             
@@ -544,7 +581,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await expect(page.locator('text=Contacto Persona almacenado exitosamente.').first()).toBeVisible();
                 });
             
-                test('Registro de Persona Juridica - Relacionados del socio - Emails / Redes Sociales', async () => {
+                test('Registro de Persona Juridica - Relacionados del socio - Registro Completo - Emails / Redes Sociales', async () => {
                     // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'EMAILS / REDES SOCIALES'})).toBeVisible();
             
@@ -577,7 +614,7 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await page.locator(`${ariaCerrar}`).last().click();
                 });
             
-                test('Registro de Persona Juridica - Relacionados del socio - Direcciones', async () => {
+                test('Registro de Persona Juridica - Relacionados del socio - Registro Completo - Direcciones', async () => {
                    // El titulo debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'DIRECCIONES'})).toBeVisible();
             
@@ -634,9 +671,98 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     const finalizarRelacionado = page.locator('#relatedRecord').getByRole('button', {name: 'check Finalizar'});
                     await expect(finalizarRelacionado).toBeVisible();
                     await finalizarRelacionado.click();
+
+                    // En la tabla debe estar el nombre del relacionado
+                    await expect(page.getByRole('cell', {name: `${nombreRelacionado} ${apellidoRelacionado}`})).toBeVisible();
                 });
+
+                test('Registro de Persona Juridica - Relacionados del socio - Registro por Referencia', async () => {
+                    // Boton crear relacionado
+                    const botonCrearRelacionado = page.locator('text=Crear relacionado');
+                    await expect(botonCrearRelacionado).toBeVisible();
+                    await botonCrearRelacionado.click();
+            
+                    // Se debe abrir un modal con los tipos de relacionado
+                    await expect(page.locator('h1').filter({hasText: 'TIPO DE RELACIONADO'})).toBeVisible();
+                    // await expect(page.locator('h1').filter({hasText: 'SELECCIONE TIPO DE RELACIONADO'})).toBeVisible();
+
+                    // // Deben estar las descripciones de los tipos de relacionados en el modal
+                    // await expect(page.getByText('Referencia: Registrar una persona solo con información básica.')).toBeVisible();
+                    // await expect(page.getByText('Registro completo: Registrar una persona con toda su información (Documento de identidad, dirección, etc.)')).toBeVisible();
+
+                    // Click al boton de referencia
+                    await page.getByRole('button', {name: 'Referencia'}).click();
+
+                    // Debe aparecer un modal con un mensaje de aviso
+                    const modalRegistroReferencia = page.getByText('Aviso');
+                    await expect(modalRegistroReferencia).toBeVisible();
+
+                    // Contenido del mensaje de aviso
+                    await expect(page.getByText('Algunos campos estarán habilitados solo si decide agregar un tipo de documento de identidad.')).toBeVisible();
+
+                    // Elegir el tipo de docuemnto de identidad a utilizar
+                    await page.locator('#form_ID_TIPO_IDENT').click();
+                    // Deben aparecer dos tipos de documento de identidad
+                    await expect(page.getByText('Cédula')).toBeVisible();
+                    await expect(page.getByText('Pasaporte')).toBeVisible();
+                    // Elegir cedula
+                    await page.getByText('Cédula').click();
+
+                    // Digitar una cedula 
+                    await page.getByPlaceholder('Elige el tipo de documento (Opcional)').fill(`${cedulaPersonaJuridicaRelacionadoReferencia}`);
+
+                    // Digitar el nombre
+                    await page.getByPlaceholder('Nombres').fill(`${nombreRelacionadoReferencia}`);
+
+                    // Digitar el apellido
+                    await page.getByPlaceholder('Apellidos').fill(`${apellidoRelacionadoReferencia}`);
+
+                    // Digitar un telefono
+                    await page.getByPlaceholder('Teléfono  (Opcional)').fill(`${celularRelacionadoReferencia}`);
+
+                    // Eelgir un tipo de relacion
+                    await page.getByLabel('Tipo relación').click();
+                    // Elegir empleado
+                    await page.getByText('EMPLEADO', {exact: true}).click();
+
+                    // Digitar el lugar de trabajo
+                    await page.getByLabel('Lugar de Trabajo').fill(`${nombrePersonaJuridica}`);
+
+                    // Seleccionar la nacionalidad
+                    await page.getByLabel('Nacionalidad').click();
+                    // Buscar la nacionalidad dominicana
+                    await page.getByLabel('Nacionalidad').fill('domin');
+                    // Elegir la opcion con la nacionalidad dominicana
+                    await page.getByText('DOMINICANA').click();
+
+                    // Selecionar el sexo
+                    await page.getByLabel('Femenino').check();
+
+                    // Seleccionar el estado civil
+                    await page.getByLabel('Soltero(a)').check();
+
+                    // Click al boton de Aceptar
+                    await page.locator('div').filter({ hasText: /^Aceptar$/ }).click();
+
+                    // El modal debe desaparecer
+                    await expect(modalRegistroReferencia).not.toBeVisible();
+
+                    // Esperar a que carguen los datos
+                    await page.waitForTimeout(2000);
+
+                    // La persona agregada por referenia debe estar en la tabla
+                    await expect(page.getByRole('cell', {name: `${nombreRelacionadoReferenciaJuridica} ${apellidoRelacionadoReferencia}`})).toBeVisible();
+                })
             
                 test('Finalizar con el Registro de Persona Juridica', async () => {
+                    // En la tabla deben estar los dos relacionados agregados
+
+                    // Relacionado por Referencia
+                    await expect(page.getByRole('cell', {name: `${nombreRelacionadoReferenciaJuridica} ${apellidoRelacionadoReferencia}`})).toBeVisible();
+
+                    // Relacionado Completo
+                    await expect(page.getByRole('cell', {name: `${nombreRelacionadoJuridica} ${apellidoRelacionadoJuridica}`})).toBeVisible();
+
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('#legalPerson').getByRole('button', {name: 'check Finalizar'});
                     await expect(botonFinalizar).toBeVisible();
@@ -669,14 +795,21 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                 await page.evaluate((telefonoJuridica) => window.localStorage.setItem('telefonoJuridica', telefonoJuridica), telefonoJuridica);
                 // Guardar el correo de la persona juridica
                 await page.evaluate((correoEmpresa) => window.localStorage.setItem('correoEmpresa', correoEmpresa+`@gmail.com`), correoEmpresa);
+                // Guardar el registro mercantil de la persona juridica
+                await page.evaluate((registroMercantil) => window.localStorage.setItem('registroMercantil', registroMercantil), registroMercantil);
                 
                 // Guardar la cedula de la persona relacionada creada
                 await page.evaluate((cedulaPersonaJuridicaRelacionado) => window.localStorage.setItem('cedulaPersonaJuridicaRelacionado', cedulaPersonaJuridicaRelacionado), cedulaPersonaJuridicaRelacionado);
                 // Guardar el nombre y el apellido de la persona relacionada creada
                 await page.evaluate((nombreRelacionado) => window.localStorage.setItem('nombrePersonaJuridicaRelacionada', nombreRelacionado), nombreRelacionado);
                 await page.evaluate((apellidoRelacionado) => window.localStorage.setItem('apellidoPersonaJuridicaRelacionada', apellidoRelacionado), apellidoRelacionado);
-                
-                // Guardar nuevamente el Storage con la cedula, el nombre y el apellido de la persona relacionada
+
+                // Guardar el nombre de la persona relacionada por referencia
+                await page.evaluate((nombreRelacionadoReferencia) => window.localStorage.setItem('nombreRelacionadoReferencia', nombreRelacionadoReferencia), nombreRelacionadoReferencia);
+                // Guardar el apellido de la persona relacionada por referencia
+                await page.evaluate((apellidoRelacionadoReferencia) => window.localStorage.setItem('apellidoRelacionadoReferencia', apellidoRelacionadoReferencia), apellidoRelacionadoReferencia);
+
+                // Guardar nuevamente el Storage con todos los datos anteriores
                 await context.storageState({path: 'state.json'});
                 
                 // Cerrar la pagina

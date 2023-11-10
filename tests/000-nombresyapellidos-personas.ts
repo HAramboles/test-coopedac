@@ -8,11 +8,14 @@ export const apellidoPersonaFisica:string = '';
 export const nombrePersonaMenorEdad:string = ''; // (Masculino)
 export const apellidoPersonaMenorEdad:string = '';
 
-// Persona Juridica y Relacionado. Test = 008-registrar-persona-juridica.test.ts
+// Persona Juridica y Relacionados - Registro Competo y por Referencia. Test = 008-registrar-persona-juridica.test.ts
 export const nombreJuridica:string = '';
 
 export const nombreRelacionadoJuridica:string = ''; // (Masculino)
 export const apellidoRelacionadoJuridica:string = '';
+
+export const nombreRelacionadoReferenciaJuridica:string = ''; // (Femenino)
+export const apellidoRelacionadoReferenciaJuridica:string = '';
 
 // Persona Fisica Casada. Test = 010-registrar-persona-fisica-casada.test.ts
 export const nombrePersonaFisicaCasada:string = ''; // (Femenino)

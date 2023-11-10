@@ -33,13 +33,13 @@ test.describe.serial('Pruebas con las Observaciones Pendientes', async () => {
 
     test('Ir a la pagina de Observaciones Pendientes', async () => {
         // Negocios
-        await page.getByRole('menuitem', { name: 'NEGOCIOS' }).click();
+        await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
 
         // Consultas
-        await page.getByRole('menuitem', { name: 'CONSULTAS' }).click();
+        await page.getByRole('menuitem', {name: 'CONSULTAS'}).click();
 
         // Observaciones Pendientes
-        await page.getByRole('menuitem', { name: 'Observaciones pendientes' }).click();
+        await page.getByRole('menuitem', {name: 'Observaciones pendientes'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_observaciones_pendientes}`);

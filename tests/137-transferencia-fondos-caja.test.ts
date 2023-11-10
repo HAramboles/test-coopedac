@@ -72,7 +72,7 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         await cant1000.fill('1000');
 
         // Boton Guardar
-        const botonGuardar =  page.getByRole('button', {name: 'Guardar'});
+        const botonGuardar = page.getByRole('button', {name: 'Guardar'});
         await expect(botonGuardar).toBeVisible();
         await botonGuardar.click();
 

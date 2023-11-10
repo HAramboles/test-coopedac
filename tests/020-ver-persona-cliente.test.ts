@@ -367,6 +367,34 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
         await expect(page.locator(`text=${noData}`)).toBeVisible();
     });
 
+    test('Finalizar con la Consulta de la Persona', async () => {
+        // Hacer click al boton de finalizar
+        const botonFinalizar = page.getByRole('button', {name: 'Finalizar'});
+        await expect(botonFinalizar).toBeVisible();
+        await botonFinalizar.click();
+
+        // Debe mostrarse un modal
+        await expect(page.getByText('No Registró Relacionado.')).toBeVisible();
+
+        // Contenido del modal
+        await expect(page.getByText('¿Desea finalizar el registro sin agregar relacionados?')).toBeVisible();
+        
+        // Botones del modal
+        await expect(page.getByRole('dialog').getByRole('button', {name: 'Cancelar'})).toBeVisible();
+        const botonFinalizarModal = page.getByRole('dialog').getByRole('button', {name: 'check Finalizar'});
+
+        await expect(botonFinalizarModal).toBeVisible();
+        await botonFinalizarModal.click();
+
+        // Esperar que se abran dos nuevas pestañas con los reportes
+        const page1 = await context.waitForEvent('page');
+        const page2 = await context.waitForEvent('page');
+
+        // Cerrar las dos paginas abiertas
+        await page2.close();
+        await page1.close();
+    });
+
     test.afterAll(async () => { // Despues de las pruebas
         // Cerrar la page
         await page.close();

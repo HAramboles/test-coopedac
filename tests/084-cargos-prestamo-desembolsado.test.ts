@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { formBuscar, ariaAgregar } from './utils/data/inputsButtons';
 import { EscenariosAgregarCargosPrestamoDesembolsado } from './utils/dataPages/interfaces';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
@@ -8,6 +8,9 @@ import { browserConfig, contextConfig } from './utils/data/testConfig';
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
+
+// Seccion de Cargos
+let botonSeccionCargos: Locator;
 
 // Nombre y apellido de la persona
 let nombre: string | null;
@@ -53,6 +56,9 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                 // Nombre y apellidos de la persona almacenada en el state
                 nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
                 apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+                // Boton para ir a la seccion de los cargos
+                botonSeccionCargos = page.getByRole('button', {name: '3 Cargos Del Préstamo'})
             });
         
             test('Ir a la opcion de Solicitud de Credito', async () => {
@@ -93,6 +99,9 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
             test('Buscar el Prestamo de un Socio', async () => {
                 // Buscar un socio
                 await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+                // Esperar que carguen los datos
+                await page.waitForTimeout(2000);
         
                 // Click al boton de ver solicitud
                 await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
@@ -105,17 +114,26 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
         
                 // Debe mostrarse el nombre de la persona
                 await expect(page.locator('h1').filter({hasText: `${nombre} ${apellido}`})).toBeVisible();
+
+                // Se debe estar en la primera seccion de la solicitud
+                await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+                await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+                await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
             });
 
             if (escenario.ID_OPERACION !== 32) {
                 // Tests cuando el escenario es vacio
                 test('No debe permitir agregar Cargos a la Solicitud', async () => {
-                    // Ir a la opcion de los cargos
-                    const seccionCargos = page.getByRole('button', {name: '3 Cargos Del Préstamo'});
-                    await expect(seccionCargos).toBeVisible();
-                    await seccionCargos.click();
+                    // Ir a la opcion de los cargos;
+                    await expect(botonSeccionCargos).toBeVisible();
+                    await botonSeccionCargos.click();
 
+                    // Esperar que la pagina cargue
                     await page.waitForTimeout(3000);
+
+                    // Titulo de la seccion
+                    await expect(page.locator('h1').filter({hasText: 'CARGOS'})).toBeVisible();
+
 
                     // Boton de agregar cargos 
                     const agregarCargos = page.locator(`${ariaAgregar}`);
@@ -126,9 +144,8 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                 // Tests cuando el escenario es igual a 32
                 test('Agregar un cargo a un Solicitud Desembolsada', async () => {
                     // Ir a la opcion de los cargos
-                    const seccionCargos = page.getByRole('button', {name: '3 Cargos Del Préstamo'});
-                    await expect(seccionCargos).toBeVisible();
-                    await seccionCargos.click();
+                    await expect(botonSeccionCargos).toBeVisible();
+                    await botonSeccionCargos.click();
                 
                     // Titulo de la seccion
                     await expect(page.locator('h1').filter({hasText: 'CARGOS'})).toBeVisible();

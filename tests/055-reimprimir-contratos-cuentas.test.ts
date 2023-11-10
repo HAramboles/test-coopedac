@@ -54,6 +54,12 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
 
         // Ingresar la cedula del socio
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
+
+        // Esperar que los datos carguen
+        await page.waitForTimeout(2000);
+
+        // No deben mostrarse los prestamos
+        // await expect(page.getByRole('cell', {name: 'PRESTAMOS'}).first()).not.toBeVisible();    
     });
 
     test('Reimprimir Contrato - Cuenta de Aportaciones', async () => {

@@ -46,7 +46,7 @@ test.describe.serial('Pruebas con las Denominaciones por Caja', () => {
 
         // Debe mostrare otro titulo de denominaciones
         // Como no hay una caja seleccionada solo debe mostrarse la palabra denominaciones
-        await expect(page.getByRole('heading', { name: 'Denominaciones', exact: true })).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Denominaciones', exact: true})).toBeVisible();
 
         // La sucursal por defecto debe ser todas las sucursales
         const todasSucursales = page.getByText('TODAS LAS SUCURSALES');

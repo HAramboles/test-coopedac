@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
+import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { selectBuscar, inputDiaPago, formComentario } from './utils/data/inputsButtons';
-import { url_base, url_cobros_oficina } from './utils/dataPages/urls';
+import { url_base, url_cobros_oficina, url_consulta_movimientos_cuentas } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
@@ -12,6 +12,10 @@ let page: Page;
 let cedula: string | null;
 let nombre: string | null;
 let apellido: string | null;
+
+// Variables de los buscadores de movimientos cuentas
+let buscadorPersona: Locator;
+let buscadorCuenta: Locator;
 
 // Pruebas
 test.describe.serial('Pruebas con Cobros de Oficina', () => {
@@ -31,7 +35,11 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Cedula, nombre y apellido de la persona almacenada en el state
         cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem("apellidoPersona"));
+        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Inputs para buscar las cuentas del socio
+        buscadorPersona = page.locator(`${selectBuscar}`);
+        buscadorCuenta = page.locator('#rc_select_1');
     });
 
     test('Ir a la opcion de Cobros de Oficina', async () => {
@@ -200,6 +208,62 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         
         // En la pagina deberia aparecer una alerta de operacion exitosa
         await expect(page.locator('text=Operación exitosa')).toBeVisible();
+
+        // Debe estar en la pagina de Cobros de Oficina
+        await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();
+    });
+
+    test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {
+        // Click en contraer todo
+        await page.getByText('Contraer todo').click();
+
+        // Captaciones
+        await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
+
+        // Consultas
+        await page.getByRole('menuitem', {name: 'CONSULTAS'}).click();
+
+        // Consulta Movimientos Cuenta
+        await page.getByRole('menuitem', {name: 'Consulta Movimientos Cuenta'}).click();
+
+        // La URL debe cambiar
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
+    });
+
+    test('El comentario del pago al prestamo no debe tener undefined', async () => {
+        // Seleccionar un tipo de cuenta a buscar
+        await buscadorCuenta.click();
+        // Click a la opcion de cuenta de Aportaciones
+        await page.getByRole('option', {name: 'AHORROS NORMALES', exact: true}).click();
+
+        // Buscar un socio
+        await buscadorPersona.fill(`${cedula}`);
+        // Elegir la Cuenta de Aportaciones del Socio
+        await page.getByText('| AHORROS NORMALES |').click();
+
+        // La URL no debe cambiar
+        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
+
+        // El tipo de captacion debe ser de Aportaciones
+        await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('AHORROS NORMALES');
+
+        // El estado debe estar en Activa
+        await expect(page.getByText('ACTIVA')).toBeVisible();
+
+        // Titulo movimiento de la cuenta debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
+
+        // Dirgirse a la pagina 2
+        await page.getByText('2', {exact: true}).click();
+
+        // Esperar que se cambie de pagina
+        await page.waitForTimeout(2000);
+
+        // Debe mostrarse el comentario del pago al prestamo
+        await expect(page.getByRole('cell', {name: 'PAGO A PRESTAMO'})).toBeVisible();
+
+        // No deben mostrarse en el comentario del pago al prestamo la palabra undefined
+        await expect(page.locator('text=(undefined)')).not.toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

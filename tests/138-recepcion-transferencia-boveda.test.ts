@@ -27,16 +27,16 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
 
     test('Ir a la pagina de Recepcion Transferencia Boveda', async () => {
         // TESORERIA
-        await page.getByRole('menuitem', { name: 'TESORERIA' }).click();
+        await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
 
         // BOVEDA
-        await page.getByRole('menuitem', { name: 'BOVEDA' }).click();
+        await page.getByRole('menuitem', {name: 'BOVEDA'}).click();
 
         // PROCESOS
-        await page.getByRole('menuitem', { name: 'PROCESOS' }).click();
+        await page.getByRole('menuitem', {name: 'PROCESOS'}).click();
 
         // Recepcion Transferencia Boveda
-        await page.getByRole('menuitem', { name: 'Recepción Transferencia Bóveda' }).click();
+        await page.getByRole('menuitem', {name: 'Recepción Transferencia Bóveda'}).click();
 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_recepcion_transferencia_boveda}`);

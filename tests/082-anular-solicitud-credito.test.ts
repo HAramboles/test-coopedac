@@ -459,12 +459,9 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             // Debe aparecer una alerta de error
             await expect(page.getByText('El total de las garantías no debe ser mayor al monto del préstamo.')).toBeVisible();
 
-            // Click al boton de Aceptar del modal de error
-            await page.locator('div').filter({ hasText: /^Aceptar$/ }).getByRole('button').click();
-
-            // Ingresar el monto correcto a usar
+            // Ingresar la mitad del monto solicitado
             await inputMontoPrestamo.clear();
-            await inputMontoPrestamo.fill('20000');
+            await inputMontoPrestamo.fill('10000');
 
             // Click fuera del input y al mismo tiempo debe mostrarse el monto maximo a utilizar
             await page.locator('text=El monto máximo utilizable es').nth(1).click();
@@ -472,11 +469,25 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             // Click al boton de Aceptar del modal
             await botonAceptarModal.click();
 
-            // Debe aparecer una alerta indicando que la garantia se agrego correctamente
-            await expect(page.locator('text=Garantías del préstamo guardadas exitosamente.')).toBeVisible();
+            // Esperar que la garantia se agregue a la tabla
+            await page.waitForTimeout(2000);
 
             // Debe agregarse la cuenta de la garantia liquida agregada
             await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+            // Editar la garantia agregada y colocar el monto correcto
+            await page.getByText('RD$$ 10,000.00').click();
+            await page.locator('#MONTO_PIGNORADO').click();
+            await page.locator('#MONTO_PIGNORADO').fill('20000');
+
+            // Click fuera del input
+            await page.getByRole('columnheader', {name: 'Tipo Cuenta'}).click();
+
+            // Esperar a que se agregue el nuevo monto de la garantia
+            await page.waitForTimeout(1000);
+
+            // Debe mostrarse la garantia liquida en la tabla
+            await expect(page.getByText('RD$$ 20,000.00')).toBeVisible();
 
             // Click en actualizar y continuar
             GuardaryContinuar();
@@ -627,7 +638,7 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
                         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'delete'}).click();
 
                         // Debe aparecer un mensaje de error
-                        const modalError = await page.getByText('Error');
+                        const modalError = page.getByText('Error');
                         await expect(modalError).toBeVisible();
 
                         // Contenido del mensaje de error
@@ -640,7 +651,69 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
                         await expect(modalError).not.toBeVisible();
                     });
                 } else if (escenarios.ID_OPERACION === 18) {
-                    test('Anular la Solicitud Creada', async () => {            
+                    test('Anular la Solicitud Creada', async () => {     
+                        // Esperar a que la solicitud este visible
+                        await page.waitForTimeout(2000);
+
+                        // Click al boton de editar de la solicitud
+                        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
+
+                        // La url debe de tener que la solicitud esta en estado aprobado
+                        await expect(page).toHaveURL(/\/aprobado/);
+
+                        // Esperar que cargue la pagina
+                        await page.waitForTimeout(5000);
+
+                        // Debe estar en el primer paso de la solicitud
+                        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+                        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+                        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+                        // Dirigirse a la ultima seccion
+                        const seccionDesembolso = page.getByRole('button', {name: '7 Desembolso'});
+                        await expect(seccionDesembolso).toBeVisible();
+                        await seccionDesembolso.click();
+
+                        // Esperar que cargue la pagina
+                        await page.waitForTimeout(2000);
+
+                        // El nombre y el apellido del socio deben estar visibles 
+                        await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible(); 
+
+                        // Click al boton de Anterior
+                        const botonAnterior = page.getByRole('button', {name: 'Anterior'});
+                        await expect(botonAnterior).toBeVisible();
+                        await botonAnterior.click();
+
+                        // La URL debe cambiar a la seccion de documentos
+                        await expect(page).toHaveURL(/\/?step=6/);
+
+                        // Esperar que cargue la pagina
+                        await page.waitForTimeout(2000);
+
+                        // Click al boton de Salir
+                        const botonSalir = page.getByRole('button', {name: 'Salir'});
+                        await expect(botonSalir).toBeVisible();
+                        await botonSalir.click();
+
+                        // Debe aparecer un mensaje de confirmacion
+                        await expect(page.locator('text=¿Seguro que desea finalizar la operación?')).toBeVisible();
+
+                        // Click al boton de Aceptar
+                        await page.getByRole('button', {name: 'check Aceptar'}).click();
+
+                        // Debe regresar a la pagina con las solicitudes aprobadas
+                        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=aprobado`);
+
+                        // Esperar que cargue la pagina
+                        await page.waitForTimeout(2000);
+
+                        // Buscar la solicitud creada
+                        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+                        // Esperar que se muestre la solicitud buscada
+                        await page.waitForTimeout(4000);
+
                         // Click en el boton de Anular
                         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'delete'}).click();
                 
@@ -651,16 +724,20 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
                         await page.getByRole('button', {name: 'check Aceptar'}).click();
                 
                         // Aparece otro modal para colocar el motivo de la anulacion
-                        await expect(page.locator('text=Escriba una razón de anulación')).toBeVisible();
+                        const modalAnulacion = page.locator('text=Escriba una razón de anulación');
+                        await expect(modalAnulacion).toBeVisible();
                 
                         // Ingresar la razon de la anulacion
                         await page.locator('#form_RAZON_ANULACION').fill('El socio necesita otro tipo de prestamo');
                 
                         // Click al boton de Aceptar
-                        await page.getByRole('dialog', { name: 'Escriba una razón de anulación' }).getByRole('button', {name: 'check Aceptar'}).click();
+                        await page.getByRole('dialog', {name: 'Escriba una razón de anulación'}).getByRole('button', {name: 'check Aceptar'}).click();
                 
                         // Aparece una alerta de que la solicitud fue anulada
                         await expect(page.locator('text=Prestamo actualizado exitosamente')).toBeVisible();
+
+                        // El modal de anular solicitud no debe estar visible
+                        await expect(modalAnulacion).not.toBeVisible();
                 
                         // La solicitud de credito no debe estar visible
                         await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).not.toBeVisible();

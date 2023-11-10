@@ -442,7 +442,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(page.locator('text=Relacionados guardados exitosamente.')).toBeVisible();
 
         // Cerrar el modal
-        await page.getByRole('button', { name: 'Close' }).click();
+        await page.getByRole('button', {name: 'Close' }).click();
 
         // El modal no debe estar visible
         await expect(modal).not.toBeVisible();
@@ -486,6 +486,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
         // Debe agregarse la cuenta de la garantia liquida agregada
         await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
+
+        // Debe mostrarse el monto de la garantia liquida en la tabla
+        await expect(page.getByText('RD$$ 300,000.00')).toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();

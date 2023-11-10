@@ -263,7 +263,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Finalidad
         await page.getByLabel('Finalidad').click();
         // Elegir consumo
-        await page.getByRole('option', { name: 'CONSUMO' }).click();
+        await page.getByRole('option', {name: 'CONSUMO'}).click();
 
         // Destino o proposito
         await page.getByPlaceholder('Destino o propósito').click();
@@ -410,9 +410,6 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Debe aparecer una alerta de error
         await expect(page.getByText('El total de las garantías no debe ser mayor al monto del préstamo.')).toBeVisible();
 
-        // Click al boton de Aceptar del modal de error
-        await page.locator('div').filter({ hasText: /^Aceptar$/ }).getByRole('button').click();
-
         // Ingresar el monto correcto a usar
         await inputMontoPrestamo.clear();
         await inputMontoPrestamo.fill('20000');
@@ -428,6 +425,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Debe agregarse la cuenta de la garantia liquida agregada
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+        // Debe mostrarse el monto de la garantia liquida en la tabla
+        await expect(page.getByText('RD$$ 20,000.00')).toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();

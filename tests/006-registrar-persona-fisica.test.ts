@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/functions/cedulasypasaporte';
-import { ariaCerrar, dataCheck, fechaFinal, dataEdit, dataEliminar, noData,fechaInicio } from './utils/data/inputsButtons';
+import { ariaCerrar, dataCheck, fechaFinal, dataEdit, dataEliminar, noData,fechaInicio, inputRequerido } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 import { url_base, url_registro_persona } from './utils/dataPages/urls';
@@ -143,6 +143,10 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await expect(categoriaActual).toBeVisible();
                     await expect(categoriaActual).toBeDisabled();
 
+                    // El input de cedula debe ser requerido
+                    const labelCedula = page.getByTitle('Cédula');
+                    await expect(labelCedula).toHaveClass(`${inputRequerido}`);
+
                     // Input de la cedula. Cada cedula debe ser unica
                     const campoCedula = page.locator('#person_DOCUMENTO_IDENTIDAD');
                     await campoCedula?.fill(cedula);
@@ -160,11 +164,19 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // Pasaporte 
                     const campoPasaporte = page.locator('#person_NO_PASAPORTE');
                     await campoPasaporte.click();
-                    await campoPasaporte.fill(pasaporte); 
+                    await campoPasaporte.fill(pasaporte);
+                    
+                    // El input del nombre debe ser requerido
+                    const labelNombre = page.getByTitle('Nombre');
+                    await expect(labelNombre).toHaveClass(`${inputRequerido}`);
                     
                     // Input del nombre
                     const campoNombre = page.locator('#person_NOMBRES');
                     await campoNombre?.fill(`${nombrePersona}`);
+
+                    // El input del apellido debe ser requerido
+                    const labelApellido = page.getByTitle('Apellido(s)');
+                    await expect(labelApellido).toHaveClass(`${inputRequerido}`);
             
                     // Input del apellido
                     const campoApellido = page.locator('#person_APELLIDOS');
@@ -173,20 +185,36 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // Input del apodo
                     const campoApodo = page.locator('#person_APODO');
                     await campoApodo?.fill('APODO');
+
+                    // El selector de nacionalidad debe ser requerido
+                    const labelNacionalidad = page.getByTitle('Nacionalidad');
+                    await expect(labelNacionalidad).toHaveClass(`${inputRequerido}`);
             
                     // Seleccionar la nacionalidad
                     await page.locator('#person_NACIONALIDAD')?.fill('DOMINICANA');
                     // nth(0) = Hacer click a la primera opcion, que debe de coincidir con lo escrito
                     await page.locator('text=DOMINICANA').nth(0).click();
                     await expect(page.locator('#person').getByTitle('DOMINICANA')).toBeVisible();
+
+                    // El input de fecha de naFechaNacimiento debe ser requerido
+                    const labelFechaNacimiento = page.getByTitle('Fecha de nacimiento');
+                    await expect(labelFechaNacimiento).toHaveClass(`${inputRequerido}`);
             
                     // Input de la fecha de nacimiento
                     const campoFecha = page.locator('#person_FECHA_NAC');
                     await campoFecha?.fill('17/01/1990');
+
+                    // La opcion de Extranjero debe ser requerido
+                    const labelExtranjero = page.getByTitle('Extranjero');
+                    await expect(labelExtranjero).toHaveClass(`${inputRequerido}`);
             
                     // Seleccionar si es extranjero, en este caso no lo es
                     const seleccionarExtranjero = page.locator('input[type="radio"]')
                     await seleccionarExtranjero.first().press('ArrowRight');
+
+                    // El input del lugar de nacimineto debe ser requerido
+                    const labelLugarNacimiento = page.getByTitle('Lugar de nacimiento');
+                    await expect(labelLugarNacimiento).toHaveClass(`${inputRequerido}`);
             
                     // Input del lugar de nacimiento
                     const campoLugar = page.locator('#person_LUGAR_NAC');
@@ -198,10 +226,18 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // Hacer click a la opcion que aparece de nivel academico universitario
                     await page.locator('text=UNIVERSITARIO').click();
                     await expect(page.locator('#person').getByTitle('UNIVERSITARIO')).toBeVisible();
+
+                    // El input de dependientes debe ser requerido
+                    const labelNoDependientes = page.getByTitle('No. Dependientes');
+                    await expect(labelNoDependientes).toHaveClass(`${inputRequerido}`);
             
                     // Input de la cantidad de dependientes
                     const campoDependientes = page.locator('#person_CANT_DEPENDIENTES');
                     await campoDependientes?.fill('4');
+
+                    // El input del apellido debe ser requerido
+                    const labelEjecutivo = page.getByTitle('Ejecutivo');
+                    await expect(labelEjecutivo).toHaveClass(`${inputRequerido}`);
             
                     // Input de ejecutivo
                     const campoEjecutivo = page.locator('#person_ID_EJECUTIVO');
@@ -209,6 +245,10 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // Hacer click a la opcion de cliente inactivo
                     await page.locator('text=CLIENTE INACTIVO').click();
                     await expect(page.locator('#person').getByTitle('CLIENTE INACTIVO')).toBeVisible();
+
+                    // La opcion de sexo debe ser requerido
+                    const labelSexo = page.getByTitle('Sexo');
+                    await expect(labelSexo).toHaveClass(`${inputRequerido}`);
             
                     // Seleccionar sexo
                     await page.locator('text=Femenino').click();
@@ -219,6 +259,10 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // Hacer click a la opcion de factura de consumo electronica
                     await page.locator('text=FACTURA DE CONSUMO ELECTRONICA').click();
                     await expect(page.locator('#person').getByTitle('FACTURA DE CONSUMO ELECTRONICA')).toBeVisible();
+
+                    // El selector de estado civil debe ser requerido
+                    const labelEstadoCivil = page.getByTitle('Estado Civil');
+                    await expect(labelEstadoCivil).toHaveClass(`${inputRequerido}`);
             
                     // Input del estado civil
                     const campoEstado = page.locator('#person_ESTADO_CIVIL');
@@ -228,6 +272,10 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
             
                     // Click al boton de no referido
                     await page.locator('#person_NO_REFERIDO').click();
+
+                    // El selector de Categoria Solicitada debe ser requerido
+                    const labelCategoriaSolicitada = page.getByTitle('Categoría Solicitada');
+                    await expect(labelCategoriaSolicitada).toHaveClass(`${inputRequerido}`);
             
                     // Input Categoria Solicitada
                     const campoCategoria = page.locator('#person_ID_CATEGORIA_SOLICITADA');
@@ -252,6 +300,10 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
             
                     // El titulo de Informacion de Ingresos debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'INFORMACIÓN DE INGRESOS'})).toBeVisible();
+
+                    // El selector de Ocupacion debe ser requerido
+                    const labelOcupacion = page.getByTitle('Ocupación');
+                    await expect(labelOcupacion).toHaveClass(`${inputRequerido}`);
             
                     // Seleccionar una ocupacion
                     const campoOcupacion = page.locator('#person_OCUPACION');
@@ -262,6 +314,10 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // Input del lugar de trabajo
                     const campoTrabajo = page.locator('#person_NOMBRE_EMPRESA');
                     await campoTrabajo?.fill('ProgramsUni');
+
+                    // La opcion de tipo de empleo debe ser requerido
+                    const labelTipoEmpleo = page.getByTitle('Tipo de empleo');
+                    await expect(labelTipoEmpleo).toHaveClass(`${inputRequerido}`);
             
                     // Seleccionar tipo de empleo
                     await page.locator('input[type="radio"]').first().check();
@@ -286,16 +342,28 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // Input de la direccion de la empresa
                     const campoDireccionEmpresa = page.locator('#person_DIRECCION_EMPRESA');
                     await campoDireccionEmpresa?.fill('PALMARITO, LA VEGA');
+
+                    // El selector de Posicion en la empresa debe ser requerido
+                    const labelPosicionEmpresa = page.getByTitle('Posición en la empresa');
+                    await expect(labelPosicionEmpresa).toHaveClass(`${inputRequerido}`);
             
                     // Seleccionar la ocupacion en la empresa
                     const campoPosicionEmpresa = page.locator('#person_POSICION_EMPRESA');
                     await campoPosicionEmpresa?.fill('Programador');
                     // Hacer click a la opcion de programador web
                     await page.getByTitle('PROGRAMADOR WEB').getByText('PROGRAMADOR WEB').click();
+
+                    // El input de fecha de ingreso debe ser requerido
+                    const labelFechaIngreso = page.getByTitle('Posición en la empresa');
+                    await expect(labelFechaIngreso).toHaveClass(`${inputRequerido}`);
             
                     // Input de la fecha de ingreso a la empresa
                     const campoFechaEmpresa = page.locator('#person_FECHA_ENTRADA_EMPRESA');
                     await campoFechaEmpresa?.fill('15/01/2021'); 
+
+                    // El selector de Actividad Economica debe ser requerido
+                    const labelActividadEconomica = page.getByTitle('Actividad Económica');
+                    await expect(labelActividadEconomica).toHaveClass(`${inputRequerido}`);
             
                     // Seleccionar una actividad economica
                     const campoActividadEconomica = page.locator("(//input[@id='person_ID_ACTIVIDAD_ECONOMICA'])[2]");
@@ -310,6 +378,10 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // Input de jefe inmediato
                     const campoJefeInmediato = page.locator('#person_NOMBRE_SUPERVISOR');
                     await campoJefeInmediato?.fill('Jefe de ejemplo');
+
+                    // // El input de ingreso promedio debe ser requerido
+                    // const labelIngresoPromedio = page.getByTitle('Ingreso promedio');
+                    // await expect(labelIngresoPromedio).toHaveClass(`${inputRequerido}`);
             
                     // Input de ingreso promedio
                     const campoIngresoPromedio = page.locator('#person_INGRESO_PROMEDIO');

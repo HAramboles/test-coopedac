@@ -81,7 +81,7 @@ test.describe.serial('Pruebas con la Reimpresion del Credito a Prestamo', async 
         await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'})).toBeVisible();
 
         // Cliente
-        await expect(page.getByRole('cell', { name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
         
         // Monto
         await expect(page.getByText('150,000.00')).toBeVisible();

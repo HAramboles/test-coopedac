@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { selectBuscar, formBuscar } from './utils/data/inputsButtons';
-import { url_base, url_cobro_servicios_captaciones, url_sesiones_transito, url_cobros_servicios_captaciones_caja } from './utils/dataPages/urls';
+import { url_base, url_cobro_servicios_captaciones, url_sesiones_transito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { nombreTestigoCajero, userCorrecto } from './utils/data/usuarios';
 
@@ -140,17 +140,24 @@ test.describe.serial('Pruebas con el Cobro de Servicios - Captaciones', async ()
     });
 
     test('Aplicar el Cobro del Servicio al Socio', async () => {
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_cobros_servicios_captaciones_caja}`);
-
         // El titulo de la pagina debe estar visible
         await expect(page.locator('h1').filter({hasText: 'COBRO DE SERVICIOS'})).toBeVisible();
 
         // Debe aparecer el nombre del socio
         await expect(page.getByTitle(`${nombre} ${apellido}`)).toBeVisible();
 
-        // Debe mostrarse el monto colocado
-        await expect(page.locator('#form_MONTO')).toHaveValue('RD$ 500');
+        // Debe mostrarse la referencia
+        await expect(page.getByTitle('OTROS INGRESOS')).toBeVisible();
+
+        // Debe mostrarse el comentario colocado y debe estar deshabilitado
+        const inputComentario = page.locator('#form_NOTAS');
+        await expect(inputComentario).toHaveValue('COBRO DE SERVICIOS DE OTROS INGRESOS');
+        await expect(inputComentario).toBeDisabled();
+
+        // Debe mostrarse el monto colocado y debe estar deshabilitado
+        const inputMonto = page.locator('#form_MONTO');
+        await expect(inputMonto).toHaveValue('RD$ 500');
+        await expect(inputMonto).toBeDisabled();
 
         // Titulo de la tabla Recibido
         await expect(page.locator('h1').filter({hasText: 'RECIBIDO'})).toBeVisible();
