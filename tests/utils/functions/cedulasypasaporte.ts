@@ -1,7 +1,7 @@
 // Funciones para los test de Registro de Personas
 
 // Funcion para generar numeros de aleatorios para las cedulas
-const generarNumerosAleatorios = (numTotal:number) => { 
+export const generarNumerosAleatorios = (numTotal:number) => { 
     const aleatorios:number[] = []; // Iniciar con un array vacio
     // Generar 11 numeros
     for (let i = 0; i < numTotal; i++) { 
@@ -15,7 +15,7 @@ const generarNumerosAleatorios = (numTotal:number) => {
 };
 
 // Funcion para generar un par de letras aleatorias para el pasaporte
-const generarLetrasPasaporte = () => { 
+export const generarLetrasAleatorias = () => { 
     let pasaporte:string = ''; // Variable vacia para almacenar las letras
     const letras:string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // Constante con las letras a tomar
     // Generar 2 letras aleatorias
@@ -28,19 +28,42 @@ const generarLetrasPasaporte = () => {
 };
 
 // Exportar las funciones como constantes
+
+// 006 - Persona Fisica
 export const numerosCedulas = generarNumerosAleatorios(11); 
-export const numerosCedulas2 = generarNumerosAleatorios(11); 
-export const numerosCedulas3 = generarNumerosAleatorios(11); 
+export const numerosPasaporte = (generarLetrasAleatorias() + generarNumerosAleatorios(11));
+export const numerosCorreo = generarNumerosAleatorios(2); 
+export const numerosCelular = ('829' + generarNumerosAleatorios(10));
 
-export const numerosPasaporte = (generarLetrasPasaporte() + generarNumerosAleatorios(11));
+// 007 - Persona Menor de Edad
+export const numerosCedulas2 = generarNumerosAleatorios(11);
+export const numerosTelefono = ('809' + generarNumerosAleatorios(10));
+export const numerosCorreo2 = generarNumerosAleatorios(2); 
 
-export const numerosRegistroMercantil = generarNumerosAleatorios(15); // Registro Mercantil de la persona juridica
-
-export const numerosCorreo = generarNumerosAleatorios(2); // Numeros para el correo de las personas
-
-export const numerosCelular = ('829' + generarNumerosAleatorios(10)); // Numeros para los celulares
+// 008 - Persona Juridica
+export const numerosCedulas3 = generarNumerosAleatorios(11);
+export const numerosRegistroMercantil = generarNumerosAleatorios(15);
+export const numerosCorreo3 = generarNumerosAleatorios(2);
+export const numerosTelefono2 = ('809' + generarNumerosAleatorios(10));
+// 008 - Persona Relacionado - Registro Completo
+export const numerosCedulas4 = generarNumerosAleatorios(11);
+export const numerosCorreo4 = generarNumerosAleatorios(2);
 export const numerosCelular2 = ('829' + generarNumerosAleatorios(10));
-export const numerosTelefono = ('809' + generarNumerosAleatorios(10)); // Numeros para los telefonos
+export const numerosCelular3 = ('829' + generarNumerosAleatorios(10));
+export const numerosPasaporte2 = (generarLetrasAleatorias() + generarNumerosAleatorios(11));
+// 008 - Persona Relacionado - Referencia
+export const numerosCedulas5 = generarNumerosAleatorios(11);
+export const numerosCelular4 = ('829' + generarNumerosAleatorios(10));
+
+// 011 - Persona Casada
+export const numerosCedulas6 = generarNumerosAleatorios(11);
+export const numerosPasaporte3 = (generarLetrasAleatorias() + generarNumerosAleatorios(11));
+export const numerosCorreo5 = generarNumerosAleatorios(2); 
+export const numerosCelular5 = ('829' + generarNumerosAleatorios(10));
+// 011 - Persona Conyugue
+export const numerosCedulas7 = generarNumerosAleatorios(11);
+export const numerosCorreo6 = generarNumerosAleatorios(2); 
+export const numerosCelular6 = ('829' + generarNumerosAleatorios(10));
 
 export const numerosCheques = generarNumerosAleatorios(4); // Numeros para los cheques
 
@@ -49,5 +72,5 @@ export const numerosMatriculaHipoteca1 = generarNumerosAleatorios(4);
 export const numerosMatriculaHipoteca2 = generarNumerosAleatorios(4);
 
 // Valores para la garantia de vehiculos
-export const numerosChasis = (generarLetrasPasaporte() + generarNumerosAleatorios(4)); 
-export const numerosPlaca = (generarLetrasPasaporte() + generarNumerosAleatorios(4));
+export const numerosChasis = (generarLetrasAleatorias() + generarNumerosAleatorios(4)); 
+export const numerosPlaca = (generarLetrasAleatorias() + generarNumerosAleatorios(4));

@@ -1,10 +1,12 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { 
-    numerosCedulas, 
-    numerosCedulas2,
-    numerosPasaporte, 
-    numerosCorreo, 
-    numerosCelular 
+    numerosCedulas6, 
+    numerosCedulas7,
+    numerosPasaporte3, 
+    numerosCorreo5,
+    numerosCorreo6,
+    numerosCelular5, 
+    numerosCelular6 
 } from './utils/functions/cedulasypasaporte';
 import { 
     nombrePersonaFisicaCasada, 
@@ -26,19 +28,19 @@ let page: Page;
 let botonNuevaPersona: Locator;
 
 // Cedulas de las personas
-const cedulaPersonaCasada = numerosCedulas;
-const cedulaPersonaConyuge = numerosCedulas2;
+const cedulaPersonaCasada = numerosCedulas6;
+const cedulaPersonaConyuge = numerosCedulas7;
 
 // Pasaporte de la persona
-const pasaportePersonaCasada = numerosPasaporte;
+const pasaportePersonaCasada = numerosPasaporte3;
 
 // Celulares de las personas
-const celularPersonaCasada = numerosCelular;
-const celularPersonaConyuge = numerosCelular;
+const celularPersonaCasada = numerosCelular5;
+const celularPersonaConyuge = numerosCelular6;
 
 // Numeros para los correos de las personas 
-const numerosCorreoPersonaCasada = numerosCorreo;
-const numerosCorreoPersonaConyuge = numerosCorreo;
+const numerosCorreoPersonaCasada = numerosCorreo5;
+const numerosCorreoPersonaConyuge = numerosCorreo6;
 
 // Nombre y apellido de la persona casada
 const nombrePersonaCasada = nombrePersonaFisicaCasada;

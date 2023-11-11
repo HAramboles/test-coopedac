@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { numerosPasaporte, numerosCelular } from './utils/functions/cedulasypasaporte';
+import { numerosPasaporte2, numerosCelular3 } from './utils/functions/cedulasypasaporte';
 import { formBuscar, noData } from './utils/data/inputsButtons';
 import { EscenariosActividadParametrosEditarPersona } from './utils/dataPages/interfaces';
 import { url_base, url_registro_persona } from './utils/dataPages/urls';
@@ -20,8 +20,8 @@ let editarTelefono: Locator;
 let editarEmail: Locator;
 
 // Pasaporte y nuevo celular de la persona
-const pasaporte = numerosPasaporte;
-const nuevoCelular = numerosCelular;
+const pasaporte = numerosPasaporte2;
+const nuevoCelular = numerosCelular3;
 
 // Cedula, nombre, apellido de la persona
 let cedula: string | null;

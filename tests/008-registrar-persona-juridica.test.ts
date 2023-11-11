@@ -1,13 +1,14 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { 
-    numerosCedulas, 
-    numerosCedulas2, 
     numerosCedulas3, 
+    numerosCedulas4, 
+    numerosCedulas5, 
     numerosRegistroMercantil, 
-    numerosCorreo, 
-    numerosCelular, 
+    numerosCorreo3,
+    numerosCorreo4,
+    numerosTelefono2,
     numerosCelular2, 
-    numerosTelefono
+    numerosCelular4, 
 } from './utils/functions/cedulasypasaporte';
 import { ariaCerrar, fechaFinal, dataCheck, fechaInicio, inputRequerido, actividadJuridicayRelacionado } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
@@ -30,21 +31,21 @@ let page: Page;
 let botonNuevaPersona: Locator;
 
 // Cedulas
-const cedulaPersonaJuridica = numerosCedulas;
-const cedulaPersonaJuridicaRelacionado = numerosCedulas2;
-const cedulaPersonaJuridicaRelacionadoReferencia = numerosCedulas3;
+const cedulaPersonaJuridica = numerosCedulas3;
+const cedulaPersonaJuridicaRelacionado = numerosCedulas4;
+const cedulaPersonaJuridicaRelacionadoReferencia = numerosCedulas5;
 
 // Registro Mercantil
 const registroMercantil = numerosRegistroMercantil;
 
 // Correos de la persona juridica y del relacionado
-const correoJuridica = numerosCorreo;
-const correoRelacionado = numerosCorreo;
+const correoJuridica = numerosCorreo3;
+const correoRelacionado = numerosCorreo4;
 
 // Numeros telefonicos
-const telefonoJuridica = numerosTelefono;
-const celularRelacionado = numerosCelular;
-const celularRelacionadoReferencia = numerosCelular2;
+const telefonoJuridica = numerosTelefono2;
+const celularRelacionado = numerosCelular2;
+const celularRelacionadoReferencia = numerosCelular4;
 
 // Nombre Persona Juridica
 const nombrePersonaJuridica = nombreJuridica;
