@@ -59,6 +59,12 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         await page.waitForTimeout(2000);
     });
 
+    test('Los prestamos no debes mostrarse', async () => {
+        // Prestamos
+        const cuentaPrestamos = page.getByRole('row', {name: 'PRESTAMOS'}).first();
+        await expect(cuentaPrestamos).not.toBeVisible();
+    });
+
     test('Reimprimir Contrato - Cuenta de Aportaciones', async () => {
         // Cuenta de Aportaciones
         const cuentaAportaciones = page.getByRole('row', {name: 'APORTACIONES Activo file-text'});
@@ -143,24 +149,10 @@ test.describe.serial('Prueba con la Reimpresion de los Contratos de las Cuentas'
         await page.locator(`${ariaCerrar}`).click();
     });
 
-    test('Reimprimir Contrato - Cuenta de Ahorros - Orden de Pago', async () => {
-        // Cuenta de Ahorros
+    test('La cuenta de Orden de Pago no debe mostrarse', async () => {
+        // Cuenta de Oden de Pago
         const cuentaAhorrosOrdenPago = page.getByRole('row', {name: 'ORDEN DE PAGO'});
-        await expect(cuentaAhorrosOrdenPago).toBeVisible();
-
-        // Generar contrato
-        const contratoAhorrosOdenPago = cuentaAhorrosOrdenPago.locator(`${dataFile}`);
-        expect(contratoAhorrosOdenPago).toBeVisible();
-        contratoAhorrosOdenPago.click();
-
-        // Esperar que se abra una nueva pestaña con el reporte
-        const pageAhorrosOrdenPago = await context.waitForEvent('page');
-
-        // Cerrar la pagina con el reporte
-        await pageAhorrosOrdenPago.close();
-
-        // Cerrar el mensaje que se muestra
-        await page.locator(`${ariaCerrar}`).click();
+        await expect(cuentaAhorrosOrdenPago).not.toBeVisible();
     });
 
     test('Reimprimir Contrato - Cuenta de Certificados - Financieros Pagaderas', async () => {
