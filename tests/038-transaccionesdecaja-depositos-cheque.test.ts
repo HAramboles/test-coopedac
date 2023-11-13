@@ -3,7 +3,7 @@ import { selectBuscar, dataGuardar, formComentario, actividadPersonaFisica } fro
 import { diaAnterior } from './utils/functions/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/dataPages/interfaces';
 import { url_base, url_transacciones_caja } from './utils/dataPages/urls';
-import { numerosCheques } from './utils/functions/cedulasypasaporte';
+import { generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
@@ -18,6 +18,9 @@ let apellido: string | null;
 
 // Nota de la cuenta de aportaciones de la persona
 let nota: string | null;
+
+// Numeros para el cheque
+let numerosCheque = generarNumerosAleatorios(4);
 
 // Pruebas
 test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Normales - Pruebas con los diferentes Parametros', async () => {
@@ -236,7 +239,7 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                     // Aparecen los campos para agregar los datos del cheque
 
                     // No. documento
-                    await page.locator('#form_NO_DOCUMENTO').fill(`${numerosCheques}`);
+                    await page.locator('#form_NO_DOCUMENTO').fill(`${numerosCheque}`);
 
                     // Banco
                     await page.locator('#form_BANCO').fill('ALAVER');

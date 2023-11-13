@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { numerosPasaporte2, numerosCelular3 } from './utils/functions/cedulasypasaporte';
+import { generarLetrasAleatorias, generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { formBuscar, noData } from './utils/data/inputsButtons';
 import { EscenariosActividadParametrosEditarPersona } from './utils/dataPages/interfaces';
 import { url_base, url_registro_persona } from './utils/dataPages/urls';
@@ -20,8 +20,8 @@ let editarTelefono: Locator;
 let editarEmail: Locator;
 
 // Pasaporte y nuevo celular de la persona
-const pasaporte = numerosPasaporte2;
-const nuevoCelular = numerosCelular3;
+const pasaporte = (generarLetrasAleatorias() + generarNumerosAleatorios(11));
+const nuevoCelular = ('829' + generarNumerosAleatorios(10));
 
 // Cedula, nombre, apellido de la persona
 let cedula: string | null;
@@ -164,7 +164,7 @@ test.describe.serial('Editar la Cuenta de una Persona Fisica - Pruebas con los d
                     // Pasaporte
                     const campoPasaporte = page.locator('#person_NO_PASAPORTE');
                     await campoPasaporte.click();
-                    await campoPasaporte.fill(pasaporte); 
+                    await campoPasaporte.fill(`${pasaporte}`); 
 
                     // Lugar de nacimiento
                     const campoLugar = page.locator('#person_LUGAR_NAC');

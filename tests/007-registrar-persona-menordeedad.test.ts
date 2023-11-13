@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { numerosCedulas2, numerosTelefono, numerosCorreo2 } from './utils/functions/cedulasypasaporte';
+import { generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { formatDate } from './utils/functions/fechas';
 import { ariaCerrar, selectBuscar } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
@@ -21,9 +21,9 @@ let nombreMadre: string | null;
 let apellidoMadre: string | null;
 
 // Cedula, numero telefonico y correo del menor
-const cedulaMenor = numerosCedulas2;
-const telefonoMenor = numerosTelefono;
-const numerosParaCorreo = numerosCorreo2;
+const cedulaMenor = generarNumerosAleatorios(11);
+const telefonoMenor = ('809' + generarNumerosAleatorios(10));
+const numerosParaCorreo = generarNumerosAleatorios(2);
 
 // Nombres y apellidos de la persona menor de edad
 const nombreMenor = nombrePersonaMenorEdad;
@@ -149,7 +149,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             
                     // Cedula
                     const campoCedula = page.locator('#person_DOCUMENTO_IDENTIDAD');
-                    await campoCedula?.fill(cedulaMenor);
+                    await campoCedula?.fill(`${cedulaMenor}`);
             
                     // Nombres
                     const campoNombre = page.locator('#person_NOMBRES');

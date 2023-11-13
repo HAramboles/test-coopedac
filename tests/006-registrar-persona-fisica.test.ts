@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { numerosCedulas, numerosPasaporte, numerosCorreo, numerosCelular } from './utils/functions/cedulasypasaporte';
+import { generarLetrasAleatorias, generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { ariaCerrar, dataCheck, fechaFinal, dataEdit, dataEliminar, noData,fechaInicio, inputRequerido } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
 import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
@@ -15,10 +15,10 @@ let page: Page;
 let botonNuevaPersona: Locator;
 
 // Cedula, pasaporte, nombre, apellidos, correo y celular de la persona
-const cedula = numerosCedulas;
-const pasaporte = numerosPasaporte;
-const numerosparaCorreo = numerosCorreo;
-const celular = numerosCelular;
+const cedula = generarNumerosAleatorios(11);
+const pasaporte = (generarLetrasAleatorias() + generarNumerosAleatorios(11));
+const numerosparaCorreo = generarNumerosAleatorios(2);
+const celular = ('829' + generarNumerosAleatorios(10));
 
 // Nombres y apellidos
 const nombrePersona = nombrePersonaFisica;
@@ -149,7 +149,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
 
                     // Input de la cedula. Cada cedula debe ser unica
                     const campoCedula = page.locator('#person_DOCUMENTO_IDENTIDAD');
-                    await campoCedula?.fill(cedula);
+                    await campoCedula?.fill(`${cedula}`);
             
                     // Colocar el cursor al principio de la cedula y borrarla presionando la tecla Delete
                     await campoCedula.press('ArrowLeft');
@@ -164,7 +164,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // Pasaporte 
                     const campoPasaporte = page.locator('#person_NO_PASAPORTE');
                     await campoPasaporte.click();
-                    await campoPasaporte.fill(pasaporte);
+                    await campoPasaporte.fill(`${pasaporte}`);
                     
                     // El input del nombre debe ser requerido
                     const labelNombre = page.getByTitle('Nombre');
@@ -380,8 +380,8 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await campoJefeInmediato?.fill('Jefe de ejemplo');
 
                     // // El input de ingreso promedio debe ser requerido
-                    // const labelIngresoPromedio = page.getByTitle('Ingreso promedio');
-                    // await expect(labelIngresoPromedio).toHaveClass(`${inputRequerido}`);
+                    const labelIngresoPromedio = page.getByTitle('Ingreso promedio');
+                    await expect(labelIngresoPromedio).toHaveClass(`${inputRequerido}`);
             
                     // Input de ingreso promedio
                     const campoIngresoPromedio = page.locator('#person_INGRESO_PROMEDIO');

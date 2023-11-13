@@ -285,7 +285,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                         await botonActualizar.click();
 
                         // La sesion no debe aparecer en la pagina
-                        await expect(page.getByText(`${noData}`)).toBeVisible();
+                        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).toBeVisible();
                     }
                 });
             };

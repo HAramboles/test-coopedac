@@ -69,7 +69,6 @@ test.describe.serial('Pruebas con la Reimpresion en Libreta', () => {
 
         // La fecha por defecto debe ser la fecha actual
         const fechaInicial = page.locator('#form_FECHA_CORTE');
-        await fechaInicial.clear();
         await expect(fechaInicial).toHaveValue(`${diaActualFormato}`);
 
         // Click en buscar

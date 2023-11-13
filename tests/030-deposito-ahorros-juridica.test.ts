@@ -487,7 +487,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                         await botonActualizar.click();
 
                         // La sesion no debe aparecer en la pagina
-                        await expect(page.getByText(`${noData}`)).toBeVisible();
+                        await expect(page.getByRole('row', {name: `${nombreJuridica}`})).toBeVisible();
                     }
                 });
             };

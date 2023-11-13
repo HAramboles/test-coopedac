@@ -1,15 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { 
-    numerosCedulas3, 
-    numerosCedulas4, 
-    numerosCedulas5, 
-    numerosRegistroMercantil, 
-    numerosCorreo3,
-    numerosCorreo4,
-    numerosTelefono2,
-    numerosCelular2, 
-    numerosCelular4, 
-} from './utils/functions/cedulasypasaporte';
+import { generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { ariaCerrar, fechaFinal, dataCheck, fechaInicio, inputRequerido, actividadJuridicayRelacionado } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
 import { 
@@ -31,21 +21,21 @@ let page: Page;
 let botonNuevaPersona: Locator;
 
 // Cedulas
-const cedulaPersonaJuridica = numerosCedulas3;
-const cedulaPersonaJuridicaRelacionado = numerosCedulas4;
-const cedulaPersonaJuridicaRelacionadoReferencia = numerosCedulas5;
+const cedulaPersonaJuridica = generarNumerosAleatorios(11);
+const cedulaPersonaJuridicaRelacionado = generarNumerosAleatorios(11);
+const cedulaPersonaJuridicaRelacionadoReferencia = generarNumerosAleatorios(11);
 
 // Registro Mercantil
-const registroMercantil = numerosRegistroMercantil;
+const registroMercantil = generarNumerosAleatorios(15);
 
 // Correos de la persona juridica y del relacionado
-const correoJuridica = numerosCorreo3;
-const correoRelacionado = numerosCorreo4;
+const correoJuridica = generarNumerosAleatorios(2);
+const correoRelacionado = generarNumerosAleatorios(2);
 
 // Numeros telefonicos
-const telefonoJuridica = numerosTelefono2;
-const celularRelacionado = numerosCelular2;
-const celularRelacionadoReferencia = numerosCelular4;
+const telefonoJuridica = ('809' + generarNumerosAleatorios(10));
+const celularRelacionado = ('829' + generarNumerosAleatorios(10));
+const celularRelacionadoReferencia = ('829' + generarNumerosAleatorios(10));
 
 // Nombre Persona Juridica
 const nombrePersonaJuridica = nombreJuridica;
@@ -219,9 +209,9 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // Click al boton de no referido
                     await page.locator('#legalPerson_NO_REFERIDO').click();
 
-                    // Input de Referido por
-                    const referidoPor = page.locator('#legalPerson_NOMBRE_REFERIDO');
-                    await expect(referidoPor).toHaveValue('Cooperativa Empresarial de A Y C (COOPEDAC)  ');
+                    // Debe colocar en el input de referido la cooperativa
+                    await page.waitForTimeout(2000);
+                    await expect(page.getByTitle('Cooperativa Empresarial de A Y C (COOPEDAC)  ')).toBeVisible();
                     
                     // El selector de Categoria Solicitada debe ser requerido
                     const labelCategoriaSolicitada = page.getByTitle('Categoría Solicitada');
@@ -436,15 +426,14 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await botonCrearRelacionado.click();
             
                     // Se debe abrir un modal con los tipos de relacionado
-                    await expect(page.locator('h1').filter({hasText: 'TIPO DE RELACIONADO'})).toBeVisible();
-                    // await expect(page.locator('h1').filter({hasText: 'SELECCIONE TIPO DE RELACIONADO'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'SELECCIONE TIPO DE RELACIONADO'})).toBeVisible();
 
-                    // // Deben estar las descripciones de los tipos de relacionados en el modal
-                    // await expect(page.getByText('Referencia: Registrar una persona solo con información básica.')).toBeVisible();
-                    // await expect(page.getByText('Registro completo: Registrar una persona con toda su información (Documento de identidad, dirección, etc.)')).toBeVisible();
+                    // Deben estar las descripciones de los tipos de relacionados en el modal
+                    await expect(page.getByText('Referencia: Registrar una persona solo con información básica.')).toBeVisible();
+                    await expect(page.getByText('Registro completo: Registrar una persona con toda su información (Documento de identidad, dirección, etc.)')).toBeVisible();
 
-                    // Click al boton de referencia
-                    await page.locator('text=Registro Completo').click();
+                    // Click al boton de registro completo
+                    await page.getByRole('button', {name: 'Registro Completo'}).click();
             
                     // Se debe abrir un modal con el formulario para el registro
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
@@ -684,12 +673,11 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await botonCrearRelacionado.click();
             
                     // Se debe abrir un modal con los tipos de relacionado
-                    await expect(page.locator('h1').filter({hasText: 'TIPO DE RELACIONADO'})).toBeVisible();
-                    // await expect(page.locator('h1').filter({hasText: 'SELECCIONE TIPO DE RELACIONADO'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'SELECCIONE TIPO DE RELACIONADO'})).toBeVisible();
 
-                    // // Deben estar las descripciones de los tipos de relacionados en el modal
-                    // await expect(page.getByText('Referencia: Registrar una persona solo con información básica.')).toBeVisible();
-                    // await expect(page.getByText('Registro completo: Registrar una persona con toda su información (Documento de identidad, dirección, etc.)')).toBeVisible();
+                    // Deben estar las descripciones de los tipos de relacionados en el modal
+                    await expect(page.getByText('Referencia: Registrar una persona solo con información básica.')).toBeVisible();
+                    await expect(page.getByText('Registro completo: Registrar una persona con toda su información (Documento de identidad, dirección, etc.)')).toBeVisible();
 
                     // Click al boton de referencia
                     await page.getByRole('button', {name: 'Referencia'}).click();

@@ -94,17 +94,17 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                 // Tipo de cuenta
                 await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('AHORROS NORMALES');
         
-                // // Balance
-                // await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 24,100');
+                // Balance
+                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 24,100');
         
-                // // Transito
-                // await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('RD$ 0');
+                // Transito
+                await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('RD$ 0');
         
-                // // Pignorado
-                // await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 0');
+                // Pignorado
+                await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 0');
         
-                // // Disponible
-                // await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 23,900');
+                // Disponible
+                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 23,900');
         
                 // Estado de Cuenta
                 await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');

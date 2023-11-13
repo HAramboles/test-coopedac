@@ -11,7 +11,7 @@ import {
 } from './utils/data/inputsButtons';
 import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/functions/fechas';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
-import { numerosChasis, numerosPlaca } from './utils/functions/cedulasypasaporte';
+import { generarLetrasAleatorias, generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { userCorrectoUpperCase } from './utils/data/usuarios';
 
@@ -30,6 +30,10 @@ const firma = './tests/utils/img/firma.jpg';
 
 // Monto solicitado para el prestamo
 const cantMonto:string = '125,000';
+
+// Numeros para la garantia de vehiculos
+let numerosChasis = (generarLetrasAleatorias() + generarNumerosAleatorios(4))
+let numerosPlaca = (generarLetrasAleatorias() + generarNumerosAleatorios(4))
 
 // Pruebas
 test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona Juridica', async () => {

@@ -16,7 +16,8 @@ import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './uti
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { userCorrectoUpperCase } from './utils/data/usuarios';
-import { numerosMatriculaHipoteca1, numerosMatriculaHipoteca2 } from './utils/functions/cedulasypasaporte';
+// import { numerosMatriculaHipoteca1, numerosMatriculaHipoteca2 } from './utils/functions/func';
+import { generarNumerosAleatorios } from './utils/functions/functionsRandom';
 
 // Variables globales
 let browser: Browser;
@@ -33,6 +34,10 @@ const firma = './tests/utils/img/firma.jpg';
 
 // Monto solicitado para el prestamo
 const cantMonto:string = '300,000';
+
+// Numeros para las garantias de la hipoteca
+let numerosMatriculaHipoteca1 = generarNumerosAleatorios(4);
+let numerosMatriculaHipoteca2 = generarNumerosAleatorios(4);
 
 // Pruebas
 test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona Fisica', () => {

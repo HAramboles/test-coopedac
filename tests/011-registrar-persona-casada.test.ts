@@ -1,13 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { 
-    numerosCedulas6, 
-    numerosCedulas7,
-    numerosPasaporte3, 
-    numerosCorreo5,
-    numerosCorreo6,
-    numerosCelular5, 
-    numerosCelular6 
-} from './utils/functions/cedulasypasaporte';
+import { generarLetrasAleatorias, generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { 
     nombrePersonaFisicaCasada, 
     apellidoPersonaFisicaCasada, 
@@ -28,19 +20,19 @@ let page: Page;
 let botonNuevaPersona: Locator;
 
 // Cedulas de las personas
-const cedulaPersonaCasada = numerosCedulas6;
-const cedulaPersonaConyuge = numerosCedulas7;
+const cedulaPersonaCasada = generarNumerosAleatorios(11);
+const cedulaPersonaConyuge = generarNumerosAleatorios(11);
 
 // Pasaporte de la persona
-const pasaportePersonaCasada = numerosPasaporte3;
+const pasaportePersonaCasada = (generarLetrasAleatorias() + generarNumerosAleatorios(11));
 
 // Celulares de las personas
-const celularPersonaCasada = numerosCelular5;
-const celularPersonaConyuge = numerosCelular6;
+const celularPersonaCasada = ('829' + generarNumerosAleatorios(10));
+const celularPersonaConyuge = ('829' + generarNumerosAleatorios(10));
 
 // Numeros para los correos de las personas 
-const numerosCorreoPersonaCasada = numerosCorreo5;
-const numerosCorreoPersonaConyuge = numerosCorreo6;
+const numerosCorreoPersonaCasada = generarNumerosAleatorios(2);
+const numerosCorreoPersonaConyuge = generarNumerosAleatorios(2);
 
 // Nombre y apellido de la persona casada
 const nombrePersonaCasada = nombrePersonaFisicaCasada;
@@ -55,7 +47,6 @@ const correoPersonaCasada = nombrePersonaCasada.split(' ').join('') + numerosCor
 const correoPersonaConyuge = nombrePersonaConyuge.split(' ').join('') + numerosCorreoPersonaConyuge;
 
 /* Pruebas */
-
 test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferentes parametros', async () => {
     for (const escenarios of EscenariosPruebaCrearPersonas) {
         test.describe(`Tests cuando el parametro es: ${Object.values(escenarios).toString()}`, () => {
@@ -155,12 +146,12 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                 test('Registrar a la persona - Datos Generales', async() => {
                     // Input de la cedula. Cada cedula debe ser unica
                     const campoCedula = page.locator('#person_DOCUMENTO_IDENTIDAD');
-                    await campoCedula?.fill(cedulaPersonaCasada);
+                    await campoCedula?.fill(`${cedulaPersonaCasada}`);
                     
                     // Pasaporte 
                     const campoPasaporte = page.locator('#person_NO_PASAPORTE');
                     await campoPasaporte.click();
-                    await campoPasaporte.fill(pasaportePersonaCasada); 
+                    await campoPasaporte.fill(`${pasaportePersonaCasada}`); 
                     
                     // Input del nombre
                     const campoNombre = page.locator('#person_NOMBRES');
@@ -475,15 +466,14 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                     await botonCrearRelacionado.click();
             
                     // Se debe abrir un modal con los tipos de relacionado
-                    await expect(page.locator('h1').filter({hasText: 'TIPO DE RELACIONADO'})).toBeVisible();
-                    // await expect(page.locator('h1').filter({hasText: 'SELECCIONE TIPO DE RELACIONADO'})).toBeVisible();
+                    await expect(page.locator('h1').filter({hasText: 'SELECCIONE TIPO DE RELACIONADO'})).toBeVisible();
 
-                    // // Deben estar las descripciones de los tipos de relacionados en el modal
-                    // await expect(page.getByText('Referencia: Registrar una persona solo con información básica.')).toBeVisible();
-                    // await expect(page.getByText('Registro completo: Registrar una persona con toda su información (Documento de identidad, dirección, etc.)')).toBeVisible();
+                    // Deben estar las descripciones de los tipos de relacionados en el modal
+                    await expect(page.getByText('Referencia: Registrar una persona solo con información básica.')).toBeVisible();
+                    await expect(page.getByText('Registro completo: Registrar una persona con toda su información (Documento de identidad, dirección, etc.)')).toBeVisible();
             
                     // Click al boton de referencia
-                    await page.locator('text=Registro Completo').click();
+                    await page.getByRole('button', {name: 'Registro Completo'}).click();
                 });
 
                 test('Registro del Conyuge de la Persona - Datos Generales', async () => {

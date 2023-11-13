@@ -69,7 +69,7 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
 
         // Cantidad = 1000 de 1000
         await cant1000.click();
-        await cant1000.fill('1000');
+        await cant1000.fill('2000');
 
         // Boton Guardar
         const botonGuardar = page.getByRole('button', {name: 'Guardar'});

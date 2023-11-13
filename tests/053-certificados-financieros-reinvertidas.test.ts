@@ -182,6 +182,9 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
 
                     // Debe aparecer una alerta de error
                     await expect(page.getByText('No se pudo agregar la cuenta. Completar los campos requeridos.').first()).toBeVisible();
+
+                    // Cerrar la alerta de error
+                    await page.locator(`${ariaCerrar}`).first().click();
             
                     // Boton Agregar la cuenta
                     const botonAgregar = page.getByRole('button', {name: 'plus Agregar'});
@@ -191,6 +194,9 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                     
                     // Debe aparecer una alerta de error
                     await expect(page.getByText('No se pudo agregar la cuenta. Completar los campos requeridos.').last()).toBeVisible();
+
+                    // Cerrar la alerta de error
+                    await page.locator(`${ariaCerrar}`).first().click();
                 });
 
                 test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {

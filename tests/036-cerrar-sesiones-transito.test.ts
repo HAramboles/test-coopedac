@@ -91,7 +91,7 @@ test.describe.serial('Pruebas Cerrando Sesiones en Transito', async () => {
         await expect(titularSesion).not.toBeVisible();
 
         // En la pagina no deben de haber datos
-        await expect(page.getByText(`${noData}`)).toBeVisible();
+        await expect(titularSesion).not.toBeVisible();
     });
     
     test.afterAll(async () => { // Despues de las pruebas

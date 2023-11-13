@@ -186,4 +186,4 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
         // Cerrar el context 
         await context.close();
     });
-})
+});

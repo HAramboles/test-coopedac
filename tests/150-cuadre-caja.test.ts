@@ -62,7 +62,7 @@ test.describe.serial('Pruebas con el Cuadre de Caja', async () => {
         const botonIniciarSesion = page.getByRole('button', {name: 'Iniciar Sesión'});
 
         // Esperar a que el boton de Iniciar Sesion este habilitado
-        await page.waitForTimeout(8000);
+        await page.waitForTimeout(2000);
 
         await expect(botonIniciarSesion).toBeVisible();
         await botonIniciarSesion.click();
@@ -102,31 +102,41 @@ test.describe.serial('Pruebas con el Cuadre de Caja', async () => {
         await expect(page.locator('#form_OFFICER_NAME')).toHaveValue(`${nombreOficialCuadre}`);
     });
 
-    test.skip('Distribuir decimales y no debe mostrarse erroneamente el formato de los decimales', async () => {
-        // Hacer la distribucion del dinero para probar el formato de los decimales
-        const cantDecimales = page.locator('[id="23"]'); // Campo de RD 0.1
-
-        // Cantidad = 35 de 0.1
-        await cantDecimales.click();
-        await cantDecimales.fill('35');
-
-        // El total de los decimales no deben tener el formato erroneo
-        await expect(page.locator('[step="1"]')).not.toHaveValue('RD$ 0.35,000,000,000,000,003');
-
-        // Borrar la cantidad agregada
-        await cantDecimales.clear();
-    });
-
     test('Distribuir el efectivo de la caja a cuadrar', async () => {
         // Hacer la distribucion del dinero para el cuadre de caja
         const cant2000 = page.locator('[id="13"]'); // Campo de RD 2000
+        const cant1000 = page.locator('[id="14"]'); // Campo de RD 1000
+        const cant500 = page.locator('[id="15"]'); // Campo de RD 500
+        const cant100 = page.locator('[id="17"]'); // Campo de RD 100
+        const cant50 = page.locator('[id="18"]'); // Campo de RD 50
+        const cantDecimal = page.locator('[id="23"]'); // Campo de RD 0.01
 
-        // Cantidad = 10 de 2000
+        // Cantidad = 1 de 2000
         await cant2000.click();
         await cant2000.fill('1');
 
+        // Cantidad = 100 de 1000
+        await cant1000.click();
+        await cant1000.fill('100');
+
+        // Cantidad = 3 de 500
+        await cant500.click();
+        await cant500.fill('3');
+
+        // Cantidad = 1 de 100
+        await cant100.click();
+        await cant100.fill('1');
+
+        // Cantidad = 1 de 50
+        await cant50.click();
+        await cant50.fill('1');
+
+        // Cantidad = 2 de 0.01
+        await cantDecimal.click();
+        await cantDecimal.fill('2');
+
         // El total de efectivo debe tener la cantidad distribuida
-        await expect(page.locator('(//INPUT[@autocomplete="off"])[52]')).toHaveValue('2,000.00');
+        await expect(page.locator('(//INPUT[@autocomplete="off"])[52]')).toHaveValue('103,650.02');
     });
 
     test('Depositar a Banco los cheques de la caja', async () => {

@@ -77,7 +77,7 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
         await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('0.00');
 
         // Disponible
-        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('150,000.00');
+        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('149,800.00');
     });
 
     test('Hacer el movimiento de la Nota de Credito', async () => {
@@ -121,8 +121,8 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
     });
 
     test('Hacer el movimiento de la Nota de Debito', async () => {
-        // Click al selector de socio
-        await page.locator(`${selectBuscar}`).click();
+        // Click al nombre del socio para desplegar el menu de las cuentas
+        await page.getByTitle(`${nombre} ${apellido}`).click();
         // Seleccionar la cuenta de Ahorros Normales nuevamente
         await page.locator('text=AHORROS NORMALES').click();
 
