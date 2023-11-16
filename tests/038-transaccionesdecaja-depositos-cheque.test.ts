@@ -267,8 +267,8 @@ test.describe.serial('Transacciones de Caja - Deposito con Cheque - Ahorros Norm
                     // Click al boton de Aceptar del modal
                     await page.getByRole('button', {name: 'check Aceptar'}).click();
 
-                    // Esperar dos segundos
-                    await page.waitForTimeout(2000);
+                    // Esperar cuatro segundos
+                    await page.waitForTimeout(4000);
 
                     // Icono de alerta rojo
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'}).first();

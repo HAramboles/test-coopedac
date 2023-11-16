@@ -81,12 +81,9 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
 
         // Nombre del socio
         await expect(page.getByText(`| ${nombre} ${apellido} |`)).toBeVisible();
-
-        // Forma de Pago
-        await page.locator('#form_FORMA_PAGO').click();
-
-        // Seleccionar la opcion Transferencia a Cuenta
-        await page.getByText('TRANSFERENCIA A CUENTA').click();
+        
+        // La opcion Transferencia a Cuenta debe estar seleccionada
+        await expect(page.getByText('TRANSFERENCIA A CUENTA')).toBeVisible();
 
         // Cuenta Destino
         await page.locator('#form_CUENTA').click();

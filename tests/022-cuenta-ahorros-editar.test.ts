@@ -186,32 +186,74 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
             
                     // El componente de firma debe estar visible y debe ser unico
                     const firmaSubida = page.locator('(//div[@class="ant-upload-list-item-container"])');
-                    await expect(firmaSubida).toBeVisible();
 
-                    // Eliminar la firma que tiene la cuenta
-                    await page.locator(`${dataEliminar}`).click();
+                    if (await firmaSubida.isHidden()) {
+                        // Ir al paso 2
+                        const botonPaso2 = page.getByRole('button', {name: 'Firmantes y Contactos'});
+                        await expect(botonPaso2).toBeVisible();
+                        await botonPaso2.click();
 
-                    // La firma no debe estar visible
-                    await expect(firmaSubida).not.toBeVisible();
+                        // Esperar a que cargue la pagina
+                        await page.waitForTimeout(2000);
 
-                    // Subir una nueva firma
-                    const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
-                    await page.getByText('Cargar ').click(); 
-                    const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
-                    await subirFirma.setFiles(`${firma2}`); // setFiles para elegir un archivo
+                        // Volver al paso 1
+                        const botonPaso1 = page.getByRole('button', {name: 'Datos generales'});
+                        await expect(botonPaso1).toBeVisible();
+                        await botonPaso1.click();
 
-                    // La firma subida debe estar visible
-                    await expect(page.getByAltText('firma2.jpg')).toBeVisible();
+                        // La firma debe estar visible
+                        await expect(firmaSubida).toBeVisible();
 
-                    // Debe aparecer una alerta de que la firma se subio correctamente
-                    await expect(page.locator('text=Operación Exitosa')).toBeVisible();
+                        // Eliminar la firma que tiene la cuenta
+                        await page.locator(`${dataEliminar}`).click();
 
-                    // Cerrar la alerta
-                    await page.locator(`${ariaCerrar}`).click();
-            
-                    // Click al boton de Actualizar
-                    const botonActualizar = page.locator('button:has-text("Actualizar")');
-                    await botonActualizar.click();
+                        // La firma no debe estar visible
+                        await expect(firmaSubida).not.toBeVisible();
+
+                        // Subir una nueva firma
+                        const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
+                        await page.getByText('Cargar ').click(); 
+                        const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
+                        await subirFirma.setFiles(`${firma2}`); // setFiles para elegir un archivo
+
+                        // La firma subida debe estar visible
+                        await expect(page.getByAltText('firma2.jpg')).toBeVisible();
+
+                        // Debe aparecer una alerta de que la firma se subio correctamente
+                        await expect(page.locator('text=Operación Exitosa')).toBeVisible();
+
+                        // Cerrar la alerta
+                        await page.locator(`${ariaCerrar}`).click();
+                
+                        // Click al boton de Actualizar
+                        const botonActualizar = page.locator('button:has-text("Actualizar")');
+                        await botonActualizar.click();
+                    } else if (await firmaSubida.isVisible()) {
+                        // Eliminar la firma que tiene la cuenta
+                        await page.locator(`${dataEliminar}`).click();
+
+                        // La firma no debe estar visible
+                        await expect(firmaSubida).not.toBeVisible();
+
+                        // Subir una nueva firma
+                        const subirFirmaPromesa = page.waitForEvent('filechooser'); // Esperar por el evento de filechooser
+                        await page.getByText('Cargar ').click(); 
+                        const subirFirma = await subirFirmaPromesa; // Guardar el evento del filechooser en una constante
+                        await subirFirma.setFiles(`${firma2}`); // setFiles para elegir un archivo
+
+                        // La firma subida debe estar visible
+                        await expect(page.getByAltText('firma2.jpg')).toBeVisible();
+
+                        // Debe aparecer una alerta de que la firma se subio correctamente
+                        await expect(page.locator('text=Operación Exitosa')).toBeVisible();
+
+                        // Cerrar la alerta
+                        await page.locator(`${ariaCerrar}`).click();
+                
+                        // Click al boton de Actualizar
+                        const botonActualizar = page.locator('button:has-text("Actualizar")');
+                        await botonActualizar.click();
+                        };
                 });
             
                 test('Editar una Cuenta de Ahorros - Contacto de Firmante o Persona', async () => {

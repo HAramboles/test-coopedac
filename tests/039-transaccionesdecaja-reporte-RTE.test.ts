@@ -234,8 +234,8 @@ test.describe.serial('Transacciones de Caja - Deposito - Reporte RTE - Pruebas c
                     await cant2000.click();
                     await cant2000.fill('500');
 
-                    // Esperar dos segundos
-                    await page.waitForTimeout(2000);
+                    // Esperar cuatro segundos
+                    await page.waitForTimeout(4000);
             
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();

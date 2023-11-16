@@ -657,7 +657,7 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
                         await page.waitForTimeout(2000);
 
                         // Click al boton de editar de la solicitud
-                        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
+                        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
 
                         // La url debe de tener que la solicitud esta en estado aprobado
                         await expect(page).toHaveURL(/\/aprobado/);

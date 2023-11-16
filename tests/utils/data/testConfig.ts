@@ -15,5 +15,5 @@ export const contextConfig = {
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserOneScreen,
+    args: browserSecondScreen,
 };

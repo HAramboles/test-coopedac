@@ -297,7 +297,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                     await expect(page.locator(`text=${nombreFirmante} ${apellidoFirmante}`)).toBeVisible();
 
                     // Click en Seleccionar
-                    await page.getByRole('button', {name: 'Seleccionar'}).click();
+                    await page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`}).getByRole('button', {name: 'Seleccionar'}).click();
             
                     // Debe salir otro modal para llenar la informacion de la firmante
                     await expect(page.locator('text=FIRMANTE:')).toBeVisible();

@@ -10,13 +10,12 @@ import {
     fechaSolicitudCredito,
     valorAdmisibleCredito,
     usuarioAproboSolicitud,
-    dataVer,
+    dataVer
 } from './utils/data/inputsButtons';
 import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/functions/fechas';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { userCorrectoUpperCase } from './utils/data/usuarios';
-// import { numerosMatriculaHipoteca1, numerosMatriculaHipoteca2 } from './utils/functions/func';
 import { generarNumerosAleatorios } from './utils/functions/functionsRandom';
 
 // Variables globales

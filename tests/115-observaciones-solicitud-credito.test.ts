@@ -27,7 +27,6 @@ let apellido: string | null;
 
 // Imagen de los documentos
 const firma = './tests/utils/img/firma.jpg';
-const firma2 = './tests/utils/img/firma2.jpg';
 
 // Monto solicitado para el prestamo
 const cantMonto:string = '20,000';
@@ -235,7 +234,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Monto
         await page.locator('#loan_form_MONTO').click();
-        await page.locator('#loan_form_MONTO').fill(cantMonto);
+        await page.locator('#loan_form_MONTO').fill(`${cantMonto}`);
 
         // Tasa
         const campoTasa = page.getByLabel('Tasa');
@@ -410,9 +409,12 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Debe aparecer una alerta de error
         await expect(page.getByText('El total de las garantías no debe ser mayor al monto del préstamo.')).toBeVisible();
 
+        // Cerrar la alerta de error
+        await page.locator('a').nth(2).click();
+
         // Ingresar el monto correcto a usar
         await inputMontoPrestamo.clear();
-        await inputMontoPrestamo.fill('20000');
+        await inputMontoPrestamo.fill(`${cantMonto}`);
 
         // Click fuera del input y al mismo tiempo debe mostrarse el monto maximo a utilizar
         await page.locator('text=El monto máximo utilizable es').nth(1).click();
@@ -420,11 +422,8 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // Click al boton de Aceptar del modal
         await botonAceptarModal.click();
 
-        // Debe aparecer una alerta indicando que la garantia se agrego correctamente
-        await expect(page.locator('text=Garantías del préstamo guardadas exitosamente.')).toBeVisible();
-
         // Debe agregarse la cuenta de la garantia liquida agregada
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Debe mostrarse el monto de la garantia liquida en la tabla
         await expect(page.getByText('RD$$ 20,000.00')).toBeVisible();

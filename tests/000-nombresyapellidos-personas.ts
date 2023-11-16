@@ -1,8 +1,8 @@
 // Archivo para colocar los nombres de las personas a crear, necesarias para poder correr todos los tests
 
 // Persona Fisica Mayor de edad. Test = 006-registrar-persona-fisica.test.ts
-export const nombrePersonaFisica:string = ''; // (Femenino)
-export const apellidoPersonaFisica:string = '';
+export const nombrePersonaFisica:string = 'ANN'; // (Femenino)
+export const apellidoPersonaFisica:string = 'FLORES';
 
 // Persona Fisica Menor de edad. Test = 007-registrar-persona-fisica-menor-edad.test.ts
 export const nombrePersonaMenorEdad:string = ''; // (Masculino)

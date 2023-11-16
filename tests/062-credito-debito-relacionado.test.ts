@@ -124,7 +124,7 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
         // Click al nombre del socio para desplegar el menu de las cuentas
         await page.getByTitle(`${nombre} ${apellido}`).click();
         // Seleccionar la cuenta de Ahorros Normales nuevamente
-        await page.locator('text=AHORROS NORMALES').click();
+        await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
 
         // Monto
         await page.locator('#form_MONTO_MOVIMIENTO').fill('3500');

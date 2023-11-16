@@ -72,7 +72,7 @@ test.describe.serial('Pruebas con la Consulta de los Accesorios Asignados', asyn
         // Deben mostrarse los datos del accesorio asigando a la persona
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'TALONARIOS ORDEN DE PAGO'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: '21'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '21', exact: true})).toBeVisible();
         await expect(page.getByRole('cell', {name: '1', exact: true})).toBeVisible();
         await expect(page.getByRole('cell', {name: '100'})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'ACTIVO'})).toBeVisible();

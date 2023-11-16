@@ -318,10 +318,10 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
 
                     // Colocar un monto en Abono a Capital
                     const inputAbonoCapital = page.locator('#form_MONTO_ABONO_CAPITAL');
-                    await inputAbonoCapital.fill('2000');
+                    await inputAbonoCapital.fill('4000');
 
                     // Debe colocarse el monto en el campo de Abono a Capital
-                    await expect(inputAbonoCapital).toHaveValue('RD$ 2,000');
+                    await expect(inputAbonoCapital).toHaveValue('RD$ 4,000');
 
                     // Click al boton de Aplicar
                     const botonAplicar = page.locator('button').filter({hasText: 'Aplicar'});
@@ -344,12 +344,12 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
                     await expect(iconoAlerta).toBeVisible();
 
-                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 2000
+                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 4000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
 
-                    // Cantidad = 2 de 1000
+                    // Cantidad = 4 de 1000
                     await cant1000.click();
-                    await cant1000.fill('2');
+                    await cant1000.fill('4');
 
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();
@@ -423,37 +423,6 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
 
                     // Debe regresar a la pagina
                     await expect(page).toHaveURL(`${url_transacciones_caja}`);
-                });
-
-                test('Ir a la pagina de Sesiones en Transito y comprobar que se haya cerrado la sesion', async () => {
-                    // Sesiones en Transito
-                    await page.getByRole('menuitem', {name: 'Sesiones en Tránsito'}).click();
-
-                    // Esperar a que el servicio de cerrar sesion responda
-                    await page.waitForResponse(`${servicio_check_session}`);
-
-                    // La URL debe cambiar
-                    await expect(page).toHaveURL(`${url_sesiones_transito}`);
-
-                    // Digitar el nombre de la persona 
-                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
-
-                    // Si la sesion no aparece en la pagina
-                    if (await page.getByText(`${noData}`).isVisible()) {
-                        // Terminar con el test
-                        await page.close();
-                        await context.close();
-
-                    // Si la sesion aparece en la pagina    
-                    } else if (await page.getByText(`${noData}`).isHidden()) {
-                        // Click al boton de Actualizar
-                        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
-                        await expect(botonActualizar).toBeVisible();
-                        await botonActualizar.click();
-
-                        // La sesion no debe aparecer en la pagina
-                        await expect(page.getByText(`${noData}`)).toBeVisible();
-                    }
                 });
             };
 

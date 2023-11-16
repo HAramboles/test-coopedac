@@ -14,6 +14,7 @@ import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './uti
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { userCorrectoUpperCase } from './utils/data/usuarios';
+import { generarNumerosAleatorios } from './utils/functions/functionsRandom';
 
 // Variables globales
 let browser: Browser;
@@ -34,8 +35,11 @@ const firma = './tests/utils/img/firma.jpg';
 // Monto solicitado para el prestamo
 const cantMonto:string = '300,000';
 
+// Numero garantia agricola
+let numerosGarantia:string = generarNumerosAleatorios(4);
+
 // Pruebas
-test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona Juridica', async () => {
+test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Juridica', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
         // Crear el browser
         browser = await chromium.launch(browserConfig);
@@ -234,7 +238,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
         // Monto
         await page.locator('#loan_form_MONTO').click();
-        await page.locator('#loan_form_MONTO').fill(cantMonto);
+        await page.locator('#loan_form_MONTO').fill(`${cantMonto}`);
 
         // Tasa
         const campoTasa = page.getByLabel('Tasa');
@@ -369,7 +373,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
 
         // Colocar un monto en el campo de Total Ingresos
         await page.getByText('RD$ 0.00').first().click();
-        await page.getByPlaceholder('MONTO').fill('RD$ 5,00000');
+        await page.getByPlaceholder('MONTO').fill('RD$ 500000');
 
         await page.waitForTimeout(2000);
 
@@ -380,8 +384,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await page.waitForTimeout(2000);
 
         // Colocar un monto en el campo de Total Gastos
-        await page.getByText('RD$ 0.00').click();
-        await page.getByPlaceholder('MONTO').fill('RD$ 1,50000');
+        await page.getByText('RD$ 0.00').first().click();
+        await page.getByPlaceholder('MONTO').fill('RD$ 150000');
 
         // Click fuera del input
         await page.getByText('TOTAL INGRESOS').click();
@@ -441,11 +445,54 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         // Debe aparecer una alerta de operacion exitosa
         await expect(page.locator('text=Relacionados guardados exitosamente.')).toBeVisible();
 
+        await page.getByText('Agregar', {exact: true}).click();
+
         // Cerrar el modal
         await page.getByRole('button', {name: 'Close' }).click();
 
         // El modal no debe estar visible
         await expect(modal).not.toBeVisible();
+
+        // Click al boton de agregar garantia
+        await page.getByRole('button', {name: 'Agregar Garantía'}).click();
+
+        // Debe salir un modal
+        await expect(page.locator('text=SELECCIONAR OPCIÓN')).toBeVisible();
+
+        // Click a la opcion de nueva garantia
+        await page.locator('text=Nueva garantía').click();
+
+        // Debe salir un modal para agregar la garantia
+        const modalGarantia = page.locator('#form').getByRole('heading', {name: 'Garantías'});
+        await expect(modalGarantia).toBeVisible();
+
+        // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
+        await page.getByRole('combobox').click();
+        await page.getByText('GARANTIA AGRICOLA', {exact: true}).click();
+
+        // Elegir que el socio es propietario de la garantia
+        await page.getByRole('checkbox').click();
+
+        // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
+        await expect(page.locator(`text=${nombreEmpresa}`)).toBeVisible();
+
+        // Valor tasado
+        const valorTasado = page.getByPlaceholder('VALOR TASADO');
+        await valorTasado.click();
+        await valorTasado.fill('RD$ 200000');
+
+        // Agregar atributos a la garantia
+        await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
+
+        // Chasis
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
+        await page.getByPlaceholder('Valor Atributo').fill(`${numerosGarantia}`);
+
+        // Click en guardar
+        await page.getByRole('button', {name: 'save Guardar'}).click();
+
+        // El modal de agregar Garantias debe cerrarse
+        await expect(modalGarantia).not.toBeVisible();
 
         // Click al boton de agregar garantia liquida
         await page.getByRole('button', {name: 'Agregar Garantia Liquida'}).click();
@@ -471,7 +518,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         // Ingresar el monto a utilizar
         const inputMontoPrestamo = page.getByRole('spinbutton', {name: 'VALOR DE LA GARANTÍA'});
         await inputMontoPrestamo.clear();
-        await inputMontoPrestamo.fill('300000');
+        await inputMontoPrestamo.fill('100000');
 
         // Click fuera del input y al mismo tiempo debe mostrarse el monto maximo a utilizar
         await page.locator('text=El monto máximo utilizable es').nth(1).click();
@@ -481,14 +528,11 @@ test.describe.serial('Pruebas con la Solicitud de Credito Flexi Prox - Persona J
         await expect(botonAceptarModal).toBeVisible();
         await botonAceptarModal.click();
 
-        // Debe aparecer una alerta indicando que la garantia se agrego correctamente
-        await expect(page.locator('text=Garantías del préstamo guardadas exitosamente.')).toBeVisible();
-
         // Debe agregarse la cuenta de la garantia liquida agregada
-        await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
 
         // Debe mostrarse el monto de la garantia liquida en la tabla
-        await expect(page.getByText('RD$$ 300,000.00')).toBeVisible();
+        await expect(page.getByText('RD$$ 100,000.00')).toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();

@@ -689,13 +689,16 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // Contenido del mensaje de aviso
                     await expect(page.getByText('Algunos campos estarán habilitados solo si decide agregar un tipo de documento de identidad.')).toBeVisible();
 
-                    // Elegir el tipo de docuemnto de identidad a utilizar
+                    // Elegir el tipo de documento de identidad a utilizar
                     await page.locator('#form_ID_TIPO_IDENT').click();
                     // Deben aparecer dos tipos de documento de identidad
                     await expect(page.getByText('Cédula')).toBeVisible();
                     await expect(page.getByText('Pasaporte')).toBeVisible();
                     // Elegir cedula
                     await page.getByText('Cédula').click();
+
+                    // Esperar que el tipo de documento cedula este seleccionado
+                    await page.waitForTimeout(3000);
 
                     // Digitar una cedula 
                     await page.getByPlaceholder('Elige el tipo de documento (Opcional)').fill(`${cedulaPersonaJuridicaRelacionadoReferencia}`);

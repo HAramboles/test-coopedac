@@ -106,6 +106,9 @@ test.describe.serial('Pruebas con el Desembolso de Lineas de Credito', () => {
         
         // Cerrar la pagina con el reporte 
         await page1.close();
+
+        // Debe regresar a la pagina de Desembolso Lineas de Credito
+        await expect(page.locator('h1').filter({hasText: 'DESEMBOLSO LÍNEAS CRÉDITO'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

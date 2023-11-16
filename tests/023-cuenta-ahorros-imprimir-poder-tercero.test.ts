@@ -164,13 +164,34 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                     await expect(page.locator('text=SOCIO AHORRANTE')).toBeVisible();
             
                     // El componente de firma debe estar visible y debe ser unico
-                    await expect(page.locator('(//div[@class="ant-upload-list-item-container"])')).toBeVisible();
-            
-                    // Opcion de Firmantes y Contactos
-                    const firmantesContactos = page.locator('text=Firmantes y Contactos');
-                    await expect(firmantesContactos).toBeVisible();
-                    // Click a la opcion
-                    await firmantesContactos.click();
+                    const componenteFirma = page.locator('(//div[@class="ant-upload-list-item-container"])');
+                    // Boton Omitir
+                    const botonOmitir = page.getByRole('button', {name: 'Omitir'});
+                    if (await componenteFirma.isHidden()) {
+                        // Ir al paso 2
+                        const botonPaso2 = page.getByRole('button', {name: 'Firmantes y Contactos'});
+                        await expect(botonPaso2).toBeVisible();
+                        await botonPaso2.click();
+
+                        // Esperar a que cargue la pagina
+                        await page.waitForTimeout(2000);
+
+                        // Volver al paso 1
+                        const botonPaso1 = page.getByRole('button', {name: 'Datos generales'});
+                        await expect(botonPaso1).toBeVisible();
+                        await botonPaso1.click();
+
+                        // La firma debe estar visible
+                        await expect(componenteFirma).toBeVisible();
+
+                        // Click en el boton de Omitir
+                        await expect(botonOmitir).toBeVisible();
+                        await botonOmitir.click();
+                    } else if (await componenteFirma.isVisible()) {
+                        // Click al boton de Omitir
+                        await expect(botonOmitir).toBeVisible();
+                        await botonOmitir.click();
+                    };
                 });
             
                 test('Cuenta de Ahorros - Contacto de Firmante o Persona - Ver Reporte Poder a Terceros', async () => {            

@@ -15,6 +15,7 @@ export const dataCheck:string = '[data-icon="check-circle"]';
 export const dataVer:string = '[data-icon="eye"]';
 export const dataEliminar:string = '[data-icon="delete"]';
 export const dataEdit:string = '[data-icon="edit"]';
+export const dataCancelar:string = '[data-icon="stop"]';
 
 export const ariaCerrar:string = '[aria-label="close"]';
 export const ariaCancelar:string = '[aria-label="stop"]';

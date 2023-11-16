@@ -14,6 +14,7 @@ import {
 import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/functions/fechas';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { generarNumerosAleatorios } from './utils/functions/functionsRandom';
 
 // Variables globales
 let browser: Browser;
@@ -30,6 +31,10 @@ const firma = './tests/utils/img/firma.jpg';
 
 // Monto solicitado para el prestamo
 const cantMonto:string = '300,000';
+
+// Numeros para las garantias de la hipoteca
+let numerosMatriculaHipoteca1 = generarNumerosAleatorios(4);
+let numerosMatriculaHipoteca2 = generarNumerosAleatorios(4);
 
 // Pruebas
 test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
@@ -468,7 +473,7 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
 
         // Matricula
         await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').last().click();
-        await page.getByPlaceholder('VALOR ATRIBUTO').fill('1550');
+        await page.getByPlaceholder('VALOR ATRIBUTO').fill(`${numerosMatriculaHipoteca1}`);
 
         // Click en guardar
         await page.getByRole('button', {name: 'save Guardar'}).click();
@@ -498,8 +503,8 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 320,000');
 
         // Editar la matricula
-        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').last().click();
-        await page.getByPlaceholder('VALOR ATRIBUTO').fill('3840');
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').first().click();
+        await page.getByPlaceholder('VALOR ATRIBUTO').fill(`${numerosMatriculaHipoteca2}`);
 
         // Esperar a que se agregue el nuevo valor de la matricula
         await page.waitForTimeout(2000);

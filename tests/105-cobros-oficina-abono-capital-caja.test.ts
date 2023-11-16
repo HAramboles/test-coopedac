@@ -4,6 +4,7 @@ import { url_base, url_cobros_oficina, url_sesiones_transito, url_transacciones_
 import { servicio_check_session } from './utils/dataPages/servicios';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { nombreTestigoCajero, userCorrecto } from './utils/data/usuarios';
+import { diaActualFormato } from './utils/functions/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -241,11 +242,14 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Buscar a la persona
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
-        // Debe mostrarse el area emisora de la sesion enviada desde Cobros de Oficina
-        await expect(page.getByRole('cell', {name: 'COBROS'})).toBeVisible();
+        // Esperar que la sesion buscada este visible
+        await page.waitForTimeout(2000);
 
-        // Boton de Seleccinar
-        const botonSeleccionar = page.getByRole('row', {name: 'COBROS'}).getByRole('button', {name: 'Seleccionar'});
+        // Debe mostrarse el area emisora y el nombre del socio de la sesion enviada desde Cobros de Oficina
+        const sesionPagoPrestamoCaja = page.getByRole('row', {name: 'COBROS'}).getByRole('cell', {name: `${nombre} ${apellido}`}).first();
+        await expect(sesionPagoPrestamoCaja).toBeVisible();
+        // Boton de Seleccionar
+        const botonSeleccionar = page.getByRole('button', {name: 'Seleccionar'}).first();
         await expect(botonSeleccionar).toBeVisible();
         // Click al boton de Seleccionar
         await botonSeleccionar.click();

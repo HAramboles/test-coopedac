@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { formBuscar, ariaCancelar } from './utils/data/inputsButtons';
+import { formBuscar, dataCancelar } from './utils/data/inputsButtons';
 import { url_base, url_anular_desembolso, url_solicitud_credito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
@@ -66,7 +66,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await expect(solicitudDesembolsadaEmpresa).toBeVisible();
 
         // Click al boton de Anular Desembolso
-        await solicitudDesembolsadaEmpresa.locator(`${ariaCancelar}`).click();
+        await solicitudDesembolsadaEmpresa.locator(`${dataCancelar}`).click();
 
         // Debe aparecer un modal para anular el desembolso
         await expect(modalAnularDesembolso).toBeVisible();
@@ -199,7 +199,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await expect(solicitudDesembolsadaEmpresa).toBeVisible();
 
         // Click al boton de Anular Desembolso
-        await solicitudDesembolsadaEmpresa.locator(`${ariaCancelar}`).click();
+        await solicitudDesembolsadaEmpresa.locator(`${dataCancelar}`).click();
 
         // Debe aparecer un modal para anular el desembolso
         await expect(modalAnularDesembolso).toBeVisible();

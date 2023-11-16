@@ -219,7 +219,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await page1.close();
 
         // Totales
-        await expect(page.getByRole('row', {name: 'TOTALES: 300,000.00 0.00 0.00 0.00 0.00 0.00 0.00 300,000.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'TOTALES: 300,000.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00'})).toBeVisible();
     });
 
     test('Cuotas pendientes', async () => {

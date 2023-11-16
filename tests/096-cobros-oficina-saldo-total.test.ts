@@ -211,6 +211,8 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Debe estar en la pagina de Cobros de Oficina
         await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();
+
+        await page.waitForTimeout(2000);
     });
 
     test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {

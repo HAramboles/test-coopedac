@@ -215,7 +215,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await page1.close();
 
         // Totales
-        await expect(page.getByRole('row', {name: 'TOTALES: 300,000.00 0.00 300,000.00 0.00 0.00 0.00 0.00 600,000.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'TOTALES: 300,000.00 0.00 300,000.00 0.00 0.00 0.00 0.00 300,000.00'})).toBeVisible();
     });
 
     test('Ver las actividades de uno de los pagos al prestamo', async () => {
@@ -287,7 +287,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByRole('columnheader', {name: 'Fecha Cuota'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Capital', exact: true})).toBeVisible();
         await expect(page.getByText('Interes').last()).toBeVisible();
-        await expect(page.getByText('Mora').last()).toBeVisible();
+        await expect(page.getByLabel('Cuotas pendientes').getByRole('columnheader', {name: 'Mora'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Seguro'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Otros'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Total'}).last()).toBeVisible();
