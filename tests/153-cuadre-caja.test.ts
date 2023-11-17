@@ -46,7 +46,7 @@ test.describe.serial('Pruebas con el Cuadre de Caja', async () => {
         // Recargar la pagina y debe quedarse en la pagina de Cuadre de Caja
         await page.reload();
 
-        await page.waitForTimeout(10000);
+        await page.waitForTimeout(7000);
 
         // Colocar el usuario del Oficial de Cuadre
         const inputUsuarioOficialCuadre = page.locator('#form_username');

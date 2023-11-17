@@ -427,6 +427,9 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             // Debe mostrarse un aviso indicando el tipo de garantia que se debe agregar a la solicitud
             await expect(page.getByText('Oferta require Garantía(s) Líquidas del siguiente tipo: AHORROS.')).toBeVisible();
 
+            // Debe mostrarse un mensaje de informacion
+            await expect(page.getByText('Si agrega más de una garantia tenga en cuanta que estas se despignoran en el mismo orden que son agregadas.')).toBeVisible();
+
             // Click al boton de agregar garantia
             await page.getByRole('button', {name: 'Agregar Garantia Liquida'}).click();
 

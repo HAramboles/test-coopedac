@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from "@playwright/test";
-import { ariaCerrar, formBuscar, dataCheck, formComentario } from "./utils/data/inputsButtons";
+import { ariaCerrar, formBuscar, dataCheck, formComentario, noData } from "./utils/data/inputsButtons";
 import { url_base, url_confirmar_cancelacion_cuentas } from './utils/dataPages/urls';
 import { diaActualFormato } from './utils/functions/fechas';
 import { browserConfig, contextConfig } from "./utils/data/testConfig";
@@ -65,7 +65,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         // Tipo de Captacion
         await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();
 
-        // Observaciones
+        // Comentario
         await expect(page.getByRole('cell', {name: 'TIENE MUCHAS CUENTAS, CERRAR LA DE ORDEN DE PAGO'})).toBeVisible();
     });
 
@@ -102,17 +102,36 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         // Click en Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
-        // // Debe abrirse una ventana con el reporte de la transferencia
-        // const page1 = await context.waitForEvent('page');
+        // Debe aparecer un mensaje modal de confirmacion
+        const modalConfirmacion = page.getByText('¿Está seguro que desea cancelar la cuenta?');
+        await expect(modalConfirmacion).toBeVisible();
 
-        // // Cerrar la nueva pestaña
-        // await page1.close();
+        // Click al boton de Aceptar del modal
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // Debe abrirse una ventana con el reporte de la transferencia
+        const page1 = await context.waitForEvent('page');
+
+        // Cerrar la nueva pestaña
+        await page1.close();
+
+        // Debe aparecer un mensaje modal de transferencia correcta
+        const modalTransferenciaCorrecta = page.locator('text=Transferencia realizada correctamente.');
+        await expect(modalTransferenciaCorrecta).toBeVisible();
+
+        // Click al boton de Aceptar del modal de transferencia correcta
+        await page.getByRole('button', {name: 'Aceptar'}).click();
 
         // Debe redirigirse a la Confirmacion de Cancelacion de Cuentas
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();
 
-        // La solicitud de cancelacion no debe mostrarse en la tabla de las solicitudes
-        await expect(page.getByText('OTRAS RAZONES')).not.toBeVisible();
+        // Buscar la cuenta cancelada
+        await page.locator(`${formBuscar}`).fill(`${cedula}`);
+        // Click en buscar
+        await page.locator('[data-icon="search"]').click();
+
+        // No deberia mostrar resultados
+        await expect(page.locator(`${noData}`)).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

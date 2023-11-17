@@ -494,6 +494,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // El modal de agregar Garantias debe cerrarse
         await expect(modalGarantia).not.toBeVisible();
 
+        // Debe mostrarse un mensaje de informacion acerca de la garantia liquida
+        await expect(page.getByText('Si agrega más de una garantia tenga en cuanta que estas se despignoran en el mismo orden que son agregadas.')).toBeVisible();
+
         // Click al boton de agregar garantia liquida
         await page.getByRole('button', {name: 'Agregar Garantia Liquida'}).click();
 
