@@ -51,13 +51,13 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             await botonGuardaryContinuar.click();
         };
 
-            // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
-            const CerrarPaginasReportes = async () => {
-                context.on('page', async (page) => {
-                    await page.waitForTimeout(1000);
-                    await page.close();
-                });
-            };
+        // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
+        const CerrarPaginasReportes = async () => {
+            context.on('page', async (page) => {
+                await page.waitForTimeout(1000);
+                await page.close();
+            });
+        };
 
         test('Ir a la opcion de Solicitud de Credito', async () => {
             // Negocios

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from "@playwright/test";
-import { ariaCerrar, formBuscar, dataCheck, formComentario, noData } from "./utils/data/inputsButtons";
+import { ariaCerrar, formBuscar, dataCheck, formComentario, noData, dataBuscar } from "./utils/data/inputsButtons";
 import { url_base, url_confirmar_cancelacion_cuentas } from './utils/dataPages/urls';
 import { diaActualFormato } from './utils/functions/fechas';
 import { browserConfig, contextConfig } from "./utils/data/testConfig";
@@ -60,7 +60,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
         // Click en buscar
-        await page.locator('[data-icon="search"]').click();
+        await page.locator(`${dataBuscar}`).click();
 
         // Tipo de Captacion
         await expect(page.getByRole('cell', {name: 'ORDEN DE PAGO', exact: true})).toBeVisible();

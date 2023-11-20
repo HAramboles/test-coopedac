@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formBuscar } from './utils/data/inputsButtons';
+import { dataBuscar, formBuscar } from './utils/data/inputsButtons';
 import { url_base, url_desembolso_lineas_credito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
@@ -57,7 +57,7 @@ test.describe.serial('Pruebas con el Desembolso de Lineas de Credito', () => {
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Click al boton de buscar
-        await page.locator('[data-icon="search"]').click();
+        await page.locator(`${dataBuscar}`).click();
 
         // Cliente
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();

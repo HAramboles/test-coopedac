@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { dataCheck, formBuscar, formComentario, noData, selectBuscar } from './utils/data/inputsButtons';
+import { dataBuscar, dataCheck, formBuscar, formComentario, noData, selectBuscar } from './utils/data/inputsButtons';
 import { url_base, url_confirmar_cancelacion_cuentas, url_solicitud_cancelacion_cuentas } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { diaActualFormato } from './utils/functions/fechas';
@@ -142,7 +142,7 @@ test.describe.serial('Pruebas con la Cancelacion de una Cuenta con balance cero'
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
         // Click en buscar
-        await page.locator('[data-icon="search"]').click();
+        await page.locator(`${dataBuscar}`).click();
 
         // Tipo de Captacion
         await expect(page.getByRole('cell', {name: 'AHORROS POR NOMINA', exact: true})).toBeVisible();

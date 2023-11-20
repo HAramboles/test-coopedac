@@ -1,7 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { selectBuscar, formComentario } from './utils/data/inputsButtons';
+import { selectBuscar, formComentario, formBuscar, dataBuscar } from './utils/data/inputsButtons';
 import { url_base, url_solicitud_cambio_categoria } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { diaActualFormato } from './utils/functions/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -63,7 +64,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
         // Elegir al socio
         await page.getByText(`${nombreEmpresa}`).click();
 
-        // La categoria actual debe ser Microempresarial
+        // La categoria actual debe ser socio ahorrante
         await expect(page.locator('#form_DESC_CATEGORIA')).toHaveValue('SOCIO AHORRANTE');
 
         // Via Cobro
@@ -94,6 +95,39 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
 
         // Debe salir un mensaje de confirmacion
         await expect(page.getByText('Categoria cta. socio almacenado exitosamente.')).toBeVisible();
+    });
+
+    test('Los datos de la solicitud deben estar en la tabla', async () => {
+        // Buscar al socio
+        await page.locator(`${formBuscar}`).fill(`${cedulaEmpresa}`);
+        
+        // Esperar a que se digite la cedula
+        await page.waitForTimeout(2000);
+
+        // Click al boton de buscar
+        await page.locator(`${dataBuscar}`).click();
+
+        // Esperar a que se carguen los datos de la solicitud buscada
+        await page.waitForTimeout(2000);
+
+        // Tabla de las solicitudes de cambio de categoria
+        await expect(page.getByRole('columnheader', {name: 'ID Socio'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Socio', exact: true})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'No. Cuenta'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Categoría anterior'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Categoría solicitada'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Estado de la solicitud'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Fecha de solicitud'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Comentario'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Acciones'})).toBeVisible();
+
+        // Datos de la solicitud de cambio de categoria
+        await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'SOCIO EMPRESARIAL'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'Pendiente'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${diaActualFormato}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'CAMBIO DE SOCIO AHORRANTE A SOCIO EMPRESARIAL'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

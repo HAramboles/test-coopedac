@@ -62,13 +62,13 @@ test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la P
         // Debe estar visible la tabla con las solicitudes
         await expect(page.getByRole('columnheader', {name: 'Id Socio'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Titular'})).toBeVisible();
-        // await expect(page.getByRole('columnheader', {name: ''})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Categoría anterior'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Categoría Solicitada'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Comentario'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Acciones'})).toBeVisible();
 
         // Deben mostrarse la categoria actual y la solicitada
-        // await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE'})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'SOCIO EMPRESARIAL', exact: true})).toBeVisible();
 
         // Click a confirmar cambio de categoria
