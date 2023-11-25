@@ -2,6 +2,7 @@ import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwrig
 import { formBuscar } from './utils/data/inputsButtons';
 import { url_base, url_cuentas_ahorros, url_cuentas_ahorros_infantiles } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { servicio_busqueda_personas_editar } from './utils/dataPages/servicios';
 
 // Variables globales
 let browser: Browser;
@@ -102,7 +103,7 @@ test.describe.serial('Pruebas en el modo solo lectura para ver una cuenta', asyn
         await expect(page).toHaveURL(/\/?step=1/);
 
         // Esperar a que el servicio de busqueda de personas cargue
-        await page.waitForResponse(/\/persona/);
+        await page.waitForResponse(`${servicio_busqueda_personas_editar}`);
 
         // El titulo de editar cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CUENTA DE AHORROS'})).toBeVisible();

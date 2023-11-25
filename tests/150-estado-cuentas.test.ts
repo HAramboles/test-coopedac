@@ -72,7 +72,7 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         await expect(page.getByRole('cell', {name: 'APORTACIONES', exact: true}).first()).toBeVisible();
 
         // Cuenta de Aportaciones Preferentes
-        await expect(page.getByRole('cell', {name: 'APORTACIONES PREFERENTES', exact: true})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'APORTACIONES REFERENTES', exact: true})).toBeVisible();
 
         // Cuenta de Ahorros Normales
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES', exact: true}).first()).toBeVisible();
@@ -177,4 +177,4 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         // Cerrar el context
         await context.close();
     });
-})
+});

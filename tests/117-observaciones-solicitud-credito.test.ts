@@ -426,7 +426,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await botonAceptarModal.click();
 
         // Debe agregarse la cuenta de la garantia liquida agregada
-        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
         // Debe mostrarse el monto de la garantia liquida en la tabla
         await expect(page.getByText('RD$$ 20,000.00')).toBeVisible();
@@ -592,7 +592,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Esperar que carguen los datos
         await page.waitForTimeout(5000);
-
+    
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '7 Desembolso'});
         await expect(seccionDesembolso).toBeVisible();

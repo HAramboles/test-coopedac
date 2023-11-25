@@ -68,7 +68,7 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
         await expect(page.locator('#form_DESC_CENTRO')).toHaveValue('OFICINA PRINCIPAL');
 
         // Balance
-        await expect(page.locator('#form_BALANCE')).toHaveValue('150,000.00');
+        await expect(page.locator('#form_BALANCE')).toHaveValue('200,000.00');
 
         // Pignorado
         await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('0.00');
@@ -77,7 +77,7 @@ test.describe.serial('Pruebas con el Credito a la Cuenta de Certificado - Financ
         await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('0.00');
 
         // Disponible
-        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('149,800.00');
+        await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('199,800.00');
     });
 
     test('Hacer el movimiento de la Nota de Credito', async () => {

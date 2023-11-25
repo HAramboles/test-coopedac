@@ -68,11 +68,11 @@ test.describe.serial('Pruebas con la Confirmacion de Cambio de Categoria de la P
         await expect(page.getByRole('columnheader', {name: 'Acciones'})).toBeVisible();
 
         // Deben mostrarse la categoria actual y la solicitada
-        await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE', exact: true})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'SOCIO EMPRESARIAL', exact: true})).toBeVisible();
 
         // Click a confirmar cambio de categoria
-        await page.getByRole('row', {name: `${nombreEmpresa} SOCIO EMPRESARIAL`}).locator(`${dataCheck}`).click();
+        await page.getByRole('row', {name: `${nombreEmpresa} SOCIO AHORRANTE SOCIO EMPRESARIAL CAMBIO DE SOCIO AHORRANTE A SOCIO EMPRESARIAL`}).locator(`${dataCheck}`).click();
 
         // Debe salir un modal
         await expect(page.locator('text=¿Seguro que desea aprobar el cambio de categoria?')).toBeVisible();

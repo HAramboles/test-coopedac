@@ -55,7 +55,8 @@ test.describe.serial('Pruebas con Activar Caja', async () => {
         await activarCaja.click();
 
         // Esperar que aparezca el modal
-        await expect(page.getByRole('dialog', {name: ' Activar Caja'})).toBeVisible();
+        const modalActivarCaja = page.getByRole('dialog', {name: ' Activar Caja'});
+        await expect(modalActivarCaja).toBeVisible();
 
         // Debe mostrarse el cajero
         await expect(page.getByTitle(`${nombreTestigoCajero}`)).toBeVisible();
@@ -98,11 +99,23 @@ test.describe.serial('Pruebas con Activar Caja', async () => {
         if (await alertaTurnoAperturado.isVisible()) {
             // Cerrar la alerta
             await page.locator(`${ariaCerrar}`).click();
-        } else if (await modalCajaAbierta.isVisible()) {
-            // Click al boton de Aceptar del modal
-            await page.getByRole('button', {name: 'check Aceptar'}).click();
             
             // El modal debe cerrarse
+            await expect(alertaTurnoAperturado).not.toBeVisible();
+        } else if (await modalCajaAbierta.isVisible()) {
+            // Click en Aceptar del modal de error
+            await page.locator('div').filter({ hasText: /^Aceptar$/ }).getByRole('button').click();
+
+            // Click en Cancelar del modal de activar caja
+            await page.getByRole('button', {name: 'stop Cancelar'}).click();
+
+            // Debe aparecer un mensaje modal de confirmacion
+            await expect(page.locator('text=¿Desea salir sin guardar los datos?')).toBeVisible();
+
+            // Click en Aceptar del modal de confirmacion
+            await page.getByRole('button', {name: 'check Aceptar'}).nth(1).click();
+
+            // El modal de activar caja debe cerrarse
             await expect(modalCajaAbierta).not.toBeVisible();
         }
     });

@@ -230,11 +230,14 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
                 
                 test('Colocar los datos de faltantes a la persona', async () => {
                     // Esperar que carguen los datos de la persona
-                    await page.waitForTimeout(3000);
+                    await page.waitForTimeout(4000);
 
                     // Lugar de nacimiento
                     const campoLugar = page.locator('#person_LUGAR_NAC');
                     await campoLugar?.fill('La Vega');
+
+                    // Esperar que se ingrese el lugar de nacimiento
+                    await page.waitForTimeout(2000);
 
                     // Nivel academico
                     const campoAcademico = page.locator('#person_ID_NIVEL_ACA');

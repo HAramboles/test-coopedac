@@ -106,7 +106,7 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         await expect(modalOperacionExitosa).toBeVisible();
 
         // Click al boton de Aceptar del mensaje modal
-        await page.getByRole('button', {name: 'Aceptar'}).click();
+        await page.locator('div').filter({hasText: /^Aceptar$/}).getByRole('button').click();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

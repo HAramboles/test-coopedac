@@ -99,9 +99,9 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
 
     test('Los datos de la solicitud deben estar en la tabla', async () => {
         // Buscar al socio
-        await page.locator(`${formBuscar}`).fill(`${cedulaEmpresa}`);
+        await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
         
-        // Esperar a que se digite la cedula
+        // Esperar a que se digite el nombre de la empresa
         await page.waitForTimeout(2000);
 
         // Click al boton de buscar
@@ -123,8 +123,8 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Categoria de la Pers
 
         // Datos de la solicitud de cambio de categoria
         await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
-        await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: 'SOCIO EMPRESARIAL'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE', exact: true})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'SOCIO EMPRESARIAL', exact: true})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'Pendiente'})).toBeVisible();
         await expect(page.getByRole('cell', {name: `${diaActualFormato}`})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'CAMBIO DE SOCIO AHORRANTE A SOCIO EMPRESARIAL'})).toBeVisible();

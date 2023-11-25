@@ -3,6 +3,7 @@ import { formBuscar } from './utils/data/inputsButtons';
 import { EscenariosPruebaEditarCuentas } from './utils/dataPages/interfaces';
 import { url_base, url_cuentas_aportaciones_preferentes } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { servicio_busqueda_personas_editar } from './utils/dataPages/servicios';
 
 // Variables globales
 let browser: Browser;
@@ -122,7 +123,7 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                     await expect(page).toHaveURL(/\/?step=1/);
 
                     // Esperar a que el servicio de busqueda de personas cargue
-                    await page.waitForResponse('**/persona/personas?page=1&size=15');
+                    await page.waitForResponse(`${servicio_busqueda_personas_editar}`);
                     await page.waitForTimeout(3000);
             
                     // El titulo de editar cuenta debe estar visible

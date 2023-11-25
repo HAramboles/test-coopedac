@@ -97,18 +97,18 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         // Seleccionar un tipo de cuenta a buscar
         await page.locator('#form').getByTitle('APORTACIONES').click();
         // Click a la opcion de cuenta de Aportaciones Preferentes
-        await page.getByRole('option', {name: 'APORTACIONES PREFERENTES'}).click();
+        await page.getByRole('option', {name: 'APORTACIONES REFERENTES'}).click();
 
         // Buscar una cuenta del mismo socio
         await buscadorPersona.fill(`${cedula}`);
         // Elegir la Cuenta de Aportaciones Preferentes del Socio
-        await page.getByRole('option', {name: '| APORTACIONES PREFERENTES |'}).click();
+        await page.getByRole('option', {name: '| APORTACIONES REFERENTES |'}).click();
 
         // La URL no debe cambiar
         await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
 
         // El tipo de captacion debe ser de Aportaciones Preferentes
-        await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('APORTACIONES PREFERENTES');
+        await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('APORTACIONES REFERENTES');
 
         // El estado debe estar en Activa
         await expect(page.getByText('ACTIVA')).toBeVisible();
@@ -128,15 +128,15 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
 
         // Movimientos de la cuenta
-        await expect(page.getByText('DEPOSITO INICIAL APERTURA CERTIFICADO APORTACIONES PREFERENTES')).toBeVisible();
+        await expect(page.getByText('DEPOSITO INICIAL APERTURA CERTIFICADO APORTACIONES REFERENTES')).toBeVisible();
 
         // Balance final
-        await expect(page.getByRole('row', {name: 'BALANCE FINAL: 100.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'BALANCE FINAL: 1,000.00'})).toBeVisible();
     });
 
     test('Cuenta de Ahorros Normales del Socio', async () => {
         // Seleccionar un tipo de cuenta a buscar
-        await page.locator('#form').getByTitle('APORTACIONES PREFERENTES').click();
+        await page.locator('#form').getByTitle('APORTACIONES REFERENTES').click();
         // Click a la opcion de cuenta de Ahorros Normales
         await page.getByRole('option', {name: 'AHORROS NORMALES'}).click();
 
@@ -176,7 +176,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await expect(page.getByText('TRANSFERENCIA BANCARIA')).toBeVisible();
 
         // Balance final
-        await expect(page.getByRole('row', {name: 'BALANCE FINAL: 2,133,550.00'})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'BALANCE FINAL: 2,263,818.19'})).toBeVisible();
 
         // Click al boton de pignoraciones
         const botonPignoraciones = page.getByRole('button', {name: 'Ver pignoraciones'});

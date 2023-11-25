@@ -16,6 +16,9 @@ let modalAnularDesembolso: Locator;
 let razonAnulacion: Locator;
 let botonAceptar: Locator;
 
+// Monto del deseembolso
+const cantMonto:string = '300,000';
+
 // Pruebas
 test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
     test.beforeAll(async () => { // Antes de todas las pruebas
@@ -39,6 +42,14 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         razonAnulacion = page.locator('#form_RAZON_ANULACION');
         botonAceptar = page.getByRole('button', {name: 'Aceptar'});
     });
+
+        // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
+        const CerrarPaginasReportes = async () => {
+            context.on('page', async (page) => {
+                await page.waitForTimeout(1000);
+                await page.close();
+            });
+        };
 
     test('Ir a la opcion de Anular Desembolso', async () => {
         // Negocios
@@ -155,16 +166,46 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
         await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
 
-        // Desembolsar la solicitud
-        const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
-        await expect(botonDesembolsar).toBeVisible();
-        await botonDesembolsar.click();
+        // Monto a desembolsar
+        const montoDesembolsar = page.getByText(`RD$ ${cantMonto}`).nth(1);
 
-        // Esperar que se abra una nueva pestaña con el reporte
-        const page1 = await context.waitForEvent('page');
-        
-        // Cerrar la pagina con el reporte 
-        await page1.close();
+        // El monto a desembolsar debe estar visible
+        if (await montoDesembolsar.isVisible()) {
+            // Desembolsar la solicitud
+            const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
+            await expect(botonDesembolsar).toBeVisible();
+            await botonDesembolsar.click();
+
+            // Cerrar las paginas que se abren con los diferentes reportes
+            CerrarPaginasReportes();
+
+        } else {
+            // Volver al paso anterior
+            await page.getByRole('button', {name: 'Anterior'}).click();
+
+            // La URL debe cambiar
+            await expect(page).toHaveURL(/\/?step=9/);
+
+            // Esperar que la pagina cargue
+            await page.waitForTimeout(3000);
+
+            // Volver al paso 10
+            await page.getByRole('button', {name: 'Siguiente'}).click();
+
+            // La URL debe cambiar
+            await expect(page).toHaveURL(/\/?step=10/);
+
+            // Esperar que la pagina cargue
+            await page.waitForTimeout(3000);
+
+            // Desembolsar la solicitud
+            const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
+            await expect(botonDesembolsar).toBeVisible();
+            await botonDesembolsar.click();
+
+            // Cerrar las paginas que se abren con los diferentes reportes
+            CerrarPaginasReportes();
+        };
 
         // Debe regresar a la pagina de las solicitudes en estado aprobado
         await expect(page).toHaveURL(`${url_solicitud_credito}?filter=aprobado`);
@@ -195,7 +236,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
 
         // Debe mostrarse la solicitud desembolsada de la empresa
-        const solicitudDesembolsadaEmpresa = page.getByRole('cell', {name: `${nombreEmpresa}`});
+        const solicitudDesembolsadaEmpresa = page.getByRole('row', {name: `${nombreEmpresa}`});
         await expect(solicitudDesembolsadaEmpresa).toBeVisible();
 
         // Click al boton de Anular Desembolso
@@ -205,7 +246,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         await expect(modalAnularDesembolso).toBeVisible();
 
         // No debe mostrarse el desembolso anulado anteriormente
-        await expect(page.getByRole('cell', {name: 'RD$ 300,000.00'})).toBeVisible();
+        await expect(page.getByLabel('Anular Desembolso').getByRole('cell', {name: 'RD$ 300,000.00'})).toBeVisible();
 
         // Seleccionar el desembolso del prestamo
         await page.getByRole('checkbox').last().click();

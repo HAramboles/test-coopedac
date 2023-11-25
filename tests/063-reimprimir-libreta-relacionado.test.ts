@@ -86,7 +86,10 @@ test.describe.serial('Pruebas con la Reimpresion en Libreta', () => {
         // Deben estar las tres transacciones realizadas a la cuenta de Ahorros Normales
         await expect(page.getByRole('cell', {name: '5,000.00'})).toBeVisible();
         await expect(page.getByRole('cell', {name: '3,500.00'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: '150,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '200,000.00'})).toBeVisible();
+
+        // Esperar dos segundos
+        await page.waitForTimeout(2000);
     });
 
     test.afterAll(async () => { // Despues de las pruebas

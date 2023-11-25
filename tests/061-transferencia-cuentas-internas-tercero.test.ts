@@ -87,7 +87,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await expect(page.locator('h1').filter({hasText: 'Detalle De La Transacción'})).toBeVisible();
 
         // Ingresar un monto
-        await page.locator('#form_MONTO').fill('150000');
+        await page.locator('#form_MONTO').fill('200000');
 
         // Agregar un comentario
         await page.locator('#form_DESCRIPCION').fill(`Transferencia a la cuenta de Ahorros Normales de ${nombreRelacionada} ${apellidoRelacionada}`);
@@ -107,7 +107,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await expect(page.getByText('Destino')).toBeVisible();
 
         // Monto
-        await expect(page.getByPlaceholder('MONTO')).toHaveValue('RD$ 150,000');
+        await expect(page.getByPlaceholder('MONTO')).toHaveValue('RD$ 200,000');
 
         // Comentario
         await expect(page.getByText(`Transferencia a la cuenta de Ahorros Normales de ${nombreRelacionada} ${apellidoRelacionada}`)).toBeVisible();

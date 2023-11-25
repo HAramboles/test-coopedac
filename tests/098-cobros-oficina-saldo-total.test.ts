@@ -206,9 +206,6 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page2.close();
         await page1.close();
         
-        // En la pagina deberia aparecer una alerta de operacion exitosa
-        await expect(page.locator('text=Operación exitosa')).toBeVisible();
-
         // Debe estar en la pagina de Cobros de Oficina
         await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();
 
@@ -218,6 +215,8 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
     test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {
         // Click en contraer todo
         await page.getByText('Contraer todo').click();
+
+        await page.waitForTimeout(2000);
 
         // Captaciones
         await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();

@@ -67,11 +67,11 @@ test.describe.serial('Pruebas con el Rechazo de Cambio de Categoria de la Person
         await expect(page.getByRole('columnheader', {name: 'Acciones'})).toBeVisible();
 
         // Deben mostrarse la categoria actual y la solicitada
-        await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'SOCIO AHORRANTE', exact: true})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'SOCIO MICROEMPRESARIAL', exact: true})).toBeVisible();
 
         // La solicitud del socio debe estar visible
-        const solicitudCreada = page.getByRole('row', {name: `${nombre} ${apellido} SOCIO MICROEMPRESARIAL`});
+        const solicitudCreada = page.getByRole('row', {name: `${nombre} ${apellido} SOCIO AHORRANTE SOCIO MICROEMPRESARIAL`});
         await expect(solicitudCreada).toBeVisible();
 
         // Click a confirmar cambio de categoria

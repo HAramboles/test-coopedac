@@ -182,10 +182,10 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
             
                     // Debe salir un mensaje de que la operacion salio correctamente
                     await expect(page.locator('text=Sesiones Movimientos almacenada exitosamente.')).toBeVisible();
-            
-                    // Cerrar el mensaje
-                    await page.locator(`${dataCerrar}`).click();
-            
+
+                    // Esperar cuatro segundos
+                    await page.waitForTimeout(4000);
+                        
                     // Aplicar el retiro
                     await page.locator('text=Aplicar').click();
                 });

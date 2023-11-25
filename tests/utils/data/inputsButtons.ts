@@ -27,6 +27,9 @@ export const selectBuscar:string = '#select-search';
 export const formComentario:string = '#form_COMENTARIO';   
 export const formComentarios:string = '#form_COMENTARIOS';
 
+// Selector del tipo de pignoracion
+export const tipoPignoracion:string = '#form_TIPO_PIGNORACION';
+
 // Diferentes id de los inputs de fecha
 export const fechaInicial:string = '#form_FECHA_INICIAL';
 export const fechaInicio:string = '#form_FECHA_INICIO';

@@ -37,6 +37,14 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         cedulaEmpresa = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridica'));
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
+
+    // Funcion para cerrar las paginas de reportes
+    const CerrarPaginasReportes = async () => {
+        context.on('page', async (page) => {
+            await page.waitForTimeout(1000);
+            await page.close();
+        });
+    };
     
     test('Ir a la opcion de Transferencias Cuentas Internas', async () => {
         // Captaciones
@@ -126,11 +134,8 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await expect(botonAceptar).toBeVisible();
         await botonAceptar.click();
 
-        // Esperar que se abra una nueva pestaña con el reporte
-        const page1 = await context.waitForEvent('page');
-        
-        // Cerrar la pagina con el reporte 
-        await page1.close();
+        // Debe abrirse una nueva ventana con el reporte de la transferencia
+        CerrarPaginasReportes();
 
         // Se debe regresar a la pagina
         await expect(page).toHaveURL(`${url_transferencia_cuentas}`);

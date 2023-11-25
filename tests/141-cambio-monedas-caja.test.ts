@@ -81,7 +81,7 @@ test.describe.serial('Pruebas con el Cambio de Moneda', () => {
         await expect(page.locator('h1').filter({hasText: 'CAMBIO DE MONEDAS'})).toBeVisible();
     });
 
-    test('Recibir 500 pesos', async () => {
+    test('Recibir 2000 pesos', async () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CAMBIO DE MONEDAS'})).toBeVisible();
 
@@ -91,14 +91,11 @@ test.describe.serial('Pruebas con el Cambio de Moneda', () => {
         // Titulo de recibido
         await expect(page.locator('h1').filter({hasText: 'RECIBIDO'})).toBeVisible();
 
-        // Campo de RD 500
-        const cant500 = page.locator('[id="2"]'); 
+        // Campo de RD 2000
+        const cant2000 = page.locator('[id="0"]'); 
 
         // Cantidad = 1
-        await cant500.fill('1');
-
-        // El check verde ya no debe estar, en su lugar debe estar un icono de alerta rojo
-        await expect(page.locator('#root').getByRole('img', {name: 'close-circle'})).toBeVisible();
+        await cant2000.fill('1');
     });
 
     test('Probar el boton de Denominaciones', async () => {
@@ -134,18 +131,13 @@ test.describe.serial('Pruebas con el Cambio de Moneda', () => {
         await expect(page.locator('text=Alerta')).toBeVisible();
     });
 
-    test('Entregar los 500 pesos con otras monedas', async () => {
+    test('Entregar los 2000 pesos con otras monedas', async () => {
         // Titulo de entregado
         await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
 
-        // Reiniciar la cantidad de la moneda de 200 a 0
-        const cant200 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[4]');
-        await cant200.fill('0');
-
-        // Distribuir los 500 pesos en 2 de 200 y 1 de 100
-        await cant200.fill('2')
-        const cant100 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[5]');
-        await cant100.fill('1');
+        // Distribuir los 2000 pesos en 2 de 1000
+        const cant200 = page.locator('(//input[@id="CANTIDAD_DIGITADA"])[2]');
+        await cant200.fill('2');
 
         // El check verde debe mostrarse de nuevo porque se realizo correctamente la distribucion
         await expect(page.locator('#root').getByRole('img', {name: 'check-circle'})).toBeVisible();

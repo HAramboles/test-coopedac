@@ -1,8 +1,7 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { selectBuscar, ariaCerrar, formBuscar, noData } from './utils/data/inputsButtons';
-import { url_base, url_sesiones_transito, url_transacciones_caja } from './utils/dataPages/urls';
+import { selectBuscar, ariaCerrar, formBuscar } from './utils/data/inputsButtons';
+import { url_base, url_transacciones_caja } from './utils/dataPages/urls';
 import { EscenariosPruebasCajaBoveda } from './utils/dataPages/interfaces';
-import { servicio_check_session } from './utils/dataPages/servicios';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales
@@ -318,10 +317,13 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
 
                     // Colocar un monto en Abono a Capital
                     const inputAbonoCapital = page.locator('#form_MONTO_ABONO_CAPITAL');
-                    await inputAbonoCapital.fill('4000');
+                    await inputAbonoCapital.fill('3000');
 
                     // Debe colocarse el monto en el campo de Abono a Capital
-                    await expect(inputAbonoCapital).toHaveValue('RD$ 4,000');
+                    await expect(inputAbonoCapital).toHaveValue('RD$ 3,000');
+
+                    // Esperar que se agregue el monto digitado
+                    await page.waitForTimeout(2000);
 
                     // Click al boton de Aplicar
                     const botonAplicar = page.locator('button').filter({hasText: 'Aplicar'});
@@ -344,12 +346,12 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     const iconoAlerta = page.getByRole('img', {name: 'close-circle'});
                     await expect(iconoAlerta).toBeVisible();
 
-                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 4000
+                    // Hacer la distribucion del dinero para el pago, en el caso de la prueba RD 3000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
 
-                    // Cantidad = 4 de 1000
+                    // Cantidad = 3 de 1000
                     await cant1000.click();
-                    await cant1000.fill('4');
+                    await cant1000.fill('3');
 
                     // El icono de la alerta roja ya no debe estar visible al distribuirse correctamente lo recibido
                     await expect(iconoAlerta).not.toBeVisible();

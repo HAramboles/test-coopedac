@@ -331,7 +331,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await expect(page.getByRole('heading', {name: 'Firmas Autorizadas'})).toBeVisible();
 
                     // Numero de orden
-                    await page.locator('#form_NUM_ORDEN').fill('69');
+                    await page.locator('#form_NUM_ORDEN').fill('89');
             
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');

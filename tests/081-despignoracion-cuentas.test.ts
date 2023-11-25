@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { dataCheck, selectBuscar, } from './utils/data/inputsButtons';
+import { selectBuscar, tipoPignoracion, } from './utils/data/inputsButtons';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/dataPages/interfaces';
 import { url_base, url_pignoracion_cuentas } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -8,9 +8,6 @@ import { browserConfig, contextConfig } from './utils/data/testConfig';
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
-
-// Boton Liberar monto
-let botonDespignorar: Locator;
 
 // Cedula de la persona
 let cedula: string | null;
@@ -54,9 +51,6 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
         
                 // Cedula de la persona almacenados en el state
                 cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
-
-                // Boton para liberar un monto
-                botonDespignorar = page.getByRole('row', {name: 'CONGELADO RD$ 150.00'}).locator(`${dataCheck}`);
             });
         
             test('Ir a la opcion de Pignoracion de Cuentas', async () => {
@@ -88,7 +82,7 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                 await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('AHORROS NORMALES');
         
                 // Balance
-                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 1,951,200');
+                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 1,901,200');
         
                 // Transito
                 await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('RD$ 0');
@@ -97,7 +91,7 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
                 await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 250');
         
                 // Disponible
-                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 1,950,750');
+                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 1,900,750');
         
                 // Estado de Cuenta
                 await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');
@@ -105,37 +99,43 @@ test.describe.serial('Despignoracion de Cuentas - Pruebas con los diferentes par
 
             if (escenario.ID_OPERACION !== 29) {
                 test('No debe permitir Despignorar un Monto', async () => {
-                    // El boton de Liberar debe estar deshabilitado
-                    await expect(botonDespignorar).toBeDisabled();
+                    // El selector de tipo no debe mostarse
+                    await expect(page.locator(`${tipoPignoracion}`)).not.toBeVisible();
                 });
             } else if (escenario.ID_OPERACION === 29) {
                 test('Despignorar un monto', async () => {
-                    // Liberar la pignoracion de 150 pesos
-                    await expect(botonDespignorar).toBeEnabled();
-                    await botonDespignorar.click();
+                    // Elegir el tipo de pignoracion a realizar
+                    await page.locator(`${tipoPignoracion}`).click();
+                    // Elegir despignoracion
+                    await page.getByRole('option', {name: 'Despignorar (-)'}).click();
             
-                    // Debe salir un modal
-                    await expect(page.locator('h1').filter({hasText: 'RAZÓN DE LIBERACIÓN'})).toBeVisible();
+                    // Monto
+                    const montoPignoracion = page.locator('#form_MONTO');
+                    await montoPignoracion.fill('150');
             
-                    // Razon
-                    await expect(page.getByText('RAZON DE DESPIGNORACION')).toBeVisible();
+                    // Descripcion Pignoracion
+                    const descripcionPignoracion = page.locator('#form_DESC_PIGNORACION');
+                    await descripcionPignoracion.fill('Despignorar 150 pesos');
             
-                    // Comentario
-                    await page.locator('#form_DESC_RAZON_DESPIGNORACION').fill('Despignorar los 150 pesos pignorados anteriormente');
+                    // Click en Guardar
+                    const botonGuardar = page.getByRole('button', {name: 'Guardar'});
+                    await expect(botonGuardar).toBeVisible();
+                    await botonGuardar.click();
 
-                    // Click al boton de Aceptar del modal
-                    const botonAceptar = page.getByRole('button', {name: 'Aceptar'});
-                    await expect(botonAceptar).toBeEnabled();
-                    await botonAceptar.click();
+                    // Debe aparecer un menaje modal de confirmacion
+                    await expect(page.locator('text=¿Seguro que desea realizar la acción?')).toBeVisible();
+
+                    // Click al boton de Aceptar del mensaje modal
+                    await page.getByRole('button', {name: 'check Aceptar'}).click();
             
-                    // Debe salir otro modal de confirmacion
-                    await expect(page.getByText('¿Está seguro de liberar el registro?')).toBeVisible();
+                    // Debe salir un mensaje modal de operacion exitosa
+                    await expect(page.locator('text=Se ha creado el registro.')).toBeVisible();
             
-                    // Click en Aceptar
-                    await page.getByRole('dialog').filter({hasText: 'Confirmar¿Está seguro de liberar el registro?CancelarAceptar'}).getByRole('button', {name: 'check Aceptar'}).click();
+                    // Click al boton de Aceptar del mensaje modal
+                    await page.getByRole('button', {name: 'check Aceptar'}).first().click();
             
-                    // Los 150 pesos ya no deben mostrarse en la tabla despues de despignorarlos
-                    await expect(page.getByRole('row', {name: 'CONGELADO RD$ 150.00'})).not.toBeVisible();
+                    // Los 150 pesos deben estar en la tabla de las pignoraciones y despignoraciones
+                    await expect(page.getByRole('row', {name: 'Despignorar 150 pesos Activo RD$ 150.00'})).toBeVisible();
                 });
             };
         

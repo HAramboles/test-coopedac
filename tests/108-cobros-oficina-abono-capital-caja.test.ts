@@ -79,7 +79,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await expect(page.getByText('CRÉDIAUTOS')).toBeVisible();
 
         // Hacer un pago al credito
-        await page.getByLabel('Expand row').click();
+        await page.getByRole('row', {name: 'Expand row CRÉDIAUTOS'}).getByLabel('Expand row').click();
 
         // Click al boton de Pagos
         const botonPagos = page.getByText('PAGOS');

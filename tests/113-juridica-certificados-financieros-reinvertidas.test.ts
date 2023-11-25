@@ -1,9 +1,10 @@
 import { APIResponse, Browser, BrowserContext, chromium, Page, expect, Locator, test } from '@playwright/test';
-import { selectBuscar } from './utils/data/inputsButtons';
+import { ariaCerrar, selectBuscar } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearCuentas } from './utils/dataPages/interfaces';
 import { url_base, url_cuentas_certificados, url_cuentas_certificados_financieros_reinvertidas } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { nombreTestigoCajero } from './utils/data/usuarios';
+import { servicio_busqueda_personas_crear } from './utils/dataPages/servicios';
 
 // Variables globales
 let browser: Browser;
@@ -156,7 +157,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                     await campoTitular?.fill(`${cedulaEmpresa}`);
 
                     // Esperar a que el servicio de busqueda de personas cargue
-                    await page.waitForResponse('**/persona/personas?page=1&size=10');
+                    await page.waitForResponse(`${servicio_busqueda_personas_crear}`);
                     await page.waitForTimeout(3000);
 
                     // Seleccionar la opcion que aparece
@@ -180,6 +181,9 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
 
                     // Debe aparecer una alerta de error
                     await expect(page.getByText('No se pudo agregar la cuenta. Completar los campos requeridos.').first()).toBeVisible();
+
+                    // Cerrar la alerta de error
+                    await page.locator(`${ariaCerrar}`).first().click();
             
                     // Boton Agregar la cuenta
                     const botonAgregar = page.getByRole('button', {name: 'plus Agregar'});
@@ -189,6 +193,9 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                     
                     // Debe aparecer una alerta de error
                     await expect(page.getByText('No se pudo agregar la cuenta. Completar los campos requeridos.').last()).toBeVisible();
+
+                    // Cerrar la alerta de error
+                    await page.locator(`${ariaCerrar}`).first().click();
                 });
 
                 test('Crear una Nueva Cuenta de Certificado - Paso 1 - Datos Generales', async () => {

@@ -88,7 +88,7 @@ test.describe.serial('Pruebas con el Historico del Reporte de UAF', async () => 
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`}).first()).toBeVisible();
 
         // Imprimir el reporte RTE
-        await page.getByRole('row', {name: 'RD$ 2,000,000.00'}).locator(`${dataPrinter}`).click();
+        await page.getByRole('row', {name: 'RD$ 2,000,000.00'}).locator(`${dataPrinter}`).first().click();
 
         // Esperar a que se abra una nueva pestaña con el reporte RTE
         const page1 = await context.waitForEvent('page');

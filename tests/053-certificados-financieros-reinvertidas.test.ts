@@ -4,6 +4,7 @@ import { EscenariosPruebaCrearCuentas } from './utils/dataPages/interfaces';
 import { url_base, url_cuentas_certificados, url_cuentas_certificados_financieros_reinvertidas } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { nombreTestigoCajero } from './utils/data/usuarios';
+import { servicio_busqueda_personas_crear } from './utils/dataPages/servicios';
 
 // Variables globales
 let browser: Browser;
@@ -158,7 +159,7 @@ test.describe.serial('Certificados - Financieros Reinvertidas - Pruebas con los 
                     await campoTitular?.fill(`${cedula}`);
 
                     // Esperar a que el servicio de busqueda de personas cargue
-                    await page.waitForResponse('**/persona/personas?page=1&size=10');
+                    await page.waitForResponse(`${servicio_busqueda_personas_crear}`);
                     await page.waitForTimeout(3000);
 
                     // Seleccionar la opcion que aparece

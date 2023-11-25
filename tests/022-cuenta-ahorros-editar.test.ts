@@ -4,6 +4,7 @@ import { EscenariosPruebaEditarCuentas } from './utils/dataPages/interfaces';
 import { url_base, url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { nombreTestigoCajero } from './utils/data/usuarios';
+import { servicio_busqueda_personas_editar } from './utils/dataPages/servicios';
 
 // Variables Globales
 let browser: Browser;
@@ -153,7 +154,7 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await expect(page).toHaveURL(/\/?step=1/);
 
                     // Esperar a que el servicio de busqueda de personas cargue
-                    await page.waitForResponse('**/persona/personas?page=1&size=15');
+                    await page.waitForResponse(`${servicio_busqueda_personas_editar}`);
                     await page.waitForTimeout(3000);
             
                     // El titulo de editar cuenta debe estar visible

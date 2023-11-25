@@ -189,8 +189,6 @@ test.describe.serial('Pruebas con la Cancelacion de una Cuenta con balance cero'
         const modalConfirmacion = page.getByText('¿Está seguro que desea cancelar la cuenta?');
         await expect(modalConfirmacion).toBeVisible();
 
-        await page.pause();
-
         // Click al boton de Aceptar del modal
         await page.getByRole('dialog').getByRole('button', {name: 'check Aceptar'}).click();
 
@@ -213,7 +211,7 @@ test.describe.serial('Pruebas con la Cancelacion de una Cuenta con balance cero'
         await page.locator('[data-icon="search"]').click();
 
         // No deberia mostrar resultados
-        await expect(page.locator(`${noData}`)).toBeVisible();
+        await expect(page.locator(`text=${noData}`)).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

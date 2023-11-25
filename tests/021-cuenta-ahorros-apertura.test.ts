@@ -4,6 +4,7 @@ import { EscenariosPruebaCrearCuentas } from './utils/dataPages/interfaces';
 import { diaActualFormato } from './utils/functions/fechas';
 import { url_base, url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { servicio_busqueda_personas_crear } from './utils/dataPages/servicios';
 
 // Variables globales
 let browser: Browser;
@@ -156,7 +157,7 @@ test.describe.serial('Crear Cuenta de Ahorros - Ahorros Normales - Pruebas con l
                     await campoTitular?.fill(`${cedula}`);
 
                     // Esperar a que el servicio de busqueda de personas cargue
-                    await page.waitForResponse('**/persona/personas?page=1&size=10');
+                    await page.waitForResponse(`${servicio_busqueda_personas_crear}`);
                     await page.waitForTimeout(3000);
 
                     // Seleccionar la opcion que aparece

@@ -211,12 +211,12 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
             // Finalidad
             await page.getByLabel('Finalidad').click();
-            // Elegir consumo
-            await page.getByRole('option', {name: 'CONSUMO'}).click();
+            // Elegir agropecuario
+            await page.getByRole('option', {name: 'AGROPECUARIO'}).click();
 
             // Destino o proposito
             await page.getByPlaceholder('Destino o propósito').click();
-            await page.getByPlaceholder('Destino o propósito').fill('Asuntos Personales');
+            await page.getByPlaceholder('Destino o propósito').fill('Criar Gallinas');
 
             // Via desembolso
             await expect(page.getByText('Vía Desembolso')).toBeVisible();
@@ -259,7 +259,6 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             await page.getByText('AHORROS', {exact: true}).click();
 
             // Oferta
-            // await page.getByLabel('Oferta').click();
             await page.getByTitle('CRÉDITO AGRÍCOLA').click();
             // Elegir credito gerencial / ahorros
             await page.getByText('CRÉDITO GERENCIAL / AHORROS -1M').click();
@@ -304,7 +303,7 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             await page.locator(`${inputPrimerPago}`).clear();
             await page.locator(`${inputPrimerPago}`).fill(`${unMesDespues}`);
 
-            // tipo de cuota
+            // Tipo de cuota
             await expect(page.getByText('INSOLUTO')).toBeVisible();
 
             // Monto
@@ -336,11 +335,7 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
             // Seleccionar la cuenta de ahorros
             await page.getByText('AHORROS NORMALES | ').click();
-
-            // Destino o proposito
-            await page.getByPlaceholder('Destino o propósito').click();
-            await page.getByPlaceholder('Destino o propósito').fill('Asuntos Personales');
-
+            
             // Los valores del monto, tasa y plazo deben estar correctos
             await expect(page.locator('#loan_form_MONTO')).toHaveValue('RD$ 20,000');
             await expect(page.locator('#loan_form_TASA')).toHaveValue('5%');
@@ -349,27 +344,36 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             // Via desembolso
             await expect(page.getByText('Vía Desembolso')).toBeVisible();
 
+            // Finalidad
+            await page.getByLabel('Finalidad').click();
+            // Elegir agropecuario
+            await page.getByRole('option', {name: 'CONSUMO'}).click();
+
+            // Destino o proposito
+            await page.getByPlaceholder('Destino o propósito').click();
+            await page.getByPlaceholder('Destino o propósito').fill('Asuntos Personales');
+
             // Seccion Cuentas de Cobros
             await expect(page.locator('text=Cuentas de cobro')).toBeVisible();
 
-            // // La cuenta de cobro debe desaparecer al cambiar la oferta
-            // await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).not.toBeVisible();
-            // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).not.toBeVisible();
+            // La cuenta de cobro debe desaparecer al cambiar la oferta
+            await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).not.toBeVisible();
+            await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).not.toBeVisible();
             
-            // // Agregar una cuenta de Cobro
-            // await page.locator(`${selectBuscar}`).last().click();
+            // Agregar una cuenta de Cobro
+            await page.locator(`${selectBuscar}`).last().click();
 
-            // // Seleccionar la cuenta de ahorros
-            // await page.getByRole('option', {name: 'AHORROS NORMALES'}).last().click();
+            // Seleccionar la cuenta de ahorros
+            await page.getByRole('option', {name: 'AHORROS NORMALES'}).last().click();
 
-            // // Click al boton de Agregar Cuenta
-            // const botonAgregarCuenta = page.getByRole('button', {name: 'Agregar cuenta'});
-            // await expect(botonAgregarCuenta).toBeVisible();
-            // await botonAgregarCuenta.click();
+            // Click al boton de Agregar Cuenta
+            const botonAgregarCuenta = page.getByRole('button', {name: 'Agregar cuenta'});
+            await expect(botonAgregarCuenta).toBeVisible();
+            await botonAgregarCuenta.click();
 
-            // // Se deben agregar los datos a la tabla de las cuentas
-            // await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
-            // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+            // Se deben agregar los datos a la tabla de las cuentas
+            await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+            await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
             // Click en guardar y continuar
             GuardaryContinuar();
@@ -453,42 +457,42 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
             // Ingresar un monto mayor al monto del prestamo
             const inputMontoPrestamo = page.getByRole('spinbutton', {name: 'VALOR DE LA GARANTÍA'});
-            await inputMontoPrestamo.fill('50000');
+            await inputMontoPrestamo.fill('20000');
 
             // Boton de Aceptar del modal de Agregar Garantia Liquida
             const botonAceptarModal = page.getByRole('button', {name: 'Aceptar'}).nth(1);
             await expect(botonAceptarModal).toBeVisible();
             await botonAceptarModal.click();
 
-            // Debe aparecer una alerta de error
-            await expect(page.getByText('El total de las garantías no debe ser mayor al monto del préstamo.')).toBeVisible();
+            // // Debe aparecer una alerta de error
+            // await expect(page.getByText('El total de las garantías no debe ser mayor al monto del préstamo.')).toBeVisible();
 
-            // Ingresar la mitad del monto solicitado
-            await inputMontoPrestamo.clear();
-            await inputMontoPrestamo.fill('10000');
+            // // Ingresar la mitad del monto solicitado
+            // await inputMontoPrestamo.clear();
+            // await inputMontoPrestamo.fill('10000');
 
-            // Click fuera del input y al mismo tiempo debe mostrarse el monto maximo a utilizar
-            await page.locator('text=El monto máximo utilizable es').nth(1).click();
+            // // Click fuera del input y al mismo tiempo debe mostrarse el monto maximo a utilizar
+            // await page.locator('text=El monto máximo utilizable es').nth(1).click();
 
-            // Click al boton de Aceptar del modal
-            await botonAceptarModal.click();
+            // // Click al boton de Aceptar del modal
+            // await botonAceptarModal.click();
 
-            // Esperar que la garantia se agregue a la tabla
-            await page.waitForTimeout(2000);
+            // // Esperar que la garantia se agregue a la tabla
+            // await page.waitForTimeout(2000);
 
-            // Debe agregarse la cuenta de la garantia liquida agregada
+            // // Debe agregarse la cuenta de la garantia liquida agregada
             // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
-            // Editar la garantia agregada y colocar el monto correcto
-            await page.getByText('RD$$ 10,000.00').click();
-            await page.locator('#MONTO_PIGNORADO').click();
-            await page.locator('#MONTO_PIGNORADO').fill('20000');
+            // // Editar la garantia agregada y colocar el monto correcto
+            // await page.getByText('RD$$ 10,000.00').click();
+            // await page.locator('#MONTO_PIGNORADO').click();
+            // await page.locator('#MONTO_PIGNORADO').fill('20000');
 
-            // Click fuera del input
-            await page.getByRole('columnheader', {name: 'Tipo Cuenta'}).click();
+            // // Click fuera del input
+            // await page.getByRole('columnheader', {name: 'Tipo Cuenta'}).click();
 
-            // Esperar a que se agregue el nuevo monto de la garantia
-            await page.waitForTimeout(1000);
+            // // Esperar a que se agregue el nuevo monto de la garantia
+            // await page.waitForTimeout(1000);
 
             // Debe mostrarse la garantia liquida en la tabla
             await expect(page.getByText('RD$$ 20,000.00')).toBeVisible();

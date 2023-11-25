@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { diaActualFormato } from './utils/functions/fechas';
-import { ariaCerrar, selectBuscar, } from './utils/data/inputsButtons';
+import { ariaCerrar, selectBuscar, tipoPignoracion, } from './utils/data/inputsButtons';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/dataPages/interfaces';
 import { url_base, url_pignoracion_cuentas } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -90,12 +90,12 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                 await page.locator('text=AHORROS NORMALES').click();
             });
             
-            test.skip('Datos de la cuenta', async () => {
+            test('Datos de la cuenta', async () => {
                 // Tipo de cuenta
                 await expect(page.locator('#form_DESC_TIPO_CTA')).toHaveValue('AHORROS NORMALES');
         
                 // Balance
-                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 24,100');
+                await expect(page.locator('#form_BALANCE')).toHaveValue('RD$ 1,901,200');
         
                 // Transito
                 await expect(page.locator('#form_MONTO_TRANSITO')).toHaveValue('RD$ 0');
@@ -104,7 +104,7 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                 await expect(page.locator('#form_BALANCE_PIGNORADO')).toHaveValue('RD$ 0');
         
                 // Disponible
-                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 23,900');
+                await expect(page.locator('#form_BALANCE_DISPONIBLE')).toHaveValue('RD$ 1,901,000');
         
                 // Estado de Cuenta
                 await expect(page.locator('#form_ESTADO_CUENTA')).toHaveValue('ACTIVA');
@@ -131,8 +131,10 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                     // Fecha de pignoracion
                     await expect(fechaPignoracion).toHaveValue(`${diaActualFormato}`);
             
-                    // Por defecto el motivo de pignoracion debe ser Pignoracion Manual
-                    await page.getByTitle('PIGNORACION MANUAL').click();
+                    // Elegir el tipo de pignoracion a realizar
+                    await page.locator(`${tipoPignoracion}`).click();
+                    // Elegir pignoracion
+                    await page.getByRole('option', {name: 'Pignorar (+)'}).click();
             
                     // Monto
                     await montoPignoracion.fill('100');
@@ -144,18 +146,29 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                     const botonGuardar = page.getByRole('button', {name: 'Guardar'});
                     await expect(botonGuardar).toBeVisible();
                     await botonGuardar.click();
+
+                    // Debe aparecer un menaje modal de confirmacion
+                    await expect(page.locator('text=¿Seguro que desea realizar la acción?')).toBeVisible();
+
+                    // Click al boton de Aceptar del mensaje modal
+                    await page.getByRole('button', {name: 'check Aceptar'}).click();
             
-                    // Debe salir un mensaje de que se realizo correctamente la operacion
-                    await expect(page.locator('text=Captaciones congeladas almacenada exitosamente.')).toBeVisible();
+                    // Debe salir un mensaje modal de operacion exitosa
+                    await expect(page.locator('text=Se ha creado el registro.')).toBeVisible();
             
-                    // Cerrar el mensaje
-                    await page.locator(`${ariaCerrar}`).click();
+                    // Click al boton de Aceptar del mensaje modal
+                    await page.getByRole('button', {name: 'check Aceptar'}).first().click();
             
-                    // Los 100 pesos deben estar en estado congelado
-                    await expect(page.getByRole('row', {name: 'CONGELADO RD$ 100.00'})).toBeVisible();
+                    // Los 100 pesos deben estar en la tabla de las pignoraciones y despignoraciones
+                    await expect(page.getByRole('row', {name: 'Pignorar 100 pesos Activo RD$ 100.00'})).toBeVisible();
                 });
             
                 test('Pignorar otro Monto', async () => {
+                    // Elegir el tipo de pignoracion a realizar
+                    await page.locator(`${tipoPignoracion}`).click();
+                    // Elegir pignoracion
+                    await page.getByRole('option', {name: 'Pignorar (+)'}).click();
+            
                     // Monto
                     await montoPignoracion.fill('150');
             
@@ -166,15 +179,21 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                     const botonGuardar = page.getByRole('button', {name: 'Guardar'});
                     await expect(botonGuardar).toBeVisible();
                     await botonGuardar.click();
+
+                    // Debe aparecer un menaje modal de confirmacion
+                    await expect(page.locator('text=¿Seguro que desea realizar la acción?')).toBeVisible();
+
+                    // Click al boton de Aceptar del mensaje modal
+                    await page.getByRole('button', {name: 'check Aceptar'}).click();
             
-                    // Debe salir un mensaje de que se realizo correctamente la operacion
-                    await expect(page.locator('text=Captaciones congeladas almacenada exitosamente.')).toBeVisible();
+                    // Debe salir un mensaje modal de operacion exitosa
+                    await expect(page.locator('text=Se ha creado el registro.')).toBeVisible();
             
-                    // Cerrar el mensaje
-                    await page.locator(`${ariaCerrar}`).click();
+                    // Click al boton de Aceptar del mensaje modal
+                    await page.getByRole('button', {name: 'check Aceptar'}).first().click();
             
-                    // Los 150 pesos deben estar en estado congelado
-                    await expect(page.getByRole('row', {name: 'CONGELADO RD$ 150.00'})).toBeVisible();
+                    // Los 150 pesos deben estar en la tabla de las pignoraciones y despignoraciones
+                    await expect(page.getByRole('row', {name: 'Pignorar 150 pesos Activo RD$ 150.00'})).toBeVisible();
                 });
             };
         

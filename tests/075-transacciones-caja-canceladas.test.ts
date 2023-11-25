@@ -118,8 +118,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     await expect(buscarSocio).toBeVisible();
             
                     // Ingresar la cedula del socio
-                    // await buscarSocio.fill(`${cedula}`);
-                    await buscarSocio.fill('RUBY CORONADO');
+                    await buscarSocio.fill(`${cedula}`);
                     // Seleccionar la cuenta de ahorros normales del socio
                     await page.locator('text=ORDEN DE PAGO').click();
                 });
@@ -129,13 +128,17 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     await page.waitForTimeout(3000);
                     
                     // Titulo del modal
-                    await expect(page.getByText('Cuenta Cancelada')).toBeVisible();
+                    const modalAviso = page.getByText('Cuenta Cancelada');
+                    await expect(modalAviso).toBeVisible();
             
-                    // Mensajde del modal de aviso
+                    // Mensaje del modal de aviso
                     await expect(page.getByText('La cuenta seleccionada está CANCELADA, no se pueden realizar transacciones.')).toBeVisible();
             
                     // Cerrar el modal de aviso
                     await page.getByRole('button', {name: 'Aceptar'}).click();  
+
+                    // El modal de aviso debe desaparecer
+                    await expect(modalAviso).not.toBeVisible();
                 });
             };
 

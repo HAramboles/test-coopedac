@@ -4,7 +4,6 @@ import { url_base, url_transacciones_caja, url_registro_tasa } from './utils/dat
 import { diaActualFormato } from './utils/functions/fechas';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
-
 // Variables globales
 let browser: Browser;
 let context: BrowserContext;

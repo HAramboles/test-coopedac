@@ -202,8 +202,8 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
                     await expect(page.getByRole('cell', {name: 'BURO DE CREDITO (DATACREDITO)'})).toBeVisible();
                     await expect(page.getByRole('cell', {name: 'SEGURO DE INCENDIO'})).toBeVisible();
                 
-                    // Click en Siguiente
-                    await page.getByRole('button', {name: 'Siguiente'}).click();
+                    // Click en Actualizar y Continuar
+                    await page.getByRole('button', {name: 'Actualizar y Continuar'}).click();
                 
                     // Debe mostrarse el titulo de la siguiente seccion
                     await expect(page.locator('h1').filter({hasText: 'DEUDAS PENDIENTES'})).toBeVisible();

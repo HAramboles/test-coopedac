@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from "@playwright/test";
-import { ariaCerrar, formBuscar, dataCheck, formComentario, noData, dataBuscar } from "./utils/data/inputsButtons";
+import { formBuscar, dataCheck, formComentario, noData, dataBuscar } from "./utils/data/inputsButtons";
 import { url_base, url_confirmar_cancelacion_cuentas } from './utils/dataPages/urls';
 import { diaActualFormato } from './utils/functions/fechas';
 import { browserConfig, contextConfig } from "./utils/data/testConfig";
@@ -82,8 +82,9 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         // Nombre del socio
         await expect(page.getByText(`| ${nombre} ${apellido} |`)).toBeVisible();
         
-        // La opcion Transferencia a Cuenta debe estar seleccionada
-        await expect(page.getByText('TRANSFERENCIA A CUENTA')).toBeVisible();
+        // Elegir la opcion Transferencia a cuenta
+        await page.locator('#form_FORMA_PAGO').click();
+        await page.getByText('TRANSFERENCIA A CUENTA').click();
 
         // Cuenta Destino
         await page.locator('#form_CUENTA').click();
@@ -107,7 +108,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         await expect(modalConfirmacion).toBeVisible();
 
         // Click al boton de Aceptar del modal
-        await page.getByRole('button', {name: 'Aceptar'}).click();
+        await page.getByRole('dialog').getByRole('button', {name: 'check Aceptar'}).click();
 
         // Debe abrirse una ventana con el reporte de la transferencia
         const page1 = await context.waitForEvent('page');
@@ -120,7 +121,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         await expect(modalTransferenciaCorrecta).toBeVisible();
 
         // Click al boton de Aceptar del modal de transferencia correcta
-        await page.getByRole('button', {name: 'Aceptar'}).click();
+        await page.getByRole('dialog').getByRole('button', {name: 'check Aceptar'}).click();
 
         // Debe redirigirse a la Confirmacion de Cancelacion de Cuentas
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES PENDIENTES CIERRE DE CUENTAS'})).toBeVisible();
@@ -131,7 +132,7 @@ test.describe.serial('Pruebas con la Confirmacion de Cancelacion de Cuentas', ()
         await page.locator('[data-icon="search"]').click();
 
         // No deberia mostrar resultados
-        await expect(page.locator(`${noData}`)).toBeVisible();
+        await expect(page.locator(`text=${noData}`)).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

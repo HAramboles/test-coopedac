@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formBuscar } from './utils/data/inputsButtons';
+import { formBuscar, noData } from './utils/data/inputsButtons';
 import { dosMesDespues } from './utils/functions/fechas';
 import { url_base, url_reprogramacion_creditos } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -113,6 +113,20 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
         // El modal de Reprogramacion de Creditos debe cerrarse
         await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).not.toBeVisible();
     });
+
+    test('La Solicitud de Reprogramacion no debe estar en la tabla de las solicitudes', async () => {
+        // Debe regresar a la pagina de reprogramacion de creditos
+        await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN CRÉDITOS'})).toBeVisible();
+
+        // Buscar al socio
+        await page.locator(`${formBuscar}`).fill(`${cedula}`);
+        
+        // Esperar a que la pagina cargue
+        await page.waitForTimeout(2000);
+
+        // No deberia mostrarse la solicitud de reprogramacion aceptada
+        await expect(page.getByText(`${noData}`)).toBeVisible();
+    })
     
     test.afterAll(async () => { // Despues de las pruebas
         // Cerrar la page
