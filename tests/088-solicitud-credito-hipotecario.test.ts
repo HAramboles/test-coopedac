@@ -681,12 +681,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(datosPrestamos).toBeVisible();
         await datosPrestamos.click();
 
+        // Esperar que la cuenta de cobros cargue
+        await page.waitForTimeout(3000);
+
         // la cuenta de cobros agregada debe estar visible
         await expect(page.locator('text=Cuentas de cobro')).toBeVisible();
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
-        await page.waitForTimeout(3000);
         
         // Ir a la ultima seccion 
         const seccionDocumentos = page.getByRole('button', {name: '9 Documentos'});
@@ -713,6 +715,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // Cerrar la imagen de la firma
         await page.getByRole('button', {name: 'Close'}).click();
 
+        // Esperar a que la imagen de la firma se cierre
         await page.waitForTimeout(2000);
 
         // Cambiar el estado de la solicitud
@@ -745,6 +748,13 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=EN PROCESO (ANALISIS)').click();
 
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+        // Esperar que la solicitud buscada aparezca
+        await page.waitForTimeout(2000);
+
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
@@ -769,6 +779,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // El nombre de la persona debe estar visible en un titulo
         await expect(page.getByRole('heading', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+        // Esperar a que la pagina cargue
+        await page.waitForTimeout(2000);
 
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
@@ -874,6 +887,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
 
+        // Esperar que cargue la pagina antes de ir a la ultima seccion
         await page.waitForTimeout(3000);
 
         // Dirigirse a la ultima seccion
@@ -881,6 +895,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(seccionAnalisis).toBeVisible();
         await seccionAnalisis.click();
 
+        // Esperar que la pagina cargue
         await page.waitForTimeout(3000);
 
         // El titulo de proceso, analisis debe estar visible
@@ -889,6 +904,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // El nombre de la persona debe estar visible en un titulo
         await expect(page.getByRole('heading', {name: `${nombre} ${apellido}`})).toBeVisible();
 
+        // Esperar a que cargue el comentario
         await page.waitForTimeout(2000);
 
         // El comentario anterior debe estar visible

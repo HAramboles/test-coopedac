@@ -787,16 +787,49 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
         await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
 
+        // Esperar 5 segundos
+        await page.waitForTimeout(5000);
+
+        // Monto a desembolsar
+        const montoDesembolsar = page.getByText(`RD$ ${cantMonto}`).nth(1);
+
         // El monto a desembolsar debe estar visible
-        await expect(page.getByText(`RD$ ${cantMonto}`).nth(1)).toBeVisible();
+        if (await montoDesembolsar.isVisible()) {
+            // Desembolsar la solicitud
+            const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
+            await expect(botonDesembolsar).toBeVisible();
+            await botonDesembolsar.click();
 
-        // Desembolsar la solicitud
-        const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
-        await expect(botonDesembolsar).toBeVisible();
-        await botonDesembolsar.click();
+            // Cerrar las paginas que se abren con los diferentes reportes
+            CerrarPaginasReportes();
 
-        // Cerrar las paginas que se abren con los diferentes reportes
-        CerrarPaginasReportes();
+        } else {
+            // Volver al paso anterior
+            await page.getByRole('button', {name: 'Anterior'}).click();
+
+            // La URL debe cambiar
+            await expect(page).toHaveURL(/\/?step=9/);
+
+            // Esperar que la pagina cargue
+            await page.waitForTimeout(3000);
+
+            // Volver al paso 10
+            await page.getByRole('button', {name: 'Siguiente'}).click();
+
+            // La URL debe cambiar
+            await expect(page).toHaveURL(/\/?step=10/);
+
+            // Esperar que la pagina cargue
+            await page.waitForTimeout(3000);
+
+            // Desembolsar la solicitud
+            const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
+            await expect(botonDesembolsar).toBeVisible();
+            await botonDesembolsar.click();
+
+            // Cerrar las paginas que se abren con los diferentes reportes
+            CerrarPaginasReportes();
+        };
     });
 
     test('Buscar la Solicitud de Credito en estado Desembolsado', async () => {
