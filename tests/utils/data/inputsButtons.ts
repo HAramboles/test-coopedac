@@ -17,6 +17,7 @@ export const dataEliminar:string = '[data-icon="delete"]';
 export const dataEdit:string = '[data-icon="edit"]';
 export const dataCancelar:string = '[data-icon="stop"]';
 export const dataBuscar:string = '[data-icon="search"]';
+export const dataComentario:string = '[data-icon="comment"]';
 
 export const ariaCerrar:string = '[aria-label="close"]';
 export const ariaCancelar:string = '[aria-label="stop"]';
@@ -59,4 +60,7 @@ export const usuarioAproboSolicitud:string = '#form_USUARIO_APROBO';
 // No hay datos en la pagina
 export const noData:string = 'No data';
 
+// Buscar por en solicitud de credito
+export const buscarPorNombre:string = '(//INPUT[@type="radio"])[2]';
+export const crearBuscarPorCedula:string = '(//INPUT[@type="radio"])[3]';
 

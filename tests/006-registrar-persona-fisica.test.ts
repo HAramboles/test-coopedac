@@ -123,6 +123,164 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     // La url debe de cambiar
                     await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=1`);
                 });
+
+                test('Ver los tooltips de los pasos de la creacion de persona fisica', async () => {
+                    // El boton del primer paso debe estar visible
+                    const pasoUno = page.getByText('Datos generales', {exact: true});
+                    await expect(pasoUno).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoUno.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Datos generales'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion adicional del primer paso
+                    const pasoUnoExtra = page.getByText('Información básica', {exact: true});
+                    await expect(pasoUnoExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del primer paso
+                    await pasoUnoExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Información básica'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // El boton del segundo paso debe estar visible
+                    const pasoDos = page.getByText('Ingresos', {exact: true});
+                    await expect(pasoDos).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoDos.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Ingresos'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion adicional del segundo paso
+                    const pasoDosExtra = page.getByText('Información de ingresos', {exact: true});
+                    await expect(pasoDosExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del segundo paso
+                    await pasoDosExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Información de ingresos'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // El boton del tercer paso debe estar visible
+                    const pasoTres = page.getByText('Información Adicional', {exact: true});
+                    await expect(pasoTres).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoTres.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Información Adicional'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion extra del tercer paso
+                    const pasoTresExtra = page.getByText('Información Adicional de ingresos', {exact: true});
+                    await expect(pasoTresExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del tercer paso
+                    await pasoTresExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Información Adicional de ingresos'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // El boton del cuarto paso debe estar visible
+                    const pasoCuatro = page.getByText('Peps', {exact: true});
+                    await expect(pasoCuatro).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoCuatro.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Peps'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion extra del cuarto paso
+                    const pasoCuatroExtra = page.getByText('Persona Expuesta Políticamente', {exact: true});
+                    await expect(pasoCuatroExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del cuarto paso
+                    await pasoCuatroExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Persona Expuesta Políticamente'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // El boton del quinto paso debe estar visible
+                    const pasoCinco = page.getByText('Direcciones y Contactos', {exact: true});
+                    await expect(pasoCinco).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoCinco.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Direcciones y Contactos'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion extra del quinto paso
+                    const pasoCincoExtra = page.getByText('Direcciones, teléfonos y redes sociales', {exact: true});
+                    await expect(pasoCincoExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del quinto paso
+                    await pasoCincoExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Direcciones, teléfonos y redes sociales'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // El boton del sexto paso debe estar visible
+                    const pasoSeis = page.getByText('Relacionados', {exact: true});
+                    await expect(pasoSeis).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoSeis.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Relacionados'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion extra del sexto paso
+                    const pasoSeisExtra = page.getByText('Agregar Relacionados', {exact: true});
+                    await expect(pasoSeisExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del sexto paso
+                    await pasoSeisExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Agregar Relacionados'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+                });
             
                 test('Registrar a la persona - Datos Generales', async() => {
                     // El boton de guardar y continuar debe estar inhabilitado

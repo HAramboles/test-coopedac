@@ -1,6 +1,6 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { diaActualFormato } from './utils/functions/fechas';
-import { ariaCerrar, selectBuscar, tipoPignoracion, } from './utils/data/inputsButtons';
+import { selectBuscar, tipoPignoracion, } from './utils/data/inputsButtons';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/dataPages/interfaces';
 import { url_base, url_pignoracion_cuentas } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';

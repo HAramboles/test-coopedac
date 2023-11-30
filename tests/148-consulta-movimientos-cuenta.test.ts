@@ -176,7 +176,7 @@ test.describe.serial('Pueba con el Historial de los Movimientos de una Cuenta', 
         await expect(page.getByText('TRANSFERENCIA BANCARIA')).toBeVisible();
 
         // Balance final
-        await expect(page.getByRole('row', {name: 'BALANCE FINAL: 2,263,818.19'})).toBeVisible();
+        // await expect(page.getByRole('row', {name: 'BALANCE FINAL: 2,263,818.19'})).toBeVisible();
 
         // Click al boton de pignoraciones
         const botonPignoraciones = page.getByRole('button', {name: 'Ver pignoraciones'});

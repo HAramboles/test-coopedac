@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import { selectBuscar } from './utils/data/inputsButtons';
+import { crearBuscarPorCedula, selectBuscar } from './utils/data/inputsButtons';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
 import { EscenariosVerProcentajeCobros } from './utils/dataPages/interfaces';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -101,6 +101,9 @@ test.describe.serial('Pruebas con el parametro de ver porcentaje de las cuentas 
 
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=1`);
+
+                    // El radio de buscada por cedula debe estar marcado
+                    await expect(page.locator(`${crearBuscarPorCedula}`)).toBeChecked();
 
                     // Buscar al socio
                     await page.locator(`${selectBuscar}`).fill(`${cedula}`);

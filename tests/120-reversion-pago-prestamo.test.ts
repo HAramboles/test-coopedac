@@ -67,7 +67,7 @@ test.describe.serial('Puebas con Reversar Pago a Prestamo', async () => {
         await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS'})).toBeVisible();
 
         // Seleccionar el prestamo de CRÉDITO GERENCIAL / AHORROS
-        await page.getByRole('radio').last().click();
+        await page.getByRole('row', {name: 'CRÉDITO GERENCIAL / AHORROS -1M'}).getByRole('radio').click();
     });
 
     test('Entrar al modal Revesar Pago a Prestamo', async () => {
@@ -122,7 +122,7 @@ test.describe.serial('Puebas con Reversar Pago a Prestamo', async () => {
         await expect(page.locator('text=ACTIVIDADES DEL PRÉSTAMO')).not.toBeVisible();
 
         // El boton de Reversar debe estar deshabilitado
-        await expect(botonReversar).toBeDisabled();
+        await expect(page.locator('[data-icon="left-circle"]')).toBeDisabled();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

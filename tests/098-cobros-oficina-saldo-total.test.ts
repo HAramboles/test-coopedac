@@ -39,7 +39,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Inputs para buscar las cuentas del socio
         buscadorPersona = page.locator(`${selectBuscar}`);
-        buscadorCuenta = page.locator('#rc_select_1');
+        buscadorCuenta = page.locator('#rc_select_2');
     });
 
     test('Ir a la opcion de Cobros de Oficina', async () => {
@@ -74,8 +74,14 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Elegir al socio buscado
         await page.locator(`text=${nombre} ${apellido}`).click();
 
+        // Debe estar visible la tabla de los prestamos del socio
+        await expect(page.getByRole('columnheader', {name: 'Producto', exact: true})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'No. Producto'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Desembolsado'})).toBeVisible();
+
         // Debe estar visible el credito de la persona
         await expect(page.getByText('CRÉDITO HIPOTECARIO')).toBeVisible();
+        await expect(page.getByText('300,000.00')).toBeVisible();
 
         // Hacer un pago al credito
         await page.locator('[aria-label="Expand row"]').click();

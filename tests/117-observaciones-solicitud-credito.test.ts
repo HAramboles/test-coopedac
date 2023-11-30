@@ -8,7 +8,9 @@ import {
     fechaSolicitudCredito,
     usuarioAproboSolicitud,
     dataVer,
-    formBuscar
+    formBuscar,
+    buscarPorNombre,
+    crearBuscarPorCedula
 } from './utils/data/inputsButtons';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
 import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/functions/fechas';
@@ -116,6 +118,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // El radio de buscada por cedula debe estar marcado
+        await expect(page.locator(`${crearBuscarPorCedula}`)).toBeChecked();
 
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
@@ -498,6 +503,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=APROBADO').click();
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
@@ -548,6 +556,12 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // El estado de las solicitudes debe ser Aprobado
         await expect(page.locator('#form').getByText('APROBADO')).toBeVisible();
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'file-search'}).click();
 
@@ -592,6 +606,11 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Esperar que carguen los datos
         await page.waitForTimeout(5000);
+
+        // Debe estar en el primer paso de la solicitud
+        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
     
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '7 Desembolso'});
@@ -676,6 +695,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Esperar que la pagina cargue
         await page.waitForTimeout(3000);
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);

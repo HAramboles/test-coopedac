@@ -194,9 +194,6 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                     // Regresar a la seccion de firmantes
                     await page.getByRole('tab').filter({hasText: 'Firmantes'}).click();
             
-                    // Cerrar uno de los mensajes que aparecen
-                    await page.locator(`${ariaCerrar}`).first().click();
-            
                     // Boton de Agregar Firmantes debe estar visible
                     const botonAgregarFirmantes = page.locator('text=Agregar Firmante');
                     await expect(botonAgregarFirmantes).toBeVisible();

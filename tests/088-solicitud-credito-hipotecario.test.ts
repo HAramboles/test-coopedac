@@ -10,7 +10,9 @@ import {
     fechaSolicitudCredito,
     valorAdmisibleCredito,
     usuarioAproboSolicitud,
-    dataVer
+    dataVer,
+    buscarPorNombre,
+    crearBuscarPorCedula
 } from './utils/data/inputsButtons';
 import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/functions/fechas';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
@@ -123,6 +125,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // El radio de buscada por cedula debe estar marcado
+        await expect(page.locator(`${crearBuscarPorCedula}`)).toBeChecked();
 
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
@@ -656,6 +661,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // Esperar que la pagina cargue
         await page.waitForTimeout(2000);
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
@@ -689,7 +697,6 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
-        
         // Ir a la ultima seccion 
         const seccionDocumentos = page.getByRole('button', {name: '9 Documentos'});
         await expect(seccionDocumentos).toBeVisible();
@@ -748,12 +755,14 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=EN PROCESO (ANALISIS)').click();
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Esperar que la solicitud buscada aparezca
         await page.waitForTimeout(2000);
-
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
@@ -824,6 +833,12 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
 
@@ -866,6 +881,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // La url debe cambiar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_solicitud_credito}?filter=en_proceso__analisis`);
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
@@ -940,6 +958,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Esperar que la pagina cargue
         await page.waitForTimeout(3000);
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
@@ -1036,6 +1057,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Esperar que la pagina cargue
         await page.waitForTimeout(3000);
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);

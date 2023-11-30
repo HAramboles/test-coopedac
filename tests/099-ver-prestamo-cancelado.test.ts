@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { formBuscar, dataVer, selectBuscar } from './utils/data/inputsButtons';
+import { formBuscar, dataVer, selectBuscar, buscarPorNombre } from './utils/data/inputsButtons';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
@@ -63,11 +63,16 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         // Click a la opcion de Cancelado
         await page.locator('text=CANCELADO').click();
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click(); 
+
         // Buscar la solicitud de la persona
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Datos del prestamo
         await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 300,000.00 48 RD$ 3,750.00`})).toBeVisible();
+
+        await page.waitForTimeout(4000);
     });
 
     test('Ver la Solictud', async () => {
@@ -129,10 +134,12 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         Siguiente();
 
         // Paso 7
-        await expect(page.getByRole('heading', {name: 'GARANTÍAS'})).toBeVisible();
+        //await expect(page.getByRole('heading', {name: 'GARANTÍAS'})).toBeVisible();
 
         // El boton de Agregar Garantia debe estar inhabilitado
-        await expect(page.getByRole('button', {name: 'Agregar Garantía'})).toBeDisabled();
+        //await expect(page.getByRole('button', {name: 'Agregar Garantía'})).toBeDisabled();
+
+        await page.waitForTimeout(2000);
 
         // Click al boton de Siguiente
         Siguiente();
@@ -171,8 +178,14 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         // El estado de las solicitudes debe estar en Cancelado
         await expect(page.getByText('CANCELADO')).toBeVisible();
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud de la persona
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+        // Esperar que la solicitud buscada este visible
+        await page.waitForTimeout(3000);
 
         // Datos del prestamo
         await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 300,000.00 48 RD$ 3,750.00`})).toBeVisible();

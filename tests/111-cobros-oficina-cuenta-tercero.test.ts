@@ -76,6 +76,11 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Elegir al socio buscado
         await page.locator(`text=${nombre} ${apellido}`).click();
 
+        // Debe estar visible la tabla de los prestamos del socio
+        await expect(page.getByRole('columnheader', {name: 'Producto', exact: true})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'No. Producto'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Desembolsado'})).toBeVisible();
+
         // Debe estar visible el credito de la persona
         await expect(page.getByText('LÍNEA DE CRÉDITO')).toBeVisible();
 
@@ -196,6 +201,9 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Elegir la cuenta de Ahorros Normales
         await page.getByRole('option', {name: 'AHORROS NORMALES |'}).click();
+
+        // Esperar que la cuenta elegida se agregue
+        await page.waitForTimeout(2000);
     });
 
     test('Realizar el pago', async () => {

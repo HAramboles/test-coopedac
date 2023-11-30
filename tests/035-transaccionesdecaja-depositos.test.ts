@@ -224,7 +224,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
 
                 test('Modal de Distribucion de Ingresos', async () => {
                     // Aplicar el deposito de la cuenta de aportaciones
-                    await page.locator('text=Aplicar').first().click();
+                    await page.getByRole('row', {name: 'APORTACIONES'}).locator('text=Aplicar').click();
 
                     // Debe salir un modal para la distribucion de ingresos
                     await expect(page.locator('text=DISTRIBUCIÓN DE INGRESOS')).toBeVisible();

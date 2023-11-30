@@ -141,6 +141,112 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // La URL debe cambiar a la del registro
                     await expect(page).toHaveURL(`${url_registro_persona}persona_juridica/create?step=1`);
                 });
+
+                test('Ver los tooltips de los pasos de la creacion de persona juridica', async () => {
+                    // El boton del primer paso debe estar visible
+                    const pasoUno = page.getByText('Datos generales', {exact: true});
+                    await expect(pasoUno).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoUno.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Datos generales'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion adicional del primer paso
+                    const pasoUnoExtra = page.getByText('Información básica', {exact: true});
+                    await expect(pasoUnoExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del primer paso
+                    await pasoUnoExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Información básica'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // El boton del segundo paso debe estar visible
+                    const pasoDos = page.getByText('Direcciones y Contactos', {exact: true});
+                    await expect(pasoDos).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoDos.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Direcciones y Contactos'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion extra del segundo paso
+                    const pasoDosExtra = page.getByText('Información de dirección', {exact: true});
+                    await expect(pasoDosExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del quinto paso
+                    await pasoDosExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Información de dirección'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // El boton del tercer paso debe estar visible
+                    const pasoTres = page.getByText('Peps', {exact: true});
+                    await expect(pasoTres).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoTres.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Peps'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion extra del tercer paso
+                    const pasoTresExtra = page.getByText('Persona Expuesta Políticamente', {exact: true});
+                    await expect(pasoTresExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del cuarto paso
+                    await pasoTresExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Persona Expuesta Políticamente'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // El boton del cuarto paso debe estar visible
+                    const pasoCuatro = page.getByText('Relacionados', {exact: true});
+                    await expect(pasoCuatro).toBeVisible();
+
+                    // Colocar el mouse encima del boton
+                    await pasoCuatro.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Relacionados'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+
+                    // Debe estar visible la informacion extra del cuarto paso
+                    const pasoCuatroExtra = page.getByText('Agregar relacionados', {exact: true});
+                    await expect(pasoCuatroExtra).toBeVisible();
+
+                    // Colocar el mouse encima de la informacion extra del cuarto paso
+                    await pasoCuatroExtra.hover();
+
+                    // Debe mostrarse el tootlip
+                    await expect(page.getByRole('tooltip', {name: 'Agregar relacionados'})).toBeVisible();
+
+                    // Esperar a que el tooltip este visible
+                    await page.waitForTimeout(1000);
+                });
             
                 test('Registro de Persona Juridica - Datos Generales', async () => {
                     // El titulo de datos generales debe estra visible

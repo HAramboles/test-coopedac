@@ -8,7 +8,9 @@ import {
     fechaSolicitudCredito,
     usuarioAproboSolicitud,
     dataVer,
-    formComentario
+    formComentario,
+    buscarPorNombre,
+    crearBuscarPorCedula
 } from './utils/data/inputsButtons';
 import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/functions/fechas';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
@@ -126,6 +128,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // El radio de buscada por cedula debe estar marcado
+        await expect(page.locator(`${crearBuscarPorCedula}`)).toBeChecked();
 
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${cedulaEmpresa}`);
@@ -651,6 +656,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_base}/solicitud_credito/01-3-3-1?filter=solicitado`);
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
 
@@ -691,6 +699,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // Cambiar el estado de las solicitudes de Solicitado a En Proceso (Analisis)
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=EN PROCESO (ANALISIS)').click();
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
@@ -746,6 +757,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // Cambiar el estado de las solicitudes de En Proceso a Aprobado
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
@@ -839,6 +853,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // Cambiar el estado de las solicitudes de Aprobado a Desembolsado
         await page.locator('text=APROBADO').click();
         await page.locator('text=DESEMBOLSADO').click();
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar a la persona juridica
         await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);

@@ -5,7 +5,9 @@ import {
     formBuscar, 
     inputFechaSolicitud, 
     inputPrimerPago, 
-    valorAdmisibleCredito 
+    valorAdmisibleCredito, 
+    buscarPorNombre,
+    crearBuscarPorCedula
 } from './utils/data/inputsButtons';
 import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/functions/fechas';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
@@ -86,7 +88,7 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         await expect(page.locator('text=SOLICITADO')).toBeVisible();
 
         // Boton Nueva Solicitud
-        const botonNuevaSolicitud = page.locator('text=Nueva Solicitud');
+        const botonNuevaSolicitud = page.getByRole('button', {name: 'Nueva Solicitud'});
         await expect(botonNuevaSolicitud).toBeVisible();
         await botonNuevaSolicitud.click();
     });
@@ -99,6 +101,9 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // El radio de buscada por cedula debe estar marcado
+        await expect(page.locator(`${crearBuscarPorCedula}`)).toBeChecked();
 
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
@@ -385,6 +390,8 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         // await expect(page.getByRole('cell', {name: 'RD$ 200,000.00'}).first()).toBeVisible();
         // await expect(page.getByRole('cell', {name: 'RD$ 200,000.00'}).nth(1)).toBeVisible();
 
+        await page.waitForTimeout(2000);
+
         // Click en actualizar y continuar
         GuardaryContinuar();
     });
@@ -503,6 +510,9 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
@@ -555,6 +565,9 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         // Cambiar el estado de las solicitudes de Solicitado a En Proceso (Analisis)
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=EN PROCESO (ANALISIS)').click();
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud de linea de credito creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
@@ -624,6 +637,9 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         // Cambiar el estado de las solicitudes de En Proceso a Aprobado
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud de linea de credito creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
@@ -698,6 +714,9 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
 
         // Esperar que la pagina cargue
         await page.waitForTimeout(3000);
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);

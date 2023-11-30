@@ -80,6 +80,9 @@ test.describe.serial('Pruebas con el Rechazo de Cambio de Categoria de la Person
         // Debe salir un modal
         await expect(page.locator('text=Motivo de Rechazo')).toBeVisible();
 
+        // Debe aparecer un mensaje informativo en el modal de rechazo
+        await expect(page.getByText(`Escriba la razón de rechazo de la solicitud de cambio de categoría de ${nombre} ${apellido}, de SOCIO AHORRANTE a SOCIO MICROEMPRESARIAL`)).toBeVisible();
+
         // Colocar un comentario
         await page.locator(`${formComentario}`).fill('Cambio de opinion del Socio');
 

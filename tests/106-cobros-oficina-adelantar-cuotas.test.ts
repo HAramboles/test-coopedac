@@ -66,8 +66,14 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Elegir al socio buscado
         await page.locator(`text=${nombre} ${apellido}`).click();
 
+        // Debe estar visible la tabla de los prestamos del socio
+        await expect(page.getByRole('columnheader', {name: 'Producto'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'No. Producto'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Desembolsado'})).toBeVisible();
+
         // Debe estar visible el credito de la persona
         await expect(page.getByText('CRÉDIAUTOS')).toBeVisible();
+        await expect(page.getByText('125,000.00')).toBeVisible();
 
         // Hacer un pago al credito
         await page.getByRole('row', {name: 'Expand row CRÉDIAUTOS'}).getByLabel('Expand row').click();

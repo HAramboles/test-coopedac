@@ -7,7 +7,9 @@ import {
     fechaSolicitudCredito, 
     usuarioAproboSolicitud, 
     dataVer, 
-    formBuscar
+    formBuscar,
+    buscarPorNombre,
+    crearBuscarPorCedula
 } from './utils/data/inputsButtons';
 import { unMesDespues, diaSiguiente, diaAnterior, diaActualFormato } from './utils/functions/fechas';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
@@ -120,6 +122,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // El radio de buscada por cedula debe estar marcado
+        await expect(page.locator(`${crearBuscarPorCedula}`)).toBeChecked();
 
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
@@ -605,6 +610,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // La url debe regresar a las solicitudes solicitadas
         await expect(page).toHaveURL(`${url_solicitud_credito}?filter=solicitado`);
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
@@ -646,11 +654,25 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=EN PROCESO (ANALISIS)').click();
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
+
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(5000);
+
+        // Debe estar en el primer paso de la solicitud
+        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(3000);
 
         // Dirigirse a la ultima seccion
         const seccionAnalisis = page.getByRole('button', {name: '10 Análisis'});
@@ -662,6 +684,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // El nombre de la persona debe estar visible en un titulo
         await expect(page.getByRole('heading', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+        // Esperar a que la pagina cargue
+        await page.waitForTimeout(2000);
 
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
@@ -700,6 +725,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Cambiar el estado de las solicitudes de En Proceso a Aprobado
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=APROBADO').click();
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
@@ -793,6 +821,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // Esperar que la pagina cargue
         await page.waitForTimeout(3000);
+
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);

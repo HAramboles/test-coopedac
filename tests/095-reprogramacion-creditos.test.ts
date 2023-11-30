@@ -118,6 +118,9 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
         // Debe regresar a la pagina de reprogramacion de creditos
         await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN CRÉDITOS'})).toBeVisible();
 
+        // Recargar la pagina
+        await page.reload();
+
         // Buscar al socio
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
         

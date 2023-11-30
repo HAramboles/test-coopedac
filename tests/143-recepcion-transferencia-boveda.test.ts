@@ -73,7 +73,7 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
 
     test('Cancelar la Transferencia a Boveda de mil pesos', async () => {
         // Se debe mostrar el monto de la transferencia
-        await expect(page.getByRole('cell', {name: '1,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '1,000.00'}).first()).toBeVisible();
 
         // Click al boton de Confirmar Transferencia
         await page.getByRole('row', {name: '1,000.00'}).locator(`${ariaCancelar}`).click();

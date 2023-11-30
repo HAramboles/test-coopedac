@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { formBuscar, dataCancelar } from './utils/data/inputsButtons';
+import { formBuscar, dataCancelar, buscarPorNombre } from './utils/data/inputsButtons';
 import { url_base, url_anular_desembolso, url_solicitud_credito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
@@ -138,6 +138,9 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
     });
 
     test('Desembolsar nuevamente la Solicitud de la persona Juridica', async () => {
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud de credito de la persona juridica
         await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
 

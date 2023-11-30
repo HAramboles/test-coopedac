@@ -9,7 +9,10 @@ import {
     formComentarios,
     dataVer,
     dataEdit,
-    ariaAgregar
+    ariaAgregar,
+    dataComentario,
+    buscarPorNombre,
+    crearBuscarPorCedula
 } from './utils/data/inputsButtons';
 import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/functions/fechas';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
@@ -35,6 +38,9 @@ const cantMonto:string = '300,000';
 // Numeros para las garantias de la hipoteca
 let numerosMatriculaHipoteca1 = generarNumerosAleatorios(4);
 let numerosMatriculaHipoteca2 = generarNumerosAleatorios(4);
+
+// Comentario del rechazo de la solicitud
+const razonRechazo:string = 'Debe saldar los demas prestamos que posee';
 
 // Pruebas
 test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
@@ -121,6 +127,9 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // El radio de buscada por cedula debe estar marcado
+        await expect(page.locator(`${crearBuscarPorCedula}`)).toBeChecked();
 
         // Buscar al socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
@@ -527,6 +536,8 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         // await expect(page.getByRole('cell', {name: 'HIPOTECA'})).toBeVisible();
         // await expect(page.getByRole('cell', {name: 'RD$ 400,000.00'})).toBeVisible();
 
+        await page.waitForTimeout(2000);
+
         // Click en actualizar y continuar
         GuardaryContinuar();
     });
@@ -648,6 +659,9 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         // Esperar que la pagina cargue
         await page.waitForTimeout(3000);
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
@@ -720,6 +734,12 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=EN PROCESO (ANALISIS)').click();
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
+        // Buscar la solicitud creada
+        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
@@ -780,7 +800,7 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         await expect(page.getByText('RAZÓN DEL RECHAZO')).toBeVisible();
 
         // Colocar un comentario como razon de rechazo
-        await page.locator(`${formComentarios}`).fill('Debe saldar los demas prestamos que posee');
+        await page.locator(`${formComentarios}`).fill(`${razonRechazo}`);
 
         // Click al boton de Aceptar
         await expect(botonAceptar).toBeVisible();
@@ -798,11 +818,32 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         await page.locator('text=EN PROCESO (ANALISIS)').click();
         await page.locator('text=RECHAZADO').click();
 
+        // Elegir buscar por nombre del socio
+        await page.locator(`${buscarPorNombre}`).click();
+
         // Buscar la solicitud rechazada de la persona
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Debe aparecer la solicitud rechazada
         await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 300,000.00`})).toBeVisible();
+    });
+
+    test('Ver la razon del rechazo de la solicitud', async () => {
+        // Click al boton de ver comentario
+        await page.locator(`${dataComentario}`).click();
+
+        // Debe salir un modal con el comentario
+        const modalComentarioRechazo = page.getByText('RAZÓN DEL RECHAZO');
+        await expect(modalComentarioRechazo).toBeVisible();
+
+        // Debe aparecer el comentario de rechazo
+        await expect(page.locator(`${razonRechazo.toUpperCase()}`)).toBeVisible();
+
+        // Click al boton de Aceptar
+        await page.getByRole('button', {name: 'check Aceptar'}).click();
+
+        // El modal de rechazo debe desaparecer
+        await expect(modalComentarioRechazo).not.toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de todas las pruebas

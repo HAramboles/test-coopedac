@@ -1,5 +1,14 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { dataCerrar, selectBuscar, formBuscar, inputFechaSolicitud, inputPrimerPago, dataVer } from './utils/data/inputsButtons';
+import { 
+    dataCerrar, 
+    selectBuscar, 
+    formBuscar, 
+    inputFechaSolicitud, 
+    inputPrimerPago, 
+    dataVer,
+    buscarPorNombre,
+    crearBuscarPorCedula
+} from './utils/data/inputsButtons';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
 import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/functions/fechas';
 import { EscenariosEliminarSolicitudCredito } from './utils/dataPages/interfaces';
@@ -105,6 +114,9 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
             await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
             await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
             await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+            // El radio de buscada por cedula debe estar marcado
+            await expect(page.locator(`${crearBuscarPorCedula}`)).toBeChecked();
 
             // Buscar al socio
             await page.locator(`${selectBuscar}`).fill(`${cedula}`);
@@ -457,42 +469,42 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
             // Ingresar un monto mayor al monto del prestamo
             const inputMontoPrestamo = page.getByRole('spinbutton', {name: 'VALOR DE LA GARANTÍA'});
-            await inputMontoPrestamo.fill('20000');
+            await inputMontoPrestamo.fill('50000');
 
             // Boton de Aceptar del modal de Agregar Garantia Liquida
             const botonAceptarModal = page.getByRole('button', {name: 'Aceptar'}).nth(1);
             await expect(botonAceptarModal).toBeVisible();
             await botonAceptarModal.click();
 
-            // // Debe aparecer una alerta de error
-            // await expect(page.getByText('El total de las garantías no debe ser mayor al monto del préstamo.')).toBeVisible();
+            // Debe aparecer una alerta de error
+            await expect(page.getByText('El total de las garantías no debe ser mayor al monto del préstamo.')).toBeVisible();
 
-            // // Ingresar la mitad del monto solicitado
-            // await inputMontoPrestamo.clear();
-            // await inputMontoPrestamo.fill('10000');
+            // Ingresar la mitad del monto solicitado
+            await inputMontoPrestamo.clear();
+            await inputMontoPrestamo.fill('10000');
 
-            // // Click fuera del input y al mismo tiempo debe mostrarse el monto maximo a utilizar
-            // await page.locator('text=El monto máximo utilizable es').nth(1).click();
+            // Click fuera del input y al mismo tiempo debe mostrarse el monto maximo a utilizar
+            await page.locator('text=El monto máximo utilizable es').nth(1).click();
 
-            // // Click al boton de Aceptar del modal
-            // await botonAceptarModal.click();
+            // Click al boton de Aceptar del modal
+            await botonAceptarModal.click();
 
-            // // Esperar que la garantia se agregue a la tabla
-            // await page.waitForTimeout(2000);
+            // Esperar que la garantia se agregue a la tabla
+            await page.waitForTimeout(2000);
 
-            // // Debe agregarse la cuenta de la garantia liquida agregada
-            // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+            // Debe agregarse la cuenta de la garantia liquida agregada
+            await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
-            // // Editar la garantia agregada y colocar el monto correcto
-            // await page.getByText('RD$$ 10,000.00').click();
-            // await page.locator('#MONTO_PIGNORADO').click();
-            // await page.locator('#MONTO_PIGNORADO').fill('20000');
+            // Editar la garantia agregada y colocar el monto correcto
+            await page.getByText('RD$$ 10,000.00').click();
+            await page.locator('#MONTO_PIGNORADO').click();
+            await page.locator('#MONTO_PIGNORADO').fill('20000');
 
-            // // Click fuera del input
-            // await page.getByRole('columnheader', {name: 'Tipo Cuenta'}).click();
+            // Click fuera del input
+            await page.getByRole('columnheader', {name: 'Tipo Cuenta'}).click();
 
-            // // Esperar a que se agregue el nuevo monto de la garantia
-            // await page.waitForTimeout(1000);
+            // Esperar a que se agregue el nuevo monto de la garantia
+            await page.waitForTimeout(1000);
 
             // Debe mostrarse la garantia liquida en la tabla
             await expect(page.getByText('RD$$ 20,000.00')).toBeVisible();
@@ -635,6 +647,9 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
                     // La URL debe cambiar a las solicitudes aprobadas
                     await expect(page).toHaveURL(`${url_solicitud_credito}?filter=aprobado`);
+
+                    // Elegir buscar por nombre del socio
+                    await page.locator(`${buscarPorNombre}`).click();
             
                     // Buscar la solicitud creada
                     await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
@@ -715,6 +730,9 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
                         // Esperar que cargue la pagina
                         await page.waitForTimeout(2000);
+
+                        // Elegir buscar por nombre del socio
+                        await page.locator(`${buscarPorNombre}`).click();
 
                         // Buscar la solicitud creada
                         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);

@@ -214,6 +214,9 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         // Cerrar la pagina con el reporte de todos los recibos
         await page1.close();
 
+        // No dbe mostrarse fecha invalida en ninguno de los pagos
+        await expect(page.getByText('Fecha inválida', {exact: true})).not.toBeVisible();
+
         // Totales
         await expect(page.getByRole('row', {name: 'TOTALES: 300,000.00 0.00 300,000.00 0.00 0.00 0.00 0.00 300,000.00'})).toBeVisible();
     });

@@ -184,6 +184,13 @@ test.describe.serial('Editar Cuenta de Ahorros - Pruebas con los diferentes para
                     await expect(montoConfirmacion).toBeVisible();
                     await montoConfirmacion.clear();
                     await montoConfirmacion.fill('26,000');
+
+                    // Debe aparecer un mensaje de error
+                    await expect(page.getByText('El monto de confirmación NO debe ser mayor a 25000')).toBeVisible();
+
+                    // Colocar el monto anterior
+                    await montoConfirmacion.clear();
+                    await montoConfirmacion.fill('25,000');
             
                     // El componente de firma debe estar visible y debe ser unico
                     const firmaSubida = page.locator('(//div[@class="ant-upload-list-item-container"])');
