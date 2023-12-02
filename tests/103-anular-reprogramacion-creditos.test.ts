@@ -158,11 +158,21 @@ test.describe.serial('Pruebas con la Solicitud de Reprogramacion de Creditos', a
         // Cerrar la pagina con el reporte 
         await page1.close();
 
-        // Se debe regresar a la pagina anterior y debe estar un mensaje de confirmacion
+        // Se debe regresar a la pagina anterior y debe estar un mensaje de operacion exitosa
+        const modalExito = page.locator('text=Operación Exitosa');
+        await expect(modalExito).toBeVisible();
+
+        // Mensaje del modal
         await expect(page.locator('text=Solicitud de cambios productos almacenado exitosamente.')).toBeVisible();
 
         // Click en Aceptar
         await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // El modal debe desaparecer
+        await expect(modalExito).not.toBeVisible();
+
+        // La solicitud creada debe estar en la tabla
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
     });
 
     test('Ir a la opcion de Reprogramacion de Creditos', async () => {

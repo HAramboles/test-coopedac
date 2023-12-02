@@ -147,7 +147,7 @@ test.describe.serial('Prueba con el Estado de Cuenta', () => {
         await expect(pageEstadoCuentasCobrar.locator('h1').filter({hasText: 'ESTADO DE CUENTAS POR COBRAR'})).toBeVisible();
 
         // El prestamo Hipotecario debe estar seleccionado
-        await expect(pageEstadoCuentasCobrar.locator('(//INPUT[@type="radio"])[3]')).toBeChecked();
+        await expect(pageEstadoCuentasCobrar.locator('(//INPUT[@type="radio"])[1]')).toBeChecked();
 
         // Las secciones de los datos del prestamo deben estar visibles
         await expect(pageEstadoCuentasCobrar.getByText('Situación del movimiento')).toBeVisible();

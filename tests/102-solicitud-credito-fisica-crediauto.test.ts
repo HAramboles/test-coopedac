@@ -551,7 +551,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator(`${dataCerrar}`).last().click();
 
         // Esperar que el Informe Buro Credito (DataCredito) se haya subido
-        await expect(page.getByRole('link', {name: 'EVIDENCIA DE INGRESOS'})).toBeVisible();
+        await expect(page.getByRole('link', {name: 'EVIDENCIA DE INGRESOS'}).first()).toBeVisible();
 
         // Subir Tabla de amortizacion
         const subirTablaAmortizacionPromesa = page.waitForEvent('filechooser');

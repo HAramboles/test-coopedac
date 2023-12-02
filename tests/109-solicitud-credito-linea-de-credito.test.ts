@@ -334,61 +334,61 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
     });
 
     test('Paso 7 - Codeudores y Garantias', async () => {
-        // // Click al boton de agregar garantia
-        // await page.getByRole('button', {name: 'Agregar Garantía'}).click();
+        // Click al boton de agregar garantia
+        await page.getByRole('button', {name: 'Agregar Garantía'}).click();
 
-        // // Debe salir un modal
-        // await expect(page.locator('text=SELECCIONAR OPCIÓN')).toBeVisible();
+        // Debe salir un modal
+        await expect(page.locator('text=SELECCIONAR OPCIÓN')).toBeVisible();
 
-        // // Click a la opcion de nueva garantia
-        // await page.locator('text=Nueva garantía').click();
+        // Click a la opcion de nueva garantia
+        await page.locator('text=Nueva garantía').click();
 
-        // // Debe salir un modal par agregar la garantia
-        // const modalAgregarGarantia =page.locator('#form').getByRole('heading', {name: 'Garantías'});
-        // await expect(modalAgregarGarantia).toBeVisible();
+        // Debe salir un modal par agregar la garantia
+        const modalAgregarGarantia =page.locator('#form').getByRole('heading', {name: 'Garantías'});
+        await expect(modalAgregarGarantia).toBeVisible();
 
-        // // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
-        // await page.getByRole('combobox').click();
-        // await page.getByText('GARANTIA COMERCIAL', {exact: true}).click();
+        // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
+        await page.getByRole('combobox').click();
+        await page.getByText('GARANTIA COMERCIAL', {exact: true}).click();
 
-        // // Elegir que el socio es propietario de la garantia
-        // await page.getByRole('checkbox').click();
+        // Elegir que el socio es propietario de la garantia
+        await page.getByRole('checkbox').click();
 
-        // // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
-        // await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
+        // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
+        await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
 
-        // // Valor tasado
-        // const valorTasado = page.getByPlaceholder('VALOR TASADO');
-        // await valorTasado.click();
-        // await valorTasado.fill(`RD$ ${cantMonto}`);
+        // Valor tasado
+        const valorTasado = page.getByPlaceholder('VALOR TASADO');
+        await valorTasado.click();
+        await valorTasado.fill(`RD$ ${cantMonto}`);
 
-        // // Valor admisible
-        // await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 200,000');
+        // Valor admisible
+        await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 200,000');
 
-        // // Agregar atributos a la garantia
-        // await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
+        // Agregar atributos a la garantia
+        await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
 
-        // // El atributo de la garantia comercial deben estar visible
-        // await expect(page.locator('text=NZA')).toBeVisible();
+        // El atributo de la garantia comercial deben estar visible
+        await expect(page.locator('text=NZA')).toBeVisible();
 
-        // // NZA
-        // await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').first().click();
-        // await page.getByPlaceholder('Valor Atributo').clear();
-        // await page.getByPlaceholder('Valor Atributo').fill('4589');
+        // NZA
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').first().click();
+        await page.getByPlaceholder('Valor Atributo').clear();
+        await page.getByPlaceholder('Valor Atributo').fill('4589');
 
-        // // Click en guardar
-        // await page.getByRole('button', {name: 'save Guardar'}).click();
+        // Click en guardar
+        await page.getByRole('button', {name: 'save Guardar'}).click();
 
-        // // Debe aparecer una alerta de que la garantia se guardo correctamente
-        // await expect(page.locator('text=Garantías del préstamo guardadas exitosamente.')).toBeVisible();
+        // Debe aparecer una alerta de que la garantia se guardo correctamente
+        await expect(page.locator('text=Garantías del préstamo guardadas exitosamente.')).toBeVisible();
 
-        // // El modal de agregar garantia debe desaparecer
-        // await expect(modalAgregarGarantia).not.toBeVisible();
+        // El modal de agregar garantia debe desaparecer
+        await expect(modalAgregarGarantia).not.toBeVisible();
 
-        // // Debe mostrarse la garantia agregada
-        // await expect(page.getByRole('cell', {name: 'GARANTIA COMERCIAL'})).toBeVisible();
-        // await expect(page.getByRole('cell', {name: 'RD$ 200,000.00'}).first()).toBeVisible();
-        // await expect(page.getByRole('cell', {name: 'RD$ 200,000.00'}).nth(1)).toBeVisible();
+        // Debe mostrarse la garantia agregada
+        await expect(page.getByRole('cell', {name: 'GARANTIA COMERCIAL'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RD$ 200,000.00'}).first()).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RD$ 200,000.00'}).nth(1)).toBeVisible();
 
         await page.waitForTimeout(2000);
 

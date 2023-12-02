@@ -189,8 +189,10 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     // Debe colocarse el monto en el campo de Abono a Capital
                     await expect(inputAbonoCapital).toHaveValue('RD$ 16,000');
 
+                    await page.waitForTimeout(2000);
+
                     // Click al boton de Aplicar
-                    const botonAplicar = page.locator('button').filter({hasText: 'Aplicar'});
+                    const botonAplicar = page.getByRole('button', {name: 'check Aplicar'});
                     await expect(botonAplicar).toBeVisible();
                     await botonAplicar.click();
                 });
@@ -228,7 +230,7 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     await expect(iconoVerde1).toBeVisible();
                     await expect(iconoVerde2).toBeVisible();
             
-                    // Hacer click al boton de Aceptar
+                    // Hacer click al boton de Aplicar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
                     await expect(botonAceptar).toBeVisible();
                     await botonAceptar.click();

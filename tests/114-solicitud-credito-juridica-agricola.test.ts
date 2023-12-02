@@ -458,46 +458,46 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // // El modal no debe estar visible
         // await expect(modal).not.toBeVisible();
 
-        // // Click al boton de agregar garantia
-        // await page.getByRole('button', {name: 'Agregar Garantía'}).click();
+        // Click al boton de agregar garantia
+        await page.getByRole('button', {name: 'Agregar Garantía'}).click();
 
-        // // Debe salir un modal
-        // await expect(page.locator('text=SELECCIONAR OPCIÓN')).toBeVisible();
+        // Debe salir un modal
+        await expect(page.locator('text=SELECCIONAR OPCIÓN')).toBeVisible();
 
-        // // Click a la opcion de nueva garantia
-        // await page.locator('text=Nueva garantía').click();
+        // Click a la opcion de nueva garantia
+        await page.locator('text=Nueva garantía').click();
 
-        // // Debe salir un modal para agregar la garantia
-        // const modalGarantia = page.locator('#form').getByRole('heading', {name: 'Garantías'});
-        // await expect(modalGarantia).toBeVisible();
+        // Debe salir un modal para agregar la garantia
+        const modalGarantia = page.locator('#form').getByRole('heading', {name: 'Garantías'});
+        await expect(modalGarantia).toBeVisible();
 
-        // // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
-        // await page.getByRole('combobox').click();
-        // await page.getByText('GARANTIA AGRICOLA', {exact: true}).click();
+        // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
+        await page.getByRole('combobox').click();
+        await page.getByText('GARANTIA AGRICOLA', {exact: true}).click();
 
-        // // Elegir que el socio es propietario de la garantia
-        // await page.getByRole('checkbox').click();
+        // Elegir que el socio es propietario de la garantia
+        await page.getByRole('checkbox').click();
 
-        // // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
-        // await expect(page.locator(`text=${nombreEmpresa}`)).toBeVisible();
+        // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
+        await expect(page.locator(`text=${nombreEmpresa}`)).toBeVisible();
 
-        // // Valor tasado
-        // const valorTasado = page.getByPlaceholder('VALOR TASADO');
-        // await valorTasado.click();
-        // await valorTasado.fill('RD$ 200000');
+        // Valor tasado
+        const valorTasado = page.getByPlaceholder('VALOR TASADO');
+        await valorTasado.click();
+        await valorTasado.fill('RD$ 200000');
 
-        // // Agregar atributos a la garantia
-        // await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
+        // Agregar atributos a la garantia
+        await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
 
-        // // Chasis
-        // await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
-        // await page.getByPlaceholder('Valor Atributo').fill(`${numerosGarantia}`);
+        // Chasis
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
+        await page.getByPlaceholder('Valor Atributo').fill(`${numerosGarantia}`);
 
-        // // Click en guardar
-        // await page.getByRole('button', {name: 'save Guardar'}).click();
+        // Click en guardar
+        await page.getByRole('button', {name: 'save Guardar'}).click();
 
-        // // El modal de agregar Garantias debe cerrarse
-        // await expect(modalGarantia).not.toBeVisible();
+        // El modal de agregar Garantias debe cerrarse
+        await expect(modalGarantia).not.toBeVisible();
 
         // Debe mostrarse un mensaje de informacion acerca de la garantia liquida
         await expect(page.getByText('Si agrega más de una garantia tenga en cuanta que estas se despignoran en el mismo orden que son agregadas.')).toBeVisible();
@@ -508,7 +508,12 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // Debe salir un modal para agregar la garantia liquida
         await expect(page.getByRole('heading', {name: 'Agregar Garantía Líquida'}).first()).toBeVisible();
 
-        // El modal debe tener por defecto, el tipo de cuenta Ahorros Normales
+        // Elegir el tipo de cuenta de la garantia liquida
+        await page.locator('#form_ID_TIPO_CAPTACION').nth(1).click(); 
+        // Elegir el tipo de cuenta Certificados
+        await page.getByRole('option', {name: 'CERTIFICADOS'}).click();
+
+        // El modal ahora debe mostrar el tipo de cuenta elegida
         await expect(page.getByText('CERTIFICADOS').first()).toBeVisible();
 
         // Click al selector para buscar socios
@@ -709,6 +714,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombreEmpresa}`}).getByRole('button', {name: 'edit'}).click();
 
+        // Esperar que la pagina cargue
+        await page.waitForTimeout(4000);
+
         // Dirigirse a la ultima seccion
         const seccionAnalisis = page.getByRole('button', {name: '10 Análisis'});
         await expect(seccionAnalisis).toBeVisible();
@@ -719,6 +727,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
 
         // El nombre de la persona debe estar visible en un titulo
         await expect(page.getByRole('heading', {name: `${nombreEmpresa}`})).toBeVisible();
+
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(4000);
 
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');

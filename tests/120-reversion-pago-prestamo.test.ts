@@ -122,7 +122,7 @@ test.describe.serial('Puebas con Reversar Pago a Prestamo', async () => {
         await expect(page.locator('text=ACTIVIDADES DEL PRÉSTAMO')).not.toBeVisible();
 
         // El boton de Reversar debe estar deshabilitado
-        await expect(page.locator('[data-icon="left-circle"]')).toBeDisabled();
+        await expect(page.locator('[data-icon="left-circle"]').last()).toBeDisabled();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

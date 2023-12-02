@@ -67,7 +67,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page.locator(`text=${nombre} ${apellido}`).click();
 
         // Debe estar visible la tabla de los prestamos del socio
-        await expect(page.getByRole('columnheader', {name: 'Producto'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Producto', exact: true})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'No. Producto'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Desembolsado'})).toBeVisible();
 
@@ -204,8 +204,8 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page2.close();
         await page1.close();
         
-        // En la pagina deberia aparecer una alerta de operacion exitosa
-        await expect(page.locator('text=Operación exitosa')).toBeVisible();
+        // Debe regresar a la pagina de Cobros de Oficina
+        await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

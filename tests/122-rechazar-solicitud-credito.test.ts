@@ -824,6 +824,9 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         // Buscar la solicitud rechazada de la persona
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
+        // Esperar que la solicitud buscada aparezca
+        await page.waitForTimeout(4000);
+
         // Debe aparecer la solicitud rechazada
         await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 300,000.00`})).toBeVisible();
     });

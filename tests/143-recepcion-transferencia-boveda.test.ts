@@ -76,7 +76,7 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
         await expect(page.getByRole('cell', {name: '1,000.00'}).first()).toBeVisible();
 
         // Click al boton de Confirmar Transferencia
-        await page.getByRole('row', {name: '1,000.00'}).locator(`${ariaCancelar}`).click();
+        await page.getByRole('row', {name: '1,000.00'}).first().locator(`${ariaCancelar}`).click();
 
         // Aparece un modal para colocar la razon de la cancelacion de la transferencia
         await expect(page.locator('text=ANULAR TRANSFERENCIA')).toBeVisible();

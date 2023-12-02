@@ -69,7 +69,7 @@ test.describe.serial('Pruebas con el Desembolso de Lineas de Credito', () => {
         await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 200,000.00')).toBeVisible();
 
         // Plazo 
-        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('12')).toBeVisible();
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('12', {exact: true})).toBeVisible();
 
         // Cuota
         await expect(page.getByRole('row', {name: `${nombre} ${apellido}`}).getByText('RD$ 1,162.50')).toBeVisible();

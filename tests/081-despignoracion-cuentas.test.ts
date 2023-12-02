@@ -1,4 +1,4 @@
-import { APIResponse, Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
+import { APIResponse, Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import { selectBuscar, tipoPignoracion, } from './utils/data/inputsButtons';
 import { EscenariosPruebasAgregarEliminarPignoracion } from './utils/dataPages/interfaces';
 import { url_base, url_pignoracion_cuentas } from './utils/dataPages/urls';
