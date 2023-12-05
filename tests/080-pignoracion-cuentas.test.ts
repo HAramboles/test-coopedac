@@ -80,10 +80,24 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                 await expect(page).toHaveURL(`${url_pignoracion_cuentas}`);
             });
 
-            test('Buscar una cuenta de un Socio', async () => {
+            test('Comprobar la condicion del boton de Guardar', async () => {
                 // Titulo principal
                 await expect(page.locator('h1').filter({hasText: 'PIGNORACIÓN DE CUENTAS'})).toBeVisible();
-        
+
+                // Click al boton de Guardar
+                const botonGuardar = page.getByRole('button', {name: 'Guardar'});
+                await expect(botonGuardar).toBeVisible();
+                await botonGuardar.click();
+
+                // Deben aparecer varios mensajes de datos requeridos
+                await expect(page.getByText('Id Persona es requerido.')).toBeVisible();
+                await expect(page.getByText('Socio es requerido.')).toBeVisible();
+                await expect(page.getByText('Tipo es requerido.')).toBeVisible();
+                await expect(page.getByText('Monto es requerido.')).toBeVisible();
+                await expect(page.getByText('Descripción Pignoración es requerido.')).toBeVisible();
+            })
+
+            test('Buscar una cuenta de un Socio', async () => {        
                 // Buscar al socio
                 await page.locator(`${selectBuscar}`).fill(`${cedula}`);
                 // Elegir la cuenta de Ahorro

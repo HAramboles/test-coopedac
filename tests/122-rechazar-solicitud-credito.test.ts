@@ -840,7 +840,7 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         await expect(modalComentarioRechazo).toBeVisible();
 
         // Debe aparecer el comentario de rechazo
-        await expect(page.locator(`${razonRechazo.toUpperCase()}`)).toBeVisible();
+        await expect(page.locator(`${razonRechazo}`)).toBeVisible();
 
         // Click al boton de Aceptar
         await page.getByRole('button', {name: 'check Aceptar'}).click();

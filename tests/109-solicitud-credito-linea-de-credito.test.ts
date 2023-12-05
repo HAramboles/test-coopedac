@@ -420,10 +420,6 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         await expect(page.getByText('Debe adjuntar todos los documentos requeridos.')).toBeVisible();
         // Click en aceptar
         await page.getByRole('button', {name: 'check Aceptar'}).click();
-
-        // Cerrar alertas
-        // await page.locator(`${dataCerrar}`).last().click();
-        // await page.locator(`${dataCerrar}`).last().click();
         
         // Subir Solicitud de Prestamo Llena y Firmada
         const subirCartaPrestamoPromesa = page.waitForEvent('filechooser');
@@ -682,6 +678,9 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
+        // Esperar que el input de monto a desembolsar este visible
+        await page.waitForTimeout(5000);
+
         // Desembolsar la mitad de la linea, es decir, 100,000 pesos
         await page.getByText('RD$ 0.00').first().click();
         await page.locator('#form_MONTO_DESEMBOLSAR').click();
@@ -692,8 +691,6 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
 
         // Click fuera del checkbox
         await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
-
-        await page.waitForTimeout(5000);
 
         // Click a Desembolsar
         const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});

@@ -1,4 +1,8 @@
-# Playwright Tests para Coopedac app
+# Playwright Tests para Coopedac app  
+  
+## Instalación  
+npm install  
+npm install @playwright/test@latest
 
 **Antes de iniciar a correr los test**  
 

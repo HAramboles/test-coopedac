@@ -17,7 +17,7 @@ let nombre: string | null;
 let apellido: string | null;
 
 // Pruebas
-test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Socio', () => {
+test.describe.serial('Pruebas con el Estado de las Cuentas por Cobrar de un Socio', () => {
     test.beforeAll(async () => { // Antes de las pruebas
         // Crear el browser
         browser = await chromium.launch(browserConfig);
@@ -39,7 +39,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         nombreEmpresa = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridica'));
     });
 
-    // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
+    // Funcion para cerrar las paginas que se abren con los diferentes reportes 
     const CerrarPaginasReportes = async () => {
         context.on('page', async (page) => {
             await page.waitForTimeout(1000);
@@ -108,7 +108,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(botonImprimirEstado).toBeVisible();
         await botonImprimirEstado.click();
 
-        // Esperar que se abra una nueva pestaña
+        // Esperar que se abra una nueva ventana con el reporte 
         CerrarPaginasReportes();
     });
 
@@ -213,10 +213,7 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await botonRecibos.click();
 
         // Esperar que se abra una nueva ventana con el reporte 
-        const page1 = await context.newPage();
-        
-        // Cerrar la pagina con el reporte de todos los recibos
-        await page1.close();
+        CerrarPaginasReportes();
 
         // No dbe mostrarse fecha invalida en ninguno de los pagos
         await expect(page.getByText('Fecha inválida', {exact: true})).not.toBeVisible();
@@ -267,11 +264,8 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(botonImprimir).toBeVisible();
         await botonImprimir.click();
 
-        // Esperar que se abra una nueva pestaña con el reporte de la tabla de amortizacion
-        const page1 = await context.newPage();
-        
-        // Cerrar la pagina con el reporte de la tabla de amortizacion
-        await page1.close();
+        // Esperar que se abra una nueva ventana con el reporte 
+        CerrarPaginasReportes();
 
         // Debe regresar a la pagina de Estado de Cuentas por Cobrar
         await expect(page.locator('h1').filter({hasText: 'ESTADO DE CUENTAS POR COBRAR'})).toBeVisible();

@@ -39,7 +39,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Inputs para buscar las cuentas del socio
         buscadorPersona = page.locator(`${selectBuscar}`);
-        buscadorCuenta = page.locator('#rc_select_2');
+        buscadorCuenta = page.locator('#rc_select_81');
     });
 
     test('Ir a la opcion de Cobros de Oficina', async () => {

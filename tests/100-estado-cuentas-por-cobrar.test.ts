@@ -299,6 +299,22 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
         await expect(page.getByText(`${noData}`)).toBeVisible();
     });
 
+    test('Ver la cuenta de cobro del prestamo', async () => {
+        // Ir a la opcion de Cuentas de cobro
+        const cuentaCobro = page.getByText('Cuenta(s) de Cobro');
+        await expect(cuentaCobro).toBeVisible();
+        await cuentaCobro.click();
+
+        // La tabla de las cuentas de cobro debe estar visible
+        await expect(page.getByRole('columnheader', {name: 'Titular'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Número de cuenta'})).toBeVisible();
+        await expect(page.getByRole('columnheader', {name: 'Tipo de cuenta'})).toBeVisible();
+
+        // Deben mostrarse el titular y el tipo de cuenta
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
+    });
+
     test('Ver Tabla de Amortización', async () => {
         // Ir a la opcion de Tabla de Amortizacion
         const tablaAmortizacion = page.getByText('Ver Tabla de Amortización');

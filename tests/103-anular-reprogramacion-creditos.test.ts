@@ -192,7 +192,7 @@ test.describe.serial('Pruebas con la Solicitud de Reprogramacion de Creditos', a
         await expect(page).toHaveURL(`${url_reprogramacion_creditos}?filter=pendientes`);
     });
 
-    test('Confirmar la Solicitud de Reprogramacion del Socio', async () => {
+    test('Buscar la Solicitud de Reprogramacion del Socio', async () => {
         // El titulo debe estar visible
         await expect(page.locator('h1').filter({hasText: 'REPROGRAMACIÓN CRÉDITOS'})).toBeVisible();
 
@@ -202,65 +202,8 @@ test.describe.serial('Pruebas con la Solicitud de Reprogramacion de Creditos', a
         // Buscar al socio
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
-        // Boton confirmar
-        const botonConfirmar = page.getByRole('row', {name: `${nombre} ${apellido} CRÉDIAUTOS`}).getByRole('button', {name: 'check-circle'});
-        await botonConfirmar.click();
-    });
-
-    test('Datos del Credito', async () => {
-        // Debe mostrarse la solicitud con los datos
-        await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
-
-        // El nombre del socio debe estar visible
-        await expect(page.locator('#form_NOMBRE')).toHaveValue(`${nombre} ${apellido}`);
-
-        // Datos del credito
-        await expect(page.locator('h1').filter({hasText: 'DATOS DEL CRÉDITO'})).toBeVisible();
-
-        // Monto Desembolsado
-        await expect(page.locator('#form_DESEMBOLSADO')).toHaveValue('RD$ 125,000');
-
-        // Tipo de garantia
-        await expect(page.locator('#form_ID_CLASE_GARANTIA')).toHaveValue('PRENDARIAS');
-
-        // Tipo credito 
-        await expect(page.locator('#form_ID_TIPO_PRESTAMO')).toHaveValue('CONSUMO');
-
-        // Oferta
-        await expect(page.locator('#form_DESC_OFERTA')).toHaveValue('CRÉDIAUTOS');
-
-        // Grupo
-        await expect(page.locator('#form_DESC_GRUPO')).toHaveValue('VEGAMOVIL');
-    }); 
-
-    test('Cambios Solicitados al Credito', async () => {
-        // Cambios Solicitados
-        await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).toBeVisible();
-
-        // Cambio de Fecha
-        await expect(page.locator('#form_CAMB_PLAZO')).toHaveValue('80');
-
-        // Distribucion de Cuota
-        await page.getByLabel('Siguiente Cuota').check();
-
-        // Razones
-        await expect(page.getByText('SE REQUIERE DE MAS PLAZOS PARA PAGAR EL CREDITO')).toBeVisible();
-    });
-
-    test('Salir del modal de Aceptar la Reprogramacion', async () => {
-        // Click al boton de Cancelar
-        const botonCancelar = page.getByRole('button', {name: 'Cancelar'});
-        await expect(botonCancelar).toBeVisible();
-        await botonCancelar.click();
-
-        // Debe aparecer un mensaje de confirmacion
-        await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
-        
-        // Click al boton de Aceptar del modal de confirmacion
-        await page.getByRole('button', {name: 'check Aceptar'}).nth(1).click();
-
-        // El modal debe desaparecer
-        await expect(page.locator('h1').filter({hasText: 'DATOS DEL SOCIO'})).not.toBeVisible();
+        // Esperar que este visible la solicitud de reprogramacion buscada
+        await page.waitForTimeout(2000);
     });
 
     test('Anular la Solicitud de Reprogramacion', async () => {

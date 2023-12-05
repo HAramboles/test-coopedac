@@ -66,12 +66,12 @@ test.describe.serial('Pruebas con la Reimprimiseion de Cuadre de Caja', async ()
         await botonBuscar.click();
 
         // Aparece el cuadre de caja realizado anteriormente, con la caja y el usuario
-        await expect(page.getByRole('cell', {name: `${userCorrecto}`})).toBeVisible();
-        const usuarioCuadreCaja = page.getByRole('row', {name: `${userCuadreCaja}`});
+        await expect(page.getByRole('cell', {name: `${userCorrecto}`}).first()).toBeVisible();
+        const usuarioCuadreCaja = page.getByRole('row', {name: `${userCuadreCaja}`}).first();
         await expect(usuarioCuadreCaja).toBeVisible();
 
         // Click al boton de Imprimir
-        await usuarioCuadreCaja.locator(`${dataPrinter}`).click();
+        await usuarioCuadreCaja.locator(`${dataPrinter}`).first().click();
 
         // Se abren dos nuevas ventanas
 
