@@ -316,6 +316,9 @@ test.describe.serial('Crear Cuenta de Ahorros - Orden de Pago - Pruebas con los 
                 });
 
                 test('Las opciones con los tipos de captacion deben estar visibles', async () => {
+                    // Esperar que la pagina cargue
+                    await page.waitForTimeout(3000);
+                    
                     // Click al selector de tipos captacion
                     await expect(page.locator('#form').getByTitle('ORDEN DE PAGO')).toBeVisible();
                     await page.locator('#form').getByTitle('ORDEN DE PAGO').click();

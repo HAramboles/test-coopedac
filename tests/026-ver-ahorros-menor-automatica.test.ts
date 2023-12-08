@@ -104,6 +104,7 @@ test.describe.serial('Pruebas en el modo solo lectura para ver una cuenta', asyn
 
         // Esperar a que el servicio de busqueda de personas cargue
         await page.waitForResponse(`${servicio_busqueda_personas_editar}`);
+        await page.waitForTimeout(3000);
 
         // El titulo de editar cuenta debe estar visible
         await expect(page.locator('h1').filter({hasText: 'CUENTA DE AHORROS'})).toBeVisible();

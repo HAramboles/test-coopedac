@@ -285,7 +285,7 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     await botonClienteIntermediario.click();
 
                     // Los datos del socio deben agregarse
-                    await expect(page.getByRole('cell', {name: `${nombreJuridica}`})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombreJuridica}`, exact: true})).toBeVisible();
 
                     // Click al boton de Seleccionar
                     await page.getByText('Seleccionar').click();
@@ -470,8 +470,14 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_sesiones_transito}`);
 
+                    // El titulo principal dbe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'Sesiones en tránsito'})).toBeVisible();
+
                     // Digitar el nombre de la persona juridica
                     await page.locator(`${formBuscar}`).fill(`${nombreJuridica}`);
+
+                    // Esperar a que cargue la pagina
+                    await page.waitForTimeout(3000);
 
                     // Si la sesion no aparece en la pagina
                     if (await page.getByText(`${noData}`).isVisible()) {

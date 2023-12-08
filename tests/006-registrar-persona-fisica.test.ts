@@ -354,7 +354,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await page.locator('text=DOMINICANA').nth(0).click();
                     await expect(page.locator('#person').getByTitle('DOMINICANA')).toBeVisible();
 
-                    // El input de fecha de naFechaNacimiento debe ser requerido
+                    // El input de fecha de nacimiento debe ser requerido
                     const labelFechaNacimiento = page.getByTitle('Fecha de nacimiento');
                     await expect(labelFechaNacimiento).toHaveClass(`${inputRequerido}`);
             
@@ -393,7 +393,7 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     const campoDependientes = page.locator('#person_CANT_DEPENDIENTES');
                     await campoDependientes?.fill('4');
 
-                    // El input del apellido debe ser requerido
+                    // El input del ejecutivo debe ser requerido
                     const labelEjecutivo = page.getByTitle('Ejecutivo');
                     await expect(labelEjecutivo).toHaveClass(`${inputRequerido}`);
             

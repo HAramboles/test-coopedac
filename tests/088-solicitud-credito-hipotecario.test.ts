@@ -768,7 +768,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
         // Esperar que cargue la pagina
-        await page.waitForTimeout(5000);
+        await page.waitForTimeout(3000);
 
         // Debe estar en el primer paso de la solicitud
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();

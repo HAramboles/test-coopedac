@@ -268,8 +268,14 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_sesiones_transito}`);
 
+                    // El titulo principal debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'SESIONES EN TRÁNSITO'})).toBeVisible();
+
                     // Digitar el nombre de la persona 
                     await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+                    // Esperar que cargue la pagina
+                    await page.waitForTimeout(2000);
 
                     // Si la sesion no aparece en la pagina
                     if (await page.getByText(`${noData}`).isVisible()) {

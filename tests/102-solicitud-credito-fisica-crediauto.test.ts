@@ -691,6 +691,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
         await campoComentario.click();
+        await page.waitForTimeout(1000);
         await campoComentario.fill('Credito Aprobado');
         // Guardar Comentario
         await page.getByRole('button', {name: 'Guardar'}).click();

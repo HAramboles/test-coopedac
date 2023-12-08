@@ -130,6 +130,11 @@ test.describe.serial('Agregar Cargos a una Prestamo Desembolsado - Pruebas con l
     
         // Debe de colocarse automaticamente que es un seguro
         await expect(page.locator('(//INPUT[@type="radio"])[1]')).toBeChecked();
+
+        // Esperar a que carguen las opciones de aseguradoras
+        // const inputAseguradora = page.locator('#form_ID_ASEGURADORA');
+        // await inputAseguradora.click();
+        await page.waitForTimeout(2000);
     
         // Elegir una aseguradora
         await page.locator('#form_ID_ASEGURADORA').fill('SEGUROS');

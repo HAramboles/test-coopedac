@@ -304,6 +304,9 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                 });
 
                 test('Las opciones con los tipos de captacion deben estar visibles', async () => {
+                    // Esperar que la pagina cargue
+                    await page.waitForTimeout(3000);
+                    
                     // Click al selector de tipos captacion
                     await expect(page.locator('#form').getByTitle('AHORROS NORMALES')).toBeVisible();
                     await page.locator('#form').getByTitle('AHORROS NORMALES').click();

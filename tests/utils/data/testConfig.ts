@@ -1,6 +1,10 @@
 // Abrir el browser en una pantalla u otra
-const browserOneScreen = ['--window-position=100,0'];
-const browserSecondScreen = ['--window-position=-1500,-100'];
+
+// Variables de posicionamiento de la pantalla
+const posX:string = '-1500';
+const posY:string = '-100';
+
+const browserScreenPosition = [`--window-position=${posX},${posY}`];
 
 // Tamaño de la pantalla
 export const windowSizeLogin = {width: 1366, height: 720};
@@ -15,5 +19,5 @@ export const contextConfig = {
 // Configuracion del browser
 export const browserConfig = {
     headless: false,
-    args: browserSecondScreen,
+    args: browserScreenPosition,
 };

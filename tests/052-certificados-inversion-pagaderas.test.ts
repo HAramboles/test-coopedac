@@ -392,6 +392,9 @@ test.describe.serial('Certificados - Inversion Pagaderas - Pruebas con los difer
                 });
 
                 test('Las opciones con los tipos de captacion deben estar visibles', async () => {
+                    // Esperar que la pagina cargue
+                    await page.waitForTimeout(3000);
+                    
                     // Click al selector de tipos captacion
                     await expect(page.locator('#form').getByTitle('INVERSION PAGADERAS')).toBeVisible();
                     await page.locator('#form').getByTitle('INVERSION PAGADERAS').click();

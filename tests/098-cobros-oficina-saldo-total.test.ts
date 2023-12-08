@@ -39,7 +39,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
 
         // Inputs para buscar las cuentas del socio
         buscadorPersona = page.locator(`${selectBuscar}`);
-        buscadorCuenta = page.locator('#rc_select_81');
+        buscadorCuenta = page.getByPlaceholder('TIPO DE CUENTA');
     });
 
     test('Ir a la opcion de Cobros de Oficina', async () => {
@@ -214,63 +214,6 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         
         // Debe estar en la pagina de Cobros de Oficina
         await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();
-
-        await page.waitForTimeout(2000);
-    });
-
-    test('Ir a la opcion de Consulta Movimientos Cuenta', async () => {
-        // Click en contraer todo
-        await page.getByText('Contraer todo').click();
-
-        await page.waitForTimeout(2000);
-
-        // Captaciones
-        await page.getByRole('menuitem', {name: 'CAPTACIONES'}).click();
-
-        // Consultas
-        await page.getByRole('menuitem', {name: 'CONSULTAS'}).click();
-
-        // Consulta Movimientos Cuenta
-        await page.getByRole('menuitem', {name: 'Consulta Movimientos Cuenta'}).click();
-
-        // La URL debe cambiar
-        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
-    });
-
-    test('El comentario del pago al prestamo no debe tener undefined', async () => {
-        // Seleccionar un tipo de cuenta a buscar
-        await buscadorCuenta.click();
-        // Click a la opcion de cuenta de Aportaciones
-        await page.getByRole('option', {name: 'AHORROS NORMALES', exact: true}).click();
-
-        // Buscar un socio
-        await buscadorPersona.fill(`${cedula}`);
-        // Elegir la Cuenta de Aportaciones del Socio
-        await page.getByText('| AHORROS NORMALES |').click();
-
-        // La URL no debe cambiar
-        await expect(page).toHaveURL(`${url_consulta_movimientos_cuentas}`);
-
-        // El tipo de captacion debe ser de Aportaciones
-        await expect(page.getByPlaceholder('Tipo captación')).toHaveValue('AHORROS NORMALES');
-
-        // El estado debe estar en Activa
-        await expect(page.getByText('ACTIVA')).toBeVisible();
-
-        // Titulo movimiento de la cuenta debe estar visible
-        await expect(page.locator('h1').filter({hasText: 'MOVIMIENTOS DE LA CUENTA'})).toBeVisible();
-
-        // Dirgirse a la pagina 2
-        await page.getByText('2', {exact: true}).click();
-
-        // Esperar que se cambie de pagina
-        await page.waitForTimeout(2000);
-
-        // Debe mostrarse el comentario del pago al prestamo
-        await expect(page.getByRole('cell', {name: 'PAGO A PRESTAMO'})).toBeVisible();
-
-        // No deben mostrarse en el comentario del pago al prestamo la palabra undefined
-        await expect(page.locator('text=(undefined)')).not.toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

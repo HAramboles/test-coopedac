@@ -566,6 +566,9 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
 
             // Cerrar las paginas que se abren con los diferentes reportes
             CerrarPaginasReportes();
+
+            // Debe regresar a la pagina de solciitud de credito
+            await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
         });
 
         test.afterAll(async () => { // Despues de las pruebas

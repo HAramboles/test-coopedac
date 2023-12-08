@@ -286,6 +286,9 @@ test.describe.serial('Remover un Firmante de la cuenta de Orden de Pago - Prueba
                 });
 
                 test('Las opciones con los tipos de captacion deben estar visibles', async () => {
+                    // Esperar que la pagina cargue
+                    await page.waitForTimeout(3000);
+                    
                     // Click al selector de tipos captacion
                     await expect(page.locator('#form').getByTitle('ORDEN DE PAGO')).toBeVisible();
                     await page.locator('#form').getByTitle('ORDEN DE PAGO').click();

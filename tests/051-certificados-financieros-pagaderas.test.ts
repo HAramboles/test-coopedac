@@ -476,6 +476,9 @@ test.describe.serial('Certificados - Financieros Pagaderas - Pruebas con los dif
                 });
 
                 test('Las opciones con los tipos de captacion deben estar visibles', async () => {
+                    // Esperar que la pagina cargue
+                    await page.waitForTimeout(3000);
+                    
                     // Click al selector de tipos captacion
                     await expect(page.locator('#form').getByTitle('FINANCIEROS PAGADERAS')).toBeVisible();
                     await page.locator('#form').getByTitle('FINANCIEROS PAGADERAS').click();

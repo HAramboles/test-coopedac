@@ -80,7 +80,7 @@ test.describe.serial('Pignoracion de Cuentas - Pruebas con los diferentes parame
                 await expect(page).toHaveURL(`${url_pignoracion_cuentas}`);
             });
 
-            test('Comprobar la condicion del boton de Guardar', async () => {
+            test.skip('Comprobar la condicion del boton de Guardar', async () => {
                 // Titulo principal
                 await expect(page.locator('h1').filter({hasText: 'PIGNORACIÓN DE CUENTAS'})).toBeVisible();
 

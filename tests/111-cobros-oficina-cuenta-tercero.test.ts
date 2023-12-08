@@ -200,7 +200,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await buscarCuenta.fill(`${nombreTercero} ${apellidoTercero}`);
 
         // Elegir la cuenta de Ahorros Normales
-        await page.getByRole('option', {name: 'AHORROS NORMALES |'}).click();
+        await page.getByRole('option', {name: 'AHORROS NORMALES | '}).locator(`text=${nombreTercero} ${apellidoTercero}`).click();
 
         // Esperar que la cuenta elegida se agregue
         await page.waitForTimeout(2000);

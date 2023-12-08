@@ -69,7 +69,7 @@ test.describe.serial('Pruebas con la Reimpresion de Desembolso', () => {
         await expect(page.getByText('300,000.00')).toBeVisible();
 
         // Plazo
-        await expect(page.getByText('48')).toBeVisible();
+        await expect(page.getByText('48', {exact: true})).toBeVisible();
 
         // Cuota
         await expect(page.getByText('3,750.00')).toBeVisible();

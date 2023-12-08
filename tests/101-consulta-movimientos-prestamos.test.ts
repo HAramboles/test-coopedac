@@ -56,7 +56,7 @@ test.describe.serial('Pruebas con la Consulta de los Movimientos de un Prestamo'
         // Buscar un socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir al socio
-        await page.locator(`text=${nombre} ${apellido}`).click();
+        await page.getByText(`${nombre} ${apellido}`).click();
 
         // Prestamo
         await expect(page.locator('#form_PRESTAMOS')).toHaveValue('PRESTAMOS');

@@ -40,7 +40,7 @@ let numerosMatriculaHipoteca1 = generarNumerosAleatorios(4);
 let numerosMatriculaHipoteca2 = generarNumerosAleatorios(4);
 
 // Comentario del rechazo de la solicitud
-const razonRechazo:string = 'Debe saldar los demas prestamos que posee';
+const razonRechazo:string = 'DEBE SALDAR LOS DEMAS PRESTAMOS QUE POSEE';
 
 // Pruebas
 test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
@@ -840,7 +840,7 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
         await expect(modalComentarioRechazo).toBeVisible();
 
         // Debe aparecer el comentario de rechazo
-        await expect(page.locator(`${razonRechazo}`)).toBeVisible();
+        await expect(page.locator(`text=${razonRechazo}`)).toBeVisible();
 
         // Click al boton de Aceptar
         await page.getByRole('button', {name: 'check Aceptar'}).click();
