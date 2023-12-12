@@ -217,24 +217,6 @@ const EscenariosVerProcentajeCobros: VerProcentajeCobros[] = [
     }
 ];
 
-// Interfaz para Eliminar Movimientos en Consulta Movimientos Cuentas
-interface EliminarMovimiento {
-    ID_OPERACION: '' | 10 | 34
-}
-
-const EscenariosEliminarMovimientos: EliminarMovimiento[] = [
-    {
-        ID_OPERACION: ''
-    },
-    {
-        ID_OPERACION: 10
-    },
-    {
-        ID_OPERACION: 34
-
-    }
-];
-
 export {
     EscenariosPruebaCrearPersonas,
     EscenariosPruebaEditarPersonas,
@@ -247,6 +229,5 @@ export {
     EscenariosPruebasAgregarEliminarPignoracion,
     EscenariosEliminarSolicitudCredito,
     EscenariosReimpresionResolucionAprobatoria,
-    EscenariosVerProcentajeCobros,
-    EscenariosEliminarMovimientos
+    EscenariosVerProcentajeCobros
 };

@@ -436,103 +436,103 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=7`);
 
-        // // Click al boton de agregar garantia
-        // await page.getByRole('button', {name: 'Agregar Garantía'}).click();
+        // Click al boton de agregar garantia
+        await page.getByRole('button', {name: 'Agregar Garantía'}).click();
 
-        // // Debe salir un modal
-        // await expect(page.locator('text=SELECCIONAR OPCIÓN')).toBeVisible();
+        // Debe salir un modal
+        await expect(page.locator('text=SELECCIONAR OPCIÓN')).toBeVisible();
 
-        // // Click a la opcion de nueva garantia
-        // await page.locator('text=Nueva garantía').click();
+        // Click a la opcion de nueva garantia
+        await page.locator('text=Nueva garantía').click();
 
-        // // Debe salir un modal par agregar la garantia
-        // const modalAgregarGarantia =page.locator('#form').getByRole('heading', {name: 'Garantías'});
-        // await expect(modalAgregarGarantia).toBeVisible();
+        // Debe salir un modal par agregar la garantia
+        const modalAgregarGarantia =page.locator('#form').getByRole('heading', {name: 'Garantías'});
+        await expect(modalAgregarGarantia).toBeVisible();
 
-        // // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
-        // await page.getByRole('combobox').click();
-        // await page.getByText('HIPOTECA', {exact: true}).click();
+        // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
+        await page.getByRole('combobox').click();
+        await page.getByText('HIPOTECA', {exact: true}).click();
 
-        // // Elegir que el socio es propietario de la garantia
-        // await page.getByRole('checkbox').click();
+        // Elegir que el socio es propietario de la garantia
+        await page.getByRole('checkbox').click();
 
-        // // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
-        // await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
+        // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
+        await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
 
-        // // Valor tasado
-        // const valorTasado = page.getByPlaceholder('VALOR TASADO');
-        // await valorTasado.click();
-        // await valorTasado.fill(`RD$ ${cantMonto}`);
+        // Valor tasado
+        const valorTasado = page.getByPlaceholder('VALOR TASADO');
+        await valorTasado.click();
+        await valorTasado.fill(`RD$ ${cantMonto}`);
 
-        // // Valor admisible
-        // await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 240,000');
+        // Valor admisible
+        await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 240,000');
 
-        // // Agregar atributos a la garantia
-        // await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
+        // Agregar atributos a la garantia
+        await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
 
-        // // Los atributos de la garantia de hipoteca deben estar visible
-        // await expect(page.locator('text=SUPERFICIE')).toBeVisible(); 
-        // await expect(page.locator('text=MATRICULA')).toBeVisible();
+        // Los atributos de la garantia de hipoteca deben estar visible
+        await expect(page.locator('text=SUPERFICIE')).toBeVisible(); 
+        await expect(page.locator('text=MATRICULA')).toBeVisible();
 
-        // // Superficie
-        // await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').first().click();
-        // await page.getByPlaceholder('Valor Atributo').fill('Terreno');
+        // Superficie
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').first().click();
+        await page.getByPlaceholder('Valor Atributo').fill('Terreno');
 
-        // // Matricula
-        // await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').last().click();
-        // await page.getByPlaceholder('VALOR ATRIBUTO').fill(`${numerosMatriculaHipoteca1}`);
+        // Matricula
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').last().click();
+        await page.getByPlaceholder('VALOR ATRIBUTO').fill(`${numerosMatriculaHipoteca1}`);
 
-        // // Click en guardar
-        // await page.getByRole('button', {name: 'save Guardar'}).click();
+        // Click en guardar
+        await page.getByRole('button', {name: 'save Guardar'}).click();
 
-        // // Debe aparecer una alerta de que la garantia se guardo correctamente
-        // await expect(page.locator('text=Garantías del préstamo guardadas exitosamente.')).toBeVisible();
+        // Debe aparecer una alerta de que la garantia se guardo correctamente
+        await expect(page.locator('text=Garantías del préstamo guardadas exitosamente.')).toBeVisible();
 
-        // // El modal de agregar garantia debe desaparecer
-        // await expect(modalAgregarGarantia).not.toBeVisible();
+        // El modal de agregar garantia debe desaparecer
+        await expect(modalAgregarGarantia).not.toBeVisible();
 
-        // // Editar la garantia agregada
+        // Editar la garantia agregada
         
-        // // Click al boton de editar
-        // const botonEditar = page.locator(`${dataEdit}`);
-        // await expect(botonEditar).toBeVisible();
-        // await botonEditar.click();
+        // Click al boton de editar
+        const botonEditar = page.locator(`${dataEdit}`);
+        await expect(botonEditar).toBeVisible();
+        await botonEditar.click();
 
-        // // El modal de agregar garantia aparece nuevamente
-        // await expect(modalAgregarGarantia).toBeVisible();
+        // El modal de agregar garantia aparece nuevamente
+        await expect(modalAgregarGarantia).toBeVisible();
 
-        // // Editar el valor tasado
-        // await valorTasado.click();
-        // await valorTasado.clear();
-        // await valorTasado.fill('RD$ 400000');
+        // Editar el valor tasado
+        await valorTasado.click();
+        await valorTasado.clear();
+        await valorTasado.fill('RD$ 400000');
 
-        // // Valor admisible
-        // await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 320,000');
+        // Valor admisible
+        await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 320,000');
 
-        // // Editar la matricula
-        // await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').first().click();
-        // await page.getByPlaceholder('VALOR ATRIBUTO').fill(`${numerosMatriculaHipoteca2}`);
+        // Editar la matricula
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').first().click();
+        await page.getByPlaceholder('VALOR ATRIBUTO').fill(`${numerosMatriculaHipoteca2}`);
 
-        // // Esperar a que se agregue el nuevo valor de la matricula
-        // await page.waitForTimeout(2000);
+        // Esperar a que se agregue el nuevo valor de la matricula
+        await page.waitForTimeout(2000);
 
-        // // Click fuera del input
-        // await page.locator('text=ATRIBUTOS DE LA GARANTÍA').click();
+        // Click fuera del input
+        await page.locator('text=ATRIBUTOS DE LA GARANTÍA').click();
         
-        // // Esperar que se actualice el valor de la matricula
-        // await page.waitForTimeout(2000);
+        // Esperar que se actualice el valor de la matricula
+        await page.waitForTimeout(2000);
 
-        // // Click al boton de Actualizar
-        // const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
-        // await expect(botonActualizar).toBeVisible();
-        // await botonActualizar.click();
+        // Click al boton de Actualizar
+        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+        await expect(botonActualizar).toBeVisible();
+        await botonActualizar.click();
 
-        // // El modal de agregar garantia debe desaparecer nuevamente
-        // await expect(modalAgregarGarantia).not.toBeVisible();
+        // El modal de agregar garantia debe desaparecer nuevamente
+        await expect(modalAgregarGarantia).not.toBeVisible();
 
-        // // Solo debe mostrarse una garantia
-        // await expect(page.getByRole('cell', {name: 'HIPOTECA'})).toBeVisible();
-        // await expect(page.getByRole('cell', {name: 'RD$ 400,000.00'})).toBeVisible();
+        // Solo debe mostrarse una garantia
+        await expect(page.getByRole('cell', {name: 'HIPOTECA'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'RD$ 400,000.00'})).toBeVisible();
 
         // Esperar a que cargue la pagina
         await page.waitForTimeout(3000);
@@ -994,6 +994,16 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
         await expect(botonImprimirContrato).toBeVisible();
+
+        // Debe estar visible una tabla con los datos del prestamo
+        await expect(page.getByText(`RD$ ${cantMonto}`).first()).toBeVisible();
+        await expect(page.getByText('RD$ 3,750.00')).toBeVisible();
+        await expect(page.getByText('Plazo:48 Meses')).toBeVisible();
+        await expect(page.getByText('Tasa:15.00%')).toBeVisible();
+        await expect(page.getByText('DEPOSITO A CUENTA')).toBeVisible();
+        await expect(page.getByText('Tipo de Crédito:HIPOTECARIOS')).toBeVisible();
+        //await expect(page.getByText('Oferta:HIPOTECARIA')).toBeVisible();
+        await expect(page.getByText('Grupo:SIN GARANTIA')).toBeVisible();
 
         // La tabla de cuentas de cobros debe estar visible
         await expect(page.getByRole('row', {name: 'Principal Tipo de cuenta No. Cuenta Titular Acciones'})).toBeVisible();

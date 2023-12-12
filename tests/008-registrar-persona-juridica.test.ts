@@ -252,6 +252,16 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     // El titulo de datos generales debe estra visible
                     await expect(page.locator('h1').filter({hasText: 'DATOS GENERALES'})).toBeVisible();
 
+                    // Codigo de la persona
+                    const codigoPersona = page.locator('#legalPerson_ID_PERSONA');
+                    await expect(codigoPersona).toBeVisible();
+                    await expect(codigoPersona).toBeDisabled();
+
+                    // Categoria Actual de la persona
+                    const categoriaActual = page.locator('#legalPerson_DESC_CATEGORIA');
+                    await expect(categoriaActual).toBeVisible();
+                    await expect(categoriaActual).toBeDisabled();
+
                     // El input Razon Social debe ser requerido
                     const labelRazonSocial = page.getByTitle('Razón Social');
                     await expect(labelRazonSocial).toHaveClass(`${inputRequerido}`);

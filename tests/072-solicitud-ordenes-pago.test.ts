@@ -65,14 +65,23 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         // Buscar un socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
 
+        // Solo debe mostrarse la cuenta de Orden de Pago del Socio
+        await expect(page.getByRole('option', {name: 'ORDEN DE PAGO'})).toBeVisible();
+        await expect(page.getByRole('option', {name: 'AHORROS NORMALES'})).not.toBeVisible();
+        await expect(page.getByRole('option', {name: 'AHORROS POR NOMINA'})).not.toBeVisible();
+        await expect(page.getByRole('option', {name: 'APORTACIONES'})).not.toBeVisible();
+
         // Elegir al socio buscado
         await page.getByText(`${nombre} ${apellido}`).click();
 
-        // La cedula del socio debe estar visible
-        await expect(page.locator('#form_DOCUMENTO_IDENTIDAD_SOLICITANTE')).toHaveValue(`${cedula}`);
-
         // El correo del socio debe estar visible
-        await expect(page.locator('#form_CORREO_SOLICITANTE')).toHaveValue(`${correo}@GMAIL.COM`);
+        await expect(page.locator('#form_EMAIL')).toHaveValue(`${correo}@GMAIL.COM`);
+
+        // Seccion detalles de la cuenta
+        await expect(page.getByText('Detalles de la cuenta:')).toBeVisible();
+
+        // Descripcion de la cuenta
+        await expect(page.locator('#form_DESC_CUENTA')).toHaveValue('ORDEN DE PAGO');
 
         // Nombre Chequera
         await page.locator('#form_CHECKER_NAME').fill('Chequera 123');
@@ -89,7 +98,7 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         await secHasta.fill('10');
 
         // Titulo formato de ordenes
-        await expect(page.locator('h1').filter({hasText: 'FORMATO DE ORDENES A SOLICITAR'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'Formato cheques:'})).toBeVisible();
 
         // Formato Copia
         await expect(page.getByText('Formato Copia')).toBeVisible();
@@ -141,6 +150,15 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
 
         // Click al boton de Generar Reporte
         await generarReporte.click();
+
+        // Se abre una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
+
+        // Cerrar la pagina con el reporte
+        await page1.close();
+
+        // Debe regresar a la pagina de Solicitud de Ordenes de Pago
+        await expect(page.locator('h1').filter({hasText: 'SOLICITUD DE ORDENES DE PAGO'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

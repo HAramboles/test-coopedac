@@ -268,31 +268,25 @@ test.describe.serial('Pruebas con Transacciones de Caja - Retiro - Cuenta de Aho
                     // La URL debe cambiar
                     await expect(page).toHaveURL(`${url_sesiones_transito}`);
 
-                    // El titulo principal debe estar visible
-                    await expect(page.locator('h1').filter({hasText: 'SESIONES EN TRÁNSITO'})).toBeVisible();
+                    // El titulo principal dbe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'Sesiones en tránsito'})).toBeVisible();
 
-                    // Digitar el nombre de la persona 
-                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+                    // Click al boton de Actualizar
+                    const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+                    await expect(botonActualizar).toBeVisible();
+                    await botonActualizar.click();
 
-                    // Esperar que cargue la pagina
+                    // Esperar a que cargue la pagina
                     await page.waitForTimeout(2000);
 
-                    // Si la sesion no aparece en la pagina
-                    if (await page.getByText(`${noData}`).isVisible()) {
-                        // Terminar con el test
-                        await page.close();
-                        await context.close();
+                    // Digitar el nombre de la persona juridica
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
-                    // Si la sesion aparece en la pagina    
-                    } else if (await page.getByText(`${noData}`).isHidden()) {
-                        // Click al boton de Actualizar
-                        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
-                        await expect(botonActualizar).toBeVisible();
-                        await botonActualizar.click();
+                    // Esperar a que cargue la pagina
+                    await page.waitForTimeout(3000);
 
-                        // La sesion no debe aparecer en la pagina
-                        await expect(page.getByRole('row', {name: `${nombre} ${apellido}`})).toBeVisible();
-                    }
+                    // La sesion no debe aparecer en la pagina
+                    await expect(page.getByText(`${noData}`)).toBeVisible();
                 });
             };
 

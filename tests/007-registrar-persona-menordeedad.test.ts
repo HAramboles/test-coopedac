@@ -267,8 +267,11 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             
                     // El titulo de persona expuesta politicamente debe estar visible
                     await expect(page.locator('h1').filter({hasText: 'PERSONA EXPUESTA POLÍTICAMENTE'})).toBeVisible(); 
-                    
+
                     // No se puede agregar Peps a un menor de edad
+
+                    // El boton de Agregar Peps debe estar deshabilitado
+                    // await expect(page.getByRole('button', {name: 'Agregar Peps'})).toBeDisabled();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();
@@ -394,11 +397,12 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     guardarContinuar();
                 });
             
-                test('Registro de Persona Fisica - Menor de Edad - Relacionados', async () => {
-                    test.slow();
-                    
+                test('Registro de Persona Fisica - Menor de Edad - Relacionados', async () => {                    
                     // La url debe cambiar
                     await expect(page).toHaveURL(`${url_registro_persona}persona_fisica/create?step=6`);
+
+                    // Esperar que la pagina cargue
+                    await page.waitForTimeout(1000);
             
                     // El titulo de relacionados del socio debe estar visible 
                     await expect(page.locator('h1').filter({hasText: 'RELACIONADOS DEL SOCIO'})).toBeVisible();

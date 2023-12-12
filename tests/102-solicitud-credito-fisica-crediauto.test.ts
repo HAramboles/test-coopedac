@@ -440,55 +440,51 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=7`);
 
-        // Cerrar las alertas que aparecen
-        await page.locator(`${dataCerrar}`).last().click();
-        await page.locator(`${dataCerrar}`).last().click();
+        // Click al boton de agregar garantia
+        await page.getByRole('button', {name: 'Agregar Garantía'}).click();
 
-        // // Click al boton de agregar garantia
-        // await page.getByRole('button', {name: 'Agregar Garantía'}).click();
+        // Debe salir un modal
+        await expect(page.locator('text=SELECCIONAR OPCIÓN')).toBeVisible();
 
-        // // Debe salir un modal
-        // await expect(page.locator('text=SELECCIONAR OPCIÓN')).toBeVisible();
+        // Click a la opcion de nueva garantia
+        await page.locator('text=Nueva garantía').click();
 
-        // // Click a la opcion de nueva garantia
-        // await page.locator('text=Nueva garantía').click();
+        // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
+        await page.getByRole('combobox').click();
+        await page.getByText('GARANTIA VEHICULO', {exact: true}).click();
 
-        // // Debe salir un modal para agregar la garantia y elegir el tipo de garantia
-        // await page.getByRole('combobox').click();
-        // await page.getByText('GARANTIA VEHICULO', {exact: true}).click();
+        // Elegir que el socio es propietario de la garantia
+        await page.getByRole('checkbox').click();
 
-        // // Elegir que el socio es propietario de la garantia
-        // await page.getByRole('checkbox').click();
+        // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
+        await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
 
-        // // Luego de seleccionar que el socio es el propietario de la garantia debe salir su nombre
-        // await expect(page.locator(`text=${nombre} ${apellido}`)).toBeVisible();
+        // Valor tasado
+        const valorTasado = page.getByPlaceholder('VALOR TASADO');
+        await valorTasado.click();
+        await valorTasado.fill('RD$ 125000');
 
-        // // Valor tasado
-        // const valorTasado = page.getByPlaceholder('VALOR TASADO');
-        // await valorTasado.click();
-        // await valorTasado.fill('RD$ 125000');
+        // Agregar atributos a la garantia
+        await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
 
-        // // Agregar atributos a la garantia
-        // await expect(page.locator('text=ATRIBUTOS DE LA GARANTÍA')).toBeVisible();
+        // Chasis
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
+        await page.getByPlaceholder('Valor Atributo').fill(`${numerosChasis}`);
 
-        // // Chasis
-        // await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
-        // await page.getByPlaceholder('Valor Atributo').fill(`${numerosChasis}`);
+        // Placa
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
+        await page.getByPlaceholder('Valor Atributo').fill(`${numerosPlaca}`);
 
-        // // Placa
-        // await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(0).click();
-        // await page.getByPlaceholder('Valor Atributo').fill(`${numerosPlaca}`);
+        // Modelo
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(1).click();
+        await page.getByPlaceholder('Valor Atributo').fill('350Z');
 
-        // // Modelo
-        // await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(1).click();
-        // await page.getByPlaceholder('Valor Atributo').fill('350Z');
+        // Marca
+        await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(2).click();
+        await page.getByPlaceholder('Valor Atributo').fill('NISSAN');
 
-        // // Marca
-        // await page.locator('(//div[@class="editable-cell-value-wrap editable-cell-value-wrap-bordered undefined "])').nth(2).click();
-        // await page.getByPlaceholder('Valor Atributo').fill('NISSAN');
-
-        // // Click en guardar
-        // await page.getByRole('button', {name: 'save Guardar'}).click();
+        // Click en guardar
+        await page.getByRole('button', {name: 'save Guardar'}).click();
 
         // Esperar a que cargue la pagina
         await page.waitForTimeout(3000);
@@ -758,6 +754,16 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // El usuario que aprobro debe estar visible
         await expect(page.locator(`${usuarioAproboSolicitud}`)).toHaveValue(`${userCorrectoUpperCase}`);
+
+        // Debe estar visible una tabla con los datos del prestamo
+        await expect(page.getByText(`RD$ ${cantMonto}`).first()).toBeVisible();
+        await expect(page.getByText('RD$ 2,461.21')).toBeVisible();
+        await expect(page.getByText('Plazo:60 Meses')).toBeVisible();
+        await expect(page.getByText('Tasa:15.64%')).toBeVisible();
+        await expect(page.getByText('DEPOSITO A CUENTA')).toBeVisible();
+        await expect(page.getByText('Tipo de Crédito:CONSUMO')).toBeVisible();
+        //await expect(page.getByText('Oferta:CRÉDIAUTOS')).toBeVisible();
+        await expect(page.getByText('Grupo:VEGAMOVIL')).toBeVisible();
 
         // La cuenta de cobro debe estar visible
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();

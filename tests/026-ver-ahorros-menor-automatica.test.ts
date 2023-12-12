@@ -154,6 +154,9 @@ test.describe.serial('Pruebas en el modo solo lectura para ver una cuenta', asyn
         // Nombre del firmante
         await expect(page.getByRole('row', {name: `${nombreFirmante} ${apellidoFirmante}`})).toBeVisible();
 
+        // Debe estar la firma de la madre
+        await expect(page.locator('text=MADRE')).toBeVisible();
+
         // Debe tener una firma condicional
         await expect(page.locator('text=(O) FIRMA CONDICIONAL')).toBeVisible();
 

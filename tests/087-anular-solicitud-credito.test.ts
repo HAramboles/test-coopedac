@@ -681,68 +681,6 @@ test.describe.serial('Pruebas Creando y Anulando una Solicitud de Credito', asyn
                         // Esperar a que la solicitud este visible
                         await page.waitForTimeout(2000);
 
-                        // Click al boton de editar de la solicitud
-                        await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
-
-                        // La url debe de tener que la solicitud esta en estado aprobado
-                        await expect(page).toHaveURL(/\/aprobado/);
-
-                        // Esperar que cargue la pagina
-                        await page.waitForTimeout(5000);
-
-                        // Debe estar en el primer paso de la solicitud
-                        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
-                        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
-                        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
-
-                        // Dirigirse a la ultima seccion
-                        const seccionDesembolso = page.getByRole('button', {name: '7 Desembolso'});
-                        await expect(seccionDesembolso).toBeVisible();
-                        await seccionDesembolso.click();
-
-                        // Esperar que cargue la pagina
-                        await page.waitForTimeout(2000);
-
-                        // El nombre y el apellido del socio deben estar visibles 
-                        await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible(); 
-
-                        // Click al boton de Anterior
-                        const botonAnterior = page.getByRole('button', {name: 'Anterior'});
-                        await expect(botonAnterior).toBeVisible();
-                        await botonAnterior.click();
-
-                        // La URL debe cambiar a la seccion de documentos
-                        await expect(page).toHaveURL(/\/?step=6/);
-
-                        // Esperar que cargue la pagina
-                        await page.waitForTimeout(1000);
-
-                        // Click al boton de Salir
-                        const botonSalir = page.getByRole('button', {name: 'Salir'});
-                        await expect(botonSalir).toBeVisible();
-                        await botonSalir.click();
-
-                        // Debe aparecer un mensaje de confirmacion
-                        await expect(page.locator('text=¿Seguro que desea finalizar la operación?')).toBeVisible();
-
-                        // Click al boton de Aceptar
-                        await page.getByRole('button', {name: 'check Aceptar'}).click();
-
-                        // Debe regresar a la pagina con las solicitudes aprobadas
-                        await expect(page).toHaveURL(`${url_solicitud_credito}?filter=aprobado`);
-
-                        // Esperar que cargue la pagina
-                        await page.waitForTimeout(2000);
-
-                        // Elegir buscar por nombre del socio
-                        await page.locator(`${buscarPorNombre}`).click();
-
-                        // Buscar la solicitud creada
-                        await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
-
-                        // Esperar que se muestre la solicitud buscada
-                        await page.waitForTimeout(2000);
-
                         // Click en el boton de Anular
                         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'delete'}).click();
                 

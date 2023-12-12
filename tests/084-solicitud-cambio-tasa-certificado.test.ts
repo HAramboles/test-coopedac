@@ -94,7 +94,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await botonAgregar.click();
 
         // Debe salir un mensaje de error
-        await expect(page.getByText('Nueva Tasa es requerido')).toBeVisible();
+        await expect(page.getByText('Tasa Nueva es requerido.')).toBeVisible();
 
         // Agregar una Nueva Tasa
         await page.locator('#form_NUEVA_TASA').fill('10');
@@ -239,8 +239,20 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await expect(botonGuardar).toBeVisible();
         await botonGuardar.click();
 
-        // Debe salir un modal de confirmacion
-        await expect(page.locator('text=Solicitud de cambios productos almacenado exitosamente.')).toBeVisible();
+        // Aparece un modal de confirmacion
+        await expect(page.getByText('¿Desea guardar los cambios?')).toBeVisible();
+
+        // Click al boton de Aceptar
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // Se abre una nueva pestaña con el reporte
+        const page1 = await context.waitForEvent('page');
+
+        // Cerrar la pagina con el reporte
+        await page1.close();
+
+        // Debe regresar a la pagina y tiene que estar un modal de confirmacion
+        await expect(page.locator('text=Se ha(n) realizado la(s) solicitud(es) correctamente.')).toBeVisible();
 
         // Click en Aceptar
         await page.locator('button').filter({hasText: 'Aceptar'}).click();

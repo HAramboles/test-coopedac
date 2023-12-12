@@ -10,7 +10,8 @@ import {
     dataVer,
     formBuscar,
     buscarPorNombre,
-    crearBuscarPorCedula
+    crearBuscarPorCedula,
+    noData
 } from './utils/data/inputsButtons';
 import { url_base, url_solicitud_credito } from './utils/dataPages/urls';
 import { diaActualFormato, unMesDespues, diaSiguiente, diaAnterior } from './utils/functions/fechas';
@@ -611,6 +612,24 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // El boton de firma debe estar visible
+        const botonVerFirmas = page.locator('text=Ver firmas');
+        await expect(botonVerFirmas).toBeVisible();
+
+        // Dirigirse al tercer paso
+        const seccionCargos = page.getByRole('button', {name: '3 Cargos Del Préstamo'});
+        await expect(seccionCargos).toBeVisible();
+        await seccionCargos.click();
+
+        // El titulo del tercer paso debe estar visible
+        await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
+
+        // Esperar que se muestre que no hay datos en la tabla
+        await page.waitForTimeout(1000);
+
+        // En la tabla no deben de haber datos
+        await expect(page.locator(`text=${noData}`)).toBeVisible();
     
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '7 Desembolso'});
@@ -632,6 +651,16 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
         await expect(botonImprimirContrato).toBeVisible();
+
+        // Debe estar visible una tabla con los datos del prestamo
+        await expect(page.getByText(`RD$ ${cantMonto}`).first()).toBeVisible();
+        await expect(page.getByText('RD$ 877.43')).toBeVisible();
+        await expect(page.getByText('Plazo:24 Meses')).toBeVisible();
+        await expect(page.getByText('Tasa:5.00%')).toBeVisible();
+        await expect(page.getByText('DEPOSITO A CUENTA')).toBeVisible();
+        await expect(page.getByText('Tipo de Crédito:CONSUMO')).toBeVisible();
+        //await expect(page.getByText('Oferta:CRÉDITO GERENCIAL / AHORROS -1M')).toBeVisible();
+        await expect(page.getByText('Grupo:SIN GARANTIA')).toBeVisible();
 
         // La tabla de cuentas de cobros debe estar visible
         await expect(page.getByRole('row', {name: 'Principal Tipo de cuenta No. Cuenta Titular Acciones'})).toBeVisible();

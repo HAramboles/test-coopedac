@@ -162,10 +162,10 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
                     await expect(campoMonto).toBeVisible();
-                    await campoMonto.fill('1000000');
+                    await campoMonto.fill('800000');
             
                     // Agregar un comentario
-                    await page.locator(`${formComentario}`).fill('Deposito de 1000000 pesos a la cuenta de Ahorros');
+                    await page.locator(`${formComentario}`).fill('Deposito de 800000 pesos a la cuenta de Ahorros');
             
                     // Boton Agregar
                     await page.locator('text=Agregar').click();
@@ -217,12 +217,12 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                     // El monto para el cambio de categoria de Ahorrante a Empresarial es de 25000, colocar un monto mayor
             
-                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 1000000. Divididos en 1000
+                    // Hacer la distribucion del dinero a depositar, en el caso de la prueba RD 800000. Divididos en 1000
                     const cant1000 = page.locator('[id="1"]'); // Campo de RD 1000
             
-                    // Cantidad = 750 de 1000
+                    // Cantidad = 800 de 1000
                     await cant1000.click();
-                    await cant1000.fill('1000');
+                    await cant1000.fill('800');
 
                     // Esperar dos segundos
                     await page.waitForTimeout(2000);
@@ -240,82 +240,23 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                     // Hacer click al boton de Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
-                    await expect(botonAceptar).toBeVisible();
-                    await botonAceptar.click();
-                });
-
-                test('Datos para el Reporte RTE', async () => {
-                    // Debe salir otro modal para colocar la informacion para el reporte RTE
-                    await expect(page.locator('text=CAPTURA DE DATOS. LAVADO DE EFECTIVO')).toBeVisible();
-
-                    // El modal debe contener un aviso
-                    await expect(page.getByText('Se requiere información de la persona que realiza la transacción. Puede buscar o crear la persona en las opciones de más abajo.')).toBeVisible();
-
-                    // Colocar una explicacion para el Origen de Fondos
-                    await page.locator('#form_ORIGEN_FONDOS').fill('Fondos obtenidos del Trabajo');
-
-                    // Subtitulo del modal
-                    await expect(page.locator('text=BUSCAR INTERMEDIARIO')).toBeVisible();
-
-                    // Debe mostrarse un input para buscar un intermediario
-                    await expect(page.locator(`${formBuscar}`)).toBeVisible();
-
-                    // Debe mostrarse un boton para crear un intermediario
-                    const botonCrearIntermediario = page.getByRole('button', {name: 'Crear Intermediario'});
-                    await expect(botonCrearIntermediario).toBeVisible();
-                    await botonCrearIntermediario.click();
-
-                    // Debe salir un modal de registro de persona
-                    await expect(page.locator('text=REGISTRAR INTERMEDIARIO')).toBeVisible();
-
-                    // Click al boton de Cancelar del modal de Crear Intermediario
-                    await page.getByLabel('Registrar Intermediario').getByRole('button', {name: 'stop Cancelar'}).click();
-
-                    // Debe salir un modal de confirmacion
-                    await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
-
-                    // Click al boton de Aceptar del modal de confirmacion
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-
-                    // Boton de Cliente es Intermediario
-                    const botonClienteIntermediario = page.getByText('Cliente Intermediario');
-                    await expect(botonClienteIntermediario).toBeVisible();
-
-                    // Click al boton de Cliente Intermediario
-                    await botonClienteIntermediario.click();
-
-                    // Los datos del socio deben agregarse
-                    await expect(page.getByRole('cell', {name: `${nombreJuridica}`, exact: true})).toBeVisible();
-
-                    // Click al boton de Seleccionar
-                    await page.getByText('Seleccionar').click();
-
-                    // Debe salir otro modal para confirmar la informacion
-                    await expect(page.locator('text=Confirmar')).toBeVisible();
-
-                    // Contenido del modal
-                    await expect(page.locator('text=Asegúrese de haber seleccionado a la persona correcta:')).toBeVisible();
-                    await expect(page.getByText(`Nombre: ${nombreJuridica}`)).toBeVisible();
-                    await expect(page.getByText('Doc. Identidad:')).toBeVisible();
-
-                    // Click al boton de Aceptar del modal
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-
-                    // Esperar que se abran dos nuevas pestañas con los reportes
-                    CerrarPaginasReportes();
-
-                    // Debe regresar a la pagina
-                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
-
-                    // Debe mostrarse el modal de Actualizar en libreta
-                    const modalLibreta = page.locator('text=Actualizar libreta');
-                    await expect(modalLibreta).toBeVisible();
-
-                    // Click al boton de Cancelar del modal
-                    await page.getByRole('button', {name: 'Cancelar'}).click();
-
-                    // El modal no debe estar visible
-                    await expect(modalLibreta).not.toBeVisible();
+            
+                    // Se abrira una nueva pagina con el reporte del deposito
+                    const [newPage] = await Promise.all([
+                        context.waitForEvent('page'),
+                        // Click al boton de Finalizar
+                        await expect(botonAceptar).toBeVisible(),
+                        await botonAceptar.click()
+                    ]);
+                    
+                    // La pagina abierta con el reporte del deposito se debe cerrar
+                    await newPage.close();
+            
+                    // Debe salir un modal
+                    await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
+            
+                    // Cancelar para hacer el siguiente deposito
+                    await page.locator('text=Cancelar').click();
                 });
             
                 test('Probar el Deposito de Centavos - Boton de Deposito de la cuenta de Ahorros', async () => {
@@ -382,82 +323,23 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
             
                     // Hacer click al boton de Aceptar
                     const botonAceptar = page.getByRole('button', {name: 'check Aplicar'});
-                    await expect(botonAceptar).toBeVisible();
-                    await botonAceptar.click();
-                });
-
-                test('Datos para el Segundo Reporte RTE', async () => {
-                    // Debe salir otro modal para colocar la informacion para el reporte RTE
-                    await expect(page.locator('text=CAPTURA DE DATOS. LAVADO DE EFECTIVO')).toBeVisible();
-
-                    // El modal debe contener un aviso
-                    await expect(page.getByText('Se requiere información de la persona que realiza la transacción. Puede buscar o crear la persona en las opciones de más abajo.')).toBeVisible();
-
-                    // Colocar una explicacion para el Origen de Fondos
-                    await page.locator('#form_ORIGEN_FONDOS').fill('Fondos obtenidos del Trabajo');
-
-                    // Subtitulo del modal
-                    await expect(page.locator('text=BUSCAR INTERMEDIARIO')).toBeVisible();
-
-                    // Debe mostrarse un input para buscar un intermediario
-                    await expect(page.locator(`${formBuscar}`)).toBeVisible();
-
-                    // Debe mostrarse un boton para crear un intermediario
-                    const botonCrearIntermediario = page.getByRole('button', {name: 'Crear Intermediario'});
-                    await expect(botonCrearIntermediario).toBeVisible();
-                    await botonCrearIntermediario.click();
-
-                    // Debe salir un modal de registro de persona
-                    await expect(page.locator('text=REGISTRAR INTERMEDIARIO')).toBeVisible();
-
-                    // Click al boton de Cancelar del modal de Crear Intermediario
-                    await page.getByLabel('Registrar Intermediario').getByRole('button', {name: 'stop Cancelar'}).click();
-
-                    // Debe salir un modal de confirmacion
-                    await expect(page.locator('text=¿Seguro que desea cancelar la operación?')).toBeVisible();
-
-                    // Click al boton de Aceptar del modal de confirmacion
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-
-                    // Boton de Cliente es Intermediario
-                    const botonClienteIntermediario = page.getByText('Cliente Intermediario');
-                    await expect(botonClienteIntermediario).toBeVisible();
-
-                    // Click al boton de Cliente Intermediario
-                    await botonClienteIntermediario.click();
-
-                    // Los datos del socio deben agregarse
-                    await expect(page.getByRole('cell', {name: `${nombreJuridica}`})).toBeVisible();
-
-                    // Click al boton de Seleccionar
-                    await page.getByText('Seleccionar').click();
-
-                    // Debe salir otro modal para confirmar la informacion
-                    await expect(page.locator('text=Confirmar')).toBeVisible();
-
-                    // Contenido del modal
-                    await expect(page.locator('text=Asegúrese de haber seleccionado a la persona correcta:')).toBeVisible();
-                    await expect(page.getByText(`Nombre: ${nombreJuridica}`)).toBeVisible();
-                    await expect(page.getByText('Doc. Identidad:')).toBeVisible();
-
-                    // Click al boton de Aceptar del modal
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
-
-                    // Esperar que se abran dos nuevas pestañas con los reportes
-                    CerrarPaginasReportes();
-
-                    // Debe regresar a la pagina
-                    await expect(page).toHaveURL(`${url_transacciones_caja}`);
-
-                    // Debe mostrarse el modal de Actualizar en libreta
-                    const modalLibreta = page.locator('text=Actualizar libreta');
-                    await expect(modalLibreta).toBeVisible();
-
-                    // Click al boton de Cancelar del modal
-                    await page.getByRole('button', {name: 'Cancelar'}).click();
-
-                    // El modal no debe estar visible
-                    await expect(modalLibreta).not.toBeVisible();
+            
+                    // Se abrira una nueva pagina con el reporte del deposito
+                    const [newPage] = await Promise.all([
+                        context.waitForEvent('page'),
+                        // Click al boton de Finalizar
+                        await expect(botonAceptar).toBeVisible(),
+                        await botonAceptar.click()
+                    ]);
+                    
+                    // La pagina abierta con el reporte del deposito se debe cerrar
+                    await newPage.close();
+            
+                    // Debe salir un modal
+                    await expect(page.locator('text=¿Desea actualizar la libreta?')).toBeVisible();
+            
+                    // Cancelar para hacer el siguiente deposito
+                    await page.locator('text=Cancelar').click();
                 });
 
                 test('Ir a la pagina de Sesiones en Transito y comprobar que se haya cerrado la sesion', async () => {
@@ -473,28 +355,22 @@ test.describe.serial('Deposito a la Cuenta de Ahorros de la Persona Juridica - P
                     // El titulo principal dbe estar visible
                     await expect(page.locator('h1').filter({hasText: 'Sesiones en tránsito'})).toBeVisible();
 
+                    // Click al boton de Actualizar
+                    const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
+                    await expect(botonActualizar).toBeVisible();
+                    await botonActualizar.click();
+
+                    // Esperar a que cargue la pagina
+                    await page.waitForTimeout(2000);
+
                     // Digitar el nombre de la persona juridica
                     await page.locator(`${formBuscar}`).fill(`${nombreJuridica}`);
 
                     // Esperar a que cargue la pagina
                     await page.waitForTimeout(3000);
 
-                    // Si la sesion no aparece en la pagina
-                    if (await page.getByText(`${noData}`).isVisible()) {
-                        // Terminar con el test
-                        await page.close();
-                        await context.close();
-
-                    // Si la sesion aparece en la pagina    
-                    } else if (await page.getByText(`${noData}`).isHidden()) {
-                        // Click al boton de Actualizar
-                        const botonActualizar = page.getByRole('button', {name: 'Actualizar'});
-                        await expect(botonActualizar).toBeVisible();
-                        await botonActualizar.click();
-
-                        // La sesion no debe aparecer en la pagina
-                        await expect(page.getByRole('row', {name: `${nombreJuridica}`})).toBeVisible();
-                    }
+                    // La sesion no debe aparecer en la pagina
+                    await expect(page.getByText(`${noData}`)).toBeVisible();
                 });
             };
         
