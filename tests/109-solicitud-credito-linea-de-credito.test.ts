@@ -261,9 +261,12 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         // El titulo principal debe estar visible
         await expect(page.getByRole('heading', {name: 'CARGOS'})).toBeVisible();
 
+        // Esperar que carguen los cargos
+        await page.waitForTimeout(2000);
+
         // Deben mostrarse los tres cargos
         await expect(page.getByRole('cell', {name: 'CONTRATO'})).toBeVisible();
-        await expect(page.getByRole('cell', {name: 'GASTOS LEGALES'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'GASTOS LEGALES', exact: true})).toBeVisible();
         await expect(page.getByRole('cell', {name: 'BURO DE CREDITO (DATACREDITO)'})).toBeVisible();
 
         // Click al boton de guardar cargos
@@ -651,6 +654,11 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
 
         // Esperar que carguen los datos
         await page.waitForTimeout(4000);
+
+        // Debe estar en el primer paso de la solicitud
+        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
 
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});

@@ -40,8 +40,8 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         correo = await page.evaluate(() => window.localStorage.getItem('correoPersona'));
 
         // Inputs de Sec. Desde y Hasta
-        secDesde = page.locator('#form_FROM');
-        secHasta = page.locator('#form_TO');
+        secDesde = page.locator('#form_SEC_DESDE');
+        secHasta = page.locator('#form_SEC_HASTA');
     });
 
     test('Ir a la opcion de Solicitud ordenes de pago', async () => {
@@ -84,10 +84,10 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         await expect(page.locator('#form_DESC_CUENTA')).toHaveValue('ORDEN DE PAGO');
 
         // Nombre Chequera
-        await page.locator('#form_CHECKER_NAME').fill('Chequera 123');
+        await page.locator('#form_NOMBRE_CHEQUERA').fill('Chequera 123');
 
         // Cantidad Talonarios
-        await page.locator('#form_talonario_cantidad').fill('1');
+        await page.locator('#form_CANTIDAD_TALONARIOS').fill('1');
 
         // Colocar un numero mayor en Sec. Desde que en Hasta
 

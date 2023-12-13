@@ -89,5 +89,6 @@ export const url_recepcion_transferencia_caja:string = `${url_base}/recepcion_tr
 export const url_consulta_movimientos_cuentas:string = `${url_base}/consulta_captaciones/01-2-4-6/`;
 export const url_estado_cuentas:string = `${url_base}/estado_cuentas/01-2-4-2/`;
 export const url_cambio_monedas_boveda:string = `${url_base}/cambio_monedas_boveda/01-4-3-2-6/`;
+export const url_transferencia_boveda_banco:string = `${url_base}/transferencia_banco/01-4-3-2-5/`;
 export const url_cuadre_caja:string = `${url_base}/cuadre_caja/01-4-1-3-2/`;
 export const url_reimprimir_cuadre_caja:string = `${url_base}/reimprimir_cuadre_caja/01-4-1-5-3/`;

@@ -45,11 +45,6 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         // El titulo principal debe estar visible
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIA FONDOS DE CAJA'})).toBeVisible();
 
-        // // Click al selector de Hasta Caja
-        // await page.locator('#form_ID_CAJA_HASTA').click();
-        // // Click a la opcion de Boveda Principal
-        // await page.getByRole('option', {name: 'BOVEDA PRINCIPAL'}).click();
-
         // Hasta Caja
         await expect(page.getByText('BOVEDA PRINCIPAL')).toBeVisible();
     });
@@ -67,9 +62,9 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
         await cant2000.click();
         await cant2000.fill('500');
 
-        // Cantidad = 1000 de 1000
+        // Cantidad = 1800 de 1000
         await cant1000.click();
-        await cant1000.fill('2000');
+        await cant1000.fill('1800');
 
         // Boton Guardar
         const botonGuardar = page.getByRole('button', {name: 'Guardar'});
@@ -90,11 +85,6 @@ test.describe.serial('Pruebas con la Transferencia Fondos de Caja', () => {
     });
 
     test('Transferir otro Monto a Boveda', async () => {
-        // // Click al selector de Hasta Caja
-        // await page.locator('#form_ID_CAJA_HASTA').click();
-        // // Click a la opcion de Boveda Principal
-        // await page.getByRole('option', {name: 'BOVEDA PRINCIPAL'}).click();
-
         // La Boveda Principal debe estar seleccionada
         await expect(page.getByText('BOVEDA PRINCIPAL')).toBeVisible();
 

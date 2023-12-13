@@ -690,7 +690,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
             await page.getByRole('button', {name: 'Anterior'}).click();
 
             // La URL debe cambiar
-            await expect(page).toHaveURL(/\/?step=9/);
+            await expect(page).toHaveURL(/\/?step=6/);
 
             // Esperar que la pagina cargue
             await page.waitForTimeout(3000);
@@ -699,7 +699,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
             await page.getByRole('button', {name: 'Siguiente'}).click();
 
             // La URL debe cambiar
-            await expect(page).toHaveURL(/\/?step=10/);
+            await expect(page).toHaveURL(/\/?step=7/);
 
             // Esperar que la pagina cargue
             await page.waitForTimeout(3000);
