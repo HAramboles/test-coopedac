@@ -202,14 +202,11 @@ test.describe.serial('Pruebas con el Esatado de las Cuentas por Cobrar de un Soc
 
         // Boton de Imprimir todos los recibos de los pagos
         const botonRecibos = page.getByRole('button', {name: 'Todos los Recibos'});
+        await expect(botonRecibos).toBeVisible(),
+        await botonRecibos.click()
 
-        // Esperar que se abra una nueva ventana con el reporte 
-        const [page1] = await Promise.all([
-            context.waitForEvent('page'),
-            // Click al boton de Finalizar
-            await expect(botonRecibos).toBeVisible(),
-            await botonRecibos.click()
-        ]);
+        // Esperar que se abra una nueva pestaña con el reporte de todos los recibos
+        const page1 = await context.waitForEvent('page');
         
         // Cerrar la pagina con el reporte de todos los recibos
         await page1.close();

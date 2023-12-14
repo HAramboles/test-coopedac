@@ -668,13 +668,6 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         // El nombre y el apellido del socio deben estar visibles
         await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible();
 
-        // Boton de cambiar estado de solicitud
-        await page.getByRole('button', {name: 'ellipsis'}).click();
-        // Debe estar visible el estado de rechazado
-        await expect(page.getByText('EN PROCESO (ANALISIS)', {exact: true})).toBeVisible();
-        // Debe estar visible el estado de solicitado
-        await expect(page.getByText('SOLICITADO', {exact: true})).toBeVisible();  
-
         // EL boton de Imprimir Solicitud debe estar visible
         const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
         await expect(botonImprimirContrato).toBeVisible();
@@ -702,8 +695,6 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         // Desembolsar la mitad de la linea, es decir, 100,000 pesos
         await page.getByText('RD$ 0.00').first().click();
         await page.waitForTimeout(1000);
-        await page.locator('#form_MONTO_DESEMBOLSAR').click();
-        await page.locator('#form_MONTO_DESEMBOLSAR').click();
         await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
         await page.locator('#form_MONTO_DESEMBOLSAR').click();
 

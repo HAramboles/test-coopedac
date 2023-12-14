@@ -566,10 +566,10 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         await expect(tituloReferenciasComerciales).toBeVisible();
 
         // // Click al titulo de Referencias Comerciales
-        // await tituloReferenciasComerciales.click();
+        await tituloReferenciasComerciales.click();
 
         // // Se muestra la persona agregada como codeudor
-        // await expect(page.getByRole('cell', {name: `${nombrePersona} ${apellidoPersona}`})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombrePersona} ${apellidoPersona}`})).toBeVisible();
 
         // Click en actualizar y continuar
         GuardaryContinuar();

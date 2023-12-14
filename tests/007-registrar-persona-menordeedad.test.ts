@@ -271,7 +271,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     // No se puede agregar Peps a un menor de edad
 
                     // El boton de Agregar Peps debe estar deshabilitado
-                    // await expect(page.getByRole('button', {name: 'Agregar Peps'})).toBeDisabled();
+                    await expect(page.getByRole('button', {name: 'Agregar Peps'})).toBeDisabled();
             
                     // Hacer click en el boton de guardar y continuar
                     guardarContinuar();

@@ -98,7 +98,7 @@ test.describe.serial('Pruebas con la Solicitud de Ordenes de Pago', async () => 
         await secHasta.fill('10');
 
         // Titulo formato de ordenes
-        await expect(page.locator('h1').filter({hasText: 'Formato cheques:'})).toBeVisible();
+        await expect(page.locator('text=Formato cheques:')).toBeVisible();
 
         // Formato Copia
         await expect(page.getByText('Formato Copia')).toBeVisible();

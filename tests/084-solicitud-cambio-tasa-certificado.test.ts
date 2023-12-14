@@ -65,17 +65,17 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await expect(page).toHaveURL(`${url_solicitud_cambio_tasa_certificado}`);
     });
 
-    test('Buscar el Certificado - Financieros Pagaderas de un Socio', async () => {
+    test('Buscar el Certificado - Inversion Pagaderas de un Socio', async () => {
         // Titulo principal
         await expect(page.locator('h1').filter({hasText: 'SOLICITUD CAMBIO DE TASA CERTIFICADO'})).toBeVisible();
 
         // Buscar un socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
-        // Elegir la cuenta de certificado financieros pagaderas
-        await page.getByText('FINANCIEROS PAGADERAS').click();
+        // Elegir la cuenta de certificado inversion pagaderas
+        await page.getByText('INVERSION PAGADERAS').click();
 
         // Descripcion de cuenta, debe estar el tipo de cuenta elegido
-        await expect(page.locator('#form_DESC_CUENTA')).toHaveValue('FINANCIEROS PAGADERAS');
+        await expect(page.locator('#form_DESC_CUENTA')).toHaveValue('INVERSION PAGADERAS');
 
         // Monto Apertura
         await expect(page.locator('#form_MONTO_APERTURA')).toHaveValue('50.00');
@@ -100,7 +100,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await page.locator('#form_NUEVA_TASA').fill('10');
     });
 
-    test('Firmantes del Certificado - Financieros Pagaderas', async () => {
+    test('Firmantes del Certificado - iNVERSION Pagaderas', async () => {
         // Titulo de la seccion
         await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
 
@@ -203,34 +203,37 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await expect(page.getByRole('cell', {name: '36', exact: true})).toBeVisible();
     }); 
 
-    test('Editar el Certificado - Financieros Pagaderas ya agergado', async () => {
-        // Editar el primer certificado agregado, el de Financieros Pagaderas
-        await page.getByRole('row', {name: 'FINANCIEROS PAGADERAS'}).locator(`${dataEdit}`).click();
+    test('Editar el Certificado - Inversion Pagaderas ya agergado', async () => {
+        // Editar el primer certificado agregado, el de Inversion Pagaderas
+        await page.getByRole('row', {name: 'INVERSION PAGADERAS'}).locator(`${dataEdit}`).click();
 
-        // Los datos se deben agregar a los campos de la solicitud
+        // Aparece un modal para editar la tasa
+        const modalEditarTasa = page.getByText('Modificar tasa');
+        await expect(modalEditarTasa).toBeVisible();
 
-        // Descripcion de cuenta, debe estar el tipo de cuenta elegido
-        await expect(page.locator('#form_DESC_CUENTA')).toHaveValue('FINANCIEROS PAGADERAS');
+        // Mensaje del modal
+        await expect(page.getByText('Por favor indique la nueva tasa del certificado:')).toBeVisible();
 
-        // Monto Apertura
-        await expect(page.locator('#form_MONTO_APERTURA')).toHaveValue('50.00');
+        // Tasa Actual
+        await expect(page.locator('#form_TASA_ACTUAL')).toHaveValue('5');
 
-        // Tasa de interes
-        await expect(page.locator('#form_TASA')).toHaveValue('8.00');
+        // Tasa Nueva
+        const nuevaTasa = page.locator('#form_TASA_NUEVA');
+        await expect(nuevaTasa).toHaveValue('10');
 
-        // Plazo
-        await expect(page.locator('#form_PLAZO')).toHaveValue('36');
-
-        // Nueva Tasa
-        const nuevaTasa = page.locator('#form_NUEVA_TASA');
-        await nuevaTasa.fill('10');
-
-        // Colocar una Nueva Tasa diferente
+        // Colocar una nueva tasa
         await nuevaTasa.clear();
         await nuevaTasa.fill('15');
+        await page.waitForTimeout(1000);
 
-        // Agregar Certificado
-        AgregarCertificado();
+        // Click al boton de Aceptar del modal
+        await page.getByRole('button', {name: 'Aceptar'}).click();
+
+        // El modal debe desaparecer
+        await expect(modalEditarTasa).not.toBeVisible();
+
+        // La nueva tasa debe estar en la tabla
+        await expect(page.getByRole('cell', {name: '15', exact: true})).toBeVisible();
     });
 
     test('Guadar las Solicitudes de Cambio de Tasa', async () => {
