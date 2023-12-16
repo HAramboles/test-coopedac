@@ -70,6 +70,10 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Debe aparecer un mensaje de que la cuenta no se encontro
         await expect(page.locator('text=No se han encontrado resultados')).toBeVisible();
 
+        // Borrar el nombre digitado
+        await page.waitForTimeout(1000);
+        await page.locator(`${selectBuscar}`).clear();
+
         // Buscar un socio
         await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir al socio buscado
@@ -388,7 +392,7 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         await page1.close();
 
         // Debe regresar a la pagina
-        await expect(page).toHaveURL(`${url_transacciones_caja}`);
+        await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

@@ -1,0 +1,13 @@
+node_modules/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+.env.development
+state.json
+/test-results/
+/playwright-report/
+/playwright/.cache/
+playwright.yml
+debug.log
+000-nombresyapellidos-personas.ts
+
