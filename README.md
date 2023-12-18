@@ -2,6 +2,7 @@
   
 ## Instalación  
 npm install  
+**Para instalar playwright y los browsers**
 npm init @playwright/test@latest
 
 **Antes de iniciar a correr los test**  
