@@ -2,7 +2,7 @@
   
 ## Instalación  
 npm install  
-npm install @playwright/test@latest
+npm init @playwright/test@latest
 
 **Antes de iniciar a correr los test**  
 

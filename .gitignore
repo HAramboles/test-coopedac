@@ -9,5 +9,5 @@ state.json
 /playwright/.cache/
 playwright.yml
 debug.log
-000-nombresyapellidos-personas.ts
+/tests/000-nombresyapellidos-personas.ts
 
