@@ -53,10 +53,10 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
         await expect(page.getByRole('row', {name: `${userCorrecto}`}).first()).toBeVisible();
 
         // Se debe mostrar el monto de la transferencia
-        await expect(page.getByRole('cell', {name: '2,800,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '2,800,000.00'}).first()).toBeVisible();
 
         // Click al boton de Confirmar Transferencia
-        await page.getByRole('row', {name: '2,800,000.00'}).locator(`${dataCheck}`).click();
+        await page.getByRole('row', {name: '2,800,000.00'}).first().locator(`${dataCheck}`).click();
 
         // Debe mostrarse un mensaje modal de Confirmacion
         await expect(page.locator('text=¿Está seguro que desea confirmar transferencia?')).toBeVisible();

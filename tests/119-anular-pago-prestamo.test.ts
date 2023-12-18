@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { dataEliminar, fechaInicio, tipoTransaccion, razonAnulacion, fechaFin } from './utils/data/inputsButtons';
+import { dataEliminar, fechaInicio, tipoTransaccion, razonAnulacion, fechaFin, inputCuentaOrigen } from './utils/data/inputsButtons';
 import { url_base, url_anular_pago_prestamo } from './utils/dataPages/urls';
 import { diaActualFormato } from './utils/functions/fechas';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -9,9 +9,8 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
-let nombre: string | null;
-let apellido: string | null;
+// Codigo del prestamo
+let prestamoCrediauto: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => {
@@ -28,9 +27,8 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Nombre y apellido de la persona almacenada en el state
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+        // Id del prestamo almacenada en el state
+        prestamoCrediauto = await page.evaluate(() => window.localStorage.getItem('codigoPrestamoCrediauto'));
     });
 
     test('Ir a la opcion de Anular Pago a Prestamo', async () => {
@@ -77,10 +75,16 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await expect(page.locator(`${fechaFin}`)).toHaveValue(`${diaActualFormato}`);
         await expect(page.locator(`${fechaFin}`)).toHaveAttribute('readonly', '');
 
+        // Buscar por la cuenta de origen
+        await page.locator(`${inputCuentaOrigen}`).fill(`${prestamoCrediauto}`);
+
         // Click al boton de Buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});
         await expect(botonBuscar).toBeVisible();
         await botonBuscar.click();
+
+        // Esperar que se muestren los pagos buscados
+        await page.waitForTimeout(3000);
     });
 
     test('Anular uno de los Pagos al Prestamo', async () => {

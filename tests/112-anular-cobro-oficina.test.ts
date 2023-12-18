@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { fechaInicio, fechaFin, tipoTransaccion, dataEliminar, razonAnulacion } from './utils/data/inputsButtons';
+import { fechaInicio, fechaFin, tipoTransaccion, dataEliminar, razonAnulacion, inputCuentaOrigen } from './utils/data/inputsButtons';
 import { url_base, url_anular_cobro_oficina } from './utils/dataPages/urls';
 import { diaActualFormato } from './utils/functions/fechas';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -16,6 +16,9 @@ let apellidoPersona: string | null;
 // Nombre y apellido de la persona que saldo la linea de credito
 let nombreTercero: string | null;
 let apellidoTercero: string | null;
+
+// Codigo del prestamo
+let prestamoLineaCredito: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
@@ -39,6 +42,9 @@ test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
         // Nombre y apellido de la persona relacionada almacenada en el state
         nombreTercero = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
         apellidoTercero = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+        // Id del prestamo almacenada en el state
+        prestamoLineaCredito = await page.evaluate(() => window.localStorage.getItem('codigoPrestamoLineaCredito'));
     });
 
     test('Ir a la pagina de Anular Cobro Oficina', async () => {
@@ -65,9 +71,13 @@ test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
         // Tipo de transaccion
         await expect(page.locator(`${tipoTransaccion}`)).toHaveValue('NDCOB - NOTAS CREDITO');
 
-        // Input Id documento y cuenta origen deben estar vacios
+        // Input Id documento debe estar vacios
         await expect(page.locator('#form_ID_DOCUMENTO')).toHaveValue('');
-        await expect(page.locator('#form_ID_CUENTA')).toHaveValue('');
+
+
+        // Buscar por el ID Prestamo
+        await page.locator(`${inputCuentaOrigen}`).fill(`${prestamoLineaCredito}`);
+        // Elegir el prestamo buscado
 
         // Usuario
         await expect(page.getByTitle('Usuario')).toBeVisible();
@@ -108,6 +118,9 @@ test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});
         await expect(botonBuscar).toBeVisible();
         await botonBuscar.click();
+
+        // Esperar que la pagina cargue
+        await page.waitForTimeout(3000);
 
         // Debe mostrarse ls nota de credito del tercero
         await expect(page.getByRole('cell', {name: `${nombreTercero} ${apellidoTercero}`})).toBeVisible();

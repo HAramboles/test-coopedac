@@ -82,10 +82,10 @@ test.describe.serial('Anular Cobro de Servicios', async () => {
 
     test('Anular el Cobro de Servicios', async () => {
         // Debe mostrarse el cobro de servicio realizado
-        await expect(page.getByRole('cell', {name: '100.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: '100.00'}).first()).toBeVisible();
 
         // Click al boton de Anular del deposito
-        await page.getByRole('row', {name: '100.00'}).locator(`${dataEliminar}`).click();
+        await page.getByRole('row', {name: '100.00'}).first().locator(`${dataEliminar}`).click();
 
         // Aparece un modal para colocar la razon de la anulacion
         const modalAnulacion = page.locator('text=Razón de la Anulación');

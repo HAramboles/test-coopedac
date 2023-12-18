@@ -44,7 +44,7 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         await expect(page).toHaveURL(`${url_transferencia_cuentas}`);
     });
 
-    test('Transferir fondo de la Cuenta de Ahorros a la cuenta de Aportaciones Preferentes', async () => {
+    test('Transferir fondo de la Cuenta de Ahorros a la cuenta de Aportaciones', async () => {
         // El titulo prinicipal debe estar presente
         await expect(page.locator('h1').filter({hasText: 'TRANSFERENCIAS CUENTAS INTERNAS'})).toBeVisible();
 

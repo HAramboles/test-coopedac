@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { dataEliminar, fechaInicio, tipoTransaccion, razonAnulacion, fechaFin } from './utils/data/inputsButtons';
+import { dataEliminar, fechaInicio, tipoTransaccion, razonAnulacion, fechaFin, inputCuentaOrigen } from './utils/data/inputsButtons';
 import { url_base, url_anular_deposito } from './utils/dataPages/urls';
 import { diaActualFormato } from './utils/functions/fechas';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -9,10 +9,12 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula, nombre y apellido de la persona
-let cedula: string | null;
+// Nombre y apellido de la persona
 let nombre: string | null;
 let apellido: string | null;
+
+// Cuenta de Origen
+let cuentaAhorrosNormales: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
@@ -29,10 +31,12 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula, nombre y apellido de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersonaJuridicaRelacionado'));
+        // Nombre y apellido de la persona almacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersonaJuridicaRelacionada'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
+
+        // Cuenta de origen almacenada en el state
+        cuentaAhorrosNormales = await page.evaluate(() => window.localStorage.getItem('ahorrosNormalesPersonaRelacionada'));
     });
 
     test('Ir a la opcion de Anular Deposito', async () => {
@@ -62,9 +66,11 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         // El tipo de transaccion debe ser Deposito
         await expect(page.locator(`${tipoTransaccion}`)).toHaveValue('DE - DEPOSITOS');
 
-        // Id documento y Cuenta de origen deben estar vacios por defecto
+        // Id documento debe estar vacios por defecto
         await expect(page.locator('#form_ID_DOCUMENTO')).toHaveValue('');
-        await expect(page.locator('#form_ID_CUENTA')).toHaveValue('');
+
+        // Buscar por la cuenta de origen
+        await page.locator(`${inputCuentaOrigen}`).fill(`${cuentaAhorrosNormales}`);
 
         // Buscar el usuario de la caja la cual hizo la transaccion
         await page.getByTitle('TODOS').click();
@@ -84,6 +90,9 @@ test.describe.serial('Pruebas con la Anulacion de un Deposito', async () => {
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});
         await expect(botonBuscar).toBeVisible();
         await botonBuscar.click();
+
+        // Esperar que el deposito buscado se muestre
+        await page.waitForTimeout(3000);
     });
 
     test('Anular el Deposito', async () => {

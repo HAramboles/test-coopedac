@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { selectBuscar } from './utils/data/inputsButtons';
+import { formBuscar, selectBuscar } from './utils/data/inputsButtons';
 import { diaActualFormato } from './utils/functions/fechas';
 import { EscenariosPruebaCrearCuentas } from './utils/dataPages/interfaces';
 import { url_base, url_cuentas_aportaciones } from './utils/dataPages/urls';
@@ -208,9 +208,39 @@ test.describe.serial('Creacion de Cuenta de Aportaciones - Pruebas con los difer
                     // Debe redirigirse al listado de las cuentas de aportaciones
                     await expect(page).toHaveURL(`${url_cuentas_aportaciones}`);
                 });
+
+                test('Guardar la cuenta de Aportaciones creada en el state', async () => {
+                    // Buscar al socio a editar
+                    await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
+
+                    // Esperar que se muestre la cuenta de la persona
+                    await page.waitForTimeout(2000);
+
+                    // Copiar el codigo de la cuenta
+                    await page.getByRole('cell').nth(3).click({clickCount: 4});
+                    await page.locator('body').press('Control+c');
+
+                    // Buscar la cuenta por el codigo
+                    await page.locator(`${formBuscar}`).clear();
+                    await page.locator(`${formBuscar}`).press('Control+v');
+                    await page.locator(`${formBuscar}`).press('Backspace');
+
+                    // Esperar que se muestre la cuenta de la persona
+                    await page.waitForTimeout(2000);
+
+                    // La cuenta debe estar visible en la tabla
+                    let idCuenta = await page.locator(`${formBuscar}`).getAttribute('value');
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
+                    // Guardar el codigo de la cuenta en el state
+                    await page.evaluate((idCuenta) => window.localStorage.setItem('aportacionesPersonaFisica', `${idCuenta}`), `${idCuenta}`);
+                });
             };         
         
             test.afterAll(async () => { // Despues de todas las pruebas
+                // Guardar nuevamente el Storage con el codigo de la cuenta
+                await context.storageState({path: 'state.json'});
+
                 // Cerrar la page
                 await page.close();
 

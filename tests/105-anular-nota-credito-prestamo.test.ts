@@ -13,6 +13,9 @@ let page: Page;
 let nombre: string | null;
 let apellido: string | null;
 
+// Codigo del prestamo
+let prestamoCrediauto: string | null;
+
 // Pruebas
 test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
     test.beforeAll(async () => { // Antes de las pruebas
@@ -31,6 +34,9 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         // Nombre y apellido de la persona almacenada en el state
         nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
         apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+
+        // Id del prestamo almacenada en el state
+        prestamoCrediauto = await page.evaluate(() => window.localStorage.getItem('codigoPrestamoCrediauto'));
     });
 
     test('Ir a la pagina de Anular Nota Credito Prestamo', async () => {
@@ -60,8 +66,10 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         // ID Documento
         await expect(page.locator('#form_ID_DOCUMENTO')).toBeVisible();
 
-        // Prestamo
-        await expect(page.locator(`${selectBuscar}`)).toBeVisible();
+        // Buscar por el ID Prestamo
+        await page.locator(`${selectBuscar}`).fill(`${prestamoCrediauto}`);
+        // Elegir el prestamo buscado
+        await page.getByRole('option', {name: `${nombre} ${apellido}`}).click();
 
         // Fecha documento inicio
         await expect(page.locator(`${fechaInicial}`)).toHaveValue(`${diaActualFormato}`);
@@ -76,15 +84,18 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
 
         // Click al boton de Buscar
         await page.getByRole('button', {name: 'Buscar'}).click();
+
+        // Esperar que la pagina cargue
+        await page.waitForTimeout(3000);
     });
 
     test('Anular la Nota de Credito al Prestamo Crediauto de la Persona Juridica', async () => {
         // Nota Credito al Prestamo
-        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`}).last()).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`}).last()).toBeVisible();
 
         // Concepto
-        await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'}).last()).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'})).toBeVisible();
 
         // Monto Ingreso
         await expect(page.getByRole('cell', {name: 'RD$ 125,000.00'})).toBeVisible();

@@ -49,7 +49,7 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Cajas', async () =>
         await page.locator(`${formBuscar}`).fill('BPSHARAMBOLES');
 
         // Debe mostrarse la transferencia desde la Boveda
-        const transferencia1000Boveda = page.getByRole('row', {name: 'BOVEDA PRINCIPAL CAJA BPSHARAMBOLES RD$ 1,000.00'});
+        const transferencia1000Boveda = page.getByRole('row', {name: 'BOVEDA PRINCIPAL CAJA BPSHARAMBOLES RD$ 1,000.00'}).first();
         await expect(transferencia1000Boveda).toBeVisible();
 
         // Click al boton de Confirmar

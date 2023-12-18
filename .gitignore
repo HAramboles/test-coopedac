@@ -10,4 +10,5 @@ state.json
 playwright.yml
 debug.log
 /tests/000-nombresyapellidos-personas.ts
+/tests/utils/data/testConfig.ts
 

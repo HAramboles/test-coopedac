@@ -44,6 +44,7 @@ export const tipoTransaccion:string = '#form_ID_TIPO_TRANS';
 export const valorAdmisibleCredito:string = '#form_VALOR_ADMISIBLE';
 
 // Inputs para los tests de Anulacion
+export const inputCuentaOrigen:string = '#form_ID_CUENTA';
 export const inputDiaPago:string = '#form_DIA_PAGO';
 export const razonAnulacion:string = '#form_CONCEPTO_ANULACION';
 

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { fechaInicio, tipoTransaccion, razonAnulacion, fechaFin } from './utils/data/inputsButtons';
+import { fechaInicio, tipoTransaccion, razonAnulacion, fechaFin, inputCuentaOrigen } from './utils/data/inputsButtons';
 import { url_base, url_anular_transferencia_cuenta } from './utils/dataPages/urls';
 import { diaActualFormato } from './utils/functions/fechas';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -9,8 +9,9 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cedula de la persona
-let cedula: string | null;
+// Cuenta de origen y destino
+let cuentaAhorrosNormales: string | null;
+let cuentaAportaciones: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
@@ -27,8 +28,9 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
 
-        // Cedula de la persona almacenada en el state
-        cedula = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
+        // Cuentas de origen y destino almacenada en el state
+        cuentaAhorrosNormales = await page.evaluate(() => window.localStorage.getItem('ahorrosNormalesPersonaFisica'));
+        cuentaAportaciones = await page.evaluate(() => window.localStorage.getItem('aportacionesPersonaFisica'));
     });
 
     test('Ir a la opcion de Anular Transferencia Cuenta', async () => {
@@ -56,10 +58,25 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${diaActualFormato}`);
         await expect(page.locator(`${fechaFin}`)).toHaveValue(`${diaActualFormato}`);
 
+        // Buscar la cuenta de origen
+        await page.locator(`${inputCuentaOrigen}`).fill(`${cuentaAhorrosNormales}`);
+
+        // Esperar a que la cuenta digitada se agregue al input
+        await page.waitForTimeout(2000);
+
+        // Buscar la cuenta de destino
+        await page.locator('form_CUENTA_DEST').fill(`${cuentaAportaciones}`);
+
+        // Esperar a que la cuenta digitada se agregue al input
+        await page.waitForTimeout(2000);
+
         // Click al boton de Buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});
         await expect(botonBuscar).toBeVisible();
         await botonBuscar.click();
+
+        // Esperar que la transferecia buscada se muestre
+        await page.waitForTimeout(3000);
     });
 
     test('Anular la transferencia buscada', async () => {
