@@ -764,6 +764,9 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
     });
 
     test.afterAll(async () => { // Despues de todas las pruebas
+        // Guardar nuevamente el Storage con el codigo del prestamo
+        await context.storageState({path: 'state.json'});
+        
         // Cerrar la page
         await page.close();
 

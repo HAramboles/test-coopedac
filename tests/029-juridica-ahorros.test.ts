@@ -1,5 +1,5 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
-import { ariaCerrar, selectBuscar } from './utils/data/inputsButtons';
+import { ariaCerrar, formBuscar, selectBuscar } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearCuentas } from './utils/dataPages/interfaces';
 import { url_base, url_cuentas_ahorros, url_cuentas_ahorros_normales } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -317,9 +317,39 @@ test.describe.serial('Crear Cuenta de Ahorros para la Persona Juridica - Pruebas
                     await expect(page.getByRole('option', {name: 'AHORROS INFANTILES'})).toBeVisible();
                     await expect(page.getByRole('option', {name: 'ORDEN DE PAGO'})).toBeVisible();
                 });
+
+                test('Guardar la cuenta de Ahorros Normales creada en el state', async () => {
+                    // Buscar al socio a editar
+                    await page.locator(`${formBuscar}`).fill(`${nombreEmpresa}`);
+
+                    // Esperar que se muestre la cuenta de la persona
+                    await page.waitForTimeout(2000);
+
+                    // Copiar el codigo de la cuenta
+                    await page.getByRole('cell').nth(3).click({clickCount: 4});
+                    await page.locator('body').press('Control+c');
+
+                    // Buscar la cuenta por el codigo
+                    await page.locator(`${formBuscar}`).clear();
+                    await page.locator(`${formBuscar}`).press('Control+v');
+                    await page.locator(`${formBuscar}`).press('Backspace');
+
+                    // Esperar que se muestre la cuenta de la persona
+                    await page.waitForTimeout(2000);
+
+                    // La cuenta debe estar visible en la tabla
+                    let idCuenta = await page.locator(`${formBuscar}`).getAttribute('value');
+                    await expect(page.getByRole('cell', {name: `${nombreEmpresa}`})).toBeVisible();
+
+                    // Guardar el codigo de la cuenta en el state
+                    await page.evaluate((idCuenta) => window.localStorage.setItem('ahorrosNormalesEmpresa', `${idCuenta}`), `${idCuenta}`);
+                });
             };
         
             test.afterAll(async () => { // Despues de todas las pruebas
+                // Guardar nuevamente el Storage con el codigo de la cuenta
+                await context.storageState({path: 'state.json'});
+
                 // Cerrar la page
                 await page.close();
 

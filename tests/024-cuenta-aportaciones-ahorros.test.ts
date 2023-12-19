@@ -403,14 +403,18 @@ test.describe.serial('Apertura de Cuenta de Aportaciones y luego la de Ahorros -
 
                     // La cuenta debe estar visible en la tabla
                     let idCuenta = await page.locator(`${formBuscar}`).getAttribute('value');
+                    let idCuentaNoGuiones = idCuenta?.replace(/-/g, '');
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
 
                     // Guardar el codigo de la cuenta en el state
-                    await page.evaluate((idCuenta) => window.localStorage.setItem('ahorrosNormalesPersonaRelacionada', `${idCuenta}`), `${idCuenta}`);
+                    await page.evaluate((idCuentaNoGuiones) => window.localStorage.setItem('ahorrosNormalesPersonaRelacionada', `${idCuentaNoGuiones}`), `${idCuentaNoGuiones}`);
                 });
             };
         
             test.afterAll(async () => { // Despues de todas las pruebas
+                // Guardar nuevamente el Storage con el codigo de la cuenta
+                await context.storageState({path: 'state.json'});
+
                 // Cerrar la page
                 await page.close();
 

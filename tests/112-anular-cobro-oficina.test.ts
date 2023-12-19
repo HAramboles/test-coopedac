@@ -17,8 +17,8 @@ let apellidoPersona: string | null;
 let nombreTercero: string | null;
 let apellidoTercero: string | null;
 
-// Codigo del prestamo
-let prestamoLineaCredito: string | null;
+// Codigo de la cuenta del tercero
+let cuentaTercero: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
@@ -44,7 +44,7 @@ test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
         apellidoTercero = await page.evaluate(() => window.localStorage.getItem('apellidoPersonaJuridicaRelacionada'));
 
         // Id del prestamo almacenada en el state
-        prestamoLineaCredito = await page.evaluate(() => window.localStorage.getItem('codigoPrestamoLineaCredito'));
+        cuentaTercero = await page.evaluate(() => window.localStorage.getItem('ahorrosNormalesPersonaRelacionada'));
     });
 
     test('Ir a la pagina de Anular Cobro Oficina', async () => {
@@ -75,9 +75,8 @@ test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
         await expect(page.locator('#form_ID_DOCUMENTO')).toHaveValue('');
 
 
-        // Buscar por el ID Prestamo
-        await page.locator(`${inputCuentaOrigen}`).fill(`${prestamoLineaCredito}`);
-        // Elegir el prestamo buscado
+        // Buscar por la cuenta de origen
+        await page.locator(`${inputCuentaOrigen}`).fill(`${cuentaTercero}`);
 
         // Usuario
         await expect(page.getByTitle('Usuario')).toBeVisible();

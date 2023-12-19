@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
 import { selectBuscar, inputDiaPago, formComentario } from './utils/data/inputsButtons';
-import { url_base, url_cobros_oficina, url_consulta_movimientos_cuentas } from './utils/dataPages/urls';
+import { url_base, url_cobros_oficina } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 
 // Variables globales

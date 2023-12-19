@@ -629,6 +629,8 @@ test.describe.serial('Pruebas Reachazando una Solicitud de Credito', () => {
 
         // Esperar que la Tabla de Amortizacion se haya subido
         await expect(page.locator('text=Documentos requerdios del préstamo guardados exitosamente.').last()).toBeVisible();
+
+        await page.waitForTimeout(3000);
         
         // Subir Cedula del Deudor
         const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');

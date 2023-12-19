@@ -1,10 +1,8 @@
 import { Browser, BrowserContext, chromium, expect, Locator, Page, test } from '@playwright/test';
-import {  selectBuscar, inputDiaPago, formBuscar, noData } from './utils/data/inputsButtons';
-import { url_base, url_cobros_oficina, url_sesiones_transito, url_transacciones_caja } from './utils/dataPages/urls';
-import { servicio_check_session } from './utils/dataPages/servicios';
+import {  selectBuscar, inputDiaPago, formBuscar } from './utils/data/inputsButtons';
+import { url_base, url_cobros_oficina, url_sesiones_transito } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
 import { nombreTestigoCajero, userCorrecto } from './utils/data/usuarios';
-import { diaActualFormato } from './utils/functions/fechas';
 
 // Variables globales
 let browser: Browser;
@@ -42,6 +40,14 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Modal para realizar el pago al prestamo
         modalPagoPrestamo = page.locator('h1').filter({hasText: 'PAGO A PRÉSTAMO'});
     });
+
+    // Funcion para cerrar las paginas con los reportes
+    const CerrarPaginasReportes = async () => {
+        context.on('page', async (page) => {
+            await page.waitForTimeout(1000);
+            await page.close();
+        });
+    };
 
     test('Ir a la opcion de Cobros de Oficina', async () => {
         // Negocios
@@ -383,13 +389,8 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Click al boton de Aceptar del modal
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
-        // Esperar que se abran dos nuevas pestañas con los reportes
-        const page1 = await context.waitForEvent('page');
-        const page2 = await context.waitForEvent('page');
-
-        // Cerrar las dos paginas
-        await page2.close();
-        await page1.close();
+        // Cerrar las paginas que se abren con los diferentes reportes
+        CerrarPaginasReportes();
 
         // Debe regresar a la pagina
         await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();

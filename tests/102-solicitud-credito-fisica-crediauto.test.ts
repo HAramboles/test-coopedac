@@ -869,6 +869,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
     });
 
     test.afterAll(async () => { // Despues de las pruebas
+        // Guardar nuevamente el Storage con el codigo del prestamo
+        await context.storageState({path: 'state.json'});
+
         // Cerrar la page
         await page.close();
 

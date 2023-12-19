@@ -9,7 +9,7 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Cuenta de origen y destino
+// Cuentas de origen y destino
 let cuentaAhorrosNormales: string | null;
 let cuentaAportaciones: string | null;
 
@@ -65,7 +65,7 @@ test.describe.serial('Pruebas con Anular Transferencia Cuentas', async () => {
         await page.waitForTimeout(2000);
 
         // Buscar la cuenta de destino
-        await page.locator('form_CUENTA_DEST').fill(`${cuentaAportaciones}`);
+        await page.locator('#form_CUENTA_DEST').fill(`${cuentaAportaciones}`);
 
         // Esperar a que la cuenta digitada se agregue al input
         await page.waitForTimeout(2000);

@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { fechaInicio, tipoTransaccion, fechaFin } from './utils/data/inputsButtons';
+import { fechaInicio, tipoTransaccion, fechaFin, inputCuentaOrigen } from './utils/data/inputsButtons';
 import { url_base, url_reversar_transferencia, url_reimprimir_contratos_cuentas } from './utils/dataPages/urls';
 import { diaActualFormato } from './utils/functions/fechas';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -8,6 +8,10 @@ import { browserConfig, contextConfig } from './utils/data/testConfig';
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
+
+// Cuenta de origen y destino
+let cuentaAhorrosNormalesPersonaFisica: string | null;
+let cuentaAhorrosNormalesPersonaJuridica: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con Reversar Transferencia Cuentas', async () => {
@@ -23,6 +27,10 @@ test.describe.serial('Pruebas con Reversar Transferencia Cuentas', async () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
+
+        // Cuentas de origen y destino almacenada en el state
+        cuentaAhorrosNormalesPersonaFisica = await page.evaluate(() => window.localStorage.getItem('ahorrosNormalesPersonaFisica'));
+        cuentaAhorrosNormalesPersonaJuridica = await page.evaluate(() => window.localStorage.getItem('ahorrosNormalesEmpresa'));
     });
 
     test('Ir a la opcion de Anular Transferencia Cuenta', async () => {
@@ -50,10 +58,25 @@ test.describe.serial('Pruebas con Reversar Transferencia Cuentas', async () => {
         await expect(page.locator(`${fechaInicio}`)).toHaveValue(`${diaActualFormato}`);
         await expect(page.locator(`${fechaFin}`)).toHaveValue(`${diaActualFormato}`);
 
+        // Buscar la cuenta de origen
+        await page.locator(`${inputCuentaOrigen}`).fill(`${cuentaAhorrosNormalesPersonaFisica}`);
+
+        // Esperar a que la cuenta digitada se agregue al input
+        await page.waitForTimeout(2000);
+
+        // Buscar la cuenta de destino
+        await page.locator('#form_CUENTA_DEST').fill(`${cuentaAhorrosNormalesPersonaJuridica}`);
+
+        // Esperar a que la cuenta digitada se agregue al input
+        await page.waitForTimeout(2000);
+
         // Click al boton de Buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});
         await expect(botonBuscar).toBeVisible();
         await botonBuscar.click();
+
+        // Esperar que la transferecia buscada se muestre
+        await page.waitForTimeout(3000);
     });
 
     test('Reversar la transferencia buscada', async () => {

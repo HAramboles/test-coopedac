@@ -75,6 +75,14 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                 // presionar el boton
                 await botonContinuar.click();
             };
+
+            // Funcion para cerrar las paginas con los reportes
+            const CerrarPaginasReportes = async () => {
+                context.on('page', async (page) => {
+                    await page.waitForTimeout(1000);
+                    await page.close();
+                });
+            };
         
             test('Ir a la opcion de Registrar Persona', async () => {
                 // Boton de Socios
@@ -960,13 +968,8 @@ test.describe.serial('Crear Persona Fisica - Pruebas con los diferentes parametr
                     await expect(botonFinalizarModal).toBeVisible();
                     await botonFinalizarModal.click();
 
-                    // Esperar que se abran dos nuevas pestañas con los reportes
-                    const page1 = await context.waitForEvent('page');
-                    const page2 = await context.waitForEvent('page');
-
-                    // Cerrar las dos paginas abiertas
-                    await page2.close();
-                    await page1.close();
+                    // Cerrar las paginas que se abren con los diferentes reportes
+                    CerrarPaginasReportes();
                 });
 
                 test('Debe regresar a la pagina de Registrar persona', async () => {

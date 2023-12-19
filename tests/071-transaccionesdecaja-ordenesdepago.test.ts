@@ -63,6 +63,14 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                 // Nota almacenada en el state
                 nota = await page.evaluate(() => window.localStorage.getItem('nota'));
             });
+
+            // Funcion para cerrar las paginas con los reportes
+            const CerrarPaginasReportes = async () => {
+                context.on('page', async (page) => {
+                    await page.waitForTimeout(1000);
+                    await page.close();
+                });
+            };
         
             test('Ir a la opcion de Transacciones de Caja', async () => {
                 // Tesoreria
@@ -425,16 +433,8 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     // Click al boton de Aceptar del modal
                     await page.getByRole('button', {name: 'Aceptar'}).click();
 
-                    // Esperar que se abran dos nuevas pestañas con el recibo de la orden y el Reporte RTE
-                    const page1 = await context.waitForEvent('page');
-                    const page2 = await context.waitForEvent('page');
-
-                    // Cerrar las dos paginas
-                    await page2.close();
-                    await page1.close();
-
-                    // Cerrar la segunda pagina
-                    await page1.close();
+                    // Esperar que se abran dos nuevas pestañas con el recibo de la orden y el Reporte RTE y cerrarlas
+                    CerrarPaginasReportes();
                 });
             };
 

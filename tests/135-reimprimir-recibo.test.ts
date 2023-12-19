@@ -46,12 +46,12 @@ test.describe.serial('Pruebas con la Reimpresion de un Recibo', () => {
 
     test('Cuenta de Aportaciones del Socio', async () => {
         // Seleccionar un tipo de cuenta a buscar
-        await page.locator(`${selectBuscar}`).click();
+        await page.locator('#rc_select_1').click();
         // Click a la opcion de cuenta de Aportaciones
         await page.getByRole('option', {name: 'AHORROS NORMALES', exact: true}).click();
 
         // Buscar un socio
-        await page.locator('#rc_select_1').fill(`${cedula}`);
+        await page.locator(`${selectBuscar}`).fill(`${cedula}`);
         // Elegir la Cuenta de Aportaciones del Socio
         await page.getByText('| AHORROS NORMALES |').click();
 
