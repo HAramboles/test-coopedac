@@ -812,15 +812,15 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // La tabla de cuentas de cobros debe estar visible
         await expect(page.getByRole('row', {name: 'Principal Tipo de cuenta No. Cuenta Titular Acciones'})).toBeVisible();
 
-        // // Debe estar visible una tabla con los datos del prestamo
-        // await expect(page.getByText(`RD$ ${cantMonto}`).first()).toBeVisible();
-        // await expect(page.getByText('RD$ 877.43')).toBeVisible();
-        // await expect(page.getByText('Plazo:24 Meses')).toBeVisible();
-        // await expect(page.getByText('Tasa:5.00%')).toBeVisible();
-        // await expect(page.getByText('DEPOSITO A CUENTA')).toBeVisible();
-        // await expect(page.getByText('Tipo de Crédito:CONSUMO')).toBeVisible();
-        // //await expect(page.getByText('Oferta:CRÉDITO GERENCIAL / AHORROS -1M')).toBeVisible();
-        // await expect(page.getByText('Grupo:SIN GARANTIA')).toBeVisible();
+        // Debe estar visible una tabla con los datos del prestamo
+        await expect(page.getByText(`RD$ ${cantMonto}`).first()).toBeVisible();
+        await expect(page.getByText('RD$ 20,925.00')).toBeVisible();
+        await expect(page.getByText('Plazo:24 Meses')).toBeVisible();
+        await expect(page.getByText('Tasa:13.95%')).toBeVisible();
+        await expect(page.getByText('DEPOSITO A CUENTA')).toBeVisible();
+        await expect(page.getByText('Tipo de Crédito:COMERCIALES')).toBeVisible();
+        await expect(page.getByText('Oferta:CRÉDITO AGRÍCOLA')).toBeVisible();
+        await expect(page.getByText('Grupo:SIN GARANTIA')).toBeVisible();
 
         // La cuenta de cobro debe estar visible
         await expect(page.getByRole('cell', {name: 'AHORROS NORMALES'})).toBeVisible();
@@ -859,7 +859,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
             await expect(page).toHaveURL(/\/?step=10/);
 
             // Esperar que la pagina cargue
-            await page.waitForTimeout(3000);
+            await page.waitForTimeout(6000);
 
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});

@@ -702,7 +702,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
             await expect(page).toHaveURL(/\/?step=7/);
 
             // Esperar que la pagina cargue
-            await page.waitForTimeout(3000);
+            await page.waitForTimeout(6000);
 
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});

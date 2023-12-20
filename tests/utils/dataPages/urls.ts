@@ -41,6 +41,7 @@ export const url_pignoracion_cuentas:string = `${url_base}/pignoracion_cuenta/01
 export const url_consulta_pignoracion_cuentas:string = `${url_base}/pignoracion_cuenta/01-2-4-12/`;
 export const url_solicitud_ordenes_pago:string = `${url_base}/solicitud_ordenes_pago/01-2-2-112/`;
 export const url_solicitud_cambio_tasa_certificado:string = `${url_base}/solicitud_cambio_tasa_cert/01-2-2-113/`;
+export const url_confirmar_cambio_tasa_certidicado:string = `${url_base}/confirmar_cambio_tasa_cert/01-2-3-6/`;
 export const url_cancelar_certificado:string = `${url_base}/cancelar_certificado/01-2-3-5/`;
 export const url_cobro_servicios_captaciones:string = `${url_base}/cobros_multiples_servicios/01-2-2-107/`;
 export const url_solicitud_credito:string = `${url_base}/solicitud_credito/01-3-3-1`;

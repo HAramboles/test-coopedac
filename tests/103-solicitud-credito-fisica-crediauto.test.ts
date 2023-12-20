@@ -836,7 +836,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
         // Esperar que se muestre la solicitud buscada
-        await page.waitForTimeout(3000);
+        await page.waitForTimeout(6000);
 
         // La solicitud de credito desembolsada debe estar visible
         await expect(page.getByRole('row', {name: 'CRÉDIAUTOS'})).toBeVisible();

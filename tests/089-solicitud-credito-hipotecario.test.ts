@@ -1045,7 +1045,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
             await expect(page).toHaveURL(/\/?step=10/);
 
             // Esperar que la pagina cargue
-            await page.waitForTimeout(3000);
+            await page.waitForTimeout(6000);
 
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
