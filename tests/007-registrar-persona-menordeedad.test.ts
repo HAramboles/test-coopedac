@@ -3,9 +3,9 @@ import { generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { formatDate } from './utils/functions/fechas';
 import { ariaCerrar, selectBuscar } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
-import { nombrePersonaMenorEdad, apellidoPersonaMenorEdad } from './000-nombresyapellidos-personas';
 import { url_base, url_registro_persona } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { generarNombresMasculinos } from './utils/functions/nombresPersonas';
 
 // Vaiables globales 
 let browser: Browser;
@@ -18,16 +18,15 @@ let botonNuevaPersona: Locator;
 // Cedula, nombre y apellido de la persona almacenada en el state
 let cedulaMadre: string | null;
 let nombreMadre: string | null;
-let apellidoMadre: string | null;
+let apellidoMadreMenor: string | null;
 
 // Cedula, numero telefonico y correo del menor
 const cedulaMenor = generarNumerosAleatorios(11);
 const telefonoMenor = ('809' + generarNumerosAleatorios(10));
 const numerosParaCorreo = generarNumerosAleatorios(2);
 
-// Nombres y apellidos de la persona menor de edad
-const nombreMenor = nombrePersonaMenorEdad;
-const apellidoMenor = apellidoPersonaMenorEdad;
+// Nombres de la persona menor de edad
+const nombreMenor = generarNombresMasculinos();
 
 // Pruebas
 test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los diferentes parametros', async () => {
@@ -72,7 +71,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                 // Cedula, nombre y apellido de la madre
                 cedulaMadre = await page.evaluate(() => window.localStorage.getItem('cedulaPersona'));
                 nombreMadre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-                apellidoMadre = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
+                apellidoMadreMenor = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
             });
         
             // Funcion con el boton de continuar, que se repite en cada seccion del registro
@@ -157,7 +156,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
             
                     // Apellidos
                     const campoApellido = page.locator('#person_APELLIDOS');
-                    await campoApellido?.fill(`${apellidoMenor}`);
+                    await campoApellido?.fill(`${apellidoMadreMenor}`);
             
                     // Nacionalidad
                     // Seleccionar la nacionalidad
@@ -195,9 +194,9 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     // Buscar un referido
                     await page.locator(`${selectBuscar}`).click();
                     // Digitar el nombre de la madre
-                    await page.locator(`${selectBuscar}`).fill(`${nombreMadre} ${apellidoMadre}`);
+                    await page.locator(`${selectBuscar}`).fill(`${nombreMadre} ${apellidoMadreMenor}`);
                     // Eelgir la opcion con el nombre de la madre
-                    await page.getByRole('option', {name: `${nombreMadre} ${apellidoMadre}`}).click();
+                    await page.getByRole('option', {name: `${nombreMadre} ${apellidoMadreMenor}`}).click();
             
                     // Categoria Solicitada
                     const campoCategoria = page.locator('#person_ID_CATEGORIA_SOLICITADA');
@@ -413,7 +412,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     await campoBuscarRelacionado.click();
                     await campoBuscarRelacionado?.fill(`${cedulaMadre}`);
                     // Click a la opcion que coincide con lo buscado
-                    await page.locator(`text=${nombreMadre} ${apellidoMadre}`).click();
+                    await page.locator(`text=${nombreMadre} ${apellidoMadreMenor}`).click();
             
                     // Debe de aparecer un modal
                     await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
@@ -424,7 +423,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
                     await page.locator('text="Aceptar"').click();
 
                     // Esperar que la madre se haya agregado correctamente
-                    await expect(page.getByRole('cell', {name: `${nombreMadre} ${apellidoMadre}`})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombreMadre} ${apellidoMadreMenor}`})).toBeVisible();
 
                     // La relacion debe mostrase
                     await expect(page.getByRole('cell', {name: 'MADRE'})).toBeVisible();
@@ -460,7 +459,7 @@ test.describe.serial('Crear Persona Fisica - Menor de Edad - Pruebas con los dif
         
                 // Guardar el nombre y el apellido del menor
                 await page.evaluate((nombreMenor) => window.localStorage.setItem('nombreMenor', nombreMenor), nombreMenor);
-                await page.evaluate((apellidoMenor) => window.localStorage.setItem('apellidoMenor', apellidoMenor), apellidoMenor);
+                await page.evaluate((apellidoMadreMenor) => window.localStorage.setItem('apellidoMenor', `${apellidoMadreMenor}`), apellidoMadreMenor);
         
                 // Guardar nuevamente el Storage con la cedula, el nombre y el apellido del menor
                 await context.storageState({path: 'state.json'});

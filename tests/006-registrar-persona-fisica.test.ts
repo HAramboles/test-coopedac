@@ -2,9 +2,9 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { generarLetrasAleatorias, generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { ariaCerrar, dataCheck, fechaFinal, dataEdit, dataEliminar, noData,fechaInicio, inputRequerido } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
-import { nombrePersonaFisica, apellidoPersonaFisica } from './000-nombresyapellidos-personas';
 import { url_base, url_registro_persona } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { generarNombresFemeninos, generarApellidos } from './utils/functions/nombresPersonas';
 
 // Variables globales
 let browser: Browser;
@@ -21,8 +21,8 @@ const numerosparaCorreo = generarNumerosAleatorios(2);
 const celular = ('829' + generarNumerosAleatorios(10));
 
 // Nombres y apellidos
-const nombrePersona = nombrePersonaFisica;
-const apellidoPersona = apellidoPersonaFisica;
+const nombrePersona = generarNombresFemeninos();
+const apellidoPersona = generarApellidos();
 
 // Correo de la persona
 const correoPersona = nombrePersona.split(' ').join('') + numerosparaCorreo;

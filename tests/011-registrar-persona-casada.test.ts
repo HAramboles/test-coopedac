@@ -1,15 +1,10 @@
 import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, test } from '@playwright/test';
 import { generarLetrasAleatorias, generarNumerosAleatorios } from './utils/functions/functionsRandom';
-import { 
-    nombrePersonaFisicaCasada, 
-    apellidoPersonaFisicaCasada, 
-    nombrePersonaFisicaConyuge, 
-    apellidoPersonaFisicaConyuge  
-} from './000-nombresyapellidos-personas';
 import { ariaCerrar, fechaFinal, fechaInicio } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
 import { url_base, url_registro_persona } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { generarNombresMasculinos, generarNombresFemeninos, generarApellidos } from './utils/functions/nombresPersonas';
 
 // Variables globales
 let browser: Browser;
@@ -35,12 +30,12 @@ const numerosCorreoPersonaCasada = generarNumerosAleatorios(2);
 const numerosCorreoPersonaConyuge = generarNumerosAleatorios(2);
 
 // Nombre y apellido de la persona casada
-const nombrePersonaCasada = nombrePersonaFisicaCasada;
-const apellidoPersonaCasada = apellidoPersonaFisicaCasada;
+const nombrePersonaCasada = generarNombresFemeninos();
+const apellidoPersonaCasada = generarApellidos();
 
 // Nombre y apellido del conyuge de la persona
-const nombrePersonaConyuge = nombrePersonaFisicaConyuge;
-const apellidoPersonaConyuge = apellidoPersonaFisicaConyuge;
+const nombrePersonaConyuge = generarNombresMasculinos();
+const apellidoPersonaConyuge = generarApellidos();
 
 // Correos de las personas
 const correoPersonaCasada = nombrePersonaCasada.split(' ').join('') + numerosCorreoPersonaCasada;
@@ -733,9 +728,9 @@ test.describe.serial('Crear Persona Casada y Conyuge - Pruebas con los diferente
                 // Guardar la cedula de la persona conyugue
                 await page.evaluate((cedulaPersonaConyuge) => window.localStorage.setItem('cedulaPersonaConyuge', cedulaPersonaConyuge), cedulaPersonaConyuge);
                 // Guardar el nombre de la persona conyugue
-                await page.evaluate((nombrePersonaFisicaConyuge) => window.localStorage.setItem('nombrePersonaFisicaConyuge', nombrePersonaFisicaConyuge), nombrePersonaFisicaConyuge);
+                await page.evaluate((nombrePersonaFisicaConyuge) => window.localStorage.setItem('nombrePersonaFisicaConyuge', nombrePersonaFisicaConyuge), nombrePersonaConyuge);
                 // Guardar el apellido de la persona conyugue
-                await page.evaluate((apellidoPersonaFisicaConyuge) => window.localStorage.setItem('apellidoPersonaFisicaConyuge', apellidoPersonaFisicaConyuge), apellidoPersonaFisicaConyuge);
+                await page.evaluate((apellidoPersonaFisicaConyuge) => window.localStorage.setItem('apellidoPersonaFisicaConyuge', apellidoPersonaFisicaConyuge), apellidoPersonaConyuge);
         
                 // Guardar nuevamente el Storage con los datos de la persona casada
                 await context.storageState({path: 'state.json'});

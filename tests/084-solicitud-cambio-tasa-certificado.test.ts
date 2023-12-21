@@ -100,7 +100,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await page.locator('#form_NUEVA_TASA').fill('10');
     });
 
-    test('Firmantes del Certificado - iNVERSION Pagaderas', async () => {
+    test('Firmantes del Certificado - Inversion Pagaderas', async () => {
         // Titulo de la seccion
         await expect(page.locator('h1').filter({hasText: 'FIRMANTES'})).toBeVisible();
 
@@ -175,7 +175,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await expect(page.getByRole('cell', {name: 'CO-PROPIETARIO'})).toBeVisible();
     });
 
-        test('En la Tabla de los Certificados deben estar los dos Certificados Agregados', async () => {
+    test('En la Tabla de los Certificados deben estar los dos Certificados Agregados', async () => {
         // Agregar Certificado
         AgregarCertificado();
 
@@ -203,7 +203,7 @@ test.describe.serial('Pruebas con la Solicitud de Cambio de Tasa de un Certifica
         await expect(page.getByRole('cell', {name: '36', exact: true})).toBeVisible();
     }); 
 
-    test('Editar el Certificado - Inversion Pagaderas ya agergado', async () => {
+    test('Editar el Certificado - Inversion Pagaderas ya agregado', async () => {
         // Editar el primer certificado agregado, el de Inversion Pagaderas
         await page.getByRole('row', {name: 'INVERSION PAGADERAS'}).locator(`${dataEdit}`).click();
 

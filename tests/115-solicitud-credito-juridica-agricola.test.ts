@@ -815,7 +815,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         // Debe estar visible una tabla con los datos del prestamo
         await expect(page.getByText(`RD$ ${cantMonto}`).first()).toBeVisible();
         await expect(page.getByText('RD$ 20,925.00')).toBeVisible();
-        await expect(page.getByText('Plazo:24 Meses')).toBeVisible();
+        await expect(page.getByText('Plazo:48')).toBeVisible();
         await expect(page.getByText('Tasa:13.95%')).toBeVisible();
         await expect(page.getByText('DEPOSITO A CUENTA')).toBeVisible();
         await expect(page.getByText('Tipo de Crédito:COMERCIALES')).toBeVisible();

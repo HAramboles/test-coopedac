@@ -2,15 +2,9 @@ import { APIResponse, Browser, BrowserContext, chromium, expect, Page, Locator, 
 import { generarNumerosAleatorios } from './utils/functions/functionsRandom';
 import { ariaCerrar, fechaFinal, dataCheck, fechaInicio, inputRequerido, actividadJuridicayRelacionado } from './utils/data/inputsButtons';
 import { EscenariosPruebaCrearPersonas } from './utils/dataPages/interfaces';
-import { 
-    nombreJuridica, 
-    nombreRelacionadoJuridica, 
-    apellidoRelacionadoJuridica,
-    nombreRelacionadoReferenciaJuridica,
-    apellidoRelacionadoReferenciaJuridica 
-} from './000-nombresyapellidos-personas';
 import { url_base, url_registro_persona } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { generarNombresEmpresas, generarNombresMasculinos, generarNombresFemeninos, generarApellidos } from './utils/functions/nombresPersonas';
 
 // Variables Globales
 let browser: Browser;
@@ -37,19 +31,19 @@ const telefonoJuridica = ('809' + generarNumerosAleatorios(10));
 const celularRelacionado = ('829' + generarNumerosAleatorios(10));
 const celularRelacionadoReferencia = ('829' + generarNumerosAleatorios(10));
 
+// Nombres y apellidos del relacionado de la persona juridica
+const nombreRelacionado = generarNombresMasculinos();
+const apellidoRelacionado = generarApellidos();
+
 // Nombre Persona Juridica
-const nombrePersonaJuridica = nombreJuridica;
+const nombrePersonaJuridica = generarNombresEmpresas() + ' ' + apellidoRelacionado;
 
 // Correo de la empresa
 const correoEmpresa = nombrePersonaJuridica.split(' ').join('') + correoJuridica;
 
-// Nombres y apellidos del relacionado de la persona juridica
-const nombreRelacionado = nombreRelacionadoJuridica;
-const apellidoRelacionado = apellidoRelacionadoJuridica;
-
 // Nombres y apellidos del relacionado por referencia de la persona juridica
-const nombreRelacionadoReferencia = nombreRelacionadoReferenciaJuridica;
-const apellidoRelacionadoReferencia = apellidoRelacionadoReferenciaJuridica;
+const nombreRelacionadoReferencia = generarNombresFemeninos();
+const apellidoRelacionadoReferencia = generarApellidos();
 
 // Pruebas
 test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parametros', async () => {
@@ -865,17 +859,17 @@ test.describe.serial('Crear Persona Juridica - Pruebas con los diferentes parame
                     await page.waitForTimeout(2000);
 
                     // La persona agregada por referenia debe estar en la tabla
-                    await expect(page.getByRole('cell', {name: `${nombreRelacionadoReferenciaJuridica} ${apellidoRelacionadoReferencia}`})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombreRelacionadoReferencia} ${apellidoRelacionadoReferencia}`})).toBeVisible();
                 })
             
                 test('Finalizar con el Registro de Persona Juridica', async () => {
                     // En la tabla deben estar los dos relacionados agregados
 
                     // Relacionado por Referencia
-                    await expect(page.getByRole('cell', {name: `${nombreRelacionadoReferenciaJuridica} ${apellidoRelacionadoReferencia}`})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombreRelacionadoReferencia} ${apellidoRelacionadoReferencia}`})).toBeVisible();
 
                     // Relacionado Completo
-                    await expect(page.getByRole('cell', {name: `${nombreRelacionadoJuridica} ${apellidoRelacionadoJuridica}`})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombreRelacionado} ${apellidoRelacionado}`})).toBeVisible();
 
                     // Hacer click al boton de finalizar
                     const botonFinalizar = page.locator('#legalPerson').getByRole('button', {name: 'check Finalizar'});
