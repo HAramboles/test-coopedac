@@ -117,16 +117,22 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
         // Deben mostrarse en la lista de personas las personas mayores de edad creadas
 
         // Persona Fisica
-        await expect(page.getByRole('cell', {name: `${nombrePersonaFisica} ${apellidoPersonaFisica}`})).toBeVisible();
+        const personaFisica = page.getByRole('cell', {name: `${nombrePersonaFisica} ${apellidoPersonaFisica}`});
+        await expect(personaFisica).toBeVisible();
+        await personaFisica.click({clickCount: 4});
+        await page.waitForTimeout(2000);
 
         // Persona Fisica Relacionada
-        await expect(page.getByRole('cell', {name: `${nombrePersonaRelacionada} ${apellidoPersonaRelacionada}`})).toBeVisible();
+        const personaRelacionada = page.getByRole('cell', {name: `${nombrePersonaRelacionada} ${apellidoPersonaRelacionada}`});
+        await expect(personaRelacionada).toBeVisible();
+        await personaRelacionada.click({clickCount: 4});
+        await page.waitForTimeout(2000);
 
         // Persona Fisica Casada
-        await expect(page.getByRole('cell', {name: `${nombrePersonaCasada} ${apellidoPersonaCasada}`})).toBeVisible();
-
-        // Esperar que se muestren las personas buscadas
-        await page.waitForTimeout(6000);
+        const personaCasada = page.getByRole('cell', {name: `${nombrePersonaCasada} ${apellidoPersonaCasada}`});
+        await expect(personaCasada).toBeVisible();
+        await personaCasada.click({clickCount: 4});
+        await page.waitForTimeout(2000);
     });
 
     test('Buscar a la Persona Fisica Menor de Edad', async () => {
@@ -144,10 +150,10 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
         await page.getByRole('button', {name: 'Aplicar filtro'}).click();
 
         // Debe mostrarse la persona menor de edad creada
-        await expect(page.getByRole('cell', {name: `${nombrePersonaMenorEdad} ${apellidoPersonaMenorEdad}`})).toBeVisible();
-
-        // Esperar que se muesre la persona buscada
-        await page.waitForTimeout(6000);
+        const personaMenorEdad = page.getByRole('cell', {name: `${nombrePersonaMenorEdad} ${apellidoPersonaMenorEdad}`});
+        await expect(personaMenorEdad).toBeVisible();
+        await personaMenorEdad.click({clickCount: 4});
+        await page.waitForTimeout(2000);
     });
 
     test('Buscar a la Persona Juridica', async () => {
@@ -173,10 +179,10 @@ test.describe.serial('Pruebas con la Busqueda Avanzada en Registrar Persona', as
         await page.getByRole('button', {name: 'Aplicar filtro'}).click();
 
         // Debe mostrarse la persona juridica creada
-        await expect(page.getByRole('cell', {name: `${nombrePersonaJuridica}`})).toBeVisible();
-
-        // Esperar que se muestre la persona buscada
-        await page.waitForTimeout(6000);
+        const personaJuridica = page.getByRole('cell', {name: `${nombrePersonaJuridica}`});
+        await expect(personaJuridica).toBeVisible();
+        await personaJuridica.click({clickCount: 4});
+        await page.waitForTimeout(2000);
     });
     
     test.afterAll(async () => { // Despues de las pruebas

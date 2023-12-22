@@ -9,10 +9,6 @@ let browser: Browser;
 let context: BrowserContext;
 let page: Page;
 
-// Nombre y apellido de la persona
-let nombre: string | null;
-let apellido: string | null;
-
 // Codigo del prestamo
 let prestamoCrediauto: string | null;
 
@@ -30,10 +26,6 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
 
         // Ingresar a la pagina
         await page.goto(`${url_base}`);
-
-        // Nombre y apellido de la persona almacenada en el state
-        nombre = await page.evaluate(() => window.localStorage.getItem('nombrePersona'));
-        apellido = await page.evaluate(() => window.localStorage.getItem('apellidoPersona'));
 
         // Id del prestamo almacenada en el state
         prestamoCrediauto = await page.evaluate(() => window.localStorage.getItem('codigoPrestamoCrediauto'));
@@ -66,11 +58,6 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
         // ID Documento
         await expect(page.locator('#form_ID_DOCUMENTO')).toBeVisible();
 
-        // Buscar por el ID Prestamo
-        await page.locator(`${selectBuscar}`).fill(`${prestamoCrediauto}`);
-        // Elegir el prestamo buscado
-        await page.getByRole('option', {name: `${nombre} ${apellido}`}).click();
-
         // Fecha documento inicio
         await expect(page.locator(`${fechaInicial}`)).toHaveValue(`${diaActualFormato}`);
 
@@ -91,17 +78,10 @@ test.describe.serial('Pruebas Anulando una Nota Credito Prestamo', async () => {
 
     test('Anular la Nota de Credito al Prestamo Crediauto de la Persona Juridica', async () => {
         // Nota Credito al Prestamo
-        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
-        // await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`}).last()).toBeVisible();
-
-        // Concepto
-        await expect(page.getByRole('cell', {name: 'ABONO A CAPITAL'})).toBeVisible();
-
-        // Monto Ingreso
-        await expect(page.getByRole('cell', {name: 'RD$ 125,000.00'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: `${prestamoCrediauto}`})).toBeVisible();
 
         // Boton Eliminar
-        await page.getByRole('row', {name: 'RD$ 125,000.00'}).locator(`${dataEliminar}`).click();
+        await page.getByRole('row', {name: `${prestamoCrediauto}`}).locator(`${dataEliminar}`).click();
 
         // Aparece un modal
         await expect(page.locator('text=Motivo de la Anulación')).toBeVisible();

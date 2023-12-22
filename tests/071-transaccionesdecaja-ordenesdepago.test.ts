@@ -63,6 +63,14 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                 // Nota almacenada en el state
                 nota = await page.evaluate(() => window.localStorage.getItem('nota'));
             });
+
+            // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
+            const CerrarPaginasReportes = async () => {
+                context.on('page', async (page) => {
+                    await page.waitForTimeout(1000);
+                    await page.close();
+                });
+            };
         
             test('Ir a la opcion de Transacciones de Caja', async () => {
                 // Tesoreria
@@ -425,13 +433,15 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     // Click al boton de Aceptar del modal
                     await page.getByRole('button', {name: 'Aceptar'}).click();
 
-                    // Esperar que se abran dos nuevas pestañas con el recibo de la orden y el Reporte RTE
-                    const page1 = await context.waitForEvent('page');
-                    const page2 = await context.waitForEvent('page');
+                    // Cerrar las paginas que se abren con los diferentes reportes
+                    CerrarPaginasReportes();
 
-                    // Cerrar las dos paginas
-                    await page2.close();
-                    await page1.close();
+                    // Debe regresar a la pagina
+                    await expect(page.locator('h1').filter({hasText: 'TRANSACCIONES DE CAJA'})).toBeVisible();
+
+                    // No deben mostrarse ingresos o egresos en transito
+                    await expect(page.getByRole('cell', {name: 'RETIRO', exact: true})).not.toBeVisible();
+                    await expect(page.getByRole('button', {name: 'Aplicar'})).toBeVisible();
                 });
             };
 

@@ -58,9 +58,10 @@ test.describe.serial('Pruebas con la Categoria del Socio', async () => {
 
         // La categoria del socio debe estar visible
         await expect(page.getByRole('cell', {name: 'SOCIO EMPRESARIAL'})).toBeVisible();
+        await page.getByRole('cell').nth(4).click({clickCount: 4});
 
         // Esperar que se muestre el resultado
-        await page.waitForTimeout(6000);
+        await page.waitForTimeout(3000);
     });
 
     test.afterAll(async () => { // Despues de las pruebas

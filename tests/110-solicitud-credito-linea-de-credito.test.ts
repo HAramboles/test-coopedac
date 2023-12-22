@@ -694,8 +694,9 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
 
         // Desembolsar la mitad de la linea, es decir, 100,000 pesos
         await page.getByText('RD$ 0.00').first().click();
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(2000);
         await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
+        await page.waitForTimeout(2000);
         await page.locator('#form_MONTO_DESEMBOLSAR').click();
 
         // Esperar dos segundos

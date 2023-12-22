@@ -10,7 +10,7 @@ let context: BrowserContext;
 let page: Page;
 
 // Codigo del prestamo
-let prestamoCrediauto: string | null;
+let prestamoAhorros: string | null;
 
 // Pruebas
 test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => {
@@ -28,7 +28,7 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await page.goto(`${url_base}`);
 
         // Id del prestamo almacenada en el state
-        prestamoCrediauto = await page.evaluate(() => window.localStorage.getItem('codigoPrestamoCrediauto'));
+        prestamoAhorros = await page.evaluate(() => window.localStorage.getItem('codigoPrestamoAhorro'));
     });
 
     test('Ir a la opcion de Anular Pago a Prestamo', async () => {
@@ -76,7 +76,7 @@ test.describe.serial('Pruebas con la Anulacion de Pago a Prestamo', async () => 
         await expect(page.locator(`${fechaFin}`)).toHaveAttribute('readonly', '');
 
         // Buscar por la cuenta de origen
-        await page.locator(`${inputCuentaOrigen}`).fill(`${prestamoCrediauto}`);
+        await page.locator(`${inputCuentaOrigen}`).fill(`${prestamoAhorros}`);
 
         // Click al boton de Buscar
         const botonBuscar = page.getByRole('button', {name: 'Buscar'});

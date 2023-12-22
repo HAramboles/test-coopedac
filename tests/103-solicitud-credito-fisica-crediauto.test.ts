@@ -784,6 +784,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
             await expect(botonDesembolsar).toBeVisible();
+            await botonDesembolsar.scrollIntoViewIfNeeded();
             await botonDesembolsar.click();
 
             // Cerrar las paginas que se abren con los diferentes reportes
@@ -811,6 +812,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
             await expect(botonDesembolsar).toBeVisible();
+            await botonDesembolsar.scrollIntoViewIfNeeded();
             await botonDesembolsar.click();
 
             // Cerrar las paginas que se abren con los diferentes reportes

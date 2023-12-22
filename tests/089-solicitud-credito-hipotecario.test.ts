@@ -755,6 +755,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.locator('text=SOLICITADO').click();
         await page.locator('text=EN PROCESO (ANALISIS)').click();
 
+        // Esperar que la pagina cargue
+        await page.waitForTimeout(1000);
+
         // Elegir buscar por nombre del socio
         await page.locator(`${buscarPorNombre}`).click();
 
@@ -1022,6 +1025,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         if (await montoDesembolsar.isVisible()) {
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
+            await botonDesembolsar.scrollIntoViewIfNeeded();
             await expect(botonDesembolsar).toBeVisible();
             await botonDesembolsar.click();
 
@@ -1049,6 +1053,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
+            await botonDesembolsar.scrollIntoViewIfNeeded();
             await expect(botonDesembolsar).toBeVisible();
             await botonDesembolsar.click();
 

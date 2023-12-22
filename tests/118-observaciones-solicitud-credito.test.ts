@@ -679,6 +679,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
         if (await montoDesembolsar.isVisible()) {
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
+            await botonDesembolsar.scrollIntoViewIfNeeded();
             await expect(botonDesembolsar).toBeVisible();
             await botonDesembolsar.click();
 
@@ -706,6 +707,7 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
+            await botonDesembolsar.scrollIntoViewIfNeeded();
             await expect(botonDesembolsar).toBeVisible();
             await botonDesembolsar.click();
 
@@ -736,6 +738,32 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // La solicitud de credito desembolsada debe estar visible
         await expect(page.getByRole('row', {name: 'CRÉDITO GERENCIAL / AHORROS -1M'})).toBeVisible();
+    });
+
+    test('Guardar el codigo del prestamo en el state', async () => {
+        // Copiar el codigo de la cuenta
+        await page.getByRole('row', {name: 'CRÉDITO GERENCIAL / AHORROS -1M'}).getByRole('cell').nth(0).click({clickCount: 4});
+        await page.locator('body').press('Control+c');
+
+        // Eelgir buscar por id prestamo
+        await page.locator('(//INPUT[@type="radio"])[1]').click();
+        await page.waitForTimeout(2000);
+
+        // Buscar el prestamo por el codigo
+        await page.locator(`${formBuscar}`).clear();
+        await page.locator(`${formBuscar}`).press('Control+v');
+        await page.locator(`${formBuscar}`).press('Backspace');
+
+        // Esperar que se muestre el prestamo buscado
+        await page.waitForTimeout(2000);
+
+        // El prestamo debe estar visible en la tabla
+        let idPrestamo = await page.locator(`${formBuscar}`).getAttribute('value');
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+        await expect(page.getByRole('row', {name: 'CRÉDITO GERENCIAL / AHORROS -1M'})).toBeVisible();
+
+        // Guardar el codigo del prestamo en el state
+        await page.evaluate((idPrestamo) => window.localStorage.setItem('codigoPrestamoAhorro', `${idPrestamo}`), `${idPrestamo}`);
     });
 
     test.afterAll(async () => { // Despues de las pruebas
