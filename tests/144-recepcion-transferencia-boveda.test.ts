@@ -69,6 +69,12 @@ test.describe.serial('Pruebas con la Recepcion Transferencia Boveda', async () =
 
         // Cerrar la ventana
         await page1.close();
+
+        // Debe regresar a la pagina
+        await expect(page.locator('h1').filter({hasText: 'RECEPCIÓN TRANSFERENCIA BÓVEDA'})).toBeVisible();
+        
+        // No debe estar visible la transferencia de los dos millones realizada por la caja
+        await expect(page.getByRole('cell', {name: '2,800,000.00'}).first()).not.toBeVisible();
     });
 
     test('Cancelar la Transferencia a Boveda de mil pesos', async () => {

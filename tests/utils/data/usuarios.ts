@@ -10,7 +10,7 @@ export const userCuadreCaja = process.env.REACT_APP_WEB_SERVICE_API_USER_CUADRE_
 export const passCuadreCaja = process.env.REACT_APP_WEB_SERVICE_API_PASS_CUADRE_CAJA;
 
 // Nombre del testigo de los firmantes
-export const nombreTestigoCajero:string = 'HECTOR ARAMBOLES';
+export const nombreTestigoCajero = process.env.REACT_APP_WEB_SERVICE_API_NAME_USER;
 
 // Nombre del oficial de cuadre
 export const nombreOficialCuadre:string = 'CARLOS GIL';

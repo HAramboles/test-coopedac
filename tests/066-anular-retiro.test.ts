@@ -57,6 +57,9 @@ test.describe.serial('Pruebas con la Anulacion de un Retiro', async () => {
     });
 
     test('Buscar el Retiro realizado por la Caja en uso a la Cuenta de Ahorros Normales de la persona', async () => {
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(3000);
+
         // El titulo deberia estar visible
         await expect(page.locator('h1').filter({hasText: 'ANULAR RETIRO'})).toBeVisible();
 

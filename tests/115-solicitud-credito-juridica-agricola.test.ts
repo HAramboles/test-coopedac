@@ -834,6 +834,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
 
         // El monto a desembolsar debe estar visible
         if (await montoDesembolsar.isVisible()) {
+            // Mostrar el monto a desembolsar
+            await montoDesembolsar.click({clickCount: 4});
+
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
             await botonDesembolsar.scrollIntoViewIfNeeded();
@@ -861,6 +864,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
 
             // Esperar que la pagina cargue
             await page.waitForTimeout(6000);
+
+            // Mostrar el monto a desembolsar
+            await montoDesembolsar.click({clickCount: 4});
 
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});

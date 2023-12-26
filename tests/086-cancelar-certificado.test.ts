@@ -80,6 +80,8 @@ test.describe.serial('Pruebas con la Cancelacion de Certificados', () => {
         // Elegir la cuenta de Ahorros
         await page.getByText('AHORROS NORMALES |').getByText(`| ${nombre} ${apellido}`).click();
 
+        // Origen de inversion
+
         // Cancelar el certificado
         const botonCancelar = page.getByRole('button', {name: 'Cancelar'});
         await expect(botonCancelar).toBeVisible();

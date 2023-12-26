@@ -174,6 +174,9 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
 
         // El monto a desembolsar debe estar visible
         if (await montoDesembolsar.isVisible()) {
+            // Mostrar el monto a desembolsar
+            await montoDesembolsar.click({clickCount: 4});
+
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
             await expect(botonDesembolsar).toBeVisible();
@@ -200,6 +203,9 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
 
             // Esperar que la pagina cargue
             await page.waitForTimeout(3000);
+
+            // Mostrar el monto a desembolsar
+            await montoDesembolsar.click({clickCount: 4});
 
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});

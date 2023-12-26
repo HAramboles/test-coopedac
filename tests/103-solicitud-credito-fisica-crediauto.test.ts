@@ -510,6 +510,18 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // La URL debe cambiar
         await expect(page).toHaveURL(`${url_solicitud_credito}/create?step=9`);
 
+        // El boton de agregar documentos debe estar visible
+        await expect(page.getByRole('button', {name: 'Agregar documentos'})).toBeVisible();
+
+        // Subir Cedula del Deudor
+        const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');
+        await page.getByRole('button', {name: 'upload Cargar'}).first().click();
+        const subirCedulaDeudor = await subirCedulaDeudorPromesa;
+        await subirCedulaDeudor.setFiles(`${firma}`);
+
+        // Esperar que la Cedula se haya subido
+        await expect(page.getByRole('link', {name: 'CEDULA DEUDOR'})).toBeVisible();
+
         // Subir el Informe Buro Credito (DataCredito)
         const subirInformeBuroCreditoPromesa = page.waitForEvent('filechooser');
         await page.getByRole('row', {name: '3 INFORME BURO CREDITO (DATACREDITO) upload Cargar delete'}).getByRole('cell', {name: 'upload Cargar'}).locator('button').click();
@@ -573,14 +585,8 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Esperar que el Contrato se haya subido
         await expect(page.getByRole('link', {name: 'CONTRATO'})).toBeVisible();
 
-        // Subir Cedula del Deudor
-        const subirCedulaDeudorPromesa = page.waitForEvent('filechooser');
-        await page.getByRole('button', {name: 'upload Cargar'}).first().click();
-        const subirCedulaDeudor = await subirCedulaDeudorPromesa;
-        await subirCedulaDeudor.setFiles(`${firma}`);
-
-        // Esperar que la Cedula se haya subido
-        await expect(page.getByRole('link', {name: 'CEDULA DEUDOR'})).toBeVisible();
+        // Esperar que todos los documentos se hayan subido
+        await page.waitForTimeout(3000);   
 
         // Click en la firma de la Cedula deudor para visualizar
         await page.getByRole('link', {name: 'CEDULA DEUDOR'}).click();
@@ -656,6 +662,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
+        // La solicitud buscada debe estar visible
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'edit'}).click();
 
@@ -729,6 +738,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
+        // La solicitud buscada debe estar visible
+        await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
 
@@ -781,6 +793,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
         // El monto a desembolsar debe estar visible
         if (await montoDesembolsar.isVisible()) {
+            // Mostrar el monto a desembolsar
+            await montoDesembolsar.click({clickCount: 4});
+            
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
             await expect(botonDesembolsar).toBeVisible();
@@ -808,6 +823,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito - Crediautos - Persona
 
             // Esperar que la pagina cargue
             await page.waitForTimeout(3000);
+
+            // Mostrar el monto a desembolsar
+            await montoDesembolsar.click({clickCount: 4});
 
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});

@@ -287,6 +287,9 @@ test.describe.serial('Pruebas con el Estado de las Cuentas por Cobrar de un Soci
         await expect(page.getByRole('row', {name: 'BAL GENERAL: 0.00'})).toBeVisible();
         await expect(page.getByRole('row', {name: 'TOTAL PAGADO: 0.00'}).first()).toBeVisible();
         await expect(page.getByRole('row', {name: 'TOTAL PAGADO: 0.00'}).last()).toBeVisible();
+
+        // Esperar a que al seccion de Movimientos no contenga datos
+        await page.waitForTimeout(4000);
     });
 
     test.afterAll(async () => { // Despues de las pruebas

@@ -4,6 +4,7 @@ import { diaActualFormato, diaSiguiente } from './utils/functions/fechas';
 import { EscenariosPruebasCajaBoveda } from './utils/dataPages/interfaces';
 import { url_base, url_transacciones_caja } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
+import { servicios_datos_persona_orden_pago } from './utils/dataPages/servicios';
 
 // Variables Globales
 let browser: Browser;
@@ -288,7 +289,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await botonClienteIntermediario.click();
 
                     // Los datos del socio deben agregarse
-                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`, exact: true})).toBeVisible();
 
                     // Click al boton de Seleccionar
                     await page.getByText('Seleccionar').click();
@@ -314,6 +315,9 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
 
                     // Debe regresar a la pagina
                     await expect(page).toHaveURL(`${url_transacciones_caja}`);
+
+                    // El titulo principal debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'TRANSACCIONES DE CAJA'})).toBeVisible();
                 });
             
                 test('Boton de Ordenes', async () => {
@@ -328,6 +332,10 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
             
                     // Debe aparecer un modal con las opciones para el retiro
                     await expect(page.locator('text=ÓRDENES DE PAGO')).toBeVisible();
+
+                    // Esperar a que el servicio datos de la persona cargue
+                    await page.waitForResponse(`${servicios_datos_persona_orden_pago}`);
+                    await page.waitForTimeout(3000);
                 });
             
                 test('Datos de la Orden de Pago', async () => {
@@ -339,7 +347,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await expect(page.getByRole('heading', {name: 'Firmas Autorizadas'})).toBeVisible();
 
                     // Numero de orden
-                    await page.locator('#form_NUM_ORDEN').fill('89');
+                    await page.locator('#form_NUM_ORDEN').fill('59');
             
                     // Input del monto
                     const campoMonto = page.locator('#form_MONTO_MOVIMIENTO');
@@ -431,7 +439,7 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     await expect(page.getByText('Doc. Identidad:')).toBeVisible();
 
                     // Click al boton de Aceptar del modal
-                    await page.getByRole('button', {name: 'Aceptar'}).click();
+                    await page.getByRole('button', {name: 'check Aceptar'}).click();
 
                     // Cerrar las paginas que se abren con los diferentes reportes
                     CerrarPaginasReportes();
@@ -439,9 +447,11 @@ test.describe.serial('Pruebas con Transacciones de Caja - Orden de Pago', async 
                     // Debe regresar a la pagina
                     await expect(page.locator('h1').filter({hasText: 'TRANSACCIONES DE CAJA'})).toBeVisible();
 
+                    await page.waitForTimeout(3000);
+
                     // No deben mostrarse ingresos o egresos en transito
                     await expect(page.getByRole('cell', {name: 'RETIRO', exact: true})).not.toBeVisible();
-                    await expect(page.getByRole('button', {name: 'Aplicar'})).toBeVisible();
+                    await expect(page.getByRole('button', {name: 'Aplicar'})).not.toBeVisible();
                 });
             };
 

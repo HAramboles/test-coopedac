@@ -677,6 +677,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // El monto a desembolsar debe estar visible
         if (await montoDesembolsar.isVisible()) {
+            // Mostrar el monto a desembolsar
+            await montoDesembolsar.click({clickCount: 4});
+
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
             await botonDesembolsar.scrollIntoViewIfNeeded();
@@ -704,6 +707,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
             // Esperar que la pagina cargue
             await page.waitForTimeout(6000);
+
+            // Mostrar el monto a desembolsar
+            await montoDesembolsar.click({clickCount: 4});
 
             // Desembolsar la solicitud
             const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
@@ -767,6 +773,9 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
     });
 
     test.afterAll(async () => { // Despues de las pruebas
+        // Guardar nuevamente el Storage con el codigo del prestamo
+        await context.storageState({path: 'state.json'});
+        
         // Cerrar la page
         await page.close();
 

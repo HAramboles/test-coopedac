@@ -243,7 +243,6 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     // Debe mostrarse un boton para crear un intermediario
                     const botonCrearIntermediario = page.getByRole('button', {name: 'Crear Intermediario'});
                     await expect(botonCrearIntermediario).toBeVisible();
-                    // await botonCrearIntermediario.click();
 
                     // Boton de Cliente es Intermediario
                     const botonClienteIntermediario = page.getByText('Cliente Intermediario');
@@ -251,6 +250,9 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
 
                     // Click al boton de Cliente Intermediario
                     await botonClienteIntermediario.click();
+
+                    // Esperar que los datos de la persona se agreguen
+                    await page.waitForTimeout(2000);
 
                     // Los datos del socio deben agregarse
                     await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
@@ -313,8 +315,8 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     // Agregar un comentario
                     await page.locator(`${formComentario}`).fill('Retiro de 500.02 pesos de la cuenta de Ahorros');
 
-                    // Esperar un segundo antes de hacer click en Aceptar
-                    await page.waitForTimeout(1000);
+                    // Esperar dos segundos antes de hacer click en Aceptar
+                    await page.waitForTimeout(2000);
             
                     // Aplicar el retiro
                     await page.getByRole('button', {name: 'check Aplicar'}).click();
@@ -329,6 +331,9 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await expect(page.locator('h1').filter({hasText: 'ENTREGADO'})).toBeVisible();
                     await expect(page.locator('h1').filter({hasText: 'DETALLE DISTRIBUCIÓN'})).toBeVisible();
                     await expect(page.locator('h1').filter({hasText: 'RECOMENDACIÓN DE DISTRIBUCIÓN'})).toBeVisible();
+
+                    // Esperar que la tabla de distribucion este visible en el modal
+                    await page.waitForTimeout(2000);
             
                     // Hacer la distribucion del dinero a retirar, en el caso de la prueba RD 500.02
                     const cant500 = page.locator('[id="14"]');

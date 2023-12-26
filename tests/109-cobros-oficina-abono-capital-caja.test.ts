@@ -389,11 +389,16 @@ test.describe.serial('Pruebas con Cobros de Oficina', () => {
         // Click al boton de Aceptar del modal
         await page.getByRole('button', {name: 'Aceptar'}).click();
 
-        // Cerrar las paginas que se abren con los diferentes reportes
-        CerrarPaginasReportes();
+        // Esperar que se abran dos nuevas pestañas con los reportes
+        const page1 = await context.waitForEvent('page');
+        const page2 = await context.waitForEvent('page');
+
+        // Cerrar las dos paginas
+        await page2.close();
+        await page1.close();
 
         // Debe regresar a la pagina
-        await expect(page.locator('h1').filter({hasText: 'COBROS OFICINA'})).toBeVisible();
+        await expect(page.locator('h1').filter({hasText: 'TRANSACCIONES DE CAJA'})).toBeVisible();
     });
 
     test.afterAll(async () => { // Despues de las pruebas

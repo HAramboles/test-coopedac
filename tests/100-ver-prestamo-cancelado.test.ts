@@ -57,11 +57,11 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
     });
 
     test('Buscar la Solicitud de Credito de la persona en Estado Cancelado', async () => {
-        // Click al selector de estado
-        await page.locator('text=SOLICITADO').click();
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(3000);
 
-        // Click a la opcion de Cancelado
-        await page.locator('text=CANCELADO').click();
+        // Titulo principal debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
 
         // Elegir buscar por nombre del socio
         await page.locator(`${buscarPorNombre}`).click(); 
@@ -69,10 +69,17 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
         // Buscar la solicitud de la persona
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
+        // Click al selector de estado
+        await page.locator('text=SOLICITADO').click();
+
+        // Click a la opcion de Cancelado
+        await page.locator('text=CANCELADO').click();
+
+        // Esperar que la solicitud buscada este visible
+        await page.waitForTimeout(3000);
+
         // Datos del prestamo
         await expect(page.getByRole('row', {name: `CRÉDITO HIPOTECARIO ${nombre} ${apellido} RD$ 300,000.00 48 RD$ 3,750.00`})).toBeVisible();
-
-        await page.waitForTimeout(4000);
     });
 
     test('Ver la Solictud', async () => {
@@ -175,6 +182,9 @@ test.describe.serial('Pruebas Viendo Prestamo Cancelado', async () => {
     });
 
     test('El prestamo debe seguir en estado Cancelado', async () => {
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(4000);
+
         // El estado de las solicitudes debe estar en Cancelado
         await expect(page.getByText('CANCELADO')).toBeVisible();
 
