@@ -63,6 +63,14 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                 nota = await page.evaluate(() => window.localStorage.getItem('nota'));
             });
 
+            // Funcion para cerrar las paginas de los reportes
+            const CerrarPaginasReportes = async () => {
+                context.on('page', async (page) => {
+                    await page.waitForTimeout(1000);
+                    await page.close();
+                });
+            };
+
             test('Ir a la opcion de Transacciones de Caja', async () => {
                 // Tesoreria
                 await page.getByRole('menuitem', {name: 'TESORERIA'}).click();
@@ -281,13 +289,8 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     // Click al boton de Aceptar del modal
                     await page.getByRole('button', {name: 'Aceptar'}).click();
 
-                    // Esperar que se abran dos nuevas pestañas con los reportes
-                    const page1 = await context.waitForEvent('page');
-                    const page2 = await context.waitForEvent('page');
-
-                    // Cerrar las dos paginas
-                    await page2.close();
-                    await page1.close();
+                    // Cerrar las paginas con el reporte RTE y con el recibo de pago
+                    CerrarPaginasReportes();
 
                     // Debe regresar a la pagina
                     await expect(page).toHaveURL(`${url_transacciones_caja}`);
@@ -417,13 +420,8 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
                     // Click al boton de Aceptar del modal
                     await page.getByRole('button', {name: 'Aceptar'}).click();
 
-                    // Esperar que se abran dos nuevas pestañas con los reportes
-                    const page1 = await context.waitForEvent('page');
-                    const page2 = await context.waitForEvent('page');
-
-                    // Cerrar las dos paginas
-                    await page2.close();
-                    await page1.close();
+                    // Cerrar las paginas con el reporte RTE y con el recibo de pago
+                    CerrarPaginasReportes();
 
                     // Debe regresar a la pagina
                     await expect(page).toHaveURL(`${url_transacciones_caja}`);

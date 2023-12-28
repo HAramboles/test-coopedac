@@ -255,7 +255,7 @@ test.describe.serial('Transacciones de Caja - Deposito - Cuenta de Aportaciones 
                     await page.waitForTimeout(2000);
 
                     // Los datos del socio deben agregarse
-                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`, exact: true})).toBeVisible();
 
                     // Click al boton de Seleccionar
                     await page.getByText('Seleccionar').click();

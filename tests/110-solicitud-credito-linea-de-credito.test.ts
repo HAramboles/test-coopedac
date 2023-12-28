@@ -679,7 +679,7 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         await expect(page.getByText('Tasa:13.95%')).toBeVisible();
         await expect(page.getByText('DEPOSITO A CUENTA')).toBeVisible();
         await expect(page.getByText('Tipo de Crédito:COMERCIALES')).toBeVisible();
-        //await expect(page.getByText('Oferta:LÍNEA DE CRÉDITO')).toBeVisible();
+        await expect(page.getByText('Oferta:LÍNEA DE CRÉDITO')).toBeVisible();
         await expect(page.getByText('Grupo:SIN GARANTIA')).toBeVisible();
 
         // La tabla de cuentas de cobros debe estar visible
@@ -692,18 +692,36 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         // Esperar que el input de monto a desembolsar este visible
         await page.waitForTimeout(4000);
 
+        // Posibles montos a desembolsar
+        const montoDesembolsarCero = page.getByText('RD$ 0.00').first();
+        const montoDesembolsarDoscientos = page.getByText('RD$ 200,000.00').nth(1);
+
         // Desembolsar la mitad de la linea, es decir, 100,000 pesos
-        await page.getByText('RD$ 0.00').first().click();
-        await page.waitForTimeout(2000);
-        await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
-        await page.waitForTimeout(2000);
-        await page.locator('#form_MONTO_DESEMBOLSAR').click();
+        if (await montoDesembolsarCero.isVisible()) {
+            await montoDesembolsarCero.click();
+            await page.waitForTimeout(2000);
+            await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
+            await page.waitForTimeout(2000);
+            await page.locator('#form_MONTO_DESEMBOLSAR').click();
 
-        // Esperar dos segundos
-        await page.waitForTimeout(2000);
+            // Esperar dos segundos
+            await page.waitForTimeout(2000);
 
-        // Click fuera del checkbox
-        await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
+            // Click fuera del checkbox
+            await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
+        } else if (await montoDesembolsarDoscientos.isVisible()) {
+            await montoDesembolsarDoscientos.click();
+            await page.waitForTimeout(2000);
+            await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
+            await page.waitForTimeout(2000);
+            await page.locator('#form_MONTO_DESEMBOLSAR').click();
+
+            // Esperar dos segundos
+            await page.waitForTimeout(2000);
+
+            // Click fuera del checkbox
+            await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
+        };
 
         // Click a Desembolsar
         const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});

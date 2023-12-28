@@ -124,6 +124,9 @@ test.describe.serial('Pruebas Consultando una Persona', async () => {
         // Digitar el nombre de la persona a buscar
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
+        // Esperar que la persona buscada se muestre en la tabla
+        await page.waitForTimeout(2000);
+
         // La persona debe de aparecer en la tabla
         await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
         

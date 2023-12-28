@@ -113,6 +113,9 @@ test.describe.serial('Activar una Cuenta del Socio - Pruebas con los diferentes 
                 // Ingresar el nombre del socio
                 await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
+                // Esperar a que se muestre la cuenta del socio
+                await page.waitForTimeout(2000);
+
                 // Debe mostrarse la cuenta del socio
                 await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             });

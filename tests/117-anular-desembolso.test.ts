@@ -150,6 +150,32 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         // La url debe de tener que la solicitud esta en aprobado
         await expect(page).toHaveURL(/\/aprobado/);
 
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(3000);
+
+        // Debe estar en el primer paso de la solicitud
+        await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+
+        // Dirigirse a la seccion de los cargos
+        const seccionCargos = page.getByRole('button', {name: '3 Cargos Del Préstamo'});
+        await expect(seccionCargos).toBeVisible();
+        await seccionCargos.click();
+
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(2000);
+        
+        // La URL debe cambiar
+        await expect(page).toHaveURL(/\/?step=3/);
+
+        // El titulo del paso 3 debe estar visible
+        await expect(page.locator('h1').filter({hasText: 'CARGOS'})).toBeVisible();
+
+        // Los cargos de la solicitud deben estar visibles
+        await expect(page.getByRole('cell', {name: 'CONTRATO'})).toBeVisible();
+        await expect(page.getByRole('cell', {name: 'DATACREDITO'})).toBeVisible();
+
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
         await expect(seccionDesembolso).toBeVisible();

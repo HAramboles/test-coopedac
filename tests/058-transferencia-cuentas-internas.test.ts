@@ -51,6 +51,9 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         // Buscar un socio
         await page.locator(`${selectBuscar}`).first().fill(`${cedula}`);
 
+        // Esperar que se muestren las cuentas del socio
+        await page.waitForTimeout(2000);
+
         // Deben mostrarse todas las cuentas de tipo Ahorro que posee el socio
         const cuentaAhorrosNormales = page.getByText('AHORROS NORMALES');
         const cuentaAhorrosNomina = page.getByText('AHORROS POR NOMINA');
@@ -66,13 +69,16 @@ test.describe.serial('Pruebas con la Transferencia de Cuentas de un Socio', () =
         // Buscar la cuenta de aportaciones 
         await page.locator(`${selectBuscar}`).last().fill(`${cedula}`);
 
+        // Esperar que se muestren las cuentas del socio
+        await page.waitForTimeout(2000);
+
         // Deben salir las cuentas de tipo Ahorro y la de Aportaciones
-        await expect(cuentaAhorrosNomina).toBeVisible();
-        await expect(cuentaOrdenPago).toBeVisible();
-        await expect(page.getByText('APORTACIONES')).toBeVisible();
+        await expect(page.getByRole('listbox').getByText('AHORROS POR NOMINA |')).toBeVisible();
+        await expect(page.getByRole('listbox').getByText('ORDEN DE PAGO |')).toBeVisible();
+        await expect(page.getByRole('listbox').getByText('APORTACIONES |')).toBeVisible();
 
         // Seleccionar la cuenta de Aportaciones del socio
-        await page.getByText('APORTACIONES').click();
+        await page.getByRole('listbox').getByText('APORTACIONES |').click();
 
         // Titulo detalle de la transaccion
         await expect(page.locator('h1').filter({hasText: 'Detalle De La Transacción'})).toBeVisible();

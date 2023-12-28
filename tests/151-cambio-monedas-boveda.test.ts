@@ -47,12 +47,6 @@ test.describe.serial('Pruebas con el Cambio de Monedas de Boveda', async () => {
         // Esperar que cargue la pagina
         await page.waitForTimeout(2000);
 
-        // Elegir la boveda principal
-        // await page.locator('#form_ID_CAJA').click();
-        // await page.waitForTimeout(2000);
-        // // Elegir la opcion de Boveda Principal
-        // await page.getByRole('option', {name: 'BOVEDA PRINCIPAL'}).click();
-
         // La Boveda Principal debe estar seleccionada
         await expect(page.getByText('BOVEDA PRINCIPAL')).toBeVisible();
 
@@ -98,6 +92,9 @@ test.describe.serial('Pruebas con el Cambio de Monedas de Boveda', async () => {
     });
 
     test('Realizar un cambio de monedas', async () => {
+        // Esperar a regresar a la pagina
+        await page.waitForTimeout(2000);
+
         // Input cantidad 2000 de la tabla de Recibido
         const cant2000Recibido = page.locator('[id="0"]');
 

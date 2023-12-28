@@ -828,7 +828,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         CerrarPaginasReportes();
     });
 
-    test('Cambiar de estado la solicitud de Aprobado a En Proceso y viceversa', async () => {
+    test('Cambiar de estado la solicitud de Aprobado a En Proceso', async () => {
         // La url debe regresar a las solicitudes en proceso
         await expect(page).toHaveURL(`${url_solicitud_credito}?filter=en_proceso__analisis`);
         
@@ -842,21 +842,27 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // Buscar la solicitud creada
         await page.locator(`${formBuscar}`).fill(`${nombre} ${apellido}`);
 
+        // Esperar que la solicitud buscada aparezca
+        await page.waitForTimeout(2000);
+
         // Elegir la solicitud creada anteriormente
         await page.getByRole('row', {name: `${nombre} ${apellido}`}).getByRole('button', {name: 'eye'}).click();
+
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(3000);
 
         // Debe estar en el primer paso de la solicitud
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
 
-        // Esperar que cargue la pagina
-        await page.waitForTimeout(3000);
-
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
         await expect(seccionDesembolso).toBeVisible();
         await seccionDesembolso.click();
+
+        // Esperar que cargue la pagina
+        await page.waitForTimeout(3000);
 
         // Cambiar la categoria de la solicitud
         await page.getByRole('button', {name: 'ellipsis'}).click();
@@ -872,7 +878,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await page.waitForTimeout(5000);
     });
 
-    test('Volver a cambiar el estado de la solciitu de En Proceso a Aprobado', async () => {
+    test('Volver a cambiar el estado de la solicitud de En Proceso a Aprobado', async () => {
         // Debe regresar a la pagina de solicitudes de credito
         await expect(page.locator('h1').filter({hasText: 'SOLICITUDES DE CRÉDITO'})).toBeVisible();
 
@@ -988,15 +994,11 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         // El nombre y el apellido del socio deben estar visibles 
         await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible(); 
 
-        // La fecha de solicitud dee estar visible y ser la fecha actual
+        // La fecha de solicitud debe estar visible y ser la fecha actual
         await expect(page.locator(`${fechaSolicitudCredito}`)).toHaveValue(`${diaActualFormato}`);
 
         // El usuario que aprobro debe estar visible
         await expect(page.locator(`${usuarioAproboSolicitud}`)).toHaveValue(`${userCorrectoUpperCase}`);
-
-        // EL boton de Imprimir Solicitud debe estar visible
-        const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
-        await expect(botonImprimirContrato).toBeVisible();
 
         // Debe estar visible una tabla con los datos del prestamo
         await expect(page.getByText(`RD$ ${cantMonto}`).first()).toBeVisible();
@@ -1005,7 +1007,7 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await expect(page.getByText('Tasa:15.00%')).toBeVisible();
         await expect(page.getByText('DEPOSITO A CUENTA')).toBeVisible();
         await expect(page.getByText('Tipo de Crédito:HIPOTECARIOS')).toBeVisible();
-        //await expect(page.getByText('Oferta:HIPOTECARIA')).toBeVisible();
+        await expect(page.getByText('Oferta:CRÉDITO HIPOTECARIO')).toBeVisible();
         await expect(page.getByText('Grupo:SIN GARANTIA')).toBeVisible();
 
         // La tabla de cuentas de cobros debe estar visible

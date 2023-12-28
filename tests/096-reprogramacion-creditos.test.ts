@@ -59,6 +59,12 @@ test.describe.serial('Pruebas con la Confirmacion de la Reprogramacion de Credit
         // Buscar al socio
         await page.locator(`${formBuscar}`).fill(`${cedula}`);
 
+        // Esperar que aparezca la solicitud de la persona buscada
+        await page.waitForTimeout(2000);
+
+        // La solicitud de la persona se muestra
+        await expect(page.getByRole('row', {name: `${nombre} ${apellido} CRÉDITO HIPOTECARIO`})).toBeVisible();
+
         // Boton confirmar
         const botonConfirmar = page.getByRole('row', {name: `${nombre} ${apellido} CRÉDITO HIPOTECARIO`}).getByRole('button', {name: 'check-circle'});
         await botonConfirmar.click();
