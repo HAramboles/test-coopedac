@@ -24,14 +24,6 @@ test.describe('Pruebas con la Cartera de Prestamos', () => {
         await page.goto(`${url_base}`);
     });
 
-    // Funcion para cerrar las paginas que se abren con los diferentes reportes en los pasos de la solicitud de credito
-    const CerrarPaginasReportes = async () => {
-        context.on('page', async (page) => {
-            await page.waitForTimeout(1000);
-            await page.close();
-        });
-    };
-
     test('Ir a la opcion de Cartera de Prestamos', async () => {
         // Negocios
         await page.getByRole('menuitem', {name: 'NEGOCIOS'}).click();
@@ -64,11 +56,11 @@ test.describe('Pruebas con la Cartera de Prestamos', () => {
         await expect(botonImprimir).toBeVisible();
         await botonImprimir.click();
 
-        // Esperar que se abra una nueva pestaña
-        await page.waitForTimeout(3000);
-
         // Esperar que se abra una nueva pestaña con el reporte
-        CerrarPaginasReportes();
+        const page1 = await context.waitForEvent('page');
+
+        // Cerrar la pagina con el reporte
+        await page1.close();
 
         // Debe regresar a la ventana anterior
         await expect(tituloPrincipal).toBeVisible();
