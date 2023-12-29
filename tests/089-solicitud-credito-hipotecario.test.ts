@@ -506,6 +506,9 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
         await valorTasado.clear();
         await valorTasado.fill('RD$ 400000');
 
+        // Esperar que el valor admisible este visible
+        await page.waitForTimeout(2000);
+
         // Valor admisible
         await expect(page.locator(`${valorAdmisibleCredito}`)).toHaveValue('RD$ 320,000');
 
@@ -681,8 +684,21 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Debe estar en el primer paso de la solicitud
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+        await page.getByRole('heading', {name: 'Solicitante', exact: true}).click({clickCount: 4});
+        await page.waitForTimeout(1000);
+
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+        await page.getByRole('heading', {name: 'Datos del Solicitante'}).click({clickCount: 4});
+        await page.waitForTimeout(1000);
+
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+        await page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'}).click({clickCount: 4});
+        await page.waitForTimeout(1000);
+
+        // El input con el nombre de la persoan debe estar visible
+        const inputNombrePersona = page.locator('#client_form_NOMBRE');
+        await expect(inputNombrePersona).toHaveValue(`${nombre} ${apellido}`);
+        await inputNombrePersona.click({clickCount: 4});
 
         // Ir a la seccion de datos prestamos 
         const datosPrestamos = page.getByRole('button', {name: '2 Datos Préstamos'})
@@ -797,8 +813,11 @@ test.describe.serial('Pruebas con la Solicitud de Credito Hipotecaria - Persona 
 
         // Agregar un comentario
         const campoComentario = page.getByPlaceholder('Comentario');
+        await expect(campoComentario).toBeVisible();
         await campoComentario.click();
+        await page.waitForTimeout(1000);
         await campoComentario.fill('Solicitud de Credito Aprobada');
+        await page.waitForTimeout(1000);
         // Guardar Comentario
         await page.getByRole('button', {name: 'Guardar'}).click();
 

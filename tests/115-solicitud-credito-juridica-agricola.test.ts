@@ -429,38 +429,61 @@ test.describe.serial('Pruebas con la Solicitud de Credito Agricola - Persona Jur
         const modal = page.locator('text=SELECCIONAR RELACIONADO');
         await expect(modal).toBeVisible();
 
-        // Buscar a la persona fisica
-        await page.locator(`${formBuscar}`).fill(`${nombrePersona} ${apellidoPersona}`);
+        // Esperar que los datos del modal esten visibles
+        await page.waitForTimeout(2000);
 
-        // Click a la opcion de la persona buscada
-        await page.getByText(`${nombrePersona} ${apellidoPersona}`).click();
+        // Si la persona codeudor aparece en el modal sin buscarla
+        const personaCodeudor = page.getByRole('cell', {name: `${nombrePersona} ${apellidoPersona}`});
 
-        // Se abre un modal colocar el tipo de relacion
-        await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
+        if (await personaCodeudor.isVisible()) {
+            // Click al boton de Agregar
+            await page.getByRole('button', {name: 'plus Agregar', exact: true}).click();   
+            
+            // Esperar que se agregue el codeudor
+            await page.waitForTimeout(2000);
 
-        // Click al tipo de relacion
-        await page.getByRole('combobox').click();
+            // Debe aparece que el codeudor fue agregado
+            await expect(page.getByText('Agregado')).toBeVisible();
 
-        // Elegir la opcion de codeudor
-        await page.getByRole('option', {name: 'CO-DEUDOR(A)'}).click();
+            // Cerrar el modal
+            await page.getByLabel('Close', {exact: true}).click();
 
-        // Click al boton de Aceptar
-        await page.getByRole('button', {name: 'Aceptar'}).click();
+            // El modal no debe estar visible
+            await expect(modal).not.toBeVisible();
+        } else if (await personaCodeudor.isHidden()) {
+            // Buscar a la persona fisica
+            await page.locator(`${formBuscar}`).fill(`${nombrePersona} ${apellidoPersona}`);
 
-        // Debe aparecer una alerta de operacion exitosa
-        await expect(page.locator('text=Relacionados guardados exitosamente.')).toBeVisible();
+            // Click a la opcion de la persona buscada
+            await page.getByText(`${nombrePersona} ${apellidoPersona}`).click();
 
-       // Esperar que se agregue automaticamente el codeudor
-       await page.waitForTimeout(2000);
+            // Se abre un modal colocar el tipo de relacion
+            await expect(page.locator('text=SELECCIONAR TIPO DE RELACIÓN')).toBeVisible();
 
-       // Debe aparece que el codeudor fue agregado
-       await expect(page.getByText('Agregado')).toBeVisible();
+            // Click al tipo de relacion
+            await page.getByRole('combobox').click();
 
-        // Cerrar el modal
-        await page.getByLabel('Close', {exact: true}).click();
+            // Elegir la opcion de codeudor
+            await page.getByRole('option', {name: 'CO-DEUDOR(A)'}).click();
 
-        // El modal no debe estar visible
-        await expect(modal).not.toBeVisible();
+            // Click al boton de Aceptar
+            await page.getByRole('button', {name: 'Aceptar'}).click();
+
+            // Debe aparecer una alerta de operacion exitosa
+            await expect(page.locator('text=Relacionados guardados exitosamente.')).toBeVisible();
+
+            // Esperar que se agregue automaticamente el codeudor
+            await page.waitForTimeout(2000);
+
+            // Debe aparece que el codeudor fue agregado
+            await expect(page.getByText('Agregado')).toBeVisible();
+
+            // Cerrar el modal
+            await page.getByLabel('Close', {exact: true}).click();
+
+            // El modal no debe estar visible
+            await expect(modal).not.toBeVisible();
+        };
 
         // Click al boton de agregar garantia
         await page.getByRole('button', {name: 'Agregar Garantía'}).click();

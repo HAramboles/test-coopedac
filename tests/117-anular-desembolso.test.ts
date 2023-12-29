@@ -156,7 +156,7 @@ test.describe.serial('Pruebas con la Anulacion de Desembolso', async () => {
         // Debe estar en el primer paso de la solicitud
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
-        await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+        await expect(page.getByRole('heading', {name: 'GENERALES DE LA EMPRESA'})).toBeVisible();
 
         // Dirigirse a la seccion de los cargos
         const seccionCargos = page.getByRole('button', {name: '3 Cargos Del Préstamo'});

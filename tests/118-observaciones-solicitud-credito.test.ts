@@ -610,8 +610,21 @@ test.describe.serial('Prueba con la Solicitud de Credito', () => {
 
         // Debe estar en el primer paso de la solicitud
         await expect(page.getByRole('heading', {name: 'Solicitante', exact: true})).toBeVisible();
+        await page.getByRole('heading', {name: 'Solicitante', exact: true}).click({clickCount: 4});
+        await page.waitForTimeout(1000);
+
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
+        await page.getByRole('heading', {name: 'Datos del Solicitante'}).click({clickCount: 4});
+        await page.waitForTimeout(1000);
+
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
+        await page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'}).click({clickCount: 4});
+        await page.waitForTimeout(1000);
+
+        // El input con el nombre de la persoan debe estar visible
+        const inputNombrePersona = page.locator('#client_form_NOMBRE');
+        await expect(inputNombrePersona).toHaveValue(`${nombre} ${apellido}`);
+        await inputNombrePersona.click({clickCount: 4});
 
         // El boton de firma debe estar visible
         const botonVerFirmas = page.locator('text=Ver firmas');

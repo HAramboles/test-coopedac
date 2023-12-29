@@ -126,6 +126,9 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
             if (escenarios.ID_OPERACION !== 4) {
                 // Test cuando el ID_OPERACION_MODIFICA_PER sea diferente de 4
                 test('El boton de Editar no debe estar visible', async () => {
+                    // Esperar que se muestre la persona
+                    await page.waitForTimeout(2000);
+
                     // El boton de Editar no debe mostrarse
                     await expect(botonEditarCuentaCasada).not.toBeVisible();
                 });
@@ -207,7 +210,10 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
                     await page.locator(`${formBuscar}`).fill(`${cedulaCasada}`);
 
                     // Debe mostrase la persona casada en estado Inactivo
-                    await expect(page.getByRole('cell', {name: `${nombreCasada} ${apellidoCasada}`})).toBeVisible();
+                    const personaCasada = page.getByRole('cell', {name: `${nombreCasada} ${apellidoCasada}`});
+                    await expect(personaCasada).toBeVisible();
+                    await personaCasada.click({clickCount: 4});
+                    await page.waitForTimeout(2000);
                 });
 
                 test('Editar la Persona Conyugue', async () => {
@@ -321,7 +327,10 @@ test.describe.serial('Cambiar Estado de Personas - Pruebas con los diferentes pa
                     await page.locator(`${formBuscar}`).fill(`${cedulaConyugue}`);
 
                     // Debe mostrase la persona casada en estado Inactivo
-                    await expect(page.getByRole('cell', {name: `${nombreConyugue} ${apellidoConyugue}`})).toBeVisible();
+                    const personaConyugue = page.getByRole('cell', {name: `${nombreConyugue} ${apellidoConyugue}`});
+                    await expect(personaConyugue).toBeVisible();
+                    await personaConyugue.click({clickCount: 4});
+                    await page.waitForTimeout(2000);
                 });
             };
         

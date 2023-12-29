@@ -425,6 +425,10 @@ test.describe.serial('Pago a Prestamo desde Caja - Pruebas con los diferentes pa
 
                     // Debe regresar a la pagina
                     await expect(page).toHaveURL(`${url_transacciones_caja}`);
+                    await page.waitForTimeout(2000);
+
+                    // El titulo principal debe estar visible
+                    await expect(page.locator('h1').filter({hasText: 'TRANSACCIONES DE CAJA'})).toBeVisible();
                 });
             };
 

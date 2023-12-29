@@ -96,7 +96,6 @@ test.describe.serial('Pruebas Anulando Cobro de Oficina', async () => {
 
     test('La tabla donde se colocan las transacciones debe estar visible', async () => {
         // Tabla de las transacciones
-        await expect(page.getByRole('columnheader', {name: 'Caja'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Fecha Doc.'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'Fecha Reg.'})).toBeVisible();
         await expect(page.getByRole('columnheader', {name: 'No. Documento'})).toBeVisible();

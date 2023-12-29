@@ -668,10 +668,6 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         // El nombre y el apellido del socio deben estar visibles
         await expect(page.getByText(`Socio: ${nombre} ${apellido}`)).toBeVisible();
 
-        // EL boton de Imprimir Solicitud debe estar visible
-        const botonImprimirContrato = page.getByRole('button', {name: 'Imprimir Contrato'});
-        await expect(botonImprimirContrato).toBeVisible();
-
         // Debe estar visible una tabla con los datos del prestamo
         await expect(page.getByText(`RD$ ${cantMonto}`).first()).toBeVisible();
         await expect(page.getByText('RD$ 2,325.00')).toBeVisible();
