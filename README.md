@@ -13,8 +13,8 @@ Tests **OBLIGATORIOS** de ejecutar
 Crear un archivo .env.development en la raíz del proyecto con las siguientes variables:  
 
 **Para conectarse al servidor**  
-REACT_APP_WEB_SERVICE_API
-REACT_APP_BIRT_WEB_API
+REACT_APP_WEB_SERVICE_API  
+REACT_APP_BIRT_WEB_API  
 REACT_APP_JASPER_WEB_API  
 
 **Usuario y contraseña**  
