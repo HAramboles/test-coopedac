@@ -117,9 +117,16 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                 test('No debe permitir Editar la cuenta de ahorros', async () => {            
                     // Buscar al socio a editar
                     await page.locator(`${formBuscar}`).fill(`${cedula}`);
+
+                    // Esperar a que se busque la cuenta
+                    await page.waitForTimeout(2000);
+
+                    // La cuenta buscada debe estar visible
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
+                    await page.waitForTimeout(1000);
                     await botonEditarCuenta.click();
 
                     // Debe mostrarse un mensaje
@@ -137,9 +144,16 @@ test.describe.serial('Reporte Poder a Terceros - Pruebas con los diferentes para
                 test('Datos Generales de la Cuenta de Ahorros', async () => {
                     // Buscar al socio a editar
                     await page.locator(`${formBuscar}`).fill(`${cedula}`);
+
+                    // Esperar a que se busque la cuenta
+                    await page.waitForTimeout(2000);
+
+                    // La cuenta buscada debe estar visible
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
+                    await page.waitForTimeout(1000);
                     await botonEditarCuenta.click();
             
                     // La URL debe cambiar

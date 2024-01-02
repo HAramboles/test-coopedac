@@ -94,9 +94,16 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                 test('No debe permitir Editar la cuenta de ahorros', async () => {            
                     // Buscar al socio a editar
                     await page.locator(`${formBuscar}`).fill(`${cedula}`);
+
+                    // Esperar a que se busque la cuenta
+                    await page.waitForTimeout(2000);
+
+                    // La cuenta buscada debe estar visible
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
+                    await page.waitForTimeout(1000);
                     await botonEditarCuenta.click();
 
                     // Debe mostrarse un mensaje
@@ -114,9 +121,16 @@ test.describe.serial('Editar Cuenta de Aportaciones Preferentes', async () => {
                 test('Dirigirse al primer paso de la edicion de Cuentas de Aportaciones Preferentes', async () => {
                     // Buscar al socio a editar
                     await page.locator(`${formBuscar}`).fill(`${cedula}`);
+
+                    // Esperar a que se busque la cuenta
+                    await page.waitForTimeout(2000);
+
+                    // La cuenta buscada debe estar visible
+                    await expect(page.getByRole('cell', {name: `${nombre} ${apellido}`})).toBeVisible();
             
                     // Click al boton de editar cuenta
                     await expect(botonEditarCuenta).toBeVisible();
+                    await page.waitForTimeout(1000);
                     await botonEditarCuenta.click();
             
                     // La URL debe cambiar

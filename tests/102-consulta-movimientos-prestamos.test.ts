@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
-import { dataPrinter, selectBuscar } from './utils/data/inputsButtons';
+import { dataCerrar, dataPrinter, dataVer, selectBuscar } from './utils/data/inputsButtons';
 import { diaActualFormato } from './utils/functions/fechas';
 import { url_base, url_consulta_movimientos_prestamos } from './utils/dataPages/urls';
 import { browserConfig, contextConfig } from './utils/data/testConfig';
@@ -123,6 +123,37 @@ test.describe.serial('Pruebas con la Consulta de los Movimientos de un Prestamo'
         await expect(page).toHaveURL(`${url_consulta_movimientos_prestamos}`);
 
         // Titulo principal
+        await expect(page.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS PRÉSTAMOS'})).toBeVisible();
+    });
+
+    test('Ver las actividades de uno de los movimientos del prestamo', async () => {
+        // Click al boton de ver actividades del primer movimiento
+        const botonVerActividades = page.locator(`${dataVer}`).first();
+        await expect(botonVerActividades).toBeVisible();
+        await botonVerActividades.click();
+
+        // Se abre un modal con las actividades del movimiento
+        const modalActividades = await page.getByText('ACTIVIDADES DEL PRÉSTAMO');
+        await expect(modalActividades).toBeVisible();
+
+        // Secciones del modal
+        await expect(page.getByText('Información de la Actividad')).toBeVisible();
+        await expect(page.getByText('Información del usuario')).toBeVisible();
+        await expect(page.getByText('Origen del cobro')).toBeVisible();
+        await expect(page.getByText('Valores de la actividad')).toBeVisible();
+        await expect(page.getByText('Detalle contable')).toBeVisible();
+        await expect(page.getByText('Cuotas afectadas')).toBeVisible();
+
+        // En el comentario debe estar el colocado en la prueba de nota de credito
+        await expect(page.getByText('PAGO POR INTERNET BANKING DE 150,000 PARA EL PRESTAMO')).toBeVisible();
+
+        // Cerrar el modal
+        await page.locator(`${dataCerrar}`).click();
+
+        // El modal no debe estar visible
+        await expect(modalActividades).not.toBeVisible();
+
+        // Debe estar en la pagina de Consulta Movimientos Prestamos
         await expect(page.locator('h1').filter({hasText: 'CONSULTA MOVIMIENTOS PRÉSTAMOS'})).toBeVisible();
     });
 
