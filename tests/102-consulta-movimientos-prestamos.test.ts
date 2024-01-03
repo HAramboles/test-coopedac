@@ -127,13 +127,13 @@ test.describe.serial('Pruebas con la Consulta de los Movimientos de un Prestamo'
     });
 
     test('Ver las actividades de uno de los movimientos del prestamo', async () => {
-        // Click al boton de ver actividades del primer movimiento
-        const botonVerActividades = page.locator(`${dataVer}`).first();
+        // Click al boton de ver actividades del movimiento de la nota de credito
+        const botonVerActividades = page.locator(`${dataVer}`).nth(1);
         await expect(botonVerActividades).toBeVisible();
         await botonVerActividades.click();
 
         // Se abre un modal con las actividades del movimiento
-        const modalActividades = await page.getByText('ACTIVIDADES DEL PRÉSTAMO');
+        const modalActividades = page.getByText('ACTIVIDADES DEL PRÉSTAMO');
         await expect(modalActividades).toBeVisible();
 
         // Secciones del modal

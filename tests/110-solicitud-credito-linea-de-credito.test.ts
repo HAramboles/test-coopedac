@@ -660,6 +660,10 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         await expect(page.getByRole('heading', {name: 'Datos del Solicitante'})).toBeVisible();
         await expect(page.getByRole('heading', {name: 'Lugar de Trabajo Solicitante'})).toBeVisible();
 
+        // Esperar que el boton de firmas este visible
+        const botonVerFirmas = page.locator('text=Ver firmas');
+        await expect(botonVerFirmas).toBeVisible();
+
         // Dirigirse a la ultima seccion
         const seccionDesembolso = page.getByRole('button', {name: '10 Desembolso'});
         await expect(seccionDesembolso).toBeVisible();
@@ -689,35 +693,48 @@ test.describe.serial('Prueba con la Solicitud de Linea de Credito', () => {
         await page.waitForTimeout(4000);
 
         // Posibles montos a desembolsar
-        const montoDesembolsarCero = page.getByText('RD$ 0.00').first();
+        //const montoDesembolsarCero = page.getByText('RD$ 0.00').first();
         const montoDesembolsarDoscientos = page.getByText('RD$ 200,000.00').nth(1);
 
+        await expect(montoDesembolsarDoscientos).toBeVisible();
+        await montoDesembolsarDoscientos.click();
+        await page.waitForTimeout(2000);
+        await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
+        await page.waitForTimeout(2000);
+        await page.locator('#form_MONTO_DESEMBOLSAR').click();
+
+        // Esperar dos segundos
+        await page.waitForTimeout(2000);
+
+        // Click fuera del checkbox
+        await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
+
         // Desembolsar la mitad de la linea, es decir, 100,000 pesos
-        if (await montoDesembolsarCero.isVisible()) {
-            await montoDesembolsarCero.click();
-            await page.waitForTimeout(2000);
-            await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
-            await page.waitForTimeout(2000);
-            await page.locator('#form_MONTO_DESEMBOLSAR').click();
+        // if (await montoDesembolsarCero.isVisible()) {
+        //     await montoDesembolsarCero.click();
+        //     await page.waitForTimeout(2000);
+        //     await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
+        //     await page.waitForTimeout(2000);
+        //     await page.locator('#form_MONTO_DESEMBOLSAR').click();
 
-            // Esperar dos segundos
-            await page.waitForTimeout(2000);
+        //     // Esperar dos segundos
+        //     await page.waitForTimeout(2000);
 
-            // Click fuera del checkbox
-            await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
-        } else if (await montoDesembolsarDoscientos.isVisible()) {
-            await montoDesembolsarDoscientos.click();
-            await page.waitForTimeout(2000);
-            await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
-            await page.waitForTimeout(2000);
-            await page.locator('#form_MONTO_DESEMBOLSAR').click();
+        //     // Click fuera del checkbox
+        //     await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
+        // } else if (await montoDesembolsarDoscientos.isVisible()) {
+        //     await montoDesembolsarDoscientos.click();
+        //     await page.waitForTimeout(2000);
+        //     await page.locator('#form_MONTO_DESEMBOLSAR').fill('RD$ 100000');
+        //     await page.waitForTimeout(2000);
+        //     await page.locator('#form_MONTO_DESEMBOLSAR').click();
 
-            // Esperar dos segundos
-            await page.waitForTimeout(2000);
+        //     // Esperar dos segundos
+        //     await page.waitForTimeout(2000);
 
-            // Click fuera del checkbox
-            await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
-        };
+        //     // Click fuera del checkbox
+        //     await page.getByRole('cell', {name: 'Monto a Desembolsar :'}).click();
+        // };
 
         // Click a Desembolsar
         const botonDesembolsar = page.getByRole('button', {name: 'Desembolsar'});
